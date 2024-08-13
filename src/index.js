@@ -47,14 +47,11 @@ if (!localStorage.getItem('games')) {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const logo = document.getElementById('logo')
 const sound = document.getElementById('xon');
-const body = document.getElementsByTagName('body')[0];
-
 
 window.addEventListener("gamepadconnected", (e) => {
     sound.play().then(() => {
         setTimeout(() => {
             logo.remove();
-            body.styles = {};
             root.render(
                 <RouterProvider router={router}/>
             );

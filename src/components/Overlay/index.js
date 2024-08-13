@@ -8,6 +8,7 @@ const Overlay = ({ children }) => {
     const {pressedKeys} = useGamepadButtons();
     const navigate = useNavigate();
     const location = useLocation();
+    const [visible, setVisible] = useState(false);
 
     const back = {
         'game': '/',
@@ -27,6 +28,16 @@ const Overlay = ({ children }) => {
     }, [location])
 
     useEffect(() => {
+        window.electronAPI.onVisibilityChange(e => {
+            setVisible(e)
+        })
+    }, []);
+
+    useEffect(() => {
+        if (pressedKeys.includes('home')) {
+            window.electronAPI.toggleOverlay(!visible)
+        }
+
         if (pressedKeys.includes('select')) {
             setMenu((v) => {
                 return !v
@@ -45,6 +56,10 @@ const Overlay = ({ children }) => {
 
     }, [pressedKeys])
 
+    if(!visible){
+        return null
+    }
+
     return <div style={{
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         position: "fixed",
@@ -54,7 +69,7 @@ const Overlay = ({ children }) => {
         height: '100vh',
     }}>
         <h1>Overlay</h1>
-        <Menu setMenu={setMenu} active={menu} pressedKeys={pressedKeys}/>
+        <Menu setMenu={setMenu} active={true} pressedKeys={pressedKeys}/>
     </div>
 }
 
