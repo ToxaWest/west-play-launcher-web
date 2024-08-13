@@ -10,6 +10,7 @@ import Settings from "./components/Settings";
 import Home from "./components/Home";
 import Game from "./components/Game";
 import Overlay from "./components/Overlay";
+import Provider from "./helpers/provider";
 
 const router = createBrowserRouter([
     {
@@ -53,7 +54,9 @@ window.addEventListener("gamepadconnected", (e) => {
         setTimeout(() => {
             logo.remove();
             root.render(
-                <RouterProvider router={router}/>
+                <Provider>
+                    <RouterProvider router={router}/>
+                </Provider>
             );
         }, 300)
     });

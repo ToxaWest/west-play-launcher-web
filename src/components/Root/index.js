@@ -1,15 +1,33 @@
 import Menu from "../Menu";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import styles from './root.module.scss';
 import useGamepadButtons from "../../hooks/useGamepadButtons";
 import Footer from "../Footer";
+import {AppContext} from "../../helpers/provider";
+import useAppControls from "../../hooks/useAppControls";
 
 const Root = () => {
-    const [menu, setMenu] = useState(false);
-    const {pressedKeys} = useGamepadButtons();
+
     const navigate = useNavigate();
     const location = useLocation();
+    const {setMenu, active} = useContext(AppContext);
+
+    const {init} = useAppControls({
+        map: {
+            'select': () => setMenu(a => !a),
+            'b': () => {
+                if (!active) {
+                    setMenu(false);
+                }
+                backButton()
+            },
+            'a': () => {
+                document.activeElement?.click()
+            }
+        },
+        abstract: true
+    })
 
     const back = {
         'game': '/',
@@ -29,33 +47,18 @@ const Root = () => {
     }, [location])
 
     useEffect(() => {
-        if (pressedKeys.includes('select')) {
-            setMenu((v) => {
-                return !v
-            })
-        }
-        if (pressedKeys.includes('b')) {
-            if (menu) {
-                setMenu(false);
-            }
-            backButton()
-        }
-
-        if (pressedKeys.includes('a')) {
-            document.activeElement?.click()
-        }
-
-    }, [pressedKeys])
+        init()
+    },[])
 
     return (
         <div className={styles.wrapper}>
-            <div className={styles.menu + (menu ? ' ' + styles.active : '')} id="menu">
-                <Menu active={menu} setMenu={setMenu} pressedKeys={pressedKeys}/>
+            <div className={styles.menu + (!active ? ' ' + styles.active : '')} id="menu">
+                <Menu/>
             </div>
-            <div className={styles.content + (menu ? ' ' + styles.menuActive : '')}>
-                <Outlet context={{active: !menu, pressedKeys}}/>
+            <div className={styles.content + (!active ? ' ' + styles.menuActive : '')}>
+                <Outlet/>
             </div>
-            <Footer toggleMenu={() => setMenu(!menu)} pressedKeys={pressedKeys} backButton={backButton}/>
+            <Footer backButton={backButton}/>
         </div>
     )
 }

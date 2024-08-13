@@ -1,56 +1,28 @@
-import {Link, useOutletContext} from "react-router-dom";
+import {Link} from "react-router-dom";
 import styles from "./home.module.scss";
-import {useEffect, useRef, useState} from "react";
+import {useEffect} from "react";
+import useAppControls from "../../hooks/useAppControls";
 
 const Home = () => {
-    const ref = useRef(null);
-    const selected = useRef(0);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const {pressedKeys, active} = useOutletContext();
 
-    const listener = () => {
-        if (pressedKeys.includes('right')) {
-            if (selected.current === ref.current.length - 1) {
-                selected.current = 0
-            } else {
-                selected.current++;
-            }
-            ref.current[selected.current].focus()
+    const {init, currentIndex} = useAppControls({
+        map: {
+            'left': (i) => i - 1,
+            'right': (i) => i + 1
+        },
+        animation: (e) => {
+            e.scrollIntoView({
+                inline: 'center',
+                behavior: 'smooth',
+            })
         }
-        if (pressedKeys.includes('left')) {
-            if (selected.current === 0) {
-                selected.current = ref.current.length - 1;
-            } else {
-                selected.current--;
-            }
-            ref.current[selected.current].focus()
-        }
-    }
+    });
 
     useEffect(() => {
-        ref.current?.[currentIndex]?.scrollIntoView({
-            inline: 'center',
-            behavior: 'smooth',
+        init({
+            selector: '#game-list a'
         })
-
-    }, [currentIndex])
-
-    useEffect(() => {
-        if (pressedKeys.length && active && ref.current) {
-            if (!document.activeElement) {
-                ref.current[0].focus();
-                setCurrentIndex(0)
-            }
-            listener()
-        }
-    }, [pressedKeys]);
-
-    useEffect(() => {
-        if (active) {
-            ref.current = document.querySelectorAll('#game-list a')
-            ref.current?.[0]?.focus();
-        }
-    }, [active]);
+    }, []);
 
     const games = JSON.parse(localStorage.getItem('games'));
 
@@ -60,11 +32,9 @@ const Home = () => {
                 <img src={games[currentIndex]?.img_hero} alt={'background'}/>
             </div>
             <ul id="game-list" className={styles.scroll}>
-                {games.map((game, index) => (
+                {games.map((game) => (
                     <li key={game.steamgriddb}>
-                        <Link to={'/game/' + game.steamgriddb}
-                              onFocus={() => setCurrentIndex(index)}
-                        >
+                        <Link to={'/game/' + game.steamgriddb}>
                             <img src={game.img_grid} alt={game.name}/>
                         </Link>
                     </li>

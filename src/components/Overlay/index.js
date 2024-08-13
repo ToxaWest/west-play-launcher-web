@@ -34,7 +34,7 @@ const Overlay = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        if (pressedKeys.includes('home')) {
+        if (pressedKeys.includes('select')) {
             window.electronAPI.toggleOverlay(!visible)
         }
 

@@ -34,12 +34,21 @@ const sound = {
 const useGamepadButtons = () => {
     const [pressedKeys, setPressedKeys] = useState([]);
     const ref = useRef([]);
+    const pressed = useRef(0);
 
     const sendEvent = (detail) => {
         if (JSON.stringify(ref.current) === JSON.stringify(detail)) {
+            pressed.current++
+            if (pressed.current > 4) {
+                setPressedKeys(() => {
+                    ref.current = []
+                    pressed.current = 0
+                    return []
+                });
+            }
             return;
         }
-        if(sound[detail[0]]){
+        if (sound[detail[0]]) {
             const a = document.createElement('audio');
             a.src = '/assets/sound/ui/' + sound[detail[0]] + '.mp3';
             a.play()

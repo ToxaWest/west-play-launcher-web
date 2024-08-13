@@ -1,11 +1,12 @@
 import styles from './footer.module.scss';
+import {useContext} from "react";
+import {AppContext} from "../../helpers/provider";
 
-const Footer = ({toggleMenu, backButton}) => {
-
-
+const Footer = ({backButton}) => {
+    const {setMenu} = useContext(AppContext);
     return (
         <footer className={styles.wrapper}>
-            <div onClick={toggleMenu}>
+            <div onClick={() => setMenu(a => !a)}>
                 <img src={'/assets/controller/Xbox_Logo.svg'} alt="menu"
                      width={32}
                 />
