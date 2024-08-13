@@ -1,0 +1,28 @@
+.wrapper {
+  background-color: rgba(0, 0, 0, 0.35);
+  border-right: 3px solid rgba(0, 0, 0, 0.3);
+  height: 100%;
+  padding: 4px;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  a {
+    display: block;
+    padding: 10px 15px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+
+    &:focus, &:active {
+      border: none;
+      background-color: rgba(255, 255, 255, 0.1);
+      outline: none;
+    }
+  }
+}

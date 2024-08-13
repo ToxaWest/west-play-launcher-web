@@ -1,17 +1,63 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import {
+    createBrowserRouter,
+    RouterProvider,
+} from "react-router-dom";
+import Root from "./components/Root";
+import Settings from "./components/Settings";
+import Home from "./components/Home";
+import Game from "./components/Game";
+import Overlay from "./components/Overlay";
+
+const router = createBrowserRouter([
+    {
+        element: <Root/>,
+        children: [
+            {
+                path: "/",
+                element: <Home/>
+            },
+            {
+                path: "/settings",
+                element: <Settings/>,
+            }, {
+                path: "/game/:id",
+                element: <Game/>
+            }
+        ]
+    },
+    {
+        element: <Overlay/>,
+        path: "/overlay",
+    }
+]);
+
+
+if (!localStorage.getItem('config')) {
+    localStorage.setItem('config', JSON.stringify({settings: {}}))
+}
+
+if (!localStorage.getItem('games')) {
+    localStorage.setItem('games', JSON.stringify([]))
+}
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const logo = document.getElementById('logo')
+const sound = document.getElementById('xon');
+const body = document.getElementsByTagName('body')[0];
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+
+window.addEventListener("gamepadconnected", (e) => {
+    sound.play().then(() => {
+        setTimeout(() => {
+            logo.remove();
+            body.styles = {};
+            root.render(
+                <RouterProvider router={router}/>
+            );
+        }, 300)
+    });
+})
