@@ -2,6 +2,7 @@ import {Link} from "react-router-dom";
 import styles from './menu.module.scss';
 import {useEffect} from "react";
 import useAppControls from "../../hooks/useAppControls";
+import electronConnector from "../../helpers/electronConnector";
 
 const Menu = () => {
     const {init} = useAppControls({
@@ -31,7 +32,7 @@ const Menu = () => {
                     <Link to="/" onClick={event => {
                         event.stopPropagation();
                         event.preventDefault();
-                        window.electronAPI.openOverlay()
+                        electronConnector.openOverlay()
                     }}>Overlay</Link>
                 </li>
             </ul>

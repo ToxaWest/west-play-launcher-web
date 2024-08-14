@@ -2,8 +2,9 @@ import Menu from "../Menu";
 import {useEffect, useState} from "react";
 import useGamepadButtons from "../../hooks/useGamepadButtons";
 import {useLocation, useNavigate} from "react-router-dom";
+import electronConnector from "../../helpers/electronConnector";
 
-const Overlay = ({ children }) => {
+const Overlay = () => {
     const [menu, setMenu] = useState(false);
     const {pressedKeys} = useGamepadButtons();
     const navigate = useNavigate();
@@ -28,14 +29,14 @@ const Overlay = ({ children }) => {
     }, [location])
 
     useEffect(() => {
-        window.electronAPI.onVisibilityChange(e => {
+        electronConnector.onVisibilityChange(e => {
             setVisible(e)
         })
     }, []);
 
     useEffect(() => {
         if (pressedKeys.includes('select')) {
-            window.electronAPI.toggleOverlay(!visible)
+            electronConnector.toggleOverlay(!visible)
         }
 
         if (pressedKeys.includes('select')) {

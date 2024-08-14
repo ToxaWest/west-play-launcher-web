@@ -1,6 +1,7 @@
 import {useState} from "react";
 import styles from "./settings.module.scss";
 import AddGame from "./addGame";
+import Input from "../Input";
 
 const Settings = () => {
     const [settings, setSettings] = useState(JSON.parse(localStorage.getItem('config')).settings);
@@ -10,16 +11,11 @@ const Settings = () => {
         <div className={styles.wrapper}>
             <details className={styles.block}>
                 <summary>Steam</summary>
-                <label>
-                    <span>Steam Web API Key</span>
-                    <input type="text" placeholder={"Steam Web API Key"} defaultValue={settings.steam_api_key}
-                           onChange={e => setSettings(() => {
-                               return {
-                                   ...settings,
-                                   steam_api_key: e.target.value
-                               }
-                           })}/>
-                </label>
+                <Input label={'Steam Web API Key (needed for achievements)'}
+                       name="steam_api_key"
+                       value={settings.steam_api_key}
+                       onChange={({value, name}) => setSettings((s) => ({...s, [name]: value}))}
+                />
                 <button onClick={() => {
                     localStorage.setItem('config', JSON.stringify({settings}));
                 }}>
@@ -54,7 +50,6 @@ const Settings = () => {
                 </ul>
                 <button onClick={() => {
                     localStorage.setItem('games', JSON.stringify(games));
-
                 }}>
                     Save
                 </button>

@@ -1,5 +1,7 @@
 import {useState} from "react";
 import styles from "./settings.module.scss";
+import electronConnector from "../../helpers/electronConnector";
+
 const AddImage = ({id, type, onChange, value}) => {
     const [images, setImages] = useState([]);
     const defaultConfig = {
@@ -54,17 +56,15 @@ const AddImage = ({id, type, onChange, value}) => {
 
     const select = (value) => {
         onChange({
-            target: {
-                value,
-                name: 'img_' + type
-            }
+            value,
+            name: 'img_' + type
         })
         setImages([]);
     }
 
     const getImages = async () => {
         const data = imgConfig[type];
-        const images = await window.electronAPI.getImage(data);
+        const images = await electronConnector.getImage(data);
         const {data: {assets}} = images;
         setImages(assets);
     }

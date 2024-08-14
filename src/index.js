@@ -47,9 +47,10 @@ if (!localStorage.getItem('games')) {
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const logo = document.getElementById('logo')
-const sound = document.getElementById('xon');
 
-window.addEventListener("gamepadconnected", (e) => {
+const start = () => {
+    const sound = document.createElement('audio');
+    sound.src = '/assets/sound/ui/swits.mp3';
     sound.play().then(() => {
         setTimeout(() => {
             logo.remove();
@@ -60,4 +61,8 @@ window.addEventListener("gamepadconnected", (e) => {
             );
         }, 300)
     });
+}
+
+window.addEventListener("gamepadconnected", () => {
+    start();
 })

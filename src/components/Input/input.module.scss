@@ -1,0 +1,51 @@
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+
+  input {
+    min-width: 400px;
+  }
+}
+
+.child {
+  width: 100%;
+  ul {
+    &:empty {
+      display: none;
+    }
+  }
+}
+
+.select {
+  position: relative;
+  border-radius: 3px;
+  padding: 7px 15px;
+  color: #fff;
+  border: 1px solid #4b4b4b;
+  background-color: transparent;
+  min-width: 400px;
+  span {
+    font-size: 14px;
+  }
+  ul {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    min-width: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 3px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    li {
+      font-size: 12px;
+      cursor: pointer;
+      padding: 3px 15px;
+      background-color: rgba(255, 255, 255, 0.1);
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+}

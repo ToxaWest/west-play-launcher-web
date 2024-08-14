@@ -29,12 +29,12 @@ const Home = () => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.image}>
-                <img src={games[currentIndex]?.img_hero} alt={'background'}/>
+                {games[currentIndex]?.img_hero && <img src={games[currentIndex]?.img_hero} alt={'background'}/>}
             </div>
             <ul id="game-list" className={styles.scroll}>
                 {games.map((game) => (
-                    <li key={game.steamgriddb}>
-                        <Link to={'/game/' + game.steamgriddb}>
+                    <li key={game.id}>
+                        <Link to={'/game/' + game.id}>
                             <img src={game.img_grid} alt={game.name}/>
                         </Link>
                     </li>
