@@ -4,7 +4,7 @@ import electronConnector from "../../helpers/electronConnector";
 
 const Game = () => {
     const {id} = useParams();
-    const game = JSON.parse(localStorage.getItem('games')).find(({id: gid}) => gid === id);
+    const game = JSON.parse(localStorage.getItem('games')).find(({id: gid}) => gid.toString() === id);
 
     return (
         <div className={styles.wrapper}>

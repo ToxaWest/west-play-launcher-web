@@ -25,7 +25,6 @@ const SteamFields = ({game, onChange, setGame}) => {
             setGame(g => {
                 return {
                     ...g,
-                    id: steamId,
                     steamId,
                     supported_languages,
                     about_the_game,
