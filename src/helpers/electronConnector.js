@@ -1,4 +1,5 @@
 const electronConnector = {
+    toggleOverlay: (d) => window.electronAPI.toggleOverlay(d),
     onVisibilityChange: (data) => window.electronAPI.onVisibilityChange(data),
     nintendoSearch: (data) => window.electronAPI.nintendoSearch(data),
     nintendoReq: (data) => window.electronAPI.nintendoReq(data),

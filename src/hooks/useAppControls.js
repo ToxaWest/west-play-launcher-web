@@ -44,10 +44,12 @@ const useAppControls = ({map, animation, abstract = false, isMenu = false}) => {
                         i = 0
                     }
 
-                    ref.current[i].focus();
-                    selected.current = i;
-                    if (animation) {
-                        animation(ref.current[i])
+                    if(ref.current[i]){
+                        ref.current[i].focus();
+                        selected.current = i;
+                        if (animation) {
+                            animation(ref.current[i])
+                        }
                     }
                 }
             })
@@ -55,8 +57,14 @@ const useAppControls = ({map, animation, abstract = false, isMenu = false}) => {
 
         if (abstract && pressedKeys.length > 0) {
             Object.entries(map).forEach(([key, funk]) => {
-                if (pressedKeys.some(a => a === key)) {
-                    funk(selected.current);
+                if(key.indexOf('+') !== -1){
+                    if(pressedKeys.join('+') === key){
+                        funk(selected.current);
+                    }
+                } else {
+                    if (pressedKeys.some(a => a === key)) {
+                        funk(selected.current);
+                    }
                 }
             })
         }
