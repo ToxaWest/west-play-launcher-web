@@ -57,9 +57,9 @@ const Overlay = () => {
 
     }, [pressedKeys])
 
-    if(!visible){
-        return null
-    }
+    // if(!visible){
+    //     return null
+    // }
 
     return <div style={{
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
