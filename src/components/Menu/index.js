@@ -28,20 +28,6 @@ const Menu = () => {
                 <li>
                     <Link to="/settings">Settings</Link>
                 </li>
-                <li>
-                    <Link to="/" onClick={event => {
-                        event.stopPropagation();
-                        event.preventDefault();
-                        electronConnector.openOverlay('Untitled')
-                    }}>Overlay</Link>
-                </li>
-                <li>
-                    <Link to="/" onClick={event => {
-                        event.stopPropagation();
-                        event.preventDefault();
-                        electronConnector.closeOverlay()
-                    }}>Close Overlay</Link>
-                </li>
             </ul>
         </div>
 

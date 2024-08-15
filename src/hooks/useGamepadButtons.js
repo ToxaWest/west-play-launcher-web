@@ -39,7 +39,7 @@ const useGamepadButtons = () => {
     const sendEvent = (detail) => {
         if (JSON.stringify(ref.current) === JSON.stringify(detail)) {
             pressed.current++
-            if (pressed.current > 4) {
+            if (pressed.current > 4 && detail.length > 0) {
                 setPressedKeys(() => {
                     ref.current = []
                     pressed.current = 0

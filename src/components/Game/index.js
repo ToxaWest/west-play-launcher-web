@@ -6,6 +6,13 @@ const Game = () => {
     const {id} = useParams();
     const game = JSON.parse(localStorage.getItem('games')).find(({id: gid}) => gid.toString() === id);
 
+    const getImageName = () => {
+        if(game.imageName){
+            return game.imageName
+        }
+        return game.exePath.split('\\').at(-1);
+    }
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.heading}>
@@ -15,9 +22,12 @@ const Game = () => {
             <div className={styles.content}>
                 {game.exePath && <button onClick={() => {
                     electronConnector.openFile({
+                        imageName: getImageName(),
                         path: game.exePath,
                         parameters: Object.values(game.exeArgs || []).filter((x) => x),
                         cwd: game.path,
+                        url: window.location.href,
+                        id: game.id
                     })
                 }}>
                     Play

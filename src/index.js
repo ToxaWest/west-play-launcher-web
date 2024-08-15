@@ -31,7 +31,7 @@ const router = createBrowserRouter([
     },
     {
         element: <Overlay/>,
-        path: "/overlay",
+        path: "/overlay/:id",
     }
 ]);
 
@@ -48,21 +48,16 @@ if (!localStorage.getItem('games')) {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const logo = document.getElementById('logo')
 
-const start = () => {
-    const sound = document.createElement('audio');
-    sound.src = '/assets/sound/ui/swits.mp3';
-    sound.play().then(() => {
-        setTimeout(() => {
-            logo.remove();
-            root.render(
-                <Provider>
-                    <RouterProvider router={router}/>
-                </Provider>
-            );
-        }, 300)
-    });
-}
-
 window.addEventListener("gamepadconnected", () => {
-    start();
+    // const sound = document.createElement('audio');
+    // sound.src = '/assets/sound/ui/swits.mp3';
+    // sound.play()
+    setTimeout(() => {
+        logo.remove();
+        root.render(
+            <Provider>
+                <RouterProvider router={router}/>
+            </Provider>
+        );
+    }, 300)
 })
