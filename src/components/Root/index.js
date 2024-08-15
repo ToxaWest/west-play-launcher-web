@@ -1,17 +1,18 @@
 import Menu from "../Menu";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect} from "react";
 import styles from './root.module.scss';
-import useGamepadButtons from "../../hooks/useGamepadButtons";
 import Footer from "../Footer";
 import {AppContext} from "../../helpers/provider";
 import useAppControls from "../../hooks/useAppControls";
+import useNotification from "../../hooks/useNotification";
+import Clock from "../Clock";
 
 const Root = () => {
-
     const navigate = useNavigate();
     const location = useLocation();
     const {setMenu, active} = useContext(AppContext);
+    const notifications = useNotification();
 
     const {init} = useAppControls({
         map: {
@@ -38,7 +39,9 @@ const Root = () => {
         if (location.pathname === '/') {
             setMenu(false)
         } else {
-            navigate(back[location.pathname.split('/')[1]])
+            navigate(
+                back[location.pathname.split('/')[1]]
+            )
         }
     }
 
@@ -47,11 +50,20 @@ const Root = () => {
     }, [location])
 
     useEffect(() => {
+        window.addEventListener("gamepadconnected", () => {
+            notifications({
+                img: '/assets/controller/xbox-control-for-one.svg',
+                status: 'success',
+                name: 'Gamepad connected',
+                description: 'Let\'s Play!'
+            })
+        })
         init()
-    },[])
+    }, [])
 
     return (
         <div className={styles.wrapper}>
+            <Clock/>
             <div className={styles.menu + (!active ? ' ' + styles.active : '')} id="menu">
                 <Menu/>
             </div>

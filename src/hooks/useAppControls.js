@@ -34,8 +34,6 @@ const useAppControls = ({map, animation, abstract = false, isMenu = false}) => {
                 selected.current = 0;
             }
 
-            console.log(document.activeElement)
-
             Object.entries(map).forEach(([key, funk]) => {
                 if (pressedKeys.some(a => a === key)) {
                     let i = funk(selected.current);

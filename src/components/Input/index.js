@@ -51,7 +51,7 @@ const Input = ({
 
     return (
         <label className={styles.wrapper}>
-            <span>{label || name}</span>
+            <span>{label || name}:</span>
             {renderInput[type]()}
             <div className={styles.child}>
                 {children}

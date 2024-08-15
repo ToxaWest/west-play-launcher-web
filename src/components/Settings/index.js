@@ -2,11 +2,12 @@ import {useState} from "react";
 import styles from "./settings.module.scss";
 import AddGame from "./addGame";
 import Input from "../Input";
+import useNotification from "../../hooks/useNotification";
 
 const Settings = () => {
     const [settings, setSettings] = useState(JSON.parse(localStorage.getItem('config')).settings);
     const [games, setGames] = useState(JSON.parse(localStorage.getItem('games')))
-
+    const notifications = useNotification();
     return (
         <div className={styles.wrapper}>
             <details className={styles.block}>
@@ -18,6 +19,12 @@ const Settings = () => {
                 />
                 <button onClick={() => {
                     localStorage.setItem('config', JSON.stringify({settings}));
+                    notifications({
+                        img: '/assets/controller/save.svg',
+                        status: 'saving',
+                        name: 'Saved successfully',
+                        description: 'Steam configuration updated'
+                    })
                 }}>
                     Save
                 </button>
@@ -50,6 +57,12 @@ const Settings = () => {
                 </ul>
                 <button onClick={() => {
                     localStorage.setItem('games', JSON.stringify(games));
+                    notifications({
+                        img: '/assets/controller/save.svg',
+                        status: 'saving',
+                        name: 'Saved successfully',
+                        description: 'Games configuration updated'
+                    })
                 }}>
                     Save
                 </button>

@@ -11,6 +11,8 @@ import Home from "./components/Home";
 import Game from "./components/Game";
 import Overlay from "./components/Overlay";
 import Provider from "./helpers/provider";
+import Library from "./components/Library";
+import Clock from "./components/Clock";
 
 const router = createBrowserRouter([
     {
@@ -19,6 +21,10 @@ const router = createBrowserRouter([
             {
                 path: "/",
                 element: <Home/>
+            },
+            {
+                path: '/library',
+                element: <Library/>
             },
             {
                 path: "/settings",
@@ -48,16 +54,17 @@ if (!localStorage.getItem('games')) {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const logo = document.getElementById('logo')
 
-window.addEventListener("gamepadconnected", () => {
-    // const sound = document.createElement('audio');
-    // sound.src = '/assets/sound/ui/swits.mp3';
-    // sound.play()
-    setTimeout(() => {
-        logo.remove();
-        root.render(
-            <Provider>
-                <RouterProvider router={router}/>
-            </Provider>
-        );
-    }, 300)
-})
+if (window.location.pathname.indexOf('/overlay/') === -1) {
+    const sound = document.createElement('audio');
+    sound.src = '/assets/sound/ui/swits.mp3';
+    sound.play()
+}
+
+setTimeout(() => {
+    logo.remove();
+    root.render(
+        <Provider>
+            <RouterProvider router={router}/>
+        </Provider>
+    );
+}, 300)

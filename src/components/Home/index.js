@@ -4,7 +4,6 @@ import {useEffect} from "react";
 import useAppControls from "../../hooks/useAppControls";
 
 const Home = () => {
-
     const {init, currentIndex} = useAppControls({
         map: {
             'left': (i) => i - 1,
@@ -31,7 +30,7 @@ const Home = () => {
             <div className={styles.image}>
                 {games[currentIndex]?.img_hero && <img src={games[currentIndex]?.img_hero} alt={'background'}/>}
             </div>
-            <ul id="game-list" className={styles.scroll}>
+            <ul id="game-list">
                 {games.map((game) => (
                     <li key={game.id}>
                         <Link to={'/game/' + game.id}>

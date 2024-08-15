@@ -29,6 +29,7 @@ const sound = {
     'right': 'move4',
     'a': 'select',
     'b': 'back',
+    'home': 'switchup'
 }
 
 const useGamepadButtons = () => {
@@ -129,10 +130,12 @@ const useGamepadButtons = () => {
     }
 
     useEffect(() => {
-        init();
-        initScroll();
-        //boost scroll
-        initScroll();
+        window.addEventListener("gamepadconnected", () => {
+            init();
+            initScroll();
+            //boost scroll
+            initScroll();
+        })
     }, []);
 
     return {

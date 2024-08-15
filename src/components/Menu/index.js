@@ -2,7 +2,6 @@ import {Link} from "react-router-dom";
 import styles from './menu.module.scss';
 import {useEffect} from "react";
 import useAppControls from "../../hooks/useAppControls";
-import electronConnector from "../../helpers/electronConnector";
 
 const Menu = () => {
     const {init} = useAppControls({
@@ -24,6 +23,9 @@ const Menu = () => {
             <ul>
                 <li>
                     <Link to="/">Home</Link>
+                </li>
+                <li>
+                    <Link to="/library">Library</Link>
                 </li>
                 <li>
                     <Link to="/settings">Settings</Link>

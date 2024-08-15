@@ -1,5 +1,5 @@
 .wrapper {
-
+  margin-top: -60px;
 }
 
 .heading {
@@ -132,5 +132,16 @@
 
   & > div {
     width: 50%;
+  }
+}
+
+.playButton {
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.7);
+  font-size: 20px;
+  min-width: 250px;
+  text-transform: uppercase;
+  &:focus {
+    background-color: rgba(127,187,0,0.9);
   }
 }
