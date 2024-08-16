@@ -16,6 +16,8 @@ const Game = () => {
     })
     const game = JSON.parse(localStorage.getItem('games')).find(({id: gid}) => gid.toString() === id);
 
+    console.log(game)
+
     const getImageName = () => {
         if (game.imageName) {
             return game.imageName
@@ -50,6 +52,12 @@ const Game = () => {
     }
 
     useEffect(() => {
+        document.addEventListener('keydown', (event) => {
+            console.log(event)
+        })
+    }, []);
+
+    useEffect(() => {
         init({
             selector: '#game-actions button'
         })
@@ -61,10 +69,10 @@ const Game = () => {
                 <img src={game.img_logo} className={styles.logo} alt={'logo'}/>
                 <img src={game.img_hero} alt={game.name}/>
             </div>
-            <div className={styles.content} id={'game-actions'} style={{padding: 0}}>
-                <button onClick={start} className={styles.playButton}>Play</button>
+            <div className={styles.content} id={'game-actions'}>
+                <button onClick={start} className={styles.playButton} style={{backgroundColor: game.color}}>Play</button>
             </div>
-            <div className={styles.content} style={{backgroundColor: game.color}}>
+            <div className={styles.content}>
                 <div className={styles.description}>
                     <h1>{game.name}</h1>
                     {game.img_landscape && <img src={game.img_landscape} alt={'landscape'}
@@ -76,7 +84,7 @@ const Game = () => {
                     </div>
                     }
                 </div>
-                <div className={styles.info}>
+                <div className={styles.info} style={{backgroundColor: game.color}}>
                     <ul>
                         <li>
                             <strong>Size:</strong>

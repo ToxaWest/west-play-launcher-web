@@ -2,11 +2,13 @@ import Input from "../Input";
 import electronConnector from "../../helpers/electronConnector";
 import styles from "./settings.module.scss";
 import {useState} from "react";
+import useNotification from "../../hooks/useNotification";
 
 const SteamFields = ({game, onChange, setGame}) => {
     const [temp, setTemp] = useState([]);
-
+    const {steam_api_key} = JSON.parse(localStorage.getItem('config')).settings;
     const args = game.exeArgs || {};
+    const notifications = useNotification();
 
     const getSteamData = (steamId) => {
         electronConnector.getSteamData(steamId).then((r) => {
@@ -41,6 +43,33 @@ const SteamFields = ({game, onChange, setGame}) => {
         })
     }
 
+    const renderAchievements = () => {
+        if (game.steamId && steam_api_key) {
+            return (
+                <button onClick={() => {
+                    electronConnector.getSteamAchievements({
+                        appID: game.steamId,
+                        apiKey: steam_api_key
+                    }).then(({game}) => {
+                        onChange({
+                            name: 'achievements',
+                            value: game?.availableGameStats?.achievements
+                        })
+                        notifications({
+                            img: '/assets/controller/save.svg',
+                            status: 'success',
+                            name: 'Achievements updated',
+                            description: `${game.name} updated`
+                        })
+                    })
+                }}>GET ACHIEVEMENTS
+                </button>
+            )
+        }
+
+        return null;
+    }
+
     return (
         <>
             <Input label='Search'
@@ -58,6 +87,7 @@ const SteamFields = ({game, onChange, setGame}) => {
                        )}
                    </ul>}
                    name='search'/>
+            {renderAchievements()}
             <div className={styles.argsWrapper}>
                 <button onClick={() => {
                     onChange({
