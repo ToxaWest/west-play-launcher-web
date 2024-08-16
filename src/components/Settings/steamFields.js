@@ -50,10 +50,10 @@ const SteamFields = ({game, onChange, setGame}) => {
                     electronConnector.getSteamAchievements({
                         appID: game.steamId,
                         apiKey: steam_api_key
-                    }).then(({game}) => {
+                    }).then(({game:g}) => {
                         onChange({
                             name: 'achievements',
-                            value: game?.availableGameStats?.achievements
+                            value: g?.availableGameStats?.achievements
                         })
                         notifications({
                             img: '/assets/controller/save.svg',
@@ -62,13 +62,20 @@ const SteamFields = ({game, onChange, setGame}) => {
                             description: `${game.name} updated`
                         })
                     })
-                }}>GET ACHIEVEMENTS
+                }}>GET ACHIEVEMENTS ({game.steamId})
                 </button>
             )
         }
 
         return null;
     }
+
+    const getExePath = () => {
+        electronConnector.getFile().then(achPath => {
+            setGame(g => ({...g, achPath}))
+        })
+    }
+
 
     return (
         <>
@@ -88,6 +95,12 @@ const SteamFields = ({game, onChange, setGame}) => {
                    </ul>}
                    name='search'/>
             {renderAchievements()}
+            <Input label='Achievements file path'
+                   value={game.achPath}
+                   onChange={onChange}
+                   name='achPath'>
+                <button onClick={() => getExePath()}>Get Achievements Path</button>
+            </Input>
             <div className={styles.argsWrapper}>
                 <button onClick={() => {
                     onChange({

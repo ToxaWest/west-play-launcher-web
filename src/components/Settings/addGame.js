@@ -66,6 +66,10 @@ const AddGame = ({data, submit}) => {
                            value={game.imageName}
                            onChange={onChange}
                            name='imageName'/>
+                    <Input label='Force window name (overlay fix only)'
+                           value={game.windowName}
+                           onChange={onChange}
+                           name='windowName'/>
                     <AddImage id={game.steamgriddb} type="grid" onChange={onChange} value={game.img_grid}/>
                     <AddImage id={game.steamgriddb} type="landscape" onChange={onChange} value={game.img_landscape}/>
                     <AddImage id={game.steamgriddb} type="hero" onChange={onChange} value={game.img_hero}/>

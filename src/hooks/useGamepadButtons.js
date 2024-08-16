@@ -35,18 +35,9 @@ const sound = {
 const useGamepadButtons = () => {
     const [pressedKeys, setPressedKeys] = useState([]);
     const ref = useRef([]);
-    const pressed = useRef(0);
 
     const sendEvent = (detail) => {
         if (JSON.stringify(ref.current) === JSON.stringify(detail)) {
-            pressed.current++
-            if (pressed.current > 4 && detail.length > 0) {
-                setPressedKeys(() => {
-                    ref.current = []
-                    pressed.current = 0
-                    return []
-                });
-            }
             return;
         }
         if (sound[detail[0]]) {

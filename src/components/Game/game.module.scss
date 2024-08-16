@@ -2,6 +2,59 @@
   margin-top: -60px;
 }
 
+.achWrapper {
+
+}
+
+.achList {
+  border-radius: 8px;
+  width: 90vw;
+  margin: 15px auto;
+  display: grid;
+  gap: 5px;
+  max-width: 950px;
+  grid-template-columns: repeat(2, 1fr);
+  padding: 8px;
+  background-color: rgba(255, 255, 255, 0.2);
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    background-color: rgba(255, 255, 255, 0.1);
+    display: flex;
+    margin: 0;
+    border-radius: 0 8px 8px 0;
+    &.earned {
+      background-color: rgba(0, 0, 0, 0.4);
+      strong {
+        color: #00b100;
+      }
+    }
+    img {
+      width: 100px;
+    }
+    strong , i, span{
+      display: block;
+    }
+
+    i {
+      color: rgba(255, 255, 255, 0.8);
+      text-align: right;
+    }
+
+    div {
+      padding: 5px 15px;
+      width: 100%;
+    }
+    span, i {
+      font-size: 12px;
+    }
+  }
+}
+
 .heading {
   position: relative;
   height: 32.3vw;
@@ -94,6 +147,10 @@
     font-size: 14px;
   }
 
+  img {
+    max-width: 100%;
+  }
+
   :global {
     .bb_tag {
       margin-top: 18px;
@@ -142,7 +199,27 @@
   min-width: 250px;
   text-transform: uppercase;
   transition: background-color 0.2s ease-in-out;
+  margin-right: auto;
   &:focus, &:hover {
     background-color: rgba(127,187,0,0.9)!important;
   }
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  padding: 5px;
+
+  &:focus, &:hover {
+    background-color: rgba(187, 162, 0, 0.9) !important;
+  }
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+.activeIcon {
+  background-color: rgba(255, 0, 0, 0.4);
 }

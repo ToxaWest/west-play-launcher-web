@@ -58,7 +58,7 @@ const useAppControls = ({map, animation, abstract = false, isMenu = false}) => {
         if (abstract && pressedKeys.length > 0) {
             Object.entries(map).forEach(([key, funk]) => {
                 if(key.indexOf('+') !== -1){
-                    if(pressedKeys.join('+') === key){
+                    if(pressedKeys.reverse().join('+') === key){
                         funk(selected.current);
                     }
                 } else {

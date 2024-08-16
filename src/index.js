@@ -12,7 +12,8 @@ import Game from "./components/Game";
 import Overlay from "./components/Overlay";
 import Provider from "./helpers/provider";
 import Library from "./components/Library";
-import Clock from "./components/Clock";
+import GameContent from "./components/Game/content";
+import Achievements from "./components/Game/achievements";
 
 const router = createBrowserRouter([
     {
@@ -31,6 +32,16 @@ const router = createBrowserRouter([
                 element: <Settings/>,
             }, {
                 path: "/game/:id",
+                children: [
+                    {
+                        path: "/game/:id",
+                        element: <GameContent/>
+                    },
+                    {
+                        path: "/game/:id/achievements",
+                        element: <Achievements/>
+                    },
+                ],
                 element: <Game/>
             }
         ]

@@ -7,6 +7,7 @@ import {AppContext} from "../../helpers/provider";
 import useAppControls from "../../hooks/useAppControls";
 import useNotification from "../../hooks/useNotification";
 import Clock from "../Clock";
+import electronConnector from "../../helpers/electronConnector";
 
 const Root = () => {
     const navigate = useNavigate();
@@ -36,9 +37,7 @@ const Root = () => {
     }
 
     const backButton = () => {
-        if (location.pathname === '/') {
-            setMenu(false)
-        } else {
+        if (location.pathname !== '/') {
             navigate(
                 back[location.pathname.split('/')[1]]
             )

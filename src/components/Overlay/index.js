@@ -17,11 +17,6 @@ const Overlay = () => {
             'a': () => {
                 document.activeElement?.click()
             },
-            'b': () => {
-                if(visible){
-                    electronConnector.closeFile(`${window.location.origin}/game/${params.id}`);
-                }
-            }
         },
         abstract: true,
     });
@@ -39,15 +34,14 @@ const Overlay = () => {
         init()
 
         electronConnector.onVisibilityChange(e => {
+            console.log('reinit: ',e )
+            console.log(document.activeElement)
             setVisible(e)
         })
     }, []);
 
-    if(visible){
-        return <OverlayContent/>
-    }
 
-    return null
+    return <OverlayContent visible={visible}/>
 }
 
 export default Overlay;

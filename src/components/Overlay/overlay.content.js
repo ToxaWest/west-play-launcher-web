@@ -5,7 +5,7 @@ import styles from "./overlay.module.scss";
 import useAppControls from "../../hooks/useAppControls";
 import {useParams} from "react-router-dom";
 
-const OverlayContent = () => {
+const OverlayContent = ({visible}) => {
     const params = useParams();
 
     const {init} = useAppControls({
@@ -24,7 +24,7 @@ const OverlayContent = () => {
     }, []);
 
     return (
-        <div className={styles.wrapper} id={'overlay'}>
+        <div className={styles.wrapper} id={'overlay'} style={{left: visible ? 0 :'-100vw'}}>
             <Clock/>
             <h1>{game.name}</h1>
             <button
