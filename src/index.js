@@ -9,7 +9,6 @@ import Root from "./components/Root";
 import Settings from "./components/Settings";
 import Home from "./components/Home";
 import Game from "./components/Game";
-import Overlay from "./components/Overlay";
 import Provider from "./helpers/provider";
 import Library from "./components/Library";
 import GameContent from "./components/Game/content";
@@ -45,10 +44,6 @@ const router = createBrowserRouter([
                 element: <Game/>
             }
         ]
-    },
-    {
-        element: <Overlay/>,
-        path: "/overlay/:id",
     }
 ]);
 
@@ -61,15 +56,11 @@ if (!localStorage.getItem('games')) {
     localStorage.setItem('games', JSON.stringify([]))
 }
 
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const logo = document.getElementById('logo')
-
-if (window.location.pathname.indexOf('/overlay/') === -1) {
-    const sound = document.createElement('audio');
-    sound.src = '/assets/sound/ui/swits.mp3';
-    sound.play()
-}
+const sound = document.createElement('audio');
+sound.src = '/assets/sound/ui/swits.mp3';
+sound.play()
 
 setTimeout(() => {
     logo.remove();

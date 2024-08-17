@@ -18,40 +18,20 @@ const Game = () => {
     })
     const game = JSON.parse(localStorage.getItem('games')).find(({id: gid}) => gid.toString() === id);
 
-    const getImageName = () => {
-        if (game.imageName) {
-            return game.imageName
-        }
-        return game.exePath.split('\\').at(-1);
-    }
-
-    const getActive = (e) => {
-        return e === location.pathname
-    }
+    const getActive = (e) => e === location.pathname;
 
     const start = () => {
+        notification({
+            status: game.exePath ? 'success' : 'error',
+            img: game.img_icon,
+            name: game.exePath ? 'Starting...' : 'Can\'t start',
+            description: game.name,
+        })
         if (game.exePath) {
-            notification({
-                status: 'success',
-                img: game.img_icon,
-                name: 'Starting...',
-                description: game.name,
-            })
             electronConnector.openFile({
-                imageName: getImageName(),
                 path: game.exePath,
                 parameters: Object.values(game.exeArgs || []).filter((x) => x),
                 cwd: game.path,
-                url: window.location.href,
-                id: game.id,
-                windowName: game.windowName
-            })
-        } else {
-            notification({
-                status: 'error',
-                img: game.img_icon,
-                name: 'Can\'t start',
-                description: game.name,
             })
         }
     }
@@ -69,17 +49,22 @@ const Game = () => {
                 <img src={game.img_hero} alt={game.name}/>
             </div>
             <div className={styles.content} id={'game-actions'}>
-                <button onClick={start} className={styles.playButton} style={{backgroundColor: game.color}}>
+                <button onClick={start} className={styles.playButton} style={{
+                    backgroundColor: game.color,
+                    opacity: game.exePath ? 1 : 0.7
+                }}>
                     Play
                 </button>
                 <button onClick={() => {
                     navigate(`/game/${id}`)
-                }} className={styles.icon + (getActive(`/game/${id}`) ? ' ' + styles.activeIcon : '')} style={{backgroundColor: game.color}}>
+                }} className={styles.icon + (getActive(`/game/${id}`) ? ' ' + styles.activeIcon : '')}
+                        style={{backgroundColor: game.color}}>
                     <img src={'/assets/content.svg'} alt={'content'}/>
                 </button>
                 <button onClick={() => {
                     navigate(`/game/${id}/achievements`)
-                }} className={styles.icon + (getActive(`/game/${id}/achievements`) ? ' ' + styles.activeIcon : '')} style={{backgroundColor: game.color}}>
+                }} className={styles.icon + (getActive(`/game/${id}/achievements`) ? ' ' + styles.activeIcon : '')}
+                        style={{backgroundColor: game.color}}>
                     <img src={'/assets/achievement.svg'} alt={'achievement'}/>
                 </button>
             </div>
