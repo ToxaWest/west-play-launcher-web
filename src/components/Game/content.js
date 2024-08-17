@@ -1,10 +1,11 @@
 import styles from "./game.module.scss";
 import {useParams} from "react-router-dom";
+import {getFromStorage} from "../../helpers/getFromStorage";
 
 const GameContent = () => {
     const {id} = useParams();
-    const game = JSON.parse(localStorage.getItem('games')).find(({id: gid}) => gid.toString() === id);
-
+    const game = getFromStorage('games').find(({id: gid}) => gid.toString() === id);
+    const lastPlayed = getFromStorage('lastPlayed');
     return (
         <div className={styles.content}>
             <div className={styles.description}>
@@ -20,6 +21,10 @@ const GameContent = () => {
             </div>
             <div className={styles.info} style={{backgroundColor: game.color}}>
                 <ul>
+                    {lastPlayed[id] ? <li>
+                        <strong>Last played:</strong>
+                        {new Date(lastPlayed[id]).toLocaleDateString()}
+                    </li> : null}
                     <li>
                         <strong>Size:</strong>
                         {game.size}

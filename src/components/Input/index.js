@@ -29,6 +29,17 @@ const Input = ({
                 />
             )
         },
+        number: () => {
+            return (
+                <input type="number"
+                       placeholder={label}
+                       name={name}
+                       disabled={disabled}
+                       defaultValue={value}
+                       onChange={change}
+                />
+            )
+        },
         select: () => {
             return (
                 <div className={styles.select} onClick={() => setActive((a) => !a)}>

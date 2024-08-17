@@ -3,10 +3,11 @@ import styles from "./settings.module.scss";
 import AddGame from "./addGame";
 import Input from "../Input";
 import useNotification from "../../hooks/useNotification";
+import {getFromStorage, setToStorage} from "../../helpers/getFromStorage";
 
 const Settings = () => {
-    const [settings, setSettings] = useState(JSON.parse(localStorage.getItem('config')).settings);
-    const [games, setGames] = useState(JSON.parse(localStorage.getItem('games')))
+    const [settings, setSettings] = useState(getFromStorage('config').settings);
+    const [games, setGames] = useState(getFromStorage('games'))
     const notifications = useNotification();
     return (
         <div className={styles.wrapper}>
@@ -17,8 +18,14 @@ const Settings = () => {
                        value={settings.steam_api_key}
                        onChange={({value, name}) => setSettings((s) => ({...s, [name]: value}))}
                 />
+                <Input label={'Library games in row'}
+                       name="gamesInRow"
+                       type="number"
+                       value={settings.gamesInRow}
+                       onChange={({value, name}) => setSettings((s) => ({...s, [name]: value}))}
+                />
                 <button onClick={() => {
-                    localStorage.setItem('config', JSON.stringify({settings}));
+                    setToStorage('config', {settings})
                     notifications({
                         img: '/assets/controller/save.svg',
                         status: 'saving',
@@ -56,7 +63,7 @@ const Settings = () => {
                     ))}
                 </ul>
                 <button onClick={() => {
-                    localStorage.setItem('games', JSON.stringify(games));
+                    setToStorage('games', games)
                     notifications({
                         img: '/assets/controller/save.svg',
                         status: 'saving',

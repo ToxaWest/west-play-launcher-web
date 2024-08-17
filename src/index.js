@@ -13,6 +13,7 @@ import Provider from "./helpers/provider";
 import Library from "./components/Library";
 import GameContent from "./components/Game/content";
 import Achievements from "./components/Game/achievements";
+import initLocalStorage from "./helpers/initLocalStorage";
 
 const router = createBrowserRouter([
     {
@@ -47,14 +48,7 @@ const router = createBrowserRouter([
     }
 ]);
 
-
-if (!localStorage.getItem('config')) {
-    localStorage.setItem('config', JSON.stringify({settings: {}}))
-}
-
-if (!localStorage.getItem('games')) {
-    localStorage.setItem('games', JSON.stringify([]))
-}
+initLocalStorage();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const logo = document.getElementById('logo')

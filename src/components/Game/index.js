@@ -4,6 +4,7 @@ import electronConnector from "../../helpers/electronConnector";
 import useNotification from "../../hooks/useNotification";
 import {useEffect} from "react";
 import useAppControls from "../../hooks/useAppControls";
+import {getFromStorage, setToStorage} from "../../helpers/getFromStorage";
 
 const Game = () => {
     const {id} = useParams();
@@ -16,11 +17,12 @@ const Game = () => {
             left: (i) => i - 1,
         }
     })
-    const game = JSON.parse(localStorage.getItem('games')).find(({id: gid}) => gid.toString() === id);
-
+    const game = getFromStorage('games').find(({id: gid}) => gid.toString() === id);
+    const lastPlayed = getFromStorage('lastPlayed');
     const getActive = (e) => e === location.pathname;
 
     const start = () => {
+        setToStorage('lastPlayed', {...lastPlayed, [id]: new Date().getTime()});
         notification({
             status: game.exePath ? 'success' : 'error',
             img: game.img_icon,

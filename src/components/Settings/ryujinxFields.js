@@ -6,10 +6,9 @@ import {useState} from "react";
 const RyujinxFields = ({setGame, game}) => {
     const [temp, setTemp] = useState([]);
 
-    const regExp = new RegExp(/https:\/\/www.nintendo.com\/sg\/switch\/(....)\/index.html/);
+    const regExp = new RegExp(/https:\/\/www.nintendo.com\/sg\/switch\/(.*)\/index.html/);
 
     const getSwitchData = (id) => {
-
         electronConnector.nintendoReq({id}).then(({detail}) => {
             const {releaseDate, common} = detail;
             setGame((g) => ({
@@ -51,27 +50,20 @@ const RyujinxFields = ({setGame, game}) => {
         value: game.exeArgs?.fullscreen,
         options: ['--fullscreen'],
         label: 'Full Screen',
-    },{
+    }, {
         name: 'docked',
         type: 'select',
         value: game.exeArgs?.docked,
-        options: ['--docked-mode','--handheld-mode'],
+        options: ['--docked-mode', '--handheld-mode'],
         label: 'Docked Mode',
     }]
 
     return (
         <>
             <Input label='Search'
-                   onChange={({value}) => {
-                       electronConnector.nintendoSearch({
-                           params: new URLSearchParams({
-                               q: value,
-                               limit: 24,
-                               p: 1,
-                               opt_type: 2,
-                               sort: 'hards asc, score',
-                           }).toString()
-                       }).then(e => {
+                   onChange={({value: q}) => {
+                       const params = new URLSearchParams({q, limit: 24, opt_type: 2}).toString();
+                       electronConnector.nintendoSearch({params}).then(e => {
                            const items = e.result.items.filter(a => regExp.test(a.url))
                            setTemp(() => items)
                        })

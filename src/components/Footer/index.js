@@ -7,7 +7,7 @@ const Footer = ({backButton}) => {
     return (
         <footer className={styles.wrapper}>
             <div onClick={() => setMenu(a => !a)}>
-                <img src={'/assets/controller/Xbox_Logo.svg'} alt="menu"
+                <img src={'/assets/controller/menu.svg'} alt="menu"
                      width={32}
                 />
                 Menu
