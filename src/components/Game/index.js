@@ -5,6 +5,7 @@ import useNotification from "../../hooks/useNotification";
 import {useEffect} from "react";
 import useAppControls from "../../hooks/useAppControls";
 import {getFromStorage, setToStorage} from "../../helpers/getFromStorage";
+import getAchievements from "../../helpers/getAchievements";
 
 const Game = () => {
     const {id} = useParams();
@@ -42,6 +43,7 @@ const Game = () => {
         init({
             selector: '#game-actions button'
         })
+        getAchievements(id)
     }, []);
 
     return (

@@ -95,8 +95,7 @@ const RyujinxFields = ({setGame, game}) => {
                            type={field.type}
                            options={field.options}
                            onChange={update}
-                           name={field.name}>
-                    </Input>
+                           name={field.name}/>
                 ))}
             </div>
         </>

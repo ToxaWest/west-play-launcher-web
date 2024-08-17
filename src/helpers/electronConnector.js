@@ -9,7 +9,8 @@ const electronConnector = {
     steamSearch: (data) => window.electronAPI.steamSearch(data),
     steamgriddbSearch: (data) => window.electronAPI.steamgriddbSearch(data),
     getSteamAchievements: (data) => window.electronAPI.getSteamAchievements(data),
-    readFile: (data) => window.electronAPI.readFile(data)
+    readFile: (data) => window.electronAPI.readFile(data),
+    onVisibilityChange: (data) => window.electronAPI.onVisibilityChange(data)
 };
 
 export default electronConnector;

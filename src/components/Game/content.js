@@ -26,10 +26,6 @@ const GameContent = () => {
                         {new Date(lastPlayed[id]).toLocaleDateString()}
                     </li> : null}
                     <li>
-                        <strong>Size:</strong>
-                        {game.size}
-                    </li>
-                    <li>
                         <strong>Metacritics:</strong>
                         {game.metacritic?.score}
                     </li>

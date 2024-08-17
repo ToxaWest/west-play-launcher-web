@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
 import styles from "./home.module.scss";
-import {useEffect} from "react";
+import {useEffect, useMemo} from "react";
 import useAppControls from "../../hooks/useAppControls";
 import {getFromStorage} from "../../helpers/getFromStorage";
 
@@ -32,7 +32,7 @@ const Home = () => {
         Object.entries(lastPlayed)
             .sort(([, ap], [, bp]) => ap < bp ? 1 : -1)
             .forEach(([key]) => {
-                renderSort.push(key)
+                renderSort.push(parseInt(key))
             });
         games.forEach(({id}) => {
             if (renderSort.indexOf(id) === -1) {
@@ -43,7 +43,7 @@ const Home = () => {
         return games.sort((a, b) => renderSort.indexOf(a.id) - renderSort.indexOf(b.id))
     }
 
-    const sortedGames = configuredArray();
+    const sortedGames = useMemo(configuredArray, []);
 
     const renderLastPlayed = (id) => {
         if(lastPlayed[id]){

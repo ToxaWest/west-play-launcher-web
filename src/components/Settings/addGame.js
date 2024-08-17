@@ -1,6 +1,5 @@
 import {useRef, useState} from "react";
 import AddImage from "./addImage";
-import formatBytes from "../../helpers/formatBytes";
 import electronConnector from "../../helpers/electronConnector";
 import Input from "../Input";
 import SearchGame from "./searchGame";
@@ -16,8 +15,8 @@ const AddGame = ({data, submit}) => {
     }
 
     const getGamePath = () => {
-        electronConnector.getFolder().then(({path, size}) => {
-            setGame(g => ({...g, path, size: formatBytes(size)}))
+        electronConnector.getFolder().then(({path}) => {
+            setGame(g => ({...g, path}))
         })
     }
 

@@ -50,7 +50,7 @@ const SteamFields = ({game, onChange, setGame}) => {
                     electronConnector.getSteamAchievements({
                         appID: game.steamId,
                         apiKey: steam_api_key
-                    }).then(({game:g}) => {
+                    }).then(({game: g}) => {
                         onChange({
                             name: 'achievements',
                             value: g?.availableGameStats?.achievements

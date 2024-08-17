@@ -49,13 +49,8 @@ const Settings = () => {
                         <li key={game.id}>
                             <AddGame data={game} submit={(d) => {
                                 setGames(g => {
-                                    g[index] = {
-                                        id: game.id,
-                                        ...d
-                                    }
-                                    return [
-                                        ...g
-                                    ]
+                                    g[index] = {id: game.id, ...d}
+                                    return [...g]
                                 })
                             }}
                             />

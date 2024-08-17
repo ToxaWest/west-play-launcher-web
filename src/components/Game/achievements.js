@@ -1,44 +1,11 @@
 import {useParams} from "react-router-dom";
 import styles from './game.module.scss';
-import {useEffect, useState} from "react";
-import electronConnector from "../../helpers/electronConnector";
+import {getFromStorage} from "../../helpers/getFromStorage";
 
 const Achievements = () => {
     const {id} = useParams();
-    const game = JSON.parse(localStorage.getItem('games')).find(({id: gid}) => gid.toString() === id);
-    const [achievements, setAchievements] = useState(null);
-    useEffect(() => {
-        if (game.achPath && game.achievements) {
-            electronConnector.readFile(game.achPath).then(r => {
-                if (game.achPath.endsWith('achievements.json')) {
-                    setAchievements(JSON.parse(r));
-                }
-                if (game.achPath.endsWith('achievements.ini')) {
-                    const result = {};
-                    game.achievements.forEach(ach => {
-                        result[ach.name] = {
-                            earned: false,
-                            earned_time: 0
-                        }
-                    })
-                    r.split(`\r\n\r\n`)
-                        .forEach(a => {
-                            if (a) {
-                                const ach = a.split(`\r\n`);
-                                if (ach[0] !== '[SteamAchievements]') {
-                                    result[ach[0].replace('[', '').replace(']', '')] = {
-                                        earned: true,
-                                        earned_time: parseInt(ach[4].split('=')[1])
-                                    }
-                                }
-                            }
-                        })
-                    setAchievements(result)
-                }
-            })
-        }
-    }, []);
-
+    const game = getFromStorage('games').find(({id: gid}) => gid.toString() === id);
+    const achievements = getFromStorage('achievements')[parseInt(id)];
 
     const renderTemp = (arr) => {
         return (
@@ -65,7 +32,14 @@ const Achievements = () => {
                 .map(([n, {earned, earned_time}]) => {
                     const {icon, icongray, displayName, description} = getObj(n);
                     return (
-                        <li key={n} className={earned ? styles.earned : ''}>
+                        <li key={n} className={earned ? styles.earned : ''}
+                            onClick={() => {
+                                new Notification(displayName, {
+                                    body: description,
+                                    icon
+                                });
+                            }}
+                        >
                             <img src={earned ? icon : icongray} alt={n}/>
                             <div>
                                 <strong>{displayName}</strong>

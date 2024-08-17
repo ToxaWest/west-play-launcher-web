@@ -4,7 +4,7 @@ import {AppContext} from "../helpers/provider";
 const useAppControls = ({map, animation, abstract = false, isMenu = false}) => {
     const ref = useRef([]);
     const selected = useRef(0);
-    const {pressedKeys, active} = useContext(AppContext);
+    const {pressedKeys, active, visible} = useContext(AppContext);
 
     const init = ({selector} = {}) => {
         if (selector) {
@@ -23,6 +23,10 @@ const useAppControls = ({map, animation, abstract = false, isMenu = false}) => {
     }, [active, ref.current.length]);
 
     useEffect(() => {
+
+        if (!visible) {
+            return
+        }
 
         if (
             pressedKeys.length > 0 &&
@@ -44,7 +48,7 @@ const useAppControls = ({map, animation, abstract = false, isMenu = false}) => {
                         i = 0
                     }
 
-                    if(ref.current[i]){
+                    if (ref.current[i]) {
                         ref.current[i].focus();
                         selected.current = i;
                         if (animation) {
@@ -57,8 +61,8 @@ const useAppControls = ({map, animation, abstract = false, isMenu = false}) => {
 
         if (abstract && pressedKeys.length > 0) {
             Object.entries(map).forEach(([key, funk]) => {
-                if(key.indexOf('+') !== -1){
-                    if(pressedKeys.reverse().join('+') === key){
+                if (key.indexOf('+') !== -1) {
+                    if (pressedKeys.reverse().join('+') === key) {
                         funk(selected.current);
                     }
                 } else {
@@ -68,7 +72,6 @@ const useAppControls = ({map, animation, abstract = false, isMenu = false}) => {
                 }
             })
         }
-
 
     }, [JSON.stringify(pressedKeys)]);
 
