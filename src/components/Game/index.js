@@ -41,7 +41,7 @@ const Game = () => {
     }
     const game = getFromStorage('games').find(({id: gid}) => gid.toString() === id);
     const {updateStatus} = usePlayTime(id, game.img_icon, game.name)
-    const {updateStatus: achievementsWatcher} = useAchievementsWatcher(game.id)
+    const achievementsWatcher = useAchievementsWatcher(game.id)
     const lastPlayed = getFromStorage('lastPlayed');
     const getActive = (e) => e === location.pathname;
     const getImageName = () => {
@@ -76,10 +76,13 @@ const Game = () => {
         })
         electronConnector.gameStatus(s => {
             updateStatus(s);
-            achievementsWatcher(s)
             setStatus(s)
         })
         getAchievements(id)
+        achievementsWatcher.init()
+        return () => {
+            achievementsWatcher.destroy()
+        }
     }, []);
 
 
