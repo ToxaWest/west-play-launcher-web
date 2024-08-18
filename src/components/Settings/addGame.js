@@ -6,7 +6,7 @@ import SearchGame from "./searchGame";
 import RyujinxFields from "./ryujinxFields";
 import SteamFields from "./steamFields";
 
-const AddGame = ({data, submit}) => {
+const AddGame = ({data, submit, remove}) => {
     const [game, setGame] = useState(data);
     const wrapperRef = useRef(null);
 
@@ -85,6 +85,7 @@ const AddGame = ({data, submit}) => {
                 {game.name}
             </summary>
             <div>
+                <button onClick={() => remove()}>Remove game</button>
                 {renderContent()}
             </div>
         </details>

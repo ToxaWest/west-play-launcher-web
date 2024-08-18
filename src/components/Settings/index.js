@@ -40,19 +40,26 @@ const Settings = () => {
                 <summary>Games</summary>
                 <button onClick={() => {
                     setGames((d) => {
-                        return [{id: new Date().getMilliseconds()}, ...d]
+                        return [{id: new Date().getTime()}, ...d]
                     })
                 }}>Add Game
                 </button>
                 <ul>
                     {games.map((game, index) => (
                         <li key={game.id}>
-                            <AddGame data={game} submit={(d) => {
-                                setGames(g => {
-                                    g[index] = {id: game.id, ...d}
-                                    return [...g]
-                                })
-                            }}
+                            <AddGame data={game}
+                                     remove={() => {
+                                         setGames(g => {
+                                             g.splice(index, 1)
+                                             return [...g];
+                                         })
+                                     }}
+                                     submit={(d) => {
+                                         setGames(g => {
+                                             g[index] = {id: game.id, ...d}
+                                             return [...g]
+                                         })
+                                     }}
                             />
                         </li>
                     ))}

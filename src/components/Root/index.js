@@ -1,16 +1,16 @@
 import Menu from "../Menu";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
-import React, {useContext, useEffect} from "react";
+import React, {useContext, useEffect, useRef} from "react";
 import styles from './root.module.scss';
 import Footer from "../Footer";
 import {AppContext} from "../../helpers/provider";
 import useAppControls from "../../hooks/useAppControls";
 import useNotification from "../../hooks/useNotification";
 import Clock from "../Clock";
-import electronConnector from "../../helpers/electronConnector";
 
 const Root = () => {
     const navigate = useNavigate();
+    const timeout = useRef(null);
     const location = useLocation();
     const {setMenu, active} = useContext(AppContext);
     const notifications = useNotification();
@@ -58,6 +58,18 @@ const Root = () => {
             })
         })
         init()
+        const body = document.querySelector('html');
+        document.addEventListener('mousemove', () => {
+            if (timeout.current !== undefined) {
+                body.style.removeProperty('cursor');
+                body.style.removeProperty('pointer-events');
+                window.clearTimeout(timeout.current);
+            }
+            timeout.current = setTimeout(() => {
+                body.style.setProperty('cursor', 'none');
+                body.style.setProperty('pointer-events', 'none');
+            }, 2000)
+        })
     }, [])
 
     return (
