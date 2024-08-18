@@ -3,7 +3,8 @@ export default function initLocalStorage() {
         config: {settings: {}},
         games: [],
         lastPlayed: {},
-        achievements: {}
+        achievements: {},
+        playTime: {}
     }
 
     Object.entries(storage).map(([key, value]) => {

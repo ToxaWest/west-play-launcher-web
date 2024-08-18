@@ -1,11 +1,14 @@
 import styles from "./game.module.scss";
 import {useParams} from "react-router-dom";
 import {getFromStorage} from "../../helpers/getFromStorage";
+import {secondsToHms} from "../../hooks/usePlayTime";
 
 const GameContent = () => {
     const {id} = useParams();
     const game = getFromStorage('games').find(({id: gid}) => gid.toString() === id);
-    const lastPlayed = getFromStorage('lastPlayed');
+    const lastPlayed = getFromStorage('lastPlayed')[id];
+    const playTime = getFromStorage('playTime')[id];
+
     return (
         <div className={styles.content}>
             <div className={styles.description}>
@@ -21,9 +24,13 @@ const GameContent = () => {
             </div>
             <div className={styles.info} style={{backgroundColor: game.color}}>
                 <ul>
-                    {lastPlayed[id] ? <li>
+                    {lastPlayed ? <li>
                         <strong>Last played:</strong>
-                        {new Date(lastPlayed[id]).toLocaleDateString()}
+                        {new Date(lastPlayed).toLocaleDateString()}
+                    </li> : null}
+                    {playTime ? <li>
+                        <strong>Play time:</strong>
+                        {secondsToHms(playTime)}
                     </li> : null}
                     <li>
                         <strong>Metacritics:</strong>

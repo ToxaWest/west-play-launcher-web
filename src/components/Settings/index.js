@@ -4,6 +4,7 @@ import AddGame from "./addGame";
 import Input from "../Input";
 import useNotification from "../../hooks/useNotification";
 import {getFromStorage, setToStorage} from "../../helpers/getFromStorage";
+import electronConnector from "../../helpers/electronConnector";
 
 const Settings = () => {
     const [settings, setSettings] = useState(getFromStorage('config').settings);
@@ -11,6 +12,14 @@ const Settings = () => {
     const notifications = useNotification();
     return (
         <div className={styles.wrapper}>
+            <button onClick={() => {
+                electronConnector.changeDisplayMode(1)
+            }}>internal</button>
+            <button
+                onClick={() => {
+                    electronConnector.changeDisplayMode(4)
+                }}
+            >external</button>
             <details className={styles.block}>
                 <summary>Steam</summary>
                 <Input label={'Steam Web API Key (needed for achievements)'}

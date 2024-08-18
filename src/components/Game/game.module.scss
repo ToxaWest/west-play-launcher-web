@@ -200,6 +200,13 @@
   text-transform: uppercase;
   transition: background-color 0.2s ease-in-out;
   margin-right: auto;
+  &.running {
+    background-color: rgba(0, 103, 187, 0.5);
+    &:focus, &:hover {
+      cursor: default;
+      background-color: rgba(0, 103, 187, 0.5) !important;
+    }
+  }
   &:focus, &:hover {
     background-color: rgba(127,187,0,0.9)!important;
   }

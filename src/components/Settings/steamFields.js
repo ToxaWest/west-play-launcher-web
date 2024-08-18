@@ -132,6 +132,12 @@ const SteamFields = ({game, onChange, setGame}) => {
                     </Input>
                 ))}
             </div>
+            <Input label='imageName'
+                   value={game.imageName}
+                   onChange={onChange}
+                   name='imageName'>
+                <button onClick={() => getExePath()}>Get imageName</button>
+            </Input>
         </>
     )
 }
