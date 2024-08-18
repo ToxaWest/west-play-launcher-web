@@ -11,12 +11,15 @@ export const AppContext = createContext({
 
 const Provider = ({children}) => {
     const [menu, setMenu] = useState(false);
-    const {pressedKeys} = useGamepadButtons();
+    const {pressedKeys, toggleSound} = useGamepadButtons();
     const [notifications, setNotifications] = useState(null);
     const [visible, setVisible] = useState(true);
 
     useEffect(() => {
-        electronConnector.onVisibilityChange(setVisible)
+        electronConnector.onVisibilityChange((v) => {
+            setVisible(v);
+            toggleSound(v)
+        })
     }, [])
 
     return (
