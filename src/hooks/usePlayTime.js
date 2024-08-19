@@ -6,19 +6,16 @@ const usePlayTime = (id, img, name) => {
     const trackTime = 10000
     const [active, setActive] = useState(false);
     const currentSession = useRef(0)
-    const interval = useRef(null);
     const notification = useNotification();
 
-    useEffect(() => {
-        if (active) {
-            interval.current = setInterval(() => {
+    const update = () => {
+        setTimeout(() => {
+            if (active) {
                 const current = getFromStorage('playTime');
-                setToStorage('playTime', {...current, [id]: current[id] + trackTime});
-                currentSession.current = currentSession.current + trackTime
-            }, trackTime)
-        } else {
-            clearInterval(interval.current);
-            if (currentSession.current) {
+                setToStorage('playTime', {...current, [id]: (current[id] || 0) + trackTime});
+                currentSession.current = currentSession.current + trackTime;
+                update();
+            } else {
                 notification({
                     img,
                     description: 'You played ' + secondsToHms(currentSession.current),
@@ -27,7 +24,11 @@ const usePlayTime = (id, img, name) => {
                 }, 8000)
                 currentSession.current = 0
             }
-        }
+        }, trackTime)
+    }
+
+    useEffect(() => {
+        update()
     }, [active]);
 
     return {
@@ -51,7 +52,6 @@ function secondsToHms(d) {
     var mDisplay = m > 0 ? m + 'm' : "";
     var sDisplay = s > 0 ? s + 's' : "";
     return hDisplay + mDisplay + sDisplay;
-    // return hDisplay + mDisplay;
 }
 
 export {

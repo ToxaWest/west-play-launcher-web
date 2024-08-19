@@ -61,6 +61,7 @@ const Game = () => {
         })
         if (game.exePath) {
             setStatus('starting')
+            updateStatus('starting')
             electronConnector.openFile({
                 path: game.exePath,
                 parameters: Object.values(game.exeArgs || []).filter((x) => x),
