@@ -76,6 +76,12 @@ const SteamFields = ({game, onChange, setGame}) => {
         })
     }
 
+    const getImage = () => {
+        electronConnector.getFile().then(p => {
+            const imageName = p.split('\\').at(-1);
+            setGame(g => ({...g, imageName}))
+        })
+    }
 
     return (
         <>
@@ -136,7 +142,7 @@ const SteamFields = ({game, onChange, setGame}) => {
                    value={game.imageName}
                    onChange={onChange}
                    name='imageName'>
-                <button onClick={() => getExePath()}>Get imageName</button>
+                <button onClick={() => getImage()}>Get imageName</button>
             </Input>
         </>
     )
