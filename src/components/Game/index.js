@@ -15,7 +15,7 @@ const Game = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [status, setStatus] = useState('closed');
-    const {init} = useAppControls({
+    const {init, setActiveIndex} = useAppControls({
         map: {
             right: (i) => i + 1,
             left: (i) => i - 1,
@@ -71,9 +71,8 @@ const Game = () => {
     }
 
     useEffect(() => {
-        init({
-            selector: '#game-actions button'
-        })
+        init('#game-actions button');
+        setActiveIndex(0);
         electronConnector.gameStatus(s => {
             updateStatus(s);
             setStatus(s)

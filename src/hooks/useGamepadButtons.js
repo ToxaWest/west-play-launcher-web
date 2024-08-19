@@ -1,26 +1,8 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
+import electronConnector from "../helpers/electronConnector";
+import useNotification from "./useNotification";
 
-const keyMapping = [
-    'a',
-    'b',
-    'x',
-    'y',
-    'lb',
-    'rb',
-    'lt',
-    'rt',
-    'options',
-    'select',
-    'l3',
-    'r3',
-    'top',
-    'bottom',
-    'left',
-    'right',
-    'home',
-    'rTop',
-    'rBottom'
-]
+const keyMapping = ['a', 'b', 'x', 'y', 'lb', 'rb', 'lt', 'rt', 'options', 'select', 'l3', 'r3', 'top', 'bottom', 'left', 'right', 'home']
 
 const sound = {
     'top': 'move',
@@ -33,76 +15,44 @@ const sound = {
 }
 
 const useGamepadButtons = () => {
-    const [pressedKeys, setPressedKeys] = useState([]);
-    const ref = useRef([]);
-    const [soundEnabled, setSound] = useState(true);
+    const [visible, setVisible] = useState(true);
+    const notifications = useNotification();
 
     const sendEvent = (detail) => {
-        if (JSON.stringify(ref.current) === JSON.stringify(detail)) {
-            return;
-        }
-        if (sound[detail[0]] && soundEnabled) {
+        if (sound[detail]) {
             const a = document.createElement('audio');
-            a.src = '/assets/sound/ui/' + sound[detail[0]] + '.mp3';
+            a.src = '/assets/sound/ui/' + sound[detail] + '.mp3';
             a.play()
         }
-        setPressedKeys(() => {
-            ref.current = detail
-            return detail
-        });
+        const body = document.querySelector('html');
+        body.style.setProperty('cursor', 'none');
+        body.style.setProperty('pointer-events', 'none');
+        const event = new CustomEvent('gamepadbutton', {detail: detail});
+        document.dispatchEvent(event);
     }
 
     const init = () => {
         const gamepad = navigator.getGamepads()[0]
-        if (!gamepad) {
+        if (!gamepad || !visible) {
             return;
         }
 
         const vertical = gamepad.axes[1]
         const horizontal = gamepad.axes[0]
 
-        const pressed = gamepad.buttons.reduce((prev, button, currentIndex) => {
-            if (button.pressed) {
-                return [...prev, keyMapping[currentIndex]]
-            }
-            return prev
-        }, [])
+        const pressed = gamepad.buttons.findIndex((button) => button.pressed)
 
-        if (pressed.length > 0 ||
-            vertical < -0.5 ||
-            vertical > 0.5 ||
-            horizontal < -0.5 ||
-            horizontal > 0.5
-        ) {
-            if (pressed.length > 0) {
-                sendEvent(pressed)
-            }
-            if (
-                vertical < -0.5 ||
-                vertical > 0.5 ||
-                horizontal < -0.5 ||
-                horizontal > 0.5
-            ) {
-                if (vertical < -0.5) {
-                    sendEvent([keyMapping[12]])
-                }
-                if (vertical > 0.5) {
-                    sendEvent([keyMapping[13]])
-                }
-
-                if (horizontal < -0.5) {
-                    sendEvent([keyMapping[14]])
-                }
-
-                if (horizontal > 0.5) {
-                    sendEvent([keyMapping[15]])
-                }
-            }
-        } else {
-            sendEvent([])
+        if (pressed !== -1) {
+            sendEvent(keyMapping[pressed])
         }
 
-        setTimeout(() => window.requestAnimationFrame(init), 50)
+        if (Math.abs(vertical) > 0.5) {
+            sendEvent(keyMapping[vertical < 0 ? 12 : 13])
+        }
+        if (Math.abs(horizontal) > 0.5) {
+            sendEvent(keyMapping[horizontal < 0 ? 14 : 15])
+        }
+        setTimeout(() => window.requestAnimationFrame(init), 120)
     }
 
     const initScroll = () => {
@@ -122,20 +72,20 @@ const useGamepadButtons = () => {
     }
 
     useEffect(() => {
+        electronConnector.onVisibilityChange(setVisible)
         window.addEventListener("gamepadconnected", () => {
+            notifications({
+                img: '/assets/controller/xbox-control-for-one.svg',
+                status: 'success',
+                name: 'Gamepad connected',
+                description: 'Let\'s Play!'
+            })
             init();
             initScroll();
             //boost scroll
             initScroll();
         })
     }, []);
-
-    return {
-        pressedKeys,
-        toggleSound: (a) => {
-            setSound(a)
-        }
-    }
 }
 
 export default useGamepadButtons;

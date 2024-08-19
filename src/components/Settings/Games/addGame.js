@@ -1,7 +1,7 @@
 import {useRef, useState} from "react";
 import AddImage from "./addImage";
-import electronConnector from "../../helpers/electronConnector";
-import Input from "../Input";
+import electronConnector from "../../../helpers/electronConnector";
+import Input from "../../Input";
 import SearchGame from "./searchGame";
 import RyujinxFields from "./ryujinxFields";
 import SteamFields from "./steamFields";

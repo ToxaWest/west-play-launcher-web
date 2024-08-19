@@ -1,8 +1,8 @@
-import Input from "../Input";
-import electronConnector from "../../helpers/electronConnector";
-import styles from "./settings.module.scss";
+import Input from "../../Input";
+import electronConnector from "../../../helpers/electronConnector";
+import styles from "../settings.module.scss";
 import {useState} from "react";
-import useNotification from "../../hooks/useNotification";
+import useNotification from "../../../hooks/useNotification";
 
 const SteamFields = ({game, onChange, setGame}) => {
     const [temp, setTemp] = useState([]);

@@ -1,29 +1,15 @@
-import {createContext, useEffect, useState} from "react";
-import useGamepadButtons from "../hooks/useGamepadButtons";
+import {createContext, useState} from "react";
 import Notifications from "../components/Notifications";
-import electronConnector from "./electronConnector";
 
 export const AppContext = createContext({
-    active: false,
-    pressedKeys: [],
-    notifications: null,
+    notifications: undefined,
 });
 
 const Provider = ({children}) => {
-    const [menu, setMenu] = useState(false);
-    const {pressedKeys, toggleSound} = useGamepadButtons();
     const [notifications, setNotifications] = useState(null);
-    const [visible, setVisible] = useState(true);
-
-    useEffect(() => {
-        electronConnector.onVisibilityChange((v) => {
-            setVisible(v);
-            toggleSound(v)
-        })
-    }, [])
 
     return (
-        <AppContext.Provider value={{active: !menu, setMenu, pressedKeys, setNotifications, visible}}>
+        <AppContext.Provider value={{setNotifications}}>
             <Notifications notifications={notifications}/>
             {children}
         </AppContext.Provider>

@@ -4,18 +4,16 @@ import {useEffect} from "react";
 import useAppControls from "../../hooks/useAppControls";
 
 const Menu = () => {
-    const {init} = useAppControls({
+    const {init, setActiveIndex} = useAppControls({
         map: {
             'bottom': (i) => i + 1,
             'top': (i) => i - 1,
-        },
-        isMenu: true
+        }
     })
 
     useEffect(() => {
-        init({
-            selector: '#main-menu a'
-        })
+        init('#main-menu a');
+        setActiveIndex(0)
     }, []);
 
     return (
@@ -32,7 +30,6 @@ const Menu = () => {
                 </li>
             </ul>
         </div>
-
     )
 }
 

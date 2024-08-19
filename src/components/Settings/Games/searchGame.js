@@ -1,6 +1,6 @@
-import Input from "../Input";
-import electronConnector from "../../helpers/electronConnector";
-import styles from "./settings.module.scss";
+import Input from "../../Input";
+import electronConnector from "../../../helpers/electronConnector";
+import styles from "../settings.module.scss";
 import {useEffect, useState} from "react";
 
 const SearchGame = ({update}) => {

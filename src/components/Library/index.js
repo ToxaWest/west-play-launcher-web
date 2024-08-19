@@ -8,7 +8,7 @@ const Library = () => {
     const games = getFromStorage('games');
     const gamesInRow = getFromStorage('config').settings.gamesInRow || 6;
 
-    const {init} = useAppControls({
+    const {init, setActiveIndex} = useAppControls({
         map: {
             'left': (i) => i - 1,
             'right': (i) => i + 1,
@@ -22,19 +22,12 @@ const Library = () => {
                 }
                 return res
             }
-        },
-        animation: (e) => {
-            e.scrollIntoView({
-                block: 'center',
-                behavior: 'smooth',
-            })
         }
     });
 
     useEffect(() => {
-        init({
-            selector: '#library-list a'
-        })
+        init( '#library-list a');
+        setActiveIndex(0)
     }, []);
 
     const sort = (a, b) => a.name.localeCompare(b.name);

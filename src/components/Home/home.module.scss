@@ -4,6 +4,7 @@
   img {
     display: block;
     width: 100%;
+    transition: 0.1s opacity ease-in;
   }
 
   &:before {

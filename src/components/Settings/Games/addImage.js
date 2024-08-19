@@ -1,6 +1,6 @@
 import {useState} from "react";
-import styles from "./settings.module.scss";
-import electronConnector from "../../helpers/electronConnector";
+import styles from "../settings.module.scss";
+import electronConnector from "../../../helpers/electronConnector";
 
 const AddImage = ({id, type, onChange, value}) => {
     const [images, setImages] = useState([]);

@@ -1,27 +1,22 @@
 import {Link} from "react-router-dom";
 import styles from "./home.module.scss";
-import {useEffect, useMemo} from "react";
+import {useEffect, useMemo, useRef} from "react";
 import useAppControls from "../../hooks/useAppControls";
 import {getFromStorage} from "../../helpers/getFromStorage";
 
 const Home = () => {
-    const {init, currentIndex} = useAppControls({
+    const {init, currentIndex, setActiveIndex} = useAppControls({
         map: {
             'left': (i) => i - 1,
             'right': (i) => i + 1
-        },
-        animation: (e) => {
-            e.scrollIntoView({
-                inline: 'center',
-                behavior: 'smooth',
-            })
         }
     });
 
+    const bgImage = useRef(null);
+
     useEffect(() => {
-        init({
-            selector: '#game-list a'
-        })
+        init('#game-list a')
+        setActiveIndex(0)
     }, []);
 
     const games = getFromStorage('games');
@@ -46,16 +41,30 @@ const Home = () => {
     const sortedGames = useMemo(configuredArray, []);
 
     const renderLastPlayed = (id) => {
-        if(lastPlayed[id]){
+        if (lastPlayed[id]) {
             return <div className={styles.lastPlayed}>{new Date(lastPlayed[id]).toLocaleDateString()}</div>
         }
         return null;
     }
 
+    useEffect(() => {
+        bgImage.current.style.opacity = 0;
+        setTimeout(() => {
+            bgImage.current.src = 0;
+            if (sortedGames[currentIndex]) {
+                bgImage.current.src = sortedGames[currentIndex].img_hero;
+                setTimeout(() => {
+                    bgImage.current.style.opacity = 1;
+                }, 100)
+            }
+        }, 100)
+
+    }, [currentIndex]);
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.image}>
-                {games[currentIndex]?.img_hero && <img src={sortedGames[currentIndex]?.img_hero} alt={'background'}/>}
+                <img style={{opacity: 0}} ref={bgImage}/>
             </div>
             <ul id="game-list">
                 {sortedGames.map((game, index) => (

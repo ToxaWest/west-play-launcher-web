@@ -5,32 +5,7 @@
   min-height: 100vh;
 }
 
-.menu {
-  width: 300px;
-  position: fixed;
-  top: 0;
-  left: -300px;
-  height: calc(100vh - 70px);
-  z-index: 5;
-  transition: left 0.3s ease-in-out;
-  &.active {
-    left: 0;
-  }
-}
-
 .content {
   width: 100%;
   padding-top: 60px;
-  &.menuActive {
-    &:before {
-      content: '';
-      width: 100%;
-      height: calc(100vh - 70px);
-      left: 0;
-      top: 0;
-      z-index: 4;
-      background-color: rgba(0, 0, 0, 0.6);
-      position: fixed;
-    }
-  }
 }

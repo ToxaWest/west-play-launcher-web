@@ -1,83 +1,58 @@
-import {useContext, useEffect, useRef} from "react";
-import {AppContext} from "../helpers/provider";
+import {useEffect, useRef, useState} from "react";
 
-const useAppControls = ({map, animation, abstract = false, isMenu = false}) => {
+const useAppControls = ({map}) => {
     const ref = useRef([]);
     const selected = useRef(0);
-    const {pressedKeys, active, visible} = useContext(AppContext);
+    const [currentIndex, setActive] = useState(0);
 
-    const init = ({selector} = {}) => {
+    const init = (selector) => {
         if (selector) {
             ref.current = document.querySelectorAll(selector)
+            focus(0)
         }
     }
 
-    useEffect(() => {
-        if (
-            (isMenu ? !active : active) &&
-            ref.current.length > 0
-        ) {
-            ref.current[0].focus();
-            selected.current = 0;
-        }
-    }, [active, ref.current.length]);
+    const focus = (i) => {
+        ref.current[i].scrollIntoView({
+            inline: 'center',
+            block: 'center',
+            behavior: 'smooth',
+        })
+        ref.current[i].focus();
+    }
 
-    useEffect(() => {
-
-        if (!visible) {
-            return
-        }
-
-        if (
-            pressedKeys.length > 0 &&
-            (isMenu ? !active : active) &&
-            ref.current.length > 0
-        ) {
-            if (![...ref.current].some(e => e === document.activeElement)) {
-                ref.current[0].focus();
-                selected.current = 0;
+    const listener = ({detail}) => {
+        Object.entries(map).forEach(([key, funk]) => {
+            if (detail === key) {
+                let i = funk(selected.current);
+                if (i < 0) i = ref.current.length - 1
+                if (i === ref.current.length) i = 0
+                if (ref.current[i]) {
+                    selected.current = i;
+                    setActive(i)
+                    focus(i)
+                }
             }
+        })
+    }
 
-            Object.entries(map).forEach(([key, funk]) => {
-                if (pressedKeys.some(a => a === key)) {
-                    let i = funk(selected.current);
-                    if (i < 0) {
-                        i = ref.current.length - 1
-                    }
-                    if (i === ref.current.length) {
-                        i = 0
-                    }
+    const setActiveIndex = (index) => {
+        selected.current = index;
+        setActive(index);
+        focus(index)
+    }
 
-                    if (ref.current[i]) {
-                        ref.current[i].focus();
-                        selected.current = i;
-                        if (animation) {
-                            animation(ref.current[i])
-                        }
-                    }
-                }
-            })
+    useEffect(() => {
+        document.addEventListener('gamepadbutton', listener)
+        return () => {
+            document.removeEventListener('gamepadbutton', listener)
         }
-
-        if (abstract && pressedKeys.length > 0) {
-            Object.entries(map).forEach(([key, funk]) => {
-                if (key.indexOf('+') !== -1) {
-                    if (pressedKeys.reverse().join('+') === key) {
-                        funk(selected.current);
-                    }
-                } else {
-                    if (pressedKeys.some(a => a === key)) {
-                        funk(selected.current);
-                    }
-                }
-            })
-        }
-
-    }, [JSON.stringify(pressedKeys)]);
+    }, []);
 
     return {
         init,
-        currentIndex: selected.current,
+        setActiveIndex,
+        currentIndex,
     }
 }
 
