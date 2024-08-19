@@ -13,7 +13,8 @@ const electronConnector = {
     onVisibilityChange: (data) => window.electronAPI.onVisibilityChange(data),
     gameStatus: (data) => window.electronAPI.gameStatus(data),
     changeDisplayMode: (data) => window.electronAPI.changeDisplayMode(data),
-    lastModify: (data) => window.electronAPI.lastModify(data)
+    lastModify: (data) => window.electronAPI.lastModify(data),
+    shutDown: () => window.electronAPI.shutDown()
 };
 
 export default electronConnector;
