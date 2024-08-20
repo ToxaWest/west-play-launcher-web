@@ -70,9 +70,9 @@ const SteamFields = ({game, onChange, setGame}) => {
         return null;
     }
 
-    const getExePath = () => {
+    const getExePath = (key) => {
         electronConnector.getFile().then(achPath => {
-            setGame(g => ({...g, achPath}))
+            setGame(g => ({...g, [key]: achPath}))
         })
     }
 
@@ -105,7 +105,13 @@ const SteamFields = ({game, onChange, setGame}) => {
                    value={game.achPath}
                    onChange={onChange}
                    name='achPath'>
-                <button onClick={() => getExePath()}>Get Achievements Path</button>
+                <button onClick={() => getExePath('achPath')}>Get Achievements Path</button>
+            </Input>
+            <Input label='Exe file path'
+                   value={game.exePath}
+                   onChange={onChange}
+                   name='exePath'>
+                <button onClick={() => getExePath('exePath')}>Get EXE Path</button>
             </Input>
             <div className={styles.argsWrapper}>
                 <button onClick={() => {

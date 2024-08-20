@@ -20,18 +20,15 @@ const AddGame = ({data, submit, remove}) => {
         })
     }
 
-    const getExePath = () => {
-        electronConnector.getFile().then(exePath => {
-            setGame(g => ({...g, exePath}))
-        })
-    }
-
     const renderByType = () => {
         if (game.source === 'steam') {
             return <SteamFields game={game} onChange={onChange} setGame={setGame}/>
         }
         if (game.source === 'ryujinx') {
             return <RyujinxFields setGame={setGame} game={game} onChange={onChange}/>
+        }
+        if (game.source === 'rpcs3') {
+            return null
         }
     }
 
@@ -45,7 +42,8 @@ const AddGame = ({data, submit, remove}) => {
                            type="select"
                            options={[
                                'steam',
-                               'ryujinx'
+                               'ryujinx',
+                               'rpcs3'
                            ]}
                            name='source'/>
                     {renderByType()}
@@ -54,12 +52,6 @@ const AddGame = ({data, submit, remove}) => {
                            onChange={onChange}
                            name='path'>
                         <button onClick={() => getGamePath()}>Get Path</button>
-                    </Input>
-                    <Input label='Exe file path'
-                           value={game.exePath}
-                           onChange={onChange}
-                           name='exePath'>
-                        <button onClick={() => getExePath()}>Get EXE Path</button>
                     </Input>
                     <AddImage id={game.steamgriddb} type="grid" onChange={onChange} value={game.img_grid}/>
                     <AddImage id={game.steamgriddb} type="landscape" onChange={onChange} value={game.img_landscape}/>

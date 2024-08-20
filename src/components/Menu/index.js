@@ -32,8 +32,14 @@ const Menu = () => {
                 <li>
                     <Link to="/" onClick={(e) => {
                         e.preventDefault();
-                        electronConnector.shutDown()
+                        electronConnector.shutDownPC()
                     }}>Shut Down PC</Link>
+                </li>
+                <li>
+                    <Link to="/" onClick={(e) => {
+                        e.preventDefault();
+                        electronConnector.restartPC()
+                    }}>Restart PC</Link>
                 </li>
             </ul>
         </div>

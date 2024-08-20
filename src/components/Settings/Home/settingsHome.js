@@ -21,6 +21,7 @@ const SettingsHome = () => {
         <div className={styles.block} id="settingsHome">
             <h1>Settings</h1>
             <div className={styles.settingsHome}>
+                <h2>Change monitor</h2>
                 <button onClick={() => {
                     electronConnector.changeDisplayMode(1)
                 }}>Internal Monitor
@@ -30,7 +31,6 @@ const SettingsHome = () => {
                 }}>External Monitor
                 </button>
             </div>
-
         </div>
     )
 }

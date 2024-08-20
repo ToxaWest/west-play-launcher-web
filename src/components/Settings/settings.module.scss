@@ -24,6 +24,9 @@
 .settingsHome {
   display: flex;
   flex-direction: column;
+  button {
+    font-size: 5vh;
+  }
 }
 
 .wrapper {
