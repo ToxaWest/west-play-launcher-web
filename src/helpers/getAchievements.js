@@ -34,11 +34,29 @@ const parseAchievement = (game, r) => {
 
 const getAchievements = (id, update = true, callback) => {
     const game = getFromStorage('games').find(({id: gid}) => gid === parseInt(id));
-    if (!game.achPath) {
+    const achievements = getFromStorage('achievements');
+
+    if (game.source === 'rpcs3') {
+        electronConnector.rpcs3({
+            path: game.dataPath
+        }).then(r => {
+            const data = {};
+            r.forEach(({id, achieved, unlockTime}) => {
+                data[id] = {earned: achieved, earned_time: unlockTime * 1000}
+            })
+            if (update) {
+                setToStorage('achievements', {...achievements, [game.id]: data});
+            }
+            if (callback) {
+                callback(data);
+            }
+        })
         return;
     }
 
-    const achievements = getFromStorage('achievements');
+    if (!game.achPath) {
+        return;
+    }
 
     electronConnector.readFile(game.achPath).then((r) => {
         const data = parseAchievement(game, r);
@@ -50,7 +68,6 @@ const getAchievements = (id, update = true, callback) => {
         }
     })
 }
-
 
 
 export default getAchievements;

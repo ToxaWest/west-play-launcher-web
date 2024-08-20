@@ -9,35 +9,40 @@ const useAchievementsWatcher = (id) => {
     const {achPath, achievements} = game;
     const currentSession = useRef(0);
     const interval = useRef(null);
+    const ach = getFromStorage('achievements')[id];
+
+    const checker = (modTime) => {
+        getAchievements(id, true, (latest) => {
+            const currentList = []
+            Object.entries(ach).forEach(([k, {earned}]) => {
+                if (earned) {
+                    currentList.push(k);
+                }
+            })
+            Object.entries(latest).forEach(([k, {earned}]) => {
+                if (earned && (currentList.indexOf(k) === -1)) {
+                    const {displayName, icon, description} = achievements.find(a => a.name === k);
+                    new Notification(displayName, {body: description, icon});
+                }
+            })
+            currentSession.current = modTime;
+        })
+    }
 
     const init = () => {
         if (achPath && achievements) {
             interval.current = setInterval(() => {
-                const ach = getFromStorage('achievements')[id];
                 electronConnector.lastModify(achPath).then(r => {
                     const modTime = new Date(r).getTime();
                     if (modTime !== currentSession.current) {
-                        getAchievements(id, true, (latest) => {
-                            const currentList = []
-                            Object.entries(ach).forEach(([k, {earned}]) => {
-                                if (earned) {
-                                    currentList.push(k);
-                                }
-                            })
-                            Object.entries(latest).forEach(([k, {earned}]) => {
-                                if (earned && (currentList.indexOf(k) === -1)) {
-                                    const {displayName, icon, description} = achievements.find(a => a.name === k);
-                                    new Notification(displayName, {
-                                        body: description,
-                                        icon
-                                    });
-
-                                }
-                            })
-                            currentSession.current = modTime;
-                        })
+                        checker(ach, modTime)
                     }
                 })
+            }, trackTime)
+        }
+        if(game.source === 'rpcs3' && achievements){
+            interval.current = setInterval(() => {
+                checker(ach, 0)
             }, trackTime)
         }
     }

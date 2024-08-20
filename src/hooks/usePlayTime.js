@@ -2,8 +2,8 @@ import {getFromStorage, setToStorage} from "../helpers/getFromStorage";
 import {useEffect, useRef, useState} from "react";
 import useNotification from "./useNotification";
 
-const usePlayTime = ({id, img, name}) => {
-    const trackTime = 10000
+const usePlayTime = ({id, img_icon: img, name}) => {
+    const trackTime = 5000
     const [active, setActive] = useState(false);
     const currentSession = useRef(0)
     const notification = useNotification();

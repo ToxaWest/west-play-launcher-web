@@ -5,6 +5,7 @@ import Input from "../../Input";
 import SearchGame from "./searchGame";
 import RyujinxFields from "./ryujinxFields";
 import SteamFields from "./steamFields";
+import Rpcs3Fields from "./rpcs3Fields";
 
 const AddGame = ({data, submit, remove}) => {
     const [game, setGame] = useState(data);
@@ -28,7 +29,7 @@ const AddGame = ({data, submit, remove}) => {
             return <RyujinxFields setGame={setGame} game={game} onChange={onChange}/>
         }
         if (game.source === 'rpcs3') {
-            return null
+            return <Rpcs3Fields setGame={setGame} game={game} onChange={onChange}/>
         }
     }
 

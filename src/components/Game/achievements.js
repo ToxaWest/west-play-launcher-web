@@ -23,7 +23,7 @@ const Achievements = () => {
 
     const renderWithEarned = (arr, ach) => {
         const getObj = (n) => {
-            return arr.find(({name}) => name === n)
+            return arr.find(({name}) => name.toString() === n)
         }
 
         return (
