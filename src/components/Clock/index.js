@@ -28,7 +28,7 @@ const Clock = () => {
     }, []);
 
     return <div
-        style={{position: "fixed", right: '25px', top: '20px', color: '#fff', fontSize: '20px', fontWeight: 'bold', zIndex: '20'}}
+        style={{position: "fixed", right: '25px', top: '20px', color: 'rgb(var(--theme-contrast))', fontSize: '20px', fontWeight: 'bold', zIndex: '20'}}
         ref={ref}/>
 }
 

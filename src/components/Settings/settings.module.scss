@@ -10,7 +10,7 @@
     padding: 5px 15px;
     border-bottom: 1px solid transparent;
     &.navActive {
-      border-bottom-color: #fff;
+      border-bottom-color: rgb(var(--theme-contrast));
     }
     &:focus {
       outline: none;
@@ -60,7 +60,7 @@
 .block {
   padding: 15px;
   border-radius: 3px;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(var(--theme-contrast), 0.1);
 
   summary {
     cursor: pointer;
@@ -68,7 +68,7 @@
     margin: 0;
     margin-bottom: 10px;
     padding-bottom: 5px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(var(--theme-contrast), 0.1);
   }
 }
 
@@ -93,7 +93,7 @@
 }
 
 .addImage {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(var(--theme-contrast), 0.2);
   padding: 5px 15px;
 
   &Field {
@@ -113,7 +113,7 @@
     flex-direction: column;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(5, 1fr);
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(var(--theme-contrast), 0.1);
     padding: 8px;
     border-radius: 3px;
     gap: 10px;
@@ -143,7 +143,7 @@
     padding: 3px;
     border-radius: 3px;
     cursor: pointer;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(var(--theme-contrast), 0.1);
     align-items: center;
   }
 }

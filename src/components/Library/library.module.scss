@@ -4,7 +4,7 @@
 
 .list {
   width: 90vw;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(var(--theme-contrast), 0.1);
   padding: 15px;
   margin: 15px auto;
   list-style: none;

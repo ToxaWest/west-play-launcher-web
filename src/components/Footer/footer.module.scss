@@ -5,7 +5,8 @@
   height: 70px;
   bottom: 0;
   padding: 15px;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(var(--theme-color), 0.75);
+  border-top: 1px solid rgba(var(--theme-contrast), .1);
   display: flex;
   align-items: center;
   gap: 15px;

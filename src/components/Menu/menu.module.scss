@@ -1,6 +1,6 @@
 .wrapper {
-  background-color: rgba(0, 0, 0, 0.35);
-  border-right: 3px solid rgba(0, 0, 0, 0.3);
+  background-color: rgba(var(--theme-color), 0.35);
+  border-right: 3px solid rgba(var(--theme-color), 0.3);
   height: 100%;
   padding: 4px;
 
@@ -17,17 +17,17 @@
   a {
     display: block;
     padding: 1vh 3vh;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(var(--theme-color), 0.2);
     border-radius: 4px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--theme-contrast), 0.5);
     font-size: 4.5vh;
 
     transition: all 0.2s ease-in;
     &:focus, &:active {
       border: none;
-      color: #fff;
+      color: rgb(var(--theme-contrast));
       padding-left: 5vh;
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(var(--theme-contrast), 0.1);
       outline: none;
     }
   }

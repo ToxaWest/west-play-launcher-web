@@ -20,7 +20,7 @@
   position: relative;
   border-radius: 3px;
   padding: 7px 15px;
-  color: #fff;
+  color: rgb(var(--theme-contrast));
   border: 1px solid #4b4b4b;
   background-color: transparent;
   min-width: 400px;
@@ -32,7 +32,7 @@
     top: 30px;
     left: 0;
     min-width: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(var(--theme-color), 0.9);
     padding: 3px;
     z-index: 1;
     display: flex;
@@ -42,9 +42,9 @@
       font-size: 12px;
       cursor: pointer;
       padding: 3px 15px;
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(var(--theme-contrast), 0.1);
       &:hover {
-        background-color: rgba(255, 255, 255, 0.2);
+        background-color: rgba(var(--theme-contrast), 0.2);
       }
     }
   }

@@ -1,3 +1,11 @@
+:root {
+  --theme-color: 33, 33, 33;
+  --theme-contrast: 255, 255, 255;
+
+  /*--theme-contrast: 240,240,240;*/
+  /*--theme-color: 38, 38, 38;*/
+}
+
 * {
   box-sizing: border-box;
   scroll-behavior: smooth;
@@ -11,7 +19,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: transparent;
-  color: #fff;
+  color: rgb(var(--theme-contrast));
   scroll-behavior: smooth;
 }
 
@@ -20,13 +28,13 @@ body {
 }
 
 a {
-  color: #f0f0f0;
+  color: rgba(var(--theme-contrast), .9);
   text-decoration: none;
 }
 
 label {
   display: flex;
-  background-color: rgba(240, 240, 240, 0.2);
+  background-color: rgba(var(--theme-contrast), 0.2);
   padding: 5px 15px;
   width: 100%;
   justify-content: space-between;
@@ -37,7 +45,7 @@ label {
 label input {
   border-radius: 3px;
   padding: 10px 15px;
-  color: #fff;
+  color: rgb(var(--theme-contrast));
   border: 1px solid #4b4b4b;
   background-color: transparent;
 }
@@ -47,10 +55,10 @@ input::placeholder {
 }
 
 button {
-  color: #fff;
+  color: rgb(var(--theme-contrast));
   outline: none;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(var(--theme-contrast), 0.4);
+  background-color: rgba(var(--theme-contrast), 0.1);
   padding: 10px 20px;
   margin: 8px 0;
   border-radius: 5px;
@@ -58,7 +66,7 @@ button {
 
 button:hover, button:focus {
   cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(var(--theme-contrast), 0.3);
 }
 
 
