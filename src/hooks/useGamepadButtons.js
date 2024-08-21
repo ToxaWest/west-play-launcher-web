@@ -6,9 +6,9 @@ const keyMapping = ['a', 'b', 'x', 'y', 'lb', 'rb', 'lt', 'rt', 'options', 'sele
 
 const sound = {
     'top': 'move',
-    'bottom': 'move2',
-    'left': 'move3',
-    'right': 'move4',
+    'bottom': 'move',
+    'left': 'move',
+    'right': 'move',
     'a': 'select',
     'b': 'back',
     'home': 'switchup'
