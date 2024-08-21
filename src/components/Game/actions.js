@@ -13,14 +13,13 @@ const GameActions = ({game}) => {
     const location = useLocation();
     const notification = useNotification();
     const {init, setActiveIndex} = useAppControls({map: {right: (i) => i + 1, left: (i) => i - 1}})
-    const {updateStatus} = usePlayTime(game)
+    const playTime = usePlayTime(game)
     const getActive = (e) => e === location.pathname;
 
     const gameState = {
         'closed': {button: 'play', modifier: ''},
         'starting': {button: 'Starting...', modifier: ''},
         'running': {button: 'Running', modifier: styles.running},
-        'hardTracking': {button: 'Running', modifier: styles.running}
     }
 
     const lastPlayed = getFromStorage('lastPlayed');
@@ -37,17 +36,6 @@ const GameActions = ({game}) => {
 
     const exePath = getGamePath();
 
-    const getImageName = () => {
-        if (game.imageName) {
-            return game.imageName
-        }
-        return exePath.split('\\').at(-1);
-    }
-
-    const getCurrentState = () => {
-        return gameState[status]
-    }
-
     const start = () => {
         setToStorage('lastPlayed', {...lastPlayed, [game.id]: new Date().getTime()});
         notification({
@@ -58,12 +46,10 @@ const GameActions = ({game}) => {
         })
         if (exePath) {
             setStatus('starting')
-            updateStatus('starting')
             electronConnector.openFile({
                 path: exePath,
-                parameters: Object.values(game.exeArgs || []).filter((x) => x),
-                cwd: game.path,
-                imageName: getImageName()
+                parameters: Object.values(game.exeArgs || {}).filter((x) => x),
+                imageName: game.imageName
             })
         }
     }
@@ -71,20 +57,24 @@ const GameActions = ({game}) => {
     useEffect(() => {
         init('#game-actions button');
         setActiveIndex(0);
-        electronConnector.gameStatus(s => {
-            updateStatus(s);
-            setStatus(s)
+        electronConnector.gameStatus(_status => {
+            if(_status === 'running'){
+                playTime.init()
+            } else {
+                playTime.destroy()
+            }
+            setStatus(_status)
         })
     }, [])
 
     return (
         <div className={styles.content} id={'game-actions'}>
             <button onClick={start}
-                    className={styles.playButton + ' ' + (getCurrentState().modifier)}
+                    className={styles.playButton + ' ' + (gameState[status].modifier)}
                     disabled={status !== 'closed'}
                     style={{backgroundColor: game.color, opacity: exePath ? 1 : 0.7}}
             >
-                {getCurrentState().button}
+                {gameState[status].button}
             </button>
             <button
                 onClick={() => {
