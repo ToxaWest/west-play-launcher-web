@@ -26,7 +26,7 @@ const Menu = () => {
                 <li>
                     <Link to="/library">Library</Link>
                 </li>
-                <li>
+                <li style={{marginTop: 'auto'}}>
                     <Link to="/settings">Settings</Link>
                 </li>
                 <li>

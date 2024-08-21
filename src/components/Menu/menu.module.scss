@@ -11,17 +11,22 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    height: 100%;
   }
 
   a {
     display: block;
-    padding: 10px 15px;
+    padding: 1vh 3vh;
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 4px;
-    font-size: 5vh;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 4.5vh;
 
+    transition: all 0.2s ease-in;
     &:focus, &:active {
       border: none;
+      color: #fff;
+      padding-left: 5vh;
       background-color: rgba(255, 255, 255, 0.1);
       outline: none;
     }

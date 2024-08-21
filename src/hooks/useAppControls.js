@@ -37,9 +37,14 @@ const useAppControls = ({map}) => {
     }
 
     const setActiveIndex = (index) => {
-        selected.current = index;
-        setActive(index);
-        focus(index)
+        let i = index
+        if (i < 0) i = ref.current.length - 1
+        if (i === ref.current.length) i = 0
+        if (ref.current[i]) {
+            selected.current = i;
+            setActive(i)
+            focus(i)
+        }
     }
 
     useEffect(() => {

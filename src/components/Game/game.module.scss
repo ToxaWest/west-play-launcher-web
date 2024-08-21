@@ -16,6 +16,7 @@
   grid-template-columns: repeat(2, 1fr);
   padding: 8px;
   background-color: rgba(255, 255, 255, 0.2);
+
   ul {
     list-style: none;
     margin: 0;
@@ -27,16 +28,24 @@
     display: flex;
     margin: 0;
     border-radius: 0 8px 8px 0;
+
     &.earned {
       background-color: rgba(0, 0, 0, 0.4);
+
       strong {
         color: #00b100;
       }
+      img {
+        filter: none;
+      }
     }
+
     img {
+      filter: grayscale(1);
       width: 100px;
     }
-    strong , i, span{
+
+    strong, i, span {
       display: block;
     }
 
@@ -49,6 +58,7 @@
       padding: 5px 15px;
       width: 100%;
     }
+
     span, i {
       font-size: 12px;
     }
@@ -200,16 +210,46 @@
   text-transform: uppercase;
   transition: background-color 0.2s ease-in-out;
   margin-right: auto;
+
   &.running {
     background-color: rgba(0, 103, 187, 0.5);
+
     &:focus, &:hover {
       cursor: default;
       background-color: rgba(0, 103, 187, 0.5) !important;
     }
   }
+
   &:focus, &:hover {
-    background-color: rgba(127,187,0,0.9)!important;
+    background-color: rgba(127, 187, 0, 0.9) !important;
   }
+}
+
+.ach_ {
+  &bronze {
+    img {
+      background-color: #CD7F32;
+    }
+  }
+
+  &platinum {
+    img {
+      background-color: #E5E4E2;
+    }
+  }
+
+  &gold {
+    img {
+      background-color: #FFD700;
+    }
+  }
+
+  &silver{
+    img {
+      background-color: #C0C0C0;
+    }
+  }
+
 }
 
 .icon {

@@ -9,12 +9,11 @@ const useAchievementsWatcher = (id) => {
     const {achPath, achievements} = game;
     const currentSession = useRef(0);
     const interval = useRef(null);
-    const ach = getFromStorage('achievements')[id];
 
-    const checker = (modTime) => {
+    const checker = (_ach, modTime) => {
         getAchievements(id, true, (latest) => {
             const currentList = []
-            Object.entries(ach).forEach(([k, {earned}]) => {
+            Object.entries(_ach).forEach(([k, {earned}]) => {
                 if (earned) {
                     currentList.push(k);
                 }
@@ -35,14 +34,14 @@ const useAchievementsWatcher = (id) => {
                 electronConnector.lastModify(achPath).then(r => {
                     const modTime = new Date(r).getTime();
                     if (modTime !== currentSession.current) {
-                        checker(ach, modTime)
+                        checker(getFromStorage('achievements')[id], modTime)
                     }
                 })
             }, trackTime)
         }
         if(game.source === 'rpcs3' && achievements){
             interval.current = setInterval(() => {
-                checker(ach, 0)
+                checker(getFromStorage('achievements')[id], 0)
             }, trackTime)
         }
     }

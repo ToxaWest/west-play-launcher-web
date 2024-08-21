@@ -32,11 +32,16 @@ const Settings = () => {
     const renderNavigation = () => {
         return (
             <div className={styles.navigation} id="navigation">
-                <img src={'/assets/controller/left-bumper.svg'} alt={'prev'}/>
+                <img src={'/assets/controller/left-bumper.svg'} alt={'prev'} onClick={() => {
+                    setActiveIndex(currentIndex -1);
+                }}/>
                 {Object.entries(links).map(([key, value]) => (
                     <Link key={key} to={key} className={location.pathname === key ? styles.navActive : ''}>{value}</Link>
                 ))}
-                <img src={'/assets/controller/right-bumper.svg'} alt={'next'}/>
+                <img src={'/assets/controller/right-bumper.svg'} alt={'next'}
+                     onClick={() => {
+                         setActiveIndex(currentIndex +1);
+                     }}/>
             </div>
         )
     }

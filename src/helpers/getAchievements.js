@@ -39,11 +39,7 @@ const getAchievements = (id, update = true, callback) => {
     if (game.source === 'rpcs3') {
         electronConnector.rpcs3({
             path: game.dataPath
-        }).then(r => {
-            const data = {};
-            r.forEach(({id, achieved, unlockTime}) => {
-                data[id] = {earned: achieved, earned_time: unlockTime * 1000}
-            })
+        }).then(data => {
             if (update) {
                 setToStorage('achievements', {...achievements, [game.id]: data});
             }

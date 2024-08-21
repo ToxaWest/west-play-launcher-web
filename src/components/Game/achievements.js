@@ -29,10 +29,10 @@ const Achievements = () => {
         return (
             Object.entries(ach)
                 .sort(([_, {earned_time}], [_2, {earned_time: earned_timePrev}]) => earned_time > earned_timePrev ? -1 : 1)
-                .map(([n, {earned, earned_time}]) => {
+                .map(([n, {earned, earned_time, type}]) => {
                     const {icon, icongray, displayName, description} = getObj(n);
                     return (
-                        <li key={n} className={earned ? styles.earned : ''}
+                        <li key={n} className={(earned ? styles.earned : '') + (type ? ' ' + styles['ach_' + type] : '')}
                             onClick={() => {
                                 new Notification(displayName, {
                                     body: description,
