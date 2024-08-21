@@ -68,9 +68,8 @@ smoothscroll.polyfill();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const logo = document.getElementById('logo')
-const sound = document.createElement('audio');
-sound.src = '/assets/sound/ui/swits.mp3';
-sound.play()
+const audio = new Audio('/assets/sound/ui/swits.mp3')
+audio.play()
 
 setTimeout(() => {
     logo.remove();
