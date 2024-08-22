@@ -6,23 +6,23 @@ import {useState} from "react";
 const RyujinxFields = ({setGame, game}) => {
     const [temp, setTemp] = useState([]);
 
-    const regExp = new RegExp(/https:\/\/www.nintendo.com\/sg\/switch\/(.*)\/index.html/);
-
-    const getSwitchData = (id) => {
-        electronConnector.nintendoReq({id}).then(({detail}) => {
-            const {releaseDate, common} = detail;
-            setGame((g) => ({
+    const getSwitchData = (s) => {
+        setGame(g => ({
+            ...g,
+            nsuid: s.nsuid,
+            required_age: s.rating,
+            release_date: {
+                date: new Date(s.releaseDate).toLocaleDateString("en-US")
+            },
+            developers: [s.softwareDeveloper, s.softwarePublisher],
+            name: s.title,
+            controller_support: 'full',
+            supported_languages: null,
+        }))
+        electronConnector.nintendoReq(s.url).then((data) => {
+            setGame(g => ({
                 ...g,
-                color: `rgba(${common.colorR}, ${common.colorG}, ${common.colorB}, .6)`,
-                nsuid: common.nsuid,
-                release_date: {
-                    date: new Date(releaseDate).toLocaleDateString("en-US")
-                },
-                name: common.title,
-                supported_languages: common.supportedLanguage.join(', '),
-                developers: [common.developerName, common.publisherName],
-                controller_support: 'full',
-                required_age: common.esrb
+                about_the_game: data.description
             }))
             setTemp([])
         })
@@ -62,19 +62,17 @@ const RyujinxFields = ({setGame, game}) => {
         <>
             <Input label='Search'
                    onChange={({value: q}) => {
-                       const params = new URLSearchParams({q, limit: 24, opt_type: 2}).toString();
-                       electronConnector.nintendoSearch({params}).then(e => {
-                           const items = e.result.items.filter(a => regExp.test(a.url))
-                           setTemp(() => items)
+                       electronConnector.nintendoSearch(q).then(e => {
+                           console.log(e)
+                           setTemp(e)
                        })
                    }}
                    children={<ul className={styles.search}>
                        {temp.map(s => (
                            <li key={s.id} onClick={() => {
-                               const [, key] = regExp.exec(s.url)
-                               getSwitchData(key)
+                               getSwitchData(s)
                            }}>
-                               <img src={s.iurl} alt={s.title}/>
+                               <img src={s.image} alt={s.title}/>
                                <span>{s.title}</span>
                            </li>)
                        )}

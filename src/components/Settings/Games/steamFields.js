@@ -3,6 +3,7 @@ import electronConnector from "../../../helpers/electronConnector";
 import styles from "../settings.module.scss";
 import {useState} from "react";
 import useNotification from "../../../hooks/useNotification";
+import {currentLang} from "../../../helpers/locales";
 
 const SteamFields = ({game, onChange, setGame}) => {
     const [temp, setTemp] = useState([]);
@@ -11,7 +12,10 @@ const SteamFields = ({game, onChange, setGame}) => {
     const notifications = useNotification();
 
     const getSteamData = (steamId) => {
-        electronConnector.getSteamData(steamId).then((r) => {
+        electronConnector.getSteamData({
+            appID: steamId,
+            lang: currentLang()
+        }).then((r) => {
             const {
                 about_the_game,
                 name,
@@ -49,8 +53,10 @@ const SteamFields = ({game, onChange, setGame}) => {
                 <button onClick={() => {
                     electronConnector.getSteamAchievements({
                         appID: game.steamId,
-                        apiKey: steam_api_key
+                        apiKey: steam_api_key,
+                        lang: currentLang()
                     }).then(({game: g}) => {
+                        console.log(g?.availableGameStats?.achievements)
                         onChange({
                             name: 'achievements',
                             value: g?.availableGameStats?.achievements

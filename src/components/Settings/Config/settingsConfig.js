@@ -4,6 +4,7 @@ import styles from '../settings.module.scss';
 import {useState} from "react";
 import useNotification from "../../../hooks/useNotification";
 import electronConnector from "../../../helpers/electronConnector";
+import {locales} from "../../../helpers/locales";
 
 const SettingsConfig = () => {
     const [settings, setSettings] = useState(getFromStorage('config').settings);
@@ -22,7 +23,15 @@ const SettingsConfig = () => {
     return (
         <>
             <div className={styles.block}>
-                <h2>Steam</h2>
+                <h1>Config</h1>
+                <Input
+                    label={'Steam Language'}
+                    name="currentLang"
+                    type="select"
+                    value={settings.currentLang}
+                    options={locales}
+                    onChange={onChange}
+                />
                 <Input label={'Steam Web API Key (needed for achievements)'}
                        name="steam_api_key"
                        value={settings.steam_api_key}

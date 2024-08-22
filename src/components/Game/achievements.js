@@ -7,6 +7,10 @@ const Achievements = () => {
     const game = getFromStorage('games').find(({id: gid}) => gid.toString() === id);
     const achievements = getFromStorage('achievements')[parseInt(id)];
 
+    if (!game.achievements) return (
+        <h2 align="center">Achievements not allowed</h2>
+    );
+
     const renderTemp = (arr) => {
         return (
             arr.map((achievement) => (
@@ -32,14 +36,7 @@ const Achievements = () => {
                 .map(([n, {earned, earned_time, type}]) => {
                     const {icon, icongray, displayName, description} = getObj(n);
                     return (
-                        <li key={n} className={(earned ? styles.earned : '') + (type ? ' ' + styles['ach_' + type] : '')}
-                            onClick={() => {
-                                new Notification(displayName, {
-                                    body: description,
-                                    icon
-                                });
-                            }}
-                        >
+                        <li key={n} className={(earned ? styles.earned : '') + (type ? ' ' + styles['ach_' + type] : '')}>
                             <img src={earned ? icon : icongray} alt={n}/>
                             <div>
                                 <strong>{displayName}</strong>
@@ -51,10 +48,6 @@ const Achievements = () => {
                 })
         )
     }
-
-    if (!game.achievements) return (
-        <h2 align="center">Achievements not allowed</h2>
-    );
 
     return (
         <div className={styles.achWrapper}>

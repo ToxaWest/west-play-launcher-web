@@ -38,7 +38,7 @@ const GameActions = ({game}) => {
             <button onClick={start}
                     className={styles.playButton + ' ' + (gameState[status].modifier)}
                     disabled={status !== 'closed'}
-                    style={{backgroundColor: game.color, opacity: exePath ? 1 : 0.7}}
+                    style={{opacity: exePath ? 1 : 0.7}}
             >
                 {gameState[status].button}
             </button>
@@ -49,7 +49,6 @@ const GameActions = ({game}) => {
                         navigate(url)
                     }}
                     className={styles.icon + (getActive(url) ? ' ' + styles.activeIcon : '')}
-                    style={{backgroundColor: game.color}}
                 >
                     <img src={img} alt={'content'}/>
                 </button>

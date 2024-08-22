@@ -9,6 +9,33 @@ const GameContent = () => {
     const lastPlayed = getFromStorage('lastPlayed')[id];
     const playTime = getFromStorage('playTime')[id];
 
+    const infoData = [{
+        label: 'Last played',
+        value: lastPlayed ? new Date(lastPlayed).toLocaleDateString() : null
+    }, {
+        label: 'Play time',
+        value: playTime ? secondsToHms(playTime) : null
+    }, {
+        label: 'Metacritics',
+        value: game.metacritic?.score
+    }, {
+        label: 'Release date',
+        value: game.release_date?.date
+    }, {
+        label: 'Controller support',
+        value: game.controller_support
+    }, {
+        label: 'PEGI rating',
+        value: game.required_age
+    }, {
+        label: 'Developers',
+        value: game.developers?.map(a => <span key={a}>{a},</span>)
+    }, {
+        label: 'Languages',
+        value: game.supported_languages ? <span dangerouslySetInnerHTML={{__html: game.supported_languages}}/> : null
+    }]
+
+
     return (
         <div className={styles.content}>
             <div className={styles.description}>
@@ -22,40 +49,20 @@ const GameContent = () => {
                 </div>
                 }
             </div>
-            <div className={styles.info} style={{backgroundColor: game.color}}>
+            <div className={styles.info}>
                 <ul>
-                    {lastPlayed ? <li>
-                        <strong>Last played:</strong>
-                        {new Date(lastPlayed).toLocaleDateString()}
-                    </li> : null}
-                    {playTime ? <li>
-                        <strong>Play time:</strong>
-                        {secondsToHms(playTime)}
-                    </li> : null}
-                    <li>
-                        <strong>Metacritics:</strong>
-                        {game.metacritic?.score}
-                    </li>
-                    <li>
-                        <strong>Release date:</strong>
-                        {game.release_date?.date}
-                    </li>
-                    <li>
-                        <strong>Controller support:</strong>
-                        {game.controller_support}
-                    </li>
-                    <li>
-                        <strong>PEGI rating:</strong>
-                        {game.required_age}
-                    </li>
-                    <li>
-                        <strong>Developers:</strong>
-                        {game.developers?.map(a => <span key={a}>{a},</span>)}
-                    </li>
-
+                    {infoData.map(({label, value}) => {
+                        if (value) {
+                            return (
+                                <li key={label}>
+                                    <strong>{label}:</strong>
+                                    {value}
+                                </li>
+                            )
+                        }
+                        return null
+                    })}
                 </ul>
-                <strong>Languages:</strong>
-                <div dangerouslySetInnerHTML={{__html: game.supported_languages}}/>
             </div>
         </div>
 

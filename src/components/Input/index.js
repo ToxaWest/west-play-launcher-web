@@ -41,17 +41,18 @@ const Input = ({
             )
         },
         select: () => {
+            const data = typeof options[0] === 'object' ? options : options.map(a => ({label: a, value: a}))
             return (
                 <div className={styles.select} onClick={() => setActive((a) => !a)}>
                     <span >{value || 'select value'}</span>
                     {active && <ul>
-                        {['empty', ...options].map((option) => (
-                            <li key={option} onClick={() => {
+                        {[{label: 'empty', value: 'null'}, ...data].map((option) => (
+                            <li key={option.value} onClick={() => {
                                 onChange({
-                                    value: option,
+                                    value: option.value,
                                     name
                                 })
-                            }}>{option}</li>
+                            }}>{option.label}</li>
                         ))}
                     </ul>
                     }
