@@ -6,7 +6,7 @@ import usePlayTime from "./usePlayTime";
 
 const useStartGame = (game) => {
     const [status, setStatus] = useState('closed');
-    const playTime = usePlayTime(game)
+    const setPlayTime = usePlayTime(game)
 
     const notification = useNotification();
     const lastPlayed = getFromStorage('lastPlayed');
@@ -42,18 +42,12 @@ const useStartGame = (game) => {
     }
 
     useEffect(() => {
-        electronConnector.gameStatus(_status => {
-            if (_status === 'running') {
-                playTime.init()
-            } else {
-                playTime.destroy()
+        electronConnector.gameStatus(({status: _status, playTime}) => {
+            if (playTime > 0) {
+                setPlayTime(playTime)
             }
             setStatus(_status)
         })
-
-        return () => {
-            playTime.destroy()
-        }
     }, []);
 
     return {
