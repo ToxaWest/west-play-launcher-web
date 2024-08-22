@@ -22,6 +22,9 @@ const usePlayTime = ({id, img_icon: img, name}) => {
     }
 
     const init = () => {
+        if(interval.current) {
+            return
+        }
         interval.current = setInterval(() => {
             const current = getFromStorage('playTime');
             setToStorage('playTime', {...current, [id]: (current[id] || 0) + trackTime});

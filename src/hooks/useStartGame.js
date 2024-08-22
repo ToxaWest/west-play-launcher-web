@@ -50,6 +50,10 @@ const useStartGame = (game) => {
             }
             setStatus(_status)
         })
+
+        return () => {
+            playTime.destroy()
+        }
     }, []);
 
     return {
