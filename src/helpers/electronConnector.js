@@ -18,7 +18,8 @@ const electronConnector = {
     restartPC: () => window.electronAPI.restartPC(),
     rpcs3: (data) => window.electronAPI.rpcs3(data),
     getGamesRPCS3: (data) => window.electronAPI.getGamesRPCS3(data),
-    lastCrackedGames: () => window.electronAPI.lastCrackedGames()
+    lastCrackedGames: () => window.electronAPI.lastCrackedGames(),
+    nintendoData: (url) => window.electronAPI.nintendoData(url)
 };
 
 export default electronConnector;

@@ -1,12 +1,13 @@
 import {useParams} from "react-router-dom";
 import {getFromStorage} from "../../helpers/getFromStorage";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import styles from "./game.module.scss";
 
 const GamesMedia = () => {
     const {id} = useParams();
     const game = getFromStorage('games').find(({id: gid}) => gid.toString() === id);
     const [current, setCurrent] = useState(0);
+    const videoRef = useRef(null)
     const {
         movies = [],
         screenshots = []
@@ -31,6 +32,11 @@ const GamesMedia = () => {
                     }
                     return i - 1
                 })
+            },
+            rt: () => {
+                if(videoRef.current) {
+                    videoRef.current.muted = !videoRef.current.muted;
+                }
             }
         }
         if (map[detail]) {
@@ -48,7 +54,7 @@ const GamesMedia = () => {
     const renderMedia = (i) => {
         const selected = media[i];
         if (selected?.webm) {
-            return <video src={selected.webm.max} controls={false} muted={true} autoPlay={true} loop={true}/>;
+            return <video src={selected.webm.max} controls={false} muted={true} autoPlay={true} loop={true} ref={videoRef}/>;
         }
 
         if (selected?.path_full) {

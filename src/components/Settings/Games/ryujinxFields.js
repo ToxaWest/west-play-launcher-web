@@ -20,6 +20,42 @@ const RyujinxFields = ({setGame, game}) => {
             supported_languages: null,
             about_the_game: s.description
         }))
+        electronConnector.nintendoData(s.url).then(({
+                                                        supportedLanguages,
+                                                        description,
+                                                        backgroundColor,
+                                                        productGallery
+                                                    }) => {
+            const movies = [];
+            const screenshots = [];
+
+            productGallery.forEach(e => {
+                if(e.resourceType === 'video'){
+                    movies.push({
+                        webm: {
+                            max: 'https://assets.nintendo.com/video/upload/' + e.publicId
+                        }
+                    })
+                }
+
+                if(e.resourceType === "image"){
+                    screenshots.push({
+                        path_full: 'https://assets.nintendo.com/image/upload/' + e.publicId
+                    })
+                }
+            })
+
+            setGame((g) => ({
+                ...g,
+                supported_languages: supportedLanguages.join(', '),
+                about_the_game: description,
+                backgroundColor,
+                screenshots,
+                movies
+            }))
+
+            setTemp([])
+        })
     }
 
     const update = (e) => {
@@ -56,10 +92,7 @@ const RyujinxFields = ({setGame, game}) => {
         <>
             <Input label='Search'
                    onChange={({value: q}) => {
-                       electronConnector.nintendoSearch(q).then(e => {
-                           console.log(e)
-                           setTemp(e)
-                       })
+                       electronConnector.nintendoSearch(q).then(setTemp)
                    }}
                    children={<ul className={styles.search}>
                        {temp.map(s => (
