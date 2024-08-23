@@ -1,14 +1,18 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import styles from "./home.module.scss";
 import {useEffect, useMemo, useRef} from "react";
 import useAppControls from "../../hooks/useAppControls";
 import {getFromStorage} from "../../helpers/getFromStorage";
 
 const Home = () => {
+    const navigate = useNavigate();
     const {init, currentIndex, setActiveIndex} = useAppControls({
         map: {
             'left': (i) => i - 1,
-            'right': (i) => i + 1
+            'right': (i) => i + 1,
+            bottom: () => {
+                navigate('/lastCracked')
+            }
         }
     });
 
@@ -64,7 +68,7 @@ const Home = () => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.image}>
-                <img style={{opacity: 0}} ref={bgImage}/>
+                <img style={{opacity: 0}} ref={bgImage} alt={'background'}/>
             </div>
             <ul id="game-list">
                 {sortedGames.map((game, index) => (

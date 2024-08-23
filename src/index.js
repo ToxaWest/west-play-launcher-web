@@ -19,6 +19,7 @@ import smoothscroll from 'smoothscroll-polyfill';
 import SettingsConfig from "./components/Settings/Config/settingsConfig";
 import SettingsGames from "./components/Settings/Games/settingsGames";
 import SettingsHome from "./components/Settings/Home/settingsHome";
+import LastCracked from "./components/LastCracked";
 
 const router = createBrowserRouter([
     {
@@ -30,6 +31,9 @@ const router = createBrowserRouter([
             }, {
                 path: '/menu',
                 element: <Menu/>
+            }, {
+                path: '/lastCracked',
+                element: <LastCracked/>
             },
             {
                 path: '/library',

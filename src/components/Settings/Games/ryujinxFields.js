@@ -10,7 +10,7 @@ const RyujinxFields = ({setGame, game}) => {
         setGame(g => ({
             ...g,
             nsuid: s.nsuid,
-            required_age: s.rating,
+            required_age: s.contentRatingCode,
             release_date: {
                 date: new Date(s.releaseDate).toLocaleDateString("en-US")
             },
@@ -18,14 +18,8 @@ const RyujinxFields = ({setGame, game}) => {
             name: s.title,
             controller_support: 'full',
             supported_languages: null,
+            about_the_game: s.description
         }))
-        electronConnector.nintendoReq(s.url).then((data) => {
-            setGame(g => ({
-                ...g,
-                about_the_game: data.description
-            }))
-            setTemp([])
-        })
     }
 
     const update = (e) => {
