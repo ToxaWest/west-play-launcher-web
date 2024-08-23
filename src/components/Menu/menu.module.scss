@@ -4,6 +4,12 @@
   height: 100%;
   padding: 4px;
 
+  img {
+    height: 4vh;
+    margin-right: 2vw;
+    opacity: .5;
+  }
+
   ul {
     margin: 0;
     padding: 0;
@@ -15,7 +21,8 @@
   }
 
   a {
-    display: block;
+    display: flex;
+    align-items: center;
     padding: 1vh 3vh;
     background-color: rgba(var(--theme-color), 0.2);
     border-radius: 4px;
@@ -29,6 +36,9 @@
       padding-left: 5vh;
       background-color: rgba(var(--theme-contrast), 0.1);
       outline: none;
+      img {
+        opacity: 1;
+      }
     }
   }
 }

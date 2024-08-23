@@ -20,6 +20,7 @@ import SettingsConfig from "./components/Settings/Config/settingsConfig";
 import SettingsGames from "./components/Settings/Games/settingsGames";
 import SettingsHome from "./components/Settings/Home/settingsHome";
 import LastCracked from "./components/LastCracked";
+import GamesMedia from "./components/Game/media";
 
 const router = createBrowserRouter([
     {
@@ -61,7 +62,10 @@ const router = createBrowserRouter([
                 }, {
                     path: "/game/:id/achievements",
                     element: <Achievements/>
-                },]
+                },{
+                    path: "/game/:id/media",
+                    element: <GamesMedia/>
+                }]
             }
         ]
     }

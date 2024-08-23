@@ -26,6 +26,8 @@ const SteamFields = ({game, onChange, setGame}) => {
                 required_age,
                 metacritic,
                 supported_languages,
+                movies,
+                screenshots
             } = r[steamId].data;
 
             setGame(g => {
@@ -40,7 +42,9 @@ const SteamFields = ({game, onChange, setGame}) => {
                     developers,
                     metacritic,
                     controller_support,
-                    required_age
+                    required_age,
+                    movies,
+                    screenshots
                 }
             })
             setTemp([])
@@ -56,7 +60,6 @@ const SteamFields = ({game, onChange, setGame}) => {
                         apiKey: steam_api_key,
                         lang: currentLang()
                     }).then(({game: g}) => {
-                        console.log(g?.availableGameStats?.achievements)
                         onChange({
                             name: 'achievements',
                             value: g?.availableGameStats?.achievements

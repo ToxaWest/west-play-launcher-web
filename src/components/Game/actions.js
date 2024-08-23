@@ -31,6 +31,9 @@ const GameActions = ({game}) => {
     }, {
         url: `/game/${game.id}/achievements`,
         img: '/assets/achievement.svg'
+    }, {
+        url: `/game/${game.id}/media`,
+        img: '/assets/media.svg'
     }]
 
     return (

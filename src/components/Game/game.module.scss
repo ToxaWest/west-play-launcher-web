@@ -270,3 +270,9 @@
 .activeIcon {
   background-color: rgba(255, 0, 0, 0.4);
 }
+
+.media {
+  video, img {
+    max-width: 100%;
+  }
+}

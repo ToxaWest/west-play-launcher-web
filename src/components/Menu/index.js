@@ -27,19 +27,21 @@ const Menu = () => {
                     <Link to="/library">Library</Link>
                 </li>
                 <li style={{marginTop: 'auto'}}>
-                    <Link to="/settings">Settings</Link>
+                    <Link to="/settings">
+                        <img src='/assets/settings.svg' alt={'settings'}/> Settings
+                    </Link>
                 </li>
                 <li>
                     <Link to="/" onClick={(e) => {
                         e.preventDefault();
                         electronConnector.shutDownPC()
-                    }}>Shut Down PC</Link>
+                    }}><img src='/assets/shut-down.svg' alt="shut down"/> Shut Down PC</Link>
                 </li>
                 <li>
                     <Link to="/" onClick={(e) => {
                         e.preventDefault();
                         electronConnector.restartPC()
-                    }}>Restart PC</Link>
+                    }}><img src='/assets/restart-2.svg' alt="restart"/> Restart PC</Link>
                 </li>
             </ul>
         </div>

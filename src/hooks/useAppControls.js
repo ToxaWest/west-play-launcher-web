@@ -13,12 +13,14 @@ const useAppControls = ({map}) => {
     }
 
     const focus = (i) => {
-        ref.current[i].scrollIntoView({
-            inline: 'center',
-            block: 'center',
-            behavior: 'smooth',
-        })
-        ref.current[i].focus();
+        if(ref.current[i]){
+            ref.current[i].scrollIntoView({
+                inline: 'center',
+                block: 'center',
+                behavior: 'smooth',
+            })
+            ref.current[i].focus();
+        }
     }
 
     const listener = ({detail}) => {
