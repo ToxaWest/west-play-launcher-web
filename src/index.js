@@ -77,13 +77,13 @@ smoothscroll.polyfill();
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const logo = document.getElementById('logo')
 const audio = new Audio('/assets/sound/ui/swits.mp3')
-audio.play()
 
-setTimeout(() => {
+window.addEventListener("gamepadconnected", () => {
+    audio.play()
     logo.remove();
     root.render(
         <Provider>
             <RouterProvider router={router}/>
         </Provider>
     );
-}, 300)
+})

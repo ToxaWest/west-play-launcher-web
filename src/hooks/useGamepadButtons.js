@@ -72,14 +72,11 @@ const useGamepadButtons = () => {
 
     useEffect(() => {
         electronConnector.onVisibilityChange(setVisible)
-        window.addEventListener("gamepadconnected", () => {
-            notifications({
-                img: '/assets/controller/xbox-control-for-one.svg',
-                status: 'success',
-                name: 'Gamepad connected',
-                description: 'Let\'s Play!'
-            })
-
+        notifications({
+            img: '/assets/controller/xbox-control-for-one.svg',
+            status: 'success',
+            name: 'Gamepad connected',
+            description: 'Let\'s Play!'
         })
         init();
         initScroll();
