@@ -79,11 +79,12 @@ const useGamepadButtons = () => {
                 name: 'Gamepad connected',
                 description: 'Let\'s Play!'
             })
-            init();
-            initScroll();
-            //boost scroll
-            initScroll();
+
         })
+        init();
+        initScroll();
+        //boost scroll
+        initScroll();
     }, []);
 }
 
