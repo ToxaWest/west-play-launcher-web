@@ -13,13 +13,16 @@ const AddGame = ({data, submit, remove}) => {
     const [game, setGame] = useState(data);
     const wrapperRef = useRef(null);
 
+    const [loading,  setLoading] = useState(false);
     const onChange = ({name, value}) => {
         setGame(g => ({...g, [name]: value}))
     }
 
     const getGamePath = () => {
+        setLoading(true)
         electronConnector.getFolder().then(({path, size}) => {
-            setGame(g => ({...g, path, size: formatBytes(size)}))
+            setGame(g => ({...g, path, size: formatBytes(parseInt(size))}))
+            setLoading(false)
         })
     }
 
@@ -68,7 +71,9 @@ const AddGame = ({data, submit, remove}) => {
                     <button onClick={() => {
                         wrapperRef.current.open = false
                         submit(game)
-                    }}>
+                    }}
+                        disabled={loading}
+                    >
                         submit
                     </button>
                 </>
