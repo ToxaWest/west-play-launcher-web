@@ -16,7 +16,8 @@ const useStartGame = (game) => {
         const list = {
             steam: game.exePath,
             ryujinx: settings.ryujinx,
-            rpcs3: settings.rpcs3
+            rpcs3: settings.rpcs3,
+            egs: game.exePath
         }
         return list[game.source]
     }

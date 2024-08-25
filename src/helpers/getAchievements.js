@@ -50,19 +50,20 @@ const getAchievements = (id, update = true, callback) => {
         return;
     }
 
-    if (!game.achPath) {
+    if (game.achPath && game.source === 'steam') {
+        electronConnector.readFile(game.achPath).then((r) => {
+            const data = parseAchievement(game, r);
+            if (update) {
+                setToStorage('achievements', {...achievements, [game.id]: data});
+            }
+            if (callback) {
+                callback(data);
+            }
+        })
         return;
     }
 
-    electronConnector.readFile(game.achPath).then((r) => {
-        const data = parseAchievement(game, r);
-        if (update) {
-            setToStorage('achievements', {...achievements, [game.id]: data});
-        }
-        if (callback) {
-            callback(data);
-        }
-    })
+    return;
 }
 
 

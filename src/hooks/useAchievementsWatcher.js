@@ -29,7 +29,7 @@ const useAchievementsWatcher = (id) => {
     }
 
     const init = () => {
-        if (achPath && achievements) {
+        if (game.source === 'steam' && achPath && achievements) {
             interval.current = setInterval(() => {
                 electronConnector.lastModify(achPath).then(r => {
                     const modTime = new Date(r).getTime();

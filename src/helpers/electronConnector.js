@@ -3,6 +3,7 @@ const electronConnector = {
     nintendoReq: (data) => window.electronAPI.nintendoReq(data),
     openFile: (data) => window.electronAPI.openFile(data),
     getFile: (data) => window.electronAPI.getFile(data),
+    getEgsId: (d) => window.electronAPI.getEgsId(d),
     getImage: (data) => window.electronAPI.getImage(data),
     getSteamData: (data) => window.electronAPI.getSteamData(data),
     getFolder: (data) => window.electronAPI.getFolder(data),

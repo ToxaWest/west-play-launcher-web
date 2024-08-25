@@ -16,6 +16,9 @@ const GameContent = () => {
         label: 'Play time',
         value: playTime ? secondsToHms(playTime) : null
     }, {
+        label: 'Size',
+        value: game.size
+    },{
         label: 'Metacritics',
         value: game.metacritic?.score
     }, {

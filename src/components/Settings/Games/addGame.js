@@ -6,6 +6,8 @@ import SearchGame from "./searchGame";
 import RyujinxFields from "./ryujinxFields";
 import SteamFields from "./steamFields";
 import Rpcs3Fields from "./rpcs3Fields";
+import EgsFields from "./egsFields";
+import formatBytes from "../../../helpers/formatSize";
 
 const AddGame = ({data, submit, remove}) => {
     const [game, setGame] = useState(data);
@@ -16,8 +18,8 @@ const AddGame = ({data, submit, remove}) => {
     }
 
     const getGamePath = () => {
-        electronConnector.getFolder().then(({path}) => {
-            setGame(g => ({...g, path}))
+        electronConnector.getFolder().then(({path, size}) => {
+            setGame(g => ({...g, path, size: formatBytes(size)}))
         })
     }
 
@@ -30,6 +32,9 @@ const AddGame = ({data, submit, remove}) => {
         }
         if (game.source === 'rpcs3') {
             return <Rpcs3Fields setGame={setGame} game={game} onChange={onChange}/>
+        }
+        if(game.source === 'egs'){
+            return <EgsFields game={game} onChange={onChange} setGame={setGame}/>
         }
     }
 
@@ -44,7 +49,8 @@ const AddGame = ({data, submit, remove}) => {
                            options={[
                                'steam',
                                'ryujinx',
-                               'rpcs3'
+                               'rpcs3',
+                               'egs'
                            ]}
                            name='source'/>
                     {renderByType()}
