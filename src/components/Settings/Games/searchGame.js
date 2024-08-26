@@ -35,7 +35,7 @@ const SearchGame = ({update}) => {
                                    setSearch('')
                                    update({name, id, steamgriddb: id})
                                }}>
-                                   <span>{name} ({new Date(release_date * 1000).getFullYear()})</span>
+                                   <span>{name} {release_date ? `(${new Date(release_date * 1000).getFullYear()})` : ''}</span>
                                </li>)
                            )}
                        </ul>
