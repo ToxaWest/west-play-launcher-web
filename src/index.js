@@ -21,6 +21,7 @@ import SettingsGames from "./components/Settings/Games/settingsGames";
 import SettingsHome from "./components/Settings/Home/settingsHome";
 import LastCracked from "./components/LastCracked";
 import GamesMedia from "./components/Game/media";
+import FreeGames from "./components/FreeGames";
 
 const router = createBrowserRouter([
     {
@@ -35,8 +36,10 @@ const router = createBrowserRouter([
             }, {
                 path: '/lastCracked',
                 element: <LastCracked/>
-            },
-            {
+            },{
+                path: '/freeGames',
+                element: <FreeGames/>
+            }, {
                 path: '/library',
                 element: <Library/>
             },

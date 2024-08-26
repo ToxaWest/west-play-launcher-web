@@ -26,6 +26,12 @@ const Menu = () => {
                 <li>
                     <Link to="/library">Library</Link>
                 </li>
+                <li>
+                    <Link to="/lastCracked">Last Cracked games</Link>
+                </li>
+                <li>
+                    <Link to="/freeGames">EGS free games</Link>
+                </li>
                 <li style={{marginTop: 'auto'}}>
                     <Link to="/settings">
                         <img src='/assets/settings.svg' alt={'settings'}/> Settings
