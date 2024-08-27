@@ -1,8 +1,8 @@
 import {secondsToHms} from "../../hooks/usePlayTime";
 import styles from "./game.module.scss";
 
-const RenderContent = ({game, lastPlayed, playTime}) => {
-    const infoData = [{
+const RenderContent = ({game, lastPlayed, playTime, fields = []}) => {
+    const infoData = [...fields, {
         label: 'Last played',
         value: lastPlayed ? new Date(lastPlayed).toLocaleDateString() : null
     }, {

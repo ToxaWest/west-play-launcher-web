@@ -32,7 +32,6 @@ const LastCracked = () => {
     }, [])
 
     useEffect(() => {
-        console.log(currentIndex)
         if (games[currentIndex]) {
             const {steam_prod_id} = games[currentIndex];
             if (steam_prod_id) {
@@ -49,17 +48,16 @@ const LastCracked = () => {
 
     }, [currentIndex, games])
 
+    const currentGame = games[currentIndex];
+
     return (
         <>
             <div className={styles.wrapper}>
+                <h2>Cracked Games</h2>
                 <ul id={'cracked'}>
                     {games.map(game => (
                         <li key={game.id} aria-label={game.name} tabIndex={1}>
                             <img src={game.short_image} alt={game.title}/>
-                            <div className={styles.info}>
-                                <div>Released: {new Date(game.release_date).toLocaleDateString()}</div>
-                                <div>Cracked: {new Date(game.crack_date).toLocaleDateString()}</div>
-                            </div>
                         </li>
                     ))}
                 </ul>
@@ -67,7 +65,23 @@ const LastCracked = () => {
             </div>
             {steam && (
                 <>
-                    <RenderContent game={steam}/>
+                    <RenderContent game={steam} fields={[{
+                        label: 'Status',
+                        value: currentGame.readable_status
+                    }, {
+                        label: 'Hacked Groups',
+                        value: currentGame.hacked_groups
+                    }, {
+                        label: 'protections',
+                        value: currentGame.protections
+                    }, {
+                        label: 'Torrent (not recommended)',
+                        value: currentGame.torrent_link ?
+                            <a href={currentGame.torrent_link} target="_blank">Link</a> : null
+                    }, {
+                        label: 'Cracked',
+                        value: new Date(currentGame.crack_date).toLocaleDateString()
+                    }]}/>
                     <RenderMedia game={steam}/>
                 </>
             )}

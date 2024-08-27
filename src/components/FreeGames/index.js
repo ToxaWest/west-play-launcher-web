@@ -14,7 +14,6 @@ const FreeGames = () => {
     useEffect(() => {
         electronConnector.getFreeGames().then(({data: {Catalog: {searchStore: {elements}}}}) => {
             setGames(elements)
-            console.log(elements)
             setTimeout(() => {
                 init('#freeGames li')
             }, 500)
@@ -22,8 +21,8 @@ const FreeGames = () => {
     }, []);
 
 
-    const getDiscount = ({originalPrice, discount}) => {
-        if (discount === 0) {
+    const getDiscount = ({originalPrice, discount} = {}) => {
+        if (discount === 0 && originalPrice === 0) {
             return 'Coming soon'
         }
         if (originalPrice === discount) {
@@ -45,11 +44,7 @@ const FreeGames = () => {
 
         return (
             <li key={game.id} tabIndex={1}>
-                <img src={getImage(game.keyImages, "OfferImageWide")}/>
-                <div className={styles.info}>
-
-                    <span>{getDiscount(game.price.totalPrice)}</span>
-                </div>
+                <img src={getImage(game.keyImages, "OfferImageTall")}/>
             </li>
         )
     }
@@ -60,18 +55,18 @@ const FreeGames = () => {
 
     return (
         <div className={styles.wrapper}
-             style={{backgroundImage: `url(${getImage(currentGame().keyImages, "DieselStoreFrontWide")})`}}>
+             style={{backgroundImage: `url(${getImage(currentGame().keyImages, "OfferImageWide")})`}}>
             <h2>Free Games</h2>
             <ul id="freeGames">
                 {games.map(renderGame)}
             </ul>
             <div className={styles.description}>
-                <div>
-                    <h2>{currentGame().title}</h2>
-                    <h3>{currentGame().seller?.name}</h3>
-                    {currentGame().description}
+                <div className={styles.info}>
+                    <span>{getDiscount(currentGame().price?.totalPrice)}</span>
                 </div>
-                <img src={getImage(currentGame().keyImages, "OfferImageTall")}/>
+                <h2>{currentGame().title}</h2>
+                <h3>{currentGame().seller?.name}</h3>
+                {currentGame().description}
             </div>
         </div>
     )
