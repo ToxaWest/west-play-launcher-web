@@ -1,10 +1,11 @@
 import {useEffect, useRef, useState} from "react";
 import styles from "./game.module.scss";
+import useFooterActions from "../../hooks/useFooterActions";
 
 const RenderMedia = ({game}) => {
     const [current, setCurrent] = useState(0);
     const videoRef = useRef(null)
-
+    const {setFooterActions} = useFooterActions();
     const {
         movies = [],
         screenshots = []
@@ -32,7 +33,12 @@ const RenderMedia = ({game}) => {
             },
             rt: () => {
                 if(videoRef.current) {
-                    videoRef.current.muted = !videoRef.current.muted;
+                    videoRef.current.muted = false;
+                }
+            },
+            lt: () => {
+                if(videoRef.current) {
+                    videoRef.current.muted = true;
                 }
             }
         }
@@ -43,6 +49,23 @@ const RenderMedia = ({game}) => {
 
     useEffect(() => {
         document.addEventListener('gamepadbutton', listener)
+        setFooterActions([{
+            img: 'left-trigger.svg',
+            title: 'Sound OFF',
+            onClick: () => {
+                if(videoRef.current) {
+                    videoRef.current.muted = true;
+                }
+            }
+        },{
+            img: 'right-trigger.svg',
+            title: 'Sound ON',
+            onClick: () => {
+                if(videoRef.current) {
+                    videoRef.current.muted = false;
+                }
+            }
+        }])
         return () => {
             document.removeEventListener('gamepadbutton', listener)
         }

@@ -64,26 +64,10 @@
       &:focus {
         outline: none;
 
-        .lastPlayed {
-          bottom: 0;
-        }
-
         img {
           height: 100%;
         }
       }
     }
   }
-}
-
-.lastPlayed {
-  position: absolute;
-  bottom: 3%;
-  right: 0;
-  font-size: 12px;
-  padding: 3px;
-  transition: all .3s ease-in-out;
-  border-radius: 5px 0 0 0;
-  background-color: rgba(var(--theme-color), 0.4);
-  text-align: right;
 }

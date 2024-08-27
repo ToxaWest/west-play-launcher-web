@@ -274,6 +274,7 @@
 .media {
   width: 100vw;
   height: calc(100vw * (9/16));
+  margin-bottom: -50px;
   video, img {
     width: 100%;
   }

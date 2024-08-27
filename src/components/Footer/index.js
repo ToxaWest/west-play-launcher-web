@@ -1,31 +1,36 @@
 import styles from './footer.module.scss';
+import useFooterActions from "../../hooks/useFooterActions";
 
 const Footer = ({backButton, menuButton}) => {
+    const {footerActions} = useFooterActions();
+
+    const actions = [{
+        img: 'menu.svg',
+        title: 'Menu',
+        onClick: menuButton
+    }, ...footerActions, {
+        img: 'a-filled-green.svg',
+        title: 'Select',
+        onClick: () => {
+            document.activeElement?.click()
+        }
+    }, {
+        img: 'b-filled red.svg',
+        title: 'Back',
+        onClick: backButton
+    }]
+
+
+    const renderFooterActions = ({onClick, title, img}) => (
+        <div onClick={onClick} key={title}>
+            <img src={'/assets/controller/' + img} alt={title} width={32} height={32}/>
+            {title}
+        </div>
+    )
+
     return (
         <footer className={styles.wrapper}>
-            <div onClick={menuButton}>
-                <img src={'/assets/controller/menu.svg'} alt="menu"
-                     width={32}
-                />
-                Menu
-            </div>
-            <div
-                onClick={() => {
-                    document.activeElement?.click()
-                }}
-            >
-                <img src={'/assets/controller/a-filled-green.svg'} alt="select"
-                     width={32}/>
-                Select
-            </div>
-            <div
-                onClick={backButton}
-            >
-                <img src={'/assets/controller/b-filled red.svg'} alt="back"
-                     width={32}
-                />
-                Back
-            </div>
+            {actions.map(renderFooterActions)}
         </footer>
     )
 }

@@ -40,13 +40,6 @@ const Home = () => {
 
     const sortedGames = useMemo(configuredArray, []);
 
-    const renderLastPlayed = (id) => {
-        if (lastPlayed[id]) {
-            return <div className={styles.lastPlayed}>{new Date(lastPlayed[id]).toLocaleDateString()}</div>
-        }
-        return null;
-    }
-
     useEffect(() => {
         bgImage.current.style.opacity = 0;
         setTimeout(() => {
@@ -71,7 +64,6 @@ const Home = () => {
                     <li key={game.id}>
                         <Link to={'/game/' + game.id}>
                             <img src={index ? game.img_grid : game.img_landscape} alt={game.name}/>
-                            {renderLastPlayed(game.id)}
                         </Link>
                     </li>
                 ))}
