@@ -32,12 +32,12 @@ const RenderMedia = ({game}) => {
                 })
             },
             rt: () => {
-                if(videoRef.current) {
+                if (videoRef.current) {
                     videoRef.current.muted = false;
                 }
             },
             lt: () => {
-                if(videoRef.current) {
+                if (videoRef.current) {
                     videoRef.current.muted = true;
                 }
             }
@@ -53,17 +53,39 @@ const RenderMedia = ({game}) => {
             img: 'left-trigger.svg',
             title: 'Sound OFF',
             onClick: () => {
-                if(videoRef.current) {
+                if (videoRef.current) {
                     videoRef.current.muted = true;
                 }
             }
-        },{
+        }, {
             img: 'right-trigger.svg',
             title: 'Sound ON',
             onClick: () => {
-                if(videoRef.current) {
+                if (videoRef.current) {
                     videoRef.current.muted = false;
                 }
+            }
+        }, {
+            img: 'dpad-up.svg',
+            title: 'Prev',
+            onClick: () => {
+                setCurrent((i) => {
+                    if (i === 0) {
+                        return [...movies, ...screenshots].length - 1
+                    }
+                    return i - 1
+                })
+            }
+        }, {
+            img: 'dpad-down.svg',
+            title: 'Next',
+            onClick: () => {
+                setCurrent((i) => {
+                    if (i === (media.length - 1)) {
+                        return 0
+                    }
+                    return i + 1
+                })
             }
         }])
         return () => {
@@ -74,13 +96,18 @@ const RenderMedia = ({game}) => {
     const renderMedia = (i) => {
         const selected = media[i];
         if (selected?.webm) {
-            return <video src={selected.webm.max} controls={false} muted={true} autoPlay={true} loop={true} ref={videoRef}/>;
+            return <video src={selected.webm.max} controls={false} muted={true} autoPlay={true} loop={true}
+                          ref={videoRef}/>;
         }
 
         if (selected?.path_full) {
             return <img src={selected.path_full} alt={'img'}/>
         }
         return null;
+    }
+
+    if(!media.length) {
+        return (<h2 align="center">Media not found</h2>)
     }
 
     return (
