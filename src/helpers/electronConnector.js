@@ -21,7 +21,8 @@ const electronConnector = {
     getGamesRPCS3: (data) => window.electronAPI.getGamesRPCS3(data),
     crackWatchRequest: (data) => window.electronAPI.crackWatchRequest(data),
     nintendoData: (url) => window.electronAPI.nintendoData(url),
-    getFreeGames: (data) => window.electronAPI.getFreeGames(data)
+    getFreeGames: (data) => window.electronAPI.getFreeGames(data),
+    saveImage: (data) => window.electronAPI.saveImage(data)
 };
 
 export default electronConnector;

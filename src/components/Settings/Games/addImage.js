@@ -55,11 +55,18 @@ const AddImage = ({id, type, onChange, value}) => {
     }
 
     const select = (value) => {
-        onChange({
-            value,
-            name: 'img_' + type
+        electronConnector.saveImage({
+            url: value,
+            type,
+            id
+        }).then((r) => {
+            onChange({
+                value: 'file:\\' +r,
+                name: 'img_' + type
+            })
+            setImages([]);
         })
-        setImages([]);
+
     }
 
     const getImages = async () => {
@@ -72,8 +79,8 @@ const AddImage = ({id, type, onChange, value}) => {
     return (
         <div className={styles.addImage}>
             <div className={styles.addImageField}>
-                <img src={value} alt={type}/>
                 <button onClick={getImages}>Select {type} image</button>
+                {value ? <span>{value}</span> : null}
             </div>
             <ul>
                 {images.map((asset) => (
