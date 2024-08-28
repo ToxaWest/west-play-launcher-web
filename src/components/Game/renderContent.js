@@ -1,17 +1,7 @@
-import {secondsToHms} from "../../hooks/usePlayTime";
 import styles from "./game.module.scss";
 
 const RenderContent = ({game, lastPlayed, playTime, fields = []}) => {
-    const infoData = [...fields, {
-        label: 'Last played',
-        value: lastPlayed ? new Date(lastPlayed).toLocaleDateString() : null
-    }, {
-        label: 'Play time',
-        value: playTime ? secondsToHms(playTime) : null
-    }, {
-        label: 'Size',
-        value: game.size
-    }, {
+    const infoData = [...fields,  {
         label: 'Metacritics',
         value: game.metacritic?.score
     }, {
@@ -36,8 +26,6 @@ const RenderContent = ({game, lastPlayed, playTime, fields = []}) => {
         <div className={styles.content}>
             <div className={styles.description}>
                 <h1>{game.name}</h1>
-                {game.img_landscape && <img src={game.img_landscape} alt={'landscape'}
-                                            style={{maxWidth: '100%', borderRadius: '8px'}}/>}
                 {game.about_the_game && <div dangerouslySetInnerHTML={{__html: game.about_the_game}}/>}
                 {game.pc_requirements && <div className={styles.requirements}>
                     <div dangerouslySetInnerHTML={{__html: game.pc_requirements.minimum}}/>
@@ -46,6 +34,7 @@ const RenderContent = ({game, lastPlayed, playTime, fields = []}) => {
                 }
             </div>
             <div className={styles.info}>
+                {game.img_landscape && <img src={game.img_landscape} alt={'landscape'}/>}
                 <ul>
                     {infoData.map(({label, value}) => {
                         if (value) {

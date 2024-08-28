@@ -41,23 +41,13 @@ const Home = () => {
     const sortedGames = useMemo(configuredArray, []);
 
     useEffect(() => {
-        bgImage.current.style.opacity = 0;
-        setTimeout(() => {
-            bgImage.current.src = 0;
-            if (sortedGames[currentIndex]) {
-                bgImage.current.src = sortedGames[currentIndex].img_hero;
-                setTimeout(() => {
-                    bgImage.current.style.opacity = 1;
-                }, 100)
-            }
-        }, 100)
-
+        bgImage.current.src = sortedGames[currentIndex].img_hero;
     }, [currentIndex]);
 
     return (
         <div className={styles.wrapper}>
             <div className={styles.image}>
-                <img style={{opacity: 0}} ref={bgImage} alt={'background'}/>
+                <img ref={bgImage} alt={'background'}/>
             </div>
             <ul id="game-list">
                 {sortedGames.map((game, index) => (

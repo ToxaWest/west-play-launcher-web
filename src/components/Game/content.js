@@ -1,6 +1,7 @@
 import {useParams} from "react-router-dom";
 import {getFromStorage} from "../../helpers/getFromStorage";
 import RenderContent from "./renderContent";
+import {secondsToHms} from "../../hooks/usePlayTime";
 
 const GameContent = () => {
     const {id} = useParams();
@@ -8,7 +9,16 @@ const GameContent = () => {
     const lastPlayed = getFromStorage('lastPlayed')[id];
     const playTime = getFromStorage('playTime')[id];
 
-    return <RenderContent game={game} lastPlayed={lastPlayed} playTime={playTime} />
+    return <RenderContent game={game} fields={[{
+        label: 'Last played',
+        value: lastPlayed ? new Date(lastPlayed).toLocaleDateString() : null
+    }, {
+        label: 'Play time',
+        value: playTime ? secondsToHms(playTime) : null
+    }, {
+        label: 'Size',
+        value: game.size
+    },]}/>
 
 }
 

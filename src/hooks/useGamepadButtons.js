@@ -36,14 +36,22 @@ const useGamepadButtons = () => {
             return;
         }
 
-        const vertical = gamepad.axes[1]
-        const horizontal = gamepad.axes[0]
-
         const pressed = gamepad.buttons.findIndex((button) => button.pressed)
 
         if (pressed !== -1) {
             sendEvent(keyMapping[pressed])
         }
+        setTimeout(() => window.requestAnimationFrame(init), 50)
+    }
+
+    const initLeftStick = () => {
+        const gamepad = navigator.getGamepads()[0]
+        if (!gamepad || !visible) {
+            return;
+        }
+
+        const vertical = gamepad.axes[1]
+        const horizontal = gamepad.axes[0]
 
         if (Math.abs(vertical) > 0.5) {
             sendEvent(keyMapping[vertical < 0 ? 12 : 13])
@@ -51,7 +59,7 @@ const useGamepadButtons = () => {
         if (Math.abs(horizontal) > 0.5) {
             sendEvent(keyMapping[horizontal < 0 ? 14 : 15])
         }
-        setTimeout(() => window.requestAnimationFrame(init), 120)
+        setTimeout(() => window.requestAnimationFrame(initLeftStick), 120)
     }
 
     const initScroll = () => {
@@ -79,6 +87,7 @@ const useGamepadButtons = () => {
             description: 'Let\'s Play!'
         })
         init();
+        initLeftStick();
         initScroll();
         //boost scroll
         initScroll();
