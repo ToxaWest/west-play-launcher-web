@@ -26,50 +26,48 @@ import FreeGames from "./components/FreeGames";
 const router = createBrowserRouter([
     {
         element: <Root/>,
-        children: [
-            {
-                path: "/",
-                element: <Home/>
-            }, {
-                path: '/menu',
-                element: <Menu/>
-            }, {
-                path: '/lastCracked',
-                element: <LastCracked/>
-            },{
-                path: '/freeGames',
-                element: <FreeGames/>
-            }, {
-                path: '/library',
-                element: <Library/>
-            },
-            {
+        children: [{
+            path: "/",
+            element: <Home/>
+        }, {
+            path: '/menu',
+            element: <Menu/>
+        }, {
+            path: '/lastCracked',
+            element: <LastCracked/>
+        }, {
+            path: '/freeGames',
+            element: <FreeGames/>
+        }, {
+            path: '/library',
+            element: <Library/>
+        }, {
+            path: "/settings",
+            element: <Settings/>,
+            children: [{
                 path: "/settings",
-                element: <Settings/>,
-                children: [{
-                    path: "/settings",
-                    element: <SettingsHome/>
-                }, {
-                    path: "/settings/config",
-                    element: <SettingsConfig/>
-                }, {
-                    path: "/settings/games",
-                    element: <SettingsGames/>
-                }]
+                element: <SettingsHome/>
             }, {
+                path: "/settings/config",
+                element: <SettingsConfig/>
+            }, {
+                path: "/settings/games",
+                element: <SettingsGames/>
+            }]
+        }, {
+            path: "/game/:id",
+            element: <Game/>,
+            children: [{
                 path: "/game/:id",
-                element: <Game/>,
-                children: [{
-                    path: "/game/:id",
-                    element: <GameContent/>
-                }, {
-                    path: "/game/:id/achievements",
-                    element: <Achievements/>
-                },{
-                    path: "/game/:id/media",
-                    element: <GamesMedia/>
-                }]
-            }
+                element: <GameContent/>
+            }, {
+                path: "/game/:id/achievements",
+                element: <Achievements/>
+            }, {
+                path: "/game/:id/media",
+                element: <GamesMedia/>
+            }]
+        }
         ]
     }
 ]);

@@ -1,10 +1,11 @@
-import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import styles from "./home.module.scss";
 import {useEffect, useMemo, useRef} from "react";
 import useAppControls from "../../hooks/useAppControls";
 import {getFromStorage} from "../../helpers/getFromStorage";
 
 const Home = () => {
+    const navigate = useNavigate();
     const {init, currentIndex, setActiveIndex} = useAppControls({
         map: {
             'left': (i) => i - 1,
@@ -15,7 +16,7 @@ const Home = () => {
     const bgImage = useRef(null);
 
     useEffect(() => {
-        init('#game-list a')
+        init('#game-list li')
         setActiveIndex(0)
     }, []);
 
@@ -51,10 +52,10 @@ const Home = () => {
             </div>
             <ul id="game-list">
                 {sortedGames.map((game, index) => (
-                    <li key={game.id}>
-                        <Link to={'/game/' + game.id}>
-                            <img src={index ? game.img_grid : game.img_landscape} alt={game.name}/>
-                        </Link>
+                    <li key={game.id} tabIndex={1} onClick={() => {
+                        navigate('/game/' + game.id)
+                    }}>
+                        <img src={index ? game.img_grid : game.img_landscape} alt={game.name}/>
                     </li>
                 ))}
             </ul>

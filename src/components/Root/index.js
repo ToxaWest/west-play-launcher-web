@@ -46,9 +46,7 @@ const Root = () => {
     }
 
     useEffect(() => {
-        document.addEventListener('gamepadbutton', ({detail}) => {
-            listener({detail})
-        })
+        document.addEventListener('gamepadbutton', listener)
         const body = document.querySelector('html');
         document.addEventListener('mousemove', () => {
             body.style.removeProperty('cursor');

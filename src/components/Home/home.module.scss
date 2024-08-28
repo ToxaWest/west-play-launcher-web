@@ -40,10 +40,6 @@
     align-items: center;
 
     li {
-      display: block;
-    }
-
-    a {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -51,6 +47,7 @@
       position: relative;
       padding: .5vw;
       transition: padding .3s ease-in-out;
+
       img {
         width: auto;
         height: 100%;

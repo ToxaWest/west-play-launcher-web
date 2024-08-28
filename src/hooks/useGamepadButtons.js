@@ -11,7 +11,7 @@ const sound = {
     'right': 'move',
     'a': 'select',
     'b': 'back',
-    'home': 'switchup'
+    'select': 'switchup'
 }
 
 const useGamepadButtons = () => {
