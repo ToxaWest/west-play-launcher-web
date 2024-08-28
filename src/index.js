@@ -22,7 +22,7 @@ import SettingsHome from "./components/Settings/Home/settingsHome";
 import LastCracked from "./components/LastCracked";
 import GamesMedia from "./components/Game/media";
 import FreeGames from "./components/FreeGames";
-
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 const router = createBrowserRouter([
     {
         element: <Root/>,
@@ -88,3 +88,5 @@ window.addEventListener("gamepadconnected", () => {
         </Provider>
     );
 })
+
+serviceWorkerRegistration.register()

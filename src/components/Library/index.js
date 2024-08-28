@@ -3,8 +3,10 @@ import {useNavigate} from "react-router-dom";
 import useAppControls from "../../hooks/useAppControls";
 import {useEffect} from "react";
 import {getFromStorage} from "../../helpers/getFromStorage";
+import usePrevPath from "../../hooks/usePrevPath";
 
 const Library = () => {
+    const {setPrevPath, prevPath} = usePrevPath()
     const games = getFromStorage('games');
     const gamesInRow = getFromStorage('config').settings.gamesInRow || 6;
     const navigation = useNavigate();
@@ -28,7 +30,8 @@ const Library = () => {
 
     useEffect(() => {
         init('#library-list li');
-        setActiveIndex(0)
+        setActiveIndex(prevPath?.index || 0)
+        setPrevPath(null)
     }, []);
 
     const sort = (a, b) => a.name.localeCompare(b.name);
@@ -36,8 +39,12 @@ const Library = () => {
     return (
         <div className={styles.wrapper} style={{'--games-in-row': gamesInRow}}>
             <ul className={styles.list} id="library-list">
-                {games.sort(sort).map((game) => (
+                {games.sort(sort).map((game, index) => (
                     <li key={game.id} tabIndex={1} onClick={() => {
+                        setPrevPath({
+                            index,
+                            url: '/library'
+                        })
                         navigation('/game/' + game.id)
                     }}>
                         <img src={game.img_grid} alt={game.name}/>

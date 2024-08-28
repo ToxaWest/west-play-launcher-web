@@ -1,13 +1,16 @@
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
-import {useEffect} from "react";
+import {useEffect, useRef} from "react";
 import styles from './root.module.scss';
 import Footer from "../Footer";
 import Clock from "../Clock";
 import useGamepadButtons from "../../hooks/useGamepadButtons";
+import usePrevPath from "../../hooks/usePrevPath";
 
 const Root = () => {
+    const {prevPath} = usePrevPath()
     const navigate = useNavigate();
     const location = useLocation();
+    const refBack = useRef(null);
     useGamepadButtons();
     const back = {
         '': '/',
@@ -17,10 +20,18 @@ const Root = () => {
     }
 
     const backButton = () => {
-        navigate(
-            back[location.pathname.split('/')[1]]
-        )
+        if (refBack.current?.url) {
+            navigate(refBack.current.url);
+        } else {
+            navigate(
+                back[location.pathname.split('/')[1]]
+            )
+        }
     }
+
+    useEffect(() => {
+        refBack.current = prevPath
+    }, [prevPath])
 
     const menuButton = () => {
         if (window.location.pathname === '/menu') {

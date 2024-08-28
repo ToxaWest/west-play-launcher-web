@@ -3,9 +3,11 @@ import styles from "./home.module.scss";
 import {useEffect, useMemo, useRef} from "react";
 import useAppControls from "../../hooks/useAppControls";
 import {getFromStorage} from "../../helpers/getFromStorage";
+import usePrevPath from "../../hooks/usePrevPath";
 
 const Home = () => {
     const navigate = useNavigate();
+    const {setPrevPath, prevPath} = usePrevPath()
     const {init, currentIndex, setActiveIndex} = useAppControls({
         map: {
             'left': (i) => i - 1,
@@ -17,7 +19,8 @@ const Home = () => {
 
     useEffect(() => {
         init('#game-list li')
-        setActiveIndex(0)
+        setActiveIndex(prevPath?.index || 0)
+        setPrevPath(null)
     }, []);
 
     const games = getFromStorage('games');
@@ -53,6 +56,10 @@ const Home = () => {
             <ul id="game-list">
                 {sortedGames.map((game, index) => (
                     <li key={game.id} tabIndex={1} onClick={() => {
+                        setPrevPath({
+                            url: '/',
+                            index
+                        })
                         navigate('/game/' + game.id)
                     }}>
                         <img src={index ? game.img_grid : game.img_landscape} alt={game.name}/>
