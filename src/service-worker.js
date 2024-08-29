@@ -50,7 +50,7 @@ registerRoute(
 // precache, in this case same-origin .png requests like those from in public/
 registerRoute(
   // Add in any other file extensions or routing criteria as needed.
-  ({ url }) => url.origin === self.location.origin && url.pathname.endsWith('.png'), // Customize this strategy as needed, e.g., by changing to CacheFirst.
+  ({ url }) => url.origin === self.location.origin && url.pathname.endsWith('.svg'), // Customize this strategy as needed, e.g., by changing to CacheFirst.
   new StaleWhileRevalidate({
     cacheName: 'images',
     plugins: [
@@ -59,6 +59,19 @@ registerRoute(
       new ExpirationPlugin({ maxEntries: 50 }),
     ],
   })
+);
+
+registerRoute(
+    // Add in any other file extensions or routing criteria as needed.
+    ({ url }) => url.origin === self.location.origin && url.pathname.endsWith('.mp3'), // Customize this strategy as needed, e.g., by changing to CacheFirst.
+    new StaleWhileRevalidate({
+        cacheName: 'sound',
+        plugins: [
+            // Ensure that once this runtime cache reaches a maximum size the
+            // least-recently used images are removed.
+            new ExpirationPlugin({ maxEntries: 50 }),
+        ],
+    })
 );
 
 // This allows the web app to trigger skipWaiting via

@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import electronConnector from "../helpers/electronConnector";
 import useNotification from "./useNotification";
 
@@ -16,6 +16,7 @@ const sound = {
 
 const useGamepadButtons = () => {
     const [visible, setVisible] = useState(true);
+    const pressedRef = useRef(null);
     const notifications = useNotification();
 
     const sendEvent = (detail) => {
@@ -30,6 +31,13 @@ const useGamepadButtons = () => {
         document.dispatchEvent(event);
     }
 
+    const buttonsEvent = (e) => {
+        if(!pressedRef.current){
+            sendEvent(e);
+            pressedRef.current = e
+        }
+    }
+
     const init = () => {
         const gamepad = navigator.getGamepads()[0]
         if (!gamepad || !visible) {
@@ -39,7 +47,9 @@ const useGamepadButtons = () => {
         const pressed = gamepad.buttons.findIndex((button) => button.pressed)
 
         if (pressed !== -1) {
-            sendEvent(keyMapping[pressed])
+            buttonsEvent(keyMapping[pressed])
+        } else {
+            pressedRef.current = null;
         }
         setTimeout(() => window.requestAnimationFrame(init), 50)
     }
