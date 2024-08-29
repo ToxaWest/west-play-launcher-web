@@ -42,9 +42,15 @@ const Input = ({
         },
         select: () => {
             const data = typeof options[0] === 'object' ? options : options.map(a => ({label: a, value: a}))
+            const getValue = () => {
+                if (value) {
+                    return data.find(a => a.value === value).label
+                }
+                return 'select value'
+            }
             return (
                 <div className={styles.select} onClick={() => setActive((a) => !a)}>
-                    <span >{value || 'select value'}</span>
+                    <span>{getValue()}</span>
                     {active && <ul>
                         {[{label: 'empty', value: 'null'}, ...data].map((option) => (
                             <li key={option.value} onClick={() => {

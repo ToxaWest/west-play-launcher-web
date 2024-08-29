@@ -76,17 +76,12 @@ initLocalStorage();
 smoothscroll.polyfill();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const logo = document.getElementById('logo')
-const audio = new Audio('/assets/sound/ui/swits.mp3')
 
-window.addEventListener("gamepadconnected", () => {
-    audio.play()
-    logo.remove();
-    root.render(
-        <Provider>
-            <RouterProvider router={router}/>
-        </Provider>
-    );
-})
+root.render(
+    <Provider>
+        <RouterProvider router={router}/>
+    </Provider>
+);
+
 
 serviceWorkerRegistration.register()

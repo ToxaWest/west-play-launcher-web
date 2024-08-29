@@ -17,6 +17,7 @@ const sound = {
 const useGamepadButtons = () => {
     const [visible, setVisible] = useState(true);
     const pressedRef = useRef(null);
+    const connectedRef = useRef(false);
     const notifications = useNotification();
 
     const sendEvent = (detail) => {
@@ -32,7 +33,7 @@ const useGamepadButtons = () => {
     }
 
     const buttonsEvent = (e) => {
-        if(!pressedRef.current){
+        if (!pressedRef.current) {
             sendEvent(e);
             pressedRef.current = e
         }
@@ -85,22 +86,46 @@ const useGamepadButtons = () => {
         if (verticalR > 0.5) {
             window.scrollBy(0, 5)
         }
+
         setTimeout(() => window.requestAnimationFrame(initScroll))
     }
 
     useEffect(() => {
+        const audio = new Audio('/assets/sound/ui/swits.mp3')
+
         electronConnector.onVisibilityChange(setVisible)
-        notifications({
-            img: '/assets/controller/xbox-control-for-one.svg',
-            status: 'success',
-            name: 'Gamepad connected',
-            description: 'Let\'s Play!'
+        window.addEventListener("gamepadconnected", (e) => {
+            if (!connectedRef.current) {
+                audio.play()
+                connectedRef.current = e.gamepad.id
+                notifications({
+                    img: '/assets/controller/xbox-control-for-one.svg',
+                    status: 'success',
+                    name: 'Gamepad connected',
+                    description: 'Let\'s Play!'
+                })
+                init();
+                initLeftStick();
+                initScroll();
+                //boost scroll
+                initScroll();
+            }
         })
-        init();
-        initLeftStick();
-        initScroll();
-        //boost scroll
-        initScroll();
+        window.addEventListener('gamepaddisconnected', (e) => {
+            if (e.gamepad.id === connectedRef.current) {
+                connectedRef.current = false
+                notifications({
+                    img: '/assets/controller/xbox-control-for-one.svg',
+                    status: 'error',
+                    name: 'Gamepad disconnected',
+                    description: ''
+                })
+                window.cancelAnimationFrame(init);
+                window.cancelAnimationFrame(initLeftStick);
+                window.cancelAnimationFrame(initScroll);
+            }
+        })
+
     }, []);
 }
 

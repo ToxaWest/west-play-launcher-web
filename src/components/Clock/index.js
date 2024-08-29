@@ -1,5 +1,15 @@
 import {useEffect, useRef} from "react";
 
+const styles = {
+    position: "fixed",
+    right: '25px',
+    top: '20px',
+    color: 'rgb(var(--theme-contrast))',
+    fontSize: '20px',
+    fontWeight: 'bold',
+    zIndex: '20'
+}
+
 const Clock = () => {
     const ref = useRef(null);
 
@@ -10,7 +20,7 @@ const Clock = () => {
         let s = today.getSeconds();
         m = checkTime(m);
         s = checkTime(s);
-        if(ref.current){
+        if (ref.current) {
             ref.current.innerHTML = h + ":" + m + ":" + s;
         }
         setTimeout(startTime, 1000);
@@ -27,9 +37,7 @@ const Clock = () => {
         startTime()
     }, []);
 
-    return <div
-        style={{position: "fixed", right: '25px', top: '20px', color: 'rgb(var(--theme-contrast))', fontSize: '20px', fontWeight: 'bold', zIndex: '20'}}
-        ref={ref}/>
+    return <div style={styles} ref={ref}/>
 }
 
 export default Clock

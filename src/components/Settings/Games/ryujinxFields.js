@@ -20,42 +20,12 @@ const RyujinxFields = ({setGame, game}) => {
             supported_languages: null,
             about_the_game: s.description
         }))
-        electronConnector.nintendoData(s.url).then(({
-                                                        supportedLanguages,
-                                                        description,
-                                                        backgroundColor,
-                                                        productGallery
-                                                    }) => {
-            const movies = [];
-            const screenshots = [];
-
-            productGallery.forEach(e => {
-                if(e.resourceType === 'video'){
-                    movies.push({
-                        webm: {
-                            max: 'https://assets.nintendo.com/video/upload/' + e.publicId
-                        }
-                    })
-                }
-
-                if(e.resourceType === "image"){
-                    screenshots.push({
-                        path_full: 'https://assets.nintendo.com/image/upload/' + e.publicId
-                    })
-                }
+        electronConnector
+            .nintendoData(s.url)
+            .then((nd) => {
+                setGame((g) => ({...g, ...nd}))
+                setTemp([])
             })
-
-            setGame((g) => ({
-                ...g,
-                supported_languages: supportedLanguages.join(', '),
-                about_the_game: description,
-                backgroundColor,
-                screenshots,
-                movies
-            }))
-
-            setTemp([])
-        })
     }
 
     const update = (e) => {
@@ -96,7 +66,7 @@ const RyujinxFields = ({setGame, game}) => {
                    }}
                    children={<ul className={styles.search}>
                        {temp.map(s => (
-                           <li key={s.id} onClick={() => {
+                           <li key={s.nsuid} onClick={() => {
                                getSwitchData(s)
                            }}>
                                <img src={s.image} alt={s.title}/>

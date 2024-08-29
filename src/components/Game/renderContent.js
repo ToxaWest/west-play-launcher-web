@@ -1,7 +1,15 @@
 import styles from "./game.module.scss";
 
-const RenderContent = ({game, lastPlayed, playTime, fields = []}) => {
-    const infoData = [...fields,  {
+const RenderContent = ({game, fields = []}) => {
+
+    const renderDevelopers = (devs) => {
+        if (!devs) {
+            return null
+        }
+        return devs.filter((dev) => dev).join(', ');
+    }
+
+    const infoData = [...fields, {
         label: 'Metacritics',
         value: game.metacritic?.score
     }, {
@@ -10,12 +18,15 @@ const RenderContent = ({game, lastPlayed, playTime, fields = []}) => {
     }, {
         label: 'Controller support',
         value: game.controller_support
+    },{
+        label: 'Players',
+        value: game.players
     }, {
         label: 'PEGI rating',
         value: game.required_age
     }, {
         label: 'Developers',
-        value: game.developers?.map(a => <span key={a}>{a},</span>)
+        value: renderDevelopers(game.developers)
     }, {
         label: 'Languages',
         value: game.supported_languages ? <span dangerouslySetInnerHTML={{__html: game.supported_languages}}/> : null
@@ -36,17 +47,13 @@ const RenderContent = ({game, lastPlayed, playTime, fields = []}) => {
             <div className={styles.info}>
                 {game.img_landscape && <img src={game.img_landscape} alt={'landscape'}/>}
                 <ul>
-                    {infoData.map(({label, value}) => {
-                        if (value) {
-                            return (
-                                <li key={label}>
-                                    <strong>{label}:</strong>
-                                    {value}
-                                </li>
-                            )
-                        }
-                        return null
-                    })}
+                    {infoData.filter(({value}) => Boolean(value))
+                        .map(({label, value}) => (
+                            <li key={label}>
+                                <strong>{label}:</strong>
+                                {value}
+                            </li>
+                        ))}
                 </ul>
             </div>
         </div>
