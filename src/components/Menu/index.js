@@ -30,7 +30,7 @@ const Menu = () => {
                     <Link to="/lastCracked">Last Cracked games</Link>
                 </li>
                 <li>
-                    <Link to="/freeGames">EGS free games</Link>
+                    <Link to="/freeGames">Free games</Link>
                 </li>
                 <li style={{marginTop: 'auto'}}>
                     <Link to="/settings">

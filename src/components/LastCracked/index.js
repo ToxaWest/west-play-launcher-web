@@ -61,7 +61,6 @@ const LastCracked = () => {
                         </li>
                     ))}
                 </ul>
-
             </div>
             {steam && (
                 <>

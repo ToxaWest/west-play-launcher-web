@@ -22,7 +22,8 @@ const electronConnector = {
     crackWatchRequest: (data) => window.electronAPI.crackWatchRequest(data),
     nintendoData: (url) => window.electronAPI.nintendoData(url),
     getFreeGames: (data) => window.electronAPI.getFreeGames(data),
-    saveImage: (data) => window.electronAPI.saveImage(data)
+    saveImage: (data) => window.electronAPI.saveImage(data),
+    openLink: (url) => window.electronAPI.openLink(url)
 };
 
 export default electronConnector;

@@ -12,7 +12,7 @@ const FreeGames = () => {
         }
     })
     useEffect(() => {
-        electronConnector.getFreeGames().then(({data: {Catalog: {searchStore: {elements}}}}) => {
+        electronConnector.getFreeGames().then((elements) => {
             setGames(elements)
             setTimeout(() => {
                 init('#freeGames li')
@@ -20,54 +20,52 @@ const FreeGames = () => {
         })
     }, []);
 
-
-    const getDiscount = ({originalPrice, discount} = {}) => {
-        if (discount === 0 && originalPrice === 0) {
-            return 'Coming soon'
-        }
-        if (originalPrice === discount) {
-            return 'Free now'
-        }
-
-        return 'Status unavailable'
-    }
-
-    const getImage = (keyImages, type) => {
-        if (!keyImages) {
-            return ''
-        }
-        const src = keyImages.find(t => t.type === type);
-        return src?.url || ""
-    }
-
     const renderGame = (game) => {
-
         return (
-            <li key={game.id} tabIndex={1}>
-                <img src={getImage(game.keyImages, "OfferImageTall")}/>
+            <li key={game.containerGameId} tabIndex={1}>
+                <img src={game.image} alt={game.name}/>
             </li>
         )
     }
 
-    const currentGame = () => {
-        return games[currentIndex] || {}
+    const renderTime = ({endTime, startTime}) => {
+        if (endTime) {
+            return (
+                <>
+                    From <strong>{new Date(parseInt(startTime) * 1000).toLocaleDateString()}</strong> to <strong>{new Date(parseInt(endTime) * 1000).toLocaleDateString()}</strong>
+                </>
+            )
+        }
+
+        return <>From <strong>{new Date(parseInt(startTime) * 1000).toLocaleDateString()}</strong> </>
+    }
+
+    const renderDescription = () => {
+        const currentGame = games[currentIndex];
+        if (currentGame) {
+            return (
+                <div className={styles.description}>
+                    <h2>{currentGame.title}</h2>
+                    <h3>{currentGame.shopName}</h3>
+                    <span>{renderTime(currentGame)}</span>
+                    <button onClick={() => {
+                        electronConnector.openLink(currentGame.link)
+                    }}>Open link
+                    </button>
+                </div>
+            )
+        }
+
+        return null
     }
 
     return (
-        <div className={styles.wrapper}
-             style={{backgroundImage: `url(${getImage(currentGame().keyImages, "OfferImageWide")})`}}>
+        <div className={styles.wrapper}>
             <h2>Free Games</h2>
             <ul id="freeGames">
                 {games.map(renderGame)}
             </ul>
-            <div className={styles.description}>
-                <div className={styles.info}>
-                    <span>{getDiscount(currentGame().price?.totalPrice)}</span>
-                </div>
-                <h2>{currentGame().title}</h2>
-                <h3>{currentGame().seller?.name}</h3>
-                {currentGame().description}
-            </div>
+            {renderDescription()}
         </div>
     )
 }
