@@ -37,6 +37,11 @@ const SettingsConfig = () => {
                        value={settings.steam_api_key}
                        onChange={({value, name}) => setSettings((s) => ({...s, [name]: value}))}
                 />
+                <Input label={'EGS profile id (needed for achievements)'}
+                       name="egs_profile"
+                       value={settings.egs_profile}
+                       onChange={({value, name}) => setSettings((s) => ({...s, [name]: value}))}
+                />
                 <Input label={'Library games in row'}
                        name="gamesInRow"
                        type="number"

@@ -26,26 +26,45 @@ const Achievements = () => {
     }
 
     const renderWithEarned = (arr, ach) => {
+        const _earned = {};
+        const earnedList = [];
+        Object.entries(ach).forEach(([key, value]) => {
+            if (value.earned) {
+                _earned[key] = value;
+                earnedList.push(key)
+            }
+        })
         const getObj = (n) => {
-            return arr.find(({name}) => name.toString() === n)
+            return arr.find(({name}) => name.toString() === n) || {}
         }
 
+        const sort = ([_, {earned_time}], [_2, {earned_time: earned_timePrev}]) => earned_time > earned_timePrev ? -1 : 1
+
         return (
-            Object.entries(ach)
-                .sort(([_, {earned_time}], [_2, {earned_time: earned_timePrev}]) => earned_time > earned_timePrev ? -1 : 1)
-                .map(([n, {earned, earned_time, type}]) => {
-                    const {icon, icongray, displayName, description} = getObj(n);
-                    return (
-                        <li key={n} className={(earned ? styles.earned : '') + (type ? ' ' + styles['ach_' + type] : '')}>
-                            <img src={earned ? icon : icongray} alt={n}/>
-                            <div>
-                                <strong>{displayName}</strong>
-                                <span>{description}</span>
-                                {earned_time ? <i>{new Date(earned_time * 1000).toLocaleDateString("en-US")}</i> : null}
-                            </div>
-                        </li>
-                    )
-                })
+            <>
+                {Object.entries(_earned)
+                    .sort(sort)
+                    .map(([n, {earned, earned_time}]) => {
+                        const {icon, displayName, description, name, type} = getObj(n);
+                        if (!name) {
+                            return null
+                        }
+                        return (
+                            <li key={n}
+                                className={(earned ? styles.earned : '') + (type ? ' ' + styles['ach_' + type] : '')}>
+                                <img src={icon} alt={n}/>
+                                <div>
+                                    <strong>{displayName}</strong>
+                                    <span>{description}</span>
+                                    {earned_time ?
+                                        <i>{new Date(earned_time * 1000).toLocaleDateString("en-US")}</i> : null}
+                                </div>
+                            </li>
+                        )
+                    })}
+                {renderTemp(arr.filter(({name}) => !earnedList.includes(name)))}
+            </>
+
         )
     }
 

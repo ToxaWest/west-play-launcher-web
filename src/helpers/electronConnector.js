@@ -23,7 +23,9 @@ const electronConnector = {
     nintendoData: (url) => window.electronAPI.nintendoData(url),
     getFreeGames: (data) => window.electronAPI.getFreeGames(data),
     saveImage: (data) => window.electronAPI.saveImage(data),
-    openLink: (url) => window.electronAPI.openLink(url)
+    openLink: (url) => window.electronAPI.openLink(url),
+    getEpicGamesAchievements: (data) => window.electronAPI.getEpicGamesAchievements(data),
+    getPlayerProfileAchievementsByProductId: (data) => window.electronAPI.getPlayerProfileAchievementsByProductId(data),
 };
 
 export default electronConnector;

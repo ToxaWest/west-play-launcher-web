@@ -37,7 +37,7 @@ const AddGame = ({data, submit, remove}) => {
             return <Rpcs3Fields setGame={setGame} game={game} onChange={onChange}/>
         }
         if(game.source === 'egs'){
-            return <EgsFields game={game} onChange={onChange} setGame={setGame}/>
+            return <EgsFields game={game} onChange={onChange} setGame={setGame} setLoading={setLoading}/>
         }
     }
 

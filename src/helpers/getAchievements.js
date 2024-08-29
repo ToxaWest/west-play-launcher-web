@@ -35,11 +35,37 @@ const parseAchievement = (game, r) => {
 const getAchievements = (id, update = true, callback) => {
     const game = getFromStorage('games').find(({id: gid}) => gid === parseInt(id));
     const achievements = getFromStorage('achievements');
+    const {egs_profile} = getFromStorage('config').settings
 
     if (game.source === 'rpcs3') {
         electronConnector.rpcs3({
             path: game.dataPath
         }).then(data => {
+            if (update) {
+                setToStorage('achievements', {...achievements, [game.id]: data});
+            }
+            if (callback) {
+                callback(data);
+            }
+        })
+        return;
+    }
+
+    if (game.source === 'egs' && egs_profile && game.productId) {
+        electronConnector.getPlayerProfileAchievementsByProductId({
+            epicAccountId: egs_profile,
+            productId: game.productId
+        }).then(r => {
+            if(!r){
+                return
+            }
+            const data = {};
+            r.forEach(({playerAchievement}) => {
+                data[playerAchievement.achievementName] = {
+                    earned: playerAchievement.unlocked,
+                    earned_time: new Date(playerAchievement.unlockDate).getTime() / 1000
+                }
+            })
             if (update) {
                 setToStorage('achievements', {...achievements, [game.id]: data});
             }
@@ -60,10 +86,7 @@ const getAchievements = (id, update = true, callback) => {
                 callback(data);
             }
         })
-        return;
     }
-
-    return;
 }
 
 

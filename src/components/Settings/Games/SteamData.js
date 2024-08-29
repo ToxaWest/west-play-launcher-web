@@ -42,7 +42,7 @@ const SteamData = ({getGamePath, setGame, game}) => {
                 movies,
                 screenshots
             }))
-            if (steam_api_key) {
+            if (steam_api_key && (game.source !== 'egs')) {
                 electronConnector
                     .getSteamAchievements({appID: steamId, apiKey: steam_api_key, lang: currentLang()})
                     .then(({game: g}) => {
