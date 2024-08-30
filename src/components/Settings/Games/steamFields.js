@@ -2,14 +2,31 @@ import Input from "../../Input";
 import electronConnector from "../../../helpers/electronConnector";
 import styles from "../settings.module.scss";
 import SteamData from "./SteamData";
+import {getFromStorage} from "../../../helpers/getFromStorage";
+import {currentLang} from "../../../helpers/locales";
 
-const SteamFields = ({game, onChange, setGame}) => {
+const SteamFields = ({game, onChange, setGame , setLoading}) => {
     const args = game.exeArgs || {};
+    const {steam_api_key} = getFromStorage('config').settings;
 
     const getExePath = (key) => {
         electronConnector.getFile().then(achPath => {
             setGame(g => ({...g, [key]: achPath}))
         })
+    }
+
+    const getAchievements = () => {
+        const {steamId} = game;
+        if (steamId && steam_api_key) {
+            setLoading(true)
+            electronConnector
+                .getSteamAchievements({appID: steamId, apiKey: steam_api_key, lang: currentLang(), id: game.id})
+                .then((achievements) => {
+                    setGame(g => ({...g, achievements}))
+                    setLoading(false)
+                })
+        }
+
     }
 
     return (
@@ -27,6 +44,7 @@ const SteamFields = ({game, onChange, setGame}) => {
                    name='exePath'>
                 <button onClick={() => getExePath('exePath')}>Get EXE Path</button>
             </Input>
+            {(steam_api_key && game.steamId) && <button onClick={getAchievements}>Get achievements</button>}
             <div className={styles.argsWrapper}>
                 <button onClick={() => {
                     onChange({

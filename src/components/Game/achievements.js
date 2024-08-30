@@ -12,7 +12,9 @@ const Achievements = () => {
     );
 
     const renderTemp = (arr) => arr.map((achievement) => (
-        <li key={achievement.name}>
+        <li key={achievement.name} onClick={() => {
+            new Notification(achievement.displayName, {body: achievement.description, icon: achievement.icon});
+        }}>
             <img src={achievement.icongray} alt={achievement.name}/>
             <div>
                 <strong>{achievement.displayName}</strong>

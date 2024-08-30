@@ -28,7 +28,7 @@ const AddGame = ({data, submit, remove}) => {
 
     const renderByType = () => {
         if (game.source === 'steam') {
-            return <SteamFields game={game} onChange={onChange} setGame={setGame}/>
+            return <SteamFields game={game} onChange={onChange} setGame={setGame} setLoading={setLoading}/>
         }
         if (game.source === 'ryujinx') {
             return <RyujinxFields setGame={setGame} game={game} onChange={onChange}/>

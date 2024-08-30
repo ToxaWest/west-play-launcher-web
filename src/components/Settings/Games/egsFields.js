@@ -1,6 +1,7 @@
 import electronConnector from "../../../helpers/electronConnector";
 import formatBytes from "../../../helpers/formatSize";
 import SteamData from "./SteamData";
+import Input from "../../Input";
 
 const EgsFields = ({game, setGame, setLoading}) => {
 
@@ -16,7 +17,7 @@ const EgsFields = ({game, setGame, setLoading}) => {
         if (sandboxId) {
             setLoading(true);
             electronConnector.getEpicGamesAchievements({sandboxId}).then(({achievements: r, productId}) => {
-                if(!r){
+                if (!r) {
                     setGame(g => ({...g, achievements: null, sandboxId, achPath: null}))
                     setLoading(false)
                     return;
@@ -50,7 +51,14 @@ const EgsFields = ({game, setGame, setLoading}) => {
     }
 
     return (
-        <SteamData game={game} setGame={setGame} getGamePath={getGamePath}/>
+        <>
+            <SteamData game={game} setGame={setGame}/>
+            <Input label='Path'
+                   value={game.path}
+                   name='path'>
+                <button onClick={() => getGamePath()}>Get Folder</button>
+            </Input>
+        </>
     )
 }
 

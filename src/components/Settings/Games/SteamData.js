@@ -3,11 +3,9 @@ import electronConnector from "../../../helpers/electronConnector";
 import styles from "../settings.module.scss";
 import {currentLang} from "../../../helpers/locales";
 import {useState} from "react";
-import {getFromStorage} from "../../../helpers/getFromStorage";
 
-const SteamData = ({getGamePath, setGame, game}) => {
+const SteamData = ({setGame, game}) => {
     const [temp, setTemp] = useState([]);
-    const {steam_api_key} = getFromStorage('config').settings;
     const getSteamData = (steamId) => {
         electronConnector.getSteamData({
             appID: steamId,
@@ -42,17 +40,7 @@ const SteamData = ({getGamePath, setGame, game}) => {
                 movies,
                 screenshots
             }))
-            if (steam_api_key && (game.source !== 'egs')) {
-                electronConnector
-                    .getSteamAchievements({appID: steamId, apiKey: steam_api_key, lang: currentLang()})
-                    .then(({game: g}) => {
-                        const achievements = g?.availableGameStats?.achievements;
-                        setGame(g => ({...g, achievements}))
-                        setTemp([])
-                    })
-            } else {
-                setTemp([])
-            }
+            setTemp([])
         })
     }
 
@@ -62,7 +50,6 @@ const SteamData = ({getGamePath, setGame, game}) => {
             setGame(g => ({...g, imageName}))
         })
     }
-
 
     return (
         <>
@@ -81,13 +68,6 @@ const SteamData = ({getGamePath, setGame, game}) => {
                        )}
                    </ul>}
                    name='search'/>
-            {getGamePath ? (
-                <Input label='Path'
-                       value={game.path}
-                       name='path'>
-                    <button onClick={() => getGamePath()}>Get Folder</button>
-                </Input>
-            ) : null}
             <Input label='imageName'
                    value={game.imageName}
                    disabled={true}
