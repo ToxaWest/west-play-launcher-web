@@ -35,14 +35,11 @@
       strong {
         color: #00b100;
       }
-      img {
-        filter: none;
-      }
     }
 
     img {
-      filter: grayscale(1);
       width: 120px;
+      height: 120px;
     }
 
     strong, i, span {

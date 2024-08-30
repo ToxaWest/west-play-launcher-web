@@ -44,10 +44,8 @@ const useAchievementsWatcher = (id) => {
                 checker(getFromStorage('achievements')[id], 0)
             }, trackTime)
         }
-        if(game.source === 'egs' && achievements && game.productId){
-            interval.current = setInterval(() => {
-                checker(getFromStorage('achievements')[id], 0)
-            }, trackTime * 5)
+        if(game.source === 'egs'){
+            getAchievements(id, true)
         }
     }
 

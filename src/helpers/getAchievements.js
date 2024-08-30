@@ -3,29 +3,33 @@ import {getFromStorage, setToStorage} from "./getFromStorage";
 
 const parseAchievement = (game, r) => {
     if (game.achPath.endsWith('achievements.json')) {
-        return JSON.parse(r)
+        const _earned = JSON.parse(r);
+        return Object.entries(_earned).reduce((acc, [key, value]) => {
+            if (value.earned) {
+                acc[key] = value
+            }
+            return acc
+        }, {})
     }
     if (game.achPath.endsWith('achievements.ini')) {
-        const result = {};
-        game.achievements.forEach(ach => {
-            result[ach.name] = {
-                earned: false,
-                earned_time: 0
-            }
-        })
-        r.split(`\r\n\r\n`)
-            .forEach(a => {
-                if (a) {
-                    const ach = a.split(`\r\n`);
-                    if (ach[0] !== '[SteamAchievements]') {
-                        result[ach[0].replace('[', '').replace(']', '')] = {
-                            earned: true,
-                            earned_time: parseInt(ach[4].split('=')[1])
-                        }
+        const parse = ([name, ...data]) => data.reduce((acc, value) => {
+            const [k, v] = value.split('=');
+            acc[k] = parseInt(v) || v
+            return acc;
+        }, {name: name.replace('[', '').replace(']', '')})
+
+        return r.split(`\r\n\r\n`).reduce((acc, a) => {
+            if (a) {
+                const {name, Achieved, UnlockTime} = parse(a.split(`\r\n`));
+                if (name !== 'SteamAchievements') {
+                    acc[name] = {
+                        earned: Boolean(Achieved),
+                        earned_time: UnlockTime
                     }
                 }
-            })
-        return result;
+            }
+            return acc;
+        }, {})
     }
 
     return null
@@ -35,17 +39,27 @@ const parseAchievement = (game, r) => {
 const getAchievements = (id, update = true, callback) => {
     const game = getFromStorage('games').find(({id: gid}) => gid === parseInt(id));
     const achievements = getFromStorage('achievements');
-    const {egs_profile} = getFromStorage('config').settings
+    const {egs_profile} = getFromStorage('config').settings;
+
+    if (!game.achievements) {
+        return;
+    }
 
     if (game.source === 'rpcs3') {
         electronConnector.rpcs3({
             path: game.dataPath
         }).then(data => {
+            const _earned = Object.entries(data).reduce((acc, [key, value]) => {
+                if (value.earned) {
+                    acc[key] = value
+                }
+                return acc
+            }, {})
             if (update) {
-                setToStorage('achievements', {...achievements, [game.id]: data});
+                setToStorage('achievements', {...achievements, [game.id]: _earned});
             }
             if (callback) {
-                callback(data);
+                callback(_earned);
             }
         })
         return;
@@ -56,21 +70,21 @@ const getAchievements = (id, update = true, callback) => {
             epicAccountId: egs_profile,
             productId: game.productId
         }).then(r => {
-            if(!r){
+            if (!r) {
                 return
             }
-            const data = {};
-            r.forEach(({playerAchievement}) => {
-                data[playerAchievement.achievementName] = {
+            const _data = r.reduce((acc, {playerAchievement}) => {
+                acc[playerAchievement.achievementName] = {
                     earned: playerAchievement.unlocked,
                     earned_time: new Date(playerAchievement.unlockDate).getTime() / 1000
                 }
-            })
+                return acc
+            }, {})
             if (update) {
-                setToStorage('achievements', {...achievements, [game.id]: data});
+                setToStorage('achievements', {...achievements, [game.id]: _data});
             }
             if (callback) {
-                callback(data);
+                callback(_data);
             }
         })
         return;
