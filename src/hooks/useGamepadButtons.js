@@ -5,13 +5,12 @@ import useNotification from "./useNotification";
 const keyMapping = ['a', 'b', 'x', 'y', 'lb', 'rb', 'lt', 'rt', 'options', 'select', 'l3', 'r3', 'top', 'bottom', 'left', 'right', 'home']
 
 const sound = {
-    'top': 'move',
-    'bottom': 'move',
-    'left': 'move',
-    'right': 'move',
-    'a': 'select',
-    'b': 'back',
-    'select': 'switchup'
+    'top': 'Focus',
+    'bottom': 'Focus',
+    'left': 'Focus',
+    'right': 'Focus',
+    'a': 'Invoke',
+    'b': 'back'
 }
 
 const useGamepadButtons = () => {
@@ -91,12 +90,10 @@ const useGamepadButtons = () => {
     }
 
     useEffect(() => {
-        const audio = new Audio('/assets/sound/ui/swits.mp3')
 
         electronConnector.onVisibilityChange(setVisible)
         window.addEventListener("gamepadconnected", (e) => {
             if (!connectedRef.current) {
-                audio.play()
                 connectedRef.current = e.gamepad.id
                 notifications({
                     img: '/assets/controller/xbox-control-for-one.svg',
