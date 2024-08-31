@@ -25,6 +25,7 @@ const electronConnector = {
     saveImage: (data) => window.electronAPI.saveImage(data),
     openLink: (url) => window.electronAPI.openLink(url),
     getEpicGamesAchievements: (data) => window.electronAPI.getEpicGamesAchievements(data),
+    changeTheme: (data) => window.electronAPI.changeTheme(data),
     getPlayerProfileAchievementsByProductId: (data) => window.electronAPI.getPlayerProfileAchievementsByProductId(data),
 };
 

@@ -1,6 +1,4 @@
 .wrapper {
-  background-color: rgba(var(--theme-color), 0.35);
-  border-right: 3px solid rgba(var(--theme-color), 0.3);
   height: 100%;
   padding: 4px;
 
@@ -17,6 +15,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    align-items: start;
     height: 100%;
   }
 
@@ -24,17 +23,18 @@
     display: flex;
     align-items: center;
     padding: 1vh 3vh;
-    background-color: rgba(var(--theme-color), 0.2);
-    border-radius: 4px;
-    color: rgba(var(--theme-contrast), 0.5);
+    min-width: 30vw;
+    background-color: var(--button-bg-color);
+    border-radius: var(--border-radius);
+    color: var(--theme-text-color-seconary);
     font-size: 4.5vh;
 
     transition: all 0.2s ease-in;
     &:focus, &:active {
       border: none;
-      color: rgb(var(--theme-contrast));
+      color: var(--theme-text-color);
       padding-left: 5vh;
-      background-color: rgba(var(--theme-contrast), 0.1);
+      background-color: var(--button-bg-color-hover);
       outline: none;
       img {
         opacity: 1;

@@ -4,12 +4,12 @@
 
 .list {
   width: 90vw;
-  background-color: rgba(var(--theme-contrast), 0.1);
+  background-color: var(--theme-secondary);
   padding: 15px;
   margin: 15px auto;
   list-style: none;
   gap: 0;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   display: grid;
   grid-template-columns: repeat(var(--games-in-row), 1fr);
 
@@ -22,13 +22,13 @@
       padding: 0;
       outline: none;
       img {
-        border-color: #f0f0f0;
+        border-color: var(--theme-text-color-seconary);
       }
     }
   }
 
   img {
-    border-radius: .5vw;
+    border-radius: var(--border-radius);
     border: 2px solid transparent;
     overflow: hidden;
     display: block;

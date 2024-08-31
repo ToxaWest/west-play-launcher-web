@@ -4,7 +4,7 @@ const styles = {
     position: "fixed",
     right: '25px',
     top: '20px',
-    color: 'rgb(var(--theme-contrast))',
+    color: 'var(--theme-text-color)',
     fontSize: '20px',
     fontWeight: 'bold',
     zIndex: '20'

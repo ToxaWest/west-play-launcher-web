@@ -1,7 +1,7 @@
 .wrapper {
   display: flex;
   padding-bottom: 50px;
-  background-color: rgb(var(--theme-color));
+  background-color: var(--theme-color);
   min-height: 100vh;
 }
 

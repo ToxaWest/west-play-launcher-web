@@ -5,12 +5,13 @@ import useNotification from "./useNotification";
 const keyMapping = ['a', 'b', 'x', 'y', 'lb', 'rb', 'lt', 'rt', 'options', 'select', 'l3', 'r3', 'top', 'bottom', 'left', 'right', 'home']
 
 const sound = {
-    'top': 'Focus',
-    'bottom': 'Focus',
-    'left': 'Focus',
-    'right': 'Focus',
-    'a': 'Invoke',
-    'b': 'back'
+    'top': 'move',
+    'bottom': 'move',
+    'left': 'move',
+    'right': 'move',
+    'a': 'select',
+    'b': 'back',
+    'select': 'switchup'
 }
 
 const useGamepadButtons = () => {
@@ -21,7 +22,7 @@ const useGamepadButtons = () => {
 
     const sendEvent = (detail) => {
         if (sound[detail]) {
-            const audio = document.getElementById('sound-' + sound[detail]);
+            const audio = new Audio('/assets/sound/ui/' + sound[detail] + '.mp3');
             audio.play()
         }
         const body = document.querySelector('html');

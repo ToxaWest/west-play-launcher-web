@@ -1,9 +1,25 @@
 :root {
-  --theme-color: 33, 33, 33;
-  --theme-contrast: 255, 255, 255;
+  --theme-color: rgb(255,255,255);
+  --theme-color-transparent: rgb(255, 255, 255, 0.5);
+  --theme-secondary: rgb(210, 207, 201);
+  --theme-text-color: rgb(26, 27, 30);
+  --theme-text-color-seconary: rgba(26, 27, 30, 0.65);
+  --border-radius: 4px;
+  --button-bg-color: rgb(183, 177, 167);
+  --button-bg-color-hover: rgb(148, 138, 123);
+}
 
-  /*--theme-contrast: 240,240,240;*/
-  /*--theme-color: 38, 38, 38;*/
+@media (prefers-color-scheme: dark){
+  :root {
+    --theme-color: rgb(26, 27, 30);
+    --theme-color-transparent: rgb(26, 27, 30, 0.5);
+    --theme-secondary: rgb(45, 48, 54);
+    --theme-text-color: rgb(255, 255, 255);
+    --theme-text-color-seconary: rgba(255, 255, 255, 0.65);
+    --border-radius: 4px;
+    --button-bg-color: rgb(72, 78, 88);
+    --button-bg-color-hover: rgb(107, 117, 132);
+  }
 }
 
 * {
@@ -12,11 +28,11 @@
 
 body {
   margin: 0;
-  font-family: Bahnschrift;
+  font-family: Bahnschrift, system-ui;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: transparent;
-  color: rgb(var(--theme-contrast));
+  background-color: var(--theme-color);
+  color: var(--theme-text-color);
 }
 
 ::-webkit-scrollbar {
@@ -24,49 +40,44 @@ body {
 }
 
 a {
-  color: rgba(var(--theme-contrast), .9);
+  color: var(--theme-text-color);
   text-decoration: none;
 }
 
 label {
   display: flex;
-  background-color: rgba(var(--theme-contrast), 0.2);
+  background-color: var(--theme-color-transparent);
   padding: 5px 15px;
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  border-radius: 3px;
+  border-radius: var(--border-radius);
 }
 
 label input {
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   padding: 10px 15px;
-  color: rgb(var(--theme-contrast));
-  border: 1px solid #4b4b4b;
+  color: var(--theme-text-color);
+  border: 1px solid var(--theme-text-color-seconary);
   background-color: transparent;
 }
 
 input::placeholder {
-  color: #aaaaaa;
+  color: var(--theme-text-color-seconary);
 }
 
 button {
-  color: rgb(var(--theme-contrast));
+  color: var(--theme-text-color);
   outline: none;
-  border: 1px solid rgba(var(--theme-contrast), 0.4);
-  background-color: rgba(var(--theme-contrast), 0.1);
-  padding: 10px 20px;
+  background-color: var(--button-bg-color);
+  padding: .5vw 1vw;
   margin: 8px 0;
-  border-radius: 5px;
+  border: none;
+  border-radius: var(--border-radius);
+  transition: background-color 0.2s;
 }
 
 button:hover, button:focus {
   cursor: pointer;
-  background-color: rgba(var(--theme-contrast), 0.3);
-}
-
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  background-color: var(--button-bg-color-hover);
 }

@@ -13,15 +13,8 @@ const Menu = () => {
     })
 
     useEffect(() => {
-        const audio = document.getElementById('sound-OverlayIn')
-        const audio2 = document.getElementById('sound-OverlayOut')
-        audio.play();
-
         init('#main-menu a');
         setActiveIndex(0)
-        return () => {
-            audio2.play();
-        }
     }, []);
 
     return (

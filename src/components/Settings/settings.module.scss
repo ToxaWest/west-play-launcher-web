@@ -10,7 +10,7 @@
     padding: 5px 15px;
     border-bottom: 1px solid transparent;
     &.navActive {
-      border-bottom-color: rgb(var(--theme-contrast));
+      border-bottom-color: var(--theme-text-color);
     }
     &:focus {
       outline: none;
@@ -24,8 +24,12 @@
 .settingsHome {
   display: flex;
   flex-direction: column;
+  align-items: start;
   button {
-    font-size: 4.5vh;
+    font-weight: bolder;
+    font-size: 3.5vh;
+    min-width: 25vw;
+    text-align: left;
   }
 }
 
@@ -59,16 +63,18 @@
 
 .block {
   padding: 15px;
-  border-radius: 3px;
-  background-color: rgba(var(--theme-contrast), 0.1);
+  border-radius: var(--border-radius);
+  background-color: var(--theme-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 
   summary {
     cursor: pointer;
     font-size: 18px;
-    margin: 0;
-    margin-bottom: 10px;
+    margin: 0 0 10px;
     padding-bottom: 5px;
-    border-bottom: 1px solid rgba(var(--theme-contrast), 0.1);
+    border-bottom: 1px solid var(--theme-text-color-seconary);
   }
 }
 
@@ -83,17 +89,14 @@
       display: flex;
     }
     button {
-      margin: 2px;
-      padding: 5px 10px;
-      font-size: 12px;
-      margin-left: auto;
+      margin: 2px 2px 2px auto;
     }
   }
 
 }
 
 .addImage {
-  background-color: rgba(var(--theme-contrast), 0.2);
+  background-color: var(--theme-color-transparent);
   padding: 5px 15px;
 
   &Field {
@@ -114,9 +117,8 @@
     flex-direction: column;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(5, 1fr);
-    background-color: rgba(var(--theme-contrast), 0.1);
     padding: 8px;
-    border-radius: 3px;
+    border-radius: var(--border-radius);
     gap: 10px;
     margin: 15px 0;
     list-style: none;
@@ -139,12 +141,15 @@
     img {
       max-width: 130px;
     }
-    gap: 8px;
+    gap: 5px;
     display: flex;
     padding: 3px;
-    border-radius: 3px;
+    border-radius: var(--border-radius);
     cursor: pointer;
-    background-color: rgba(var(--theme-contrast), 0.1);
+    background-color: var(--theme-color-transparent);
     align-items: center;
+    &:hover {
+      background-color: var(--theme-color);
+    }
   }
 }

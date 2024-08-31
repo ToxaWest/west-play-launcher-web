@@ -31,6 +31,17 @@ const SettingsHome = () => {
                 }}>External Monitor
                 </button>
             </div>
+            <div className={styles.settingsHome}>
+                <h2>Change theme</h2>
+                <button onClick={() => {
+                    electronConnector.changeTheme('light')
+                }}>Light
+                </button>
+                <button onClick={() => {
+                    electronConnector.changeTheme('dark')
+                }}>Dark
+                </button>
+            </div>
         </div>
     )
 }

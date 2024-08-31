@@ -54,7 +54,7 @@
 }
 
 .contentWrapper {
-  background-color: rgba(var(--theme-color), 0.9);
+  background-color: var(--theme-color-transparent);
   width: 320px;
   padding: 10px 20px;
   text-transform: uppercase;

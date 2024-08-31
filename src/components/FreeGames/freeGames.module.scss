@@ -9,13 +9,11 @@
     width: 100vw;
     padding: 2vw 5vw;
     overflow-x: auto;
-    background-color: rgba(var(--theme-color), 0.3);
-    border-radius: 4px;
     list-style: none;
     display: flex;
     align-items: center;
     gap: 16px;
-
+    background-color: var(--theme-color-transparent);
     li {
       position: relative;
       display: flex;
@@ -28,7 +26,7 @@
         width: auto;
         height: 94%;
         transition: all .3s ease-in-out;
-        border-radius: 8px;
+        border-radius: var(--border-radius);
         overflow: hidden;
       }
 
@@ -49,8 +47,8 @@
 
 .description {
   padding: 1vw;
-  border-radius: .5vw;
-  background-color: rgba(var(--theme-color), 0.3);
+  border-radius: var(--border-radius);
+  background-color: var(--theme-color-transparent);
   width: 100%;
   max-width: 90vw;
   margin: auto;
@@ -70,7 +68,7 @@
 
   h3 {
     font-size: 18px;
-    color: rgba(var(--theme-contrast), 0.4);
+    color: var(--theme-text-color-seconary);
     display: flex;
     align-items: center;
     gap: 1vw;
@@ -82,17 +80,14 @@
 
   span {
     font-size: 18px;
-    color: rgba(var(--theme-contrast), 0.4);
+    color: var(--theme-text-color-seconary);
     strong {
-      color: #fff;
+      color: var(--theme-text-color);
       font-size: 20px;
     }
   }
 
   a {
     padding: .5vw 1vw;
-    border-radius: .5vw;
-    border: 1px solid rgb(var(--theme-contrast));
   }
-
 }
