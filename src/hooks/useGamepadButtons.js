@@ -21,7 +21,7 @@ const useGamepadButtons = () => {
 
     const sendEvent = (detail) => {
         if (sound[detail]) {
-            const audio = new Audio('/assets/sound/ui/' + sound[detail] + '.mp3');
+            const audio = document.getElementById('sound-' + sound[detail]);
             audio.play()
         }
         const body = document.querySelector('html');
