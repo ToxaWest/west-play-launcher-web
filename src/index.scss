@@ -8,7 +8,6 @@
 
 * {
   box-sizing: border-box;
-  scroll-behavior: smooth;
 }
 
 body {
@@ -20,7 +19,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: transparent;
   color: rgb(var(--theme-contrast));
-  scroll-behavior: smooth;
 }
 
 ::-webkit-scrollbar {

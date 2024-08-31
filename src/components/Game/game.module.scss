@@ -4,7 +4,8 @@
 }
 
 .achWrapper {
-
+  position: relative;
+  z-index: 2;
 }
 
 .achList {
@@ -65,6 +66,7 @@
 .heading {
   position: relative;
   height: 32.3vw;
+  margin-bottom: calc(-61px - 5vw);
 
   &:before {
     content: '';
@@ -72,21 +74,22 @@
     width: 100%;
     height: 100%;
     z-index: 1;
-    background: linear-gradient(transparent, transparent, 80%, rgba(var(--theme-color), 1));
-  }
-
-  img {
-    max-width: 100%;
-
+    background: linear-gradient(transparent, transparent, 65%, rgba(var(--theme-color), 1));
   }
 }
 
+.hero {
+  max-width: 100%;
+}
+
 .logo {
-  max-width: 350px;
-  width: 25vw;
+  max-width: 25vw;
+  width: auto;
   position: absolute;
   z-index: 2;
-  bottom: 5vw;
+  height: auto;
+  bottom: calc(8vw + 60px);
+  max-height: calc(100% - 60px - 10vw);
   left: 5vw;
 }
 
@@ -97,6 +100,8 @@
   display: flex;
   align-items: start;
   gap: 1vw;
+  position: relative;
+  z-index: 2;
 }
 
 .info {
@@ -273,6 +278,8 @@
 
 .media {
   width: 100vw;
+  position: relative;
+  z-index: 2;
   height: calc(100vw * (9/16));
   margin-bottom: -50px;
   video, img {

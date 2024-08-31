@@ -1,12 +1,14 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import electronConnector from "../../helpers/electronConnector";
 import styles from './freeGames.module.scss';
 import useAppControls from "../../hooks/useAppControls";
+import getColor from "../../helpers/getColor";
 
 const disabledStores = ["109"]
 
 const FreeGames = () => {
     const [games, setGames] = useState([]);
+    const wrapperRef = useRef(null);
     const {init, currentIndex} = useAppControls({
         map: {
             'left': (i) => i - 1,
@@ -25,7 +27,10 @@ const FreeGames = () => {
     const renderGame = (game) => {
         const img = game.image.split('_')[0] + '_616xr353.jpg'
         return (
-            <li key={game.containerGameId} tabIndex={1}>
+            <li key={game.containerGameId} tabIndex={1} onFocus={(e) => {
+                const color = getColor(e.target.children[0])
+                wrapperRef.current.style.backgroundColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
+            }}>
                 <img src={img} alt={game.name}/>
             </li>
         )
@@ -71,7 +76,7 @@ const FreeGames = () => {
     }
 
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} ref={wrapperRef}>
             <h2>Free Games ({games.length})</h2>
             <ul id="freeGames">
                 {games.map(renderGame)}

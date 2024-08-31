@@ -15,7 +15,6 @@ import GameContent from "./components/Game/content";
 import Achievements from "./components/Game/achievements";
 import initLocalStorage from "./helpers/initLocalStorage";
 import Menu from "./components/Menu";
-import smoothscroll from 'smoothscroll-polyfill';
 import SettingsConfig from "./components/Settings/Config/settingsConfig";
 import SettingsGames from "./components/Settings/Games/settingsGames";
 import SettingsHome from "./components/Settings/Home/settingsHome";
@@ -73,7 +72,6 @@ const router = createBrowserRouter([
 ]);
 
 initLocalStorage();
-smoothscroll.polyfill();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

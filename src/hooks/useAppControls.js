@@ -1,5 +1,4 @@
 import {useEffect, useRef, useState} from "react";
-
 const useAppControls = ({map}) => {
     const ref = useRef([]);
     const selected = useRef(0);
@@ -13,7 +12,7 @@ const useAppControls = ({map}) => {
     }
 
     const focus = (i) => {
-        if(ref.current[i]){
+        if (ref.current[i]) {
             ref.current[i].scrollIntoView({
                 inline: 'center',
                 block: 'center',

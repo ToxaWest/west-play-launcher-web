@@ -23,7 +23,7 @@ const Game = () => {
         <div className={styles.wrapper}>
             <div className={styles.heading}>
                 <img src={game.img_logo} className={styles.logo} alt={'logo'}/>
-                <img src={game.img_hero} alt={game.name}/>
+                <img src={game.img_hero} className={styles.hero} alt={game.name}/>
             </div>
             <GameActions game={game}/>
             <Outlet/>
