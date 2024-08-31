@@ -22,7 +22,9 @@ const Game = () => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.heading}>
-                <img src={game.img_logo} className={styles.logo} alt={'logo'}/>
+                <div className={styles.logo}>
+                    <img src={game.img_logo}  alt={'logo'}/>
+                </div>
                 <img src={game.img_hero} className={styles.hero} alt={game.name}/>
             </div>
             <GameActions game={game}/>
