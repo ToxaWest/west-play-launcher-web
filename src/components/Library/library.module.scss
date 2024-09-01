@@ -5,8 +5,8 @@
 .list {
   width: 90vw;
   background-color: var(--theme-secondary);
-  padding: 15px;
-  margin: 15px auto;
+  padding: var(--gap);
+  margin: var(--gap-half) auto;
   list-style: none;
   gap: 0;
   border-radius: var(--border-radius);
@@ -15,9 +15,10 @@
 
   li {
     display: block;
-    padding: 6px;
+    padding: var(--gap-half);
     height: calc(((90vw - 30px) / var(--games-in-row)) * 1.5);
     transition: padding 0.2s ease-in-out;
+    cursor: pointer;
     &:focus, &:hover {
       padding: 0;
       outline: none;

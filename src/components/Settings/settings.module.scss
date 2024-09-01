@@ -1,13 +1,13 @@
 .navigation {
   max-width: 80vw;
-  margin: 15px auto;
+  margin: var(--gap) auto;
   display: flex;
-  gap: 10px;
+  gap: var(--gap-half);
   align-items: center;
   justify-content: center;
 
   a {
-    padding: 5px 15px;
+    padding: var(--padding);
     border-bottom: 1px solid transparent;
     &.navActive {
       border-bottom-color: var(--theme-text-color);
@@ -18,7 +18,7 @@
   }
 
   img {
-    margin: 15px;
+    margin: var(--gap);
   }
 }
 .settingsHome {
@@ -35,10 +35,10 @@
 
 .wrapper {
   max-width: 80vw;
-  margin: 15px auto;
+  margin: var(--gap) auto;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--gap);
   max-height: 100%;
 
   ul {
@@ -46,8 +46,8 @@
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin: 8px 0;
+    gap: var(--gap-half);
+    margin: var(--gap-half) 0;
 
     summary {
       font-size: 16px;
@@ -56,35 +56,35 @@
     li details > div {
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: var(--gap-half);
     }
   }
 }
 
 .block {
-  padding: 15px;
+  padding: var(--gap);
   border-radius: var(--border-radius);
   background-color: var(--theme-secondary);
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: var(--gap-half);
 
   summary {
     cursor: pointer;
     font-size: 18px;
-    margin: 0 0 10px;
-    padding-bottom: 5px;
+    margin: 0 0 var(--gap-half);
+    padding-bottom: var(--gap-half);
     border-bottom: 1px solid var(--theme-text-color-seconary);
   }
 }
 
 .argsWrapper {
-  margin: 10px 0;
+  margin: var(--gap-half) 0;
   span {
     font-size: 13px;
   }
   label {
-    padding: 2px 15px;
+    padding: var(--padding);
     div {
       display: flex;
     }
@@ -97,7 +97,7 @@
 
 .addImage {
   background-color: var(--theme-color-transparent);
-  padding: 5px 15px;
+  padding: var(--padding);
 
   &Field {
     display: flex;
@@ -119,8 +119,8 @@
     grid-template-rows: repeat(5, 1fr);
     padding: 8px;
     border-radius: var(--border-radius);
-    gap: 10px;
-    margin: 15px 0;
+    gap: var(--gap-half);
+    margin: var(--gap) 0;
     list-style: none;
 
     &:empty {
@@ -141,9 +141,9 @@
     img {
       max-width: 130px;
     }
-    gap: 5px;
+    gap: var(--gap-half);
     display: flex;
-    padding: 3px;
+    padding: var(--gap-half);
     border-radius: var(--border-radius);
     cursor: pointer;
     background-color: var(--theme-color-transparent);

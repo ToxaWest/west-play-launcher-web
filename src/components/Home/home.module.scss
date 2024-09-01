@@ -25,7 +25,7 @@
   position: relative;
 
   ul {
-    padding: 1vw 5vw;
+    padding: var(--padding);
     margin: auto;
     position: absolute;
     z-index: 2;
@@ -45,7 +45,7 @@
       justify-content: center;
       height: 25vw;
       position: relative;
-      padding: .5vw;
+      padding: var(--gap-half);
       transition: padding .3s ease-in-out;
 
       img {

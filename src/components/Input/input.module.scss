@@ -19,7 +19,7 @@
 .select {
   position: relative;
   border-radius: var(--border-radius);
-  padding: 7px 15px;
+  padding: var(--padding);
   color: var(--theme-text-color);
   border: 1px solid var(--theme-text-color-seconary);
   background-color: transparent;
@@ -33,15 +33,15 @@
     left: 0;
     min-width: 100%;
     background-color: var(--theme-secondary);
-    padding: 3px;
+    padding: var(--gap-half);
     z-index: 1;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: var(--gap-half);
     li {
       font-size: 12px;
       cursor: pointer;
-      padding: 3px 15px;
+      padding: var(--padding);
       &:hover {
         background-color: var(--theme-color-transparent);
       }

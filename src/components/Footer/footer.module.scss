@@ -4,12 +4,12 @@
   width: 100%;
   height: 50px;
   bottom: 0;
-  padding: 0 15px;
+  padding: 0 var(--gap);
   background-color: var(--theme-color-transparent);
   border-top: 1px solid var(--theme-secondary);
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: var(--gap);
   transition: opacity 0.3s ease-in;
   z-index: 3;
   &>div {

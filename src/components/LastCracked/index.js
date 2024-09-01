@@ -81,7 +81,9 @@ const LastCracked = () => {
                     }, {
                         label: 'Torrent (not recommended)',
                         value: currentGame.torrent_link ?
-                            <a href={currentGame.torrent_link} target="_blank">Link</a> : null
+                            <div onClick={() => {
+                                electronConnector.openLink(currentGame.torrent_link)
+                            }}>Link</div> : null
                     }, {
                         label: 'Cracked',
                         value: new Date(currentGame.crack_date).toLocaleDateString()

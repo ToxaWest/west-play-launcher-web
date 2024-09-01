@@ -1,10 +1,10 @@
 .wrapper {
   height: 100%;
-  padding: 4px;
+  padding: var(--gap-half);
 
   img {
     height: 4vh;
-    margin-right: 2vw;
+    margin-right: var(--gap);
     opacity: .5;
   }
 
@@ -14,7 +14,7 @@
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--gap);
     align-items: start;
     height: 100%;
   }
@@ -22,7 +22,7 @@
   a {
     display: flex;
     align-items: center;
-    padding: 1vh 3vh;
+    padding: var(--padding);
     min-width: 30vw;
     background-color: var(--button-bg-color);
     border-radius: var(--border-radius);

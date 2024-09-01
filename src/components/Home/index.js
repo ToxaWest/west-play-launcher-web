@@ -19,8 +19,11 @@ const Home = () => {
 
     useEffect(() => {
         init('#game-list li')
-        setActiveIndex(prevPath?.index || 0)
-        setPrevPath(null)
+        setTimeout(() => {
+            setActiveIndex(prevPath?.index || 0)
+            setPrevPath(null)
+        }, 100)
+
     }, []);
 
     const games = getFromStorage('games');

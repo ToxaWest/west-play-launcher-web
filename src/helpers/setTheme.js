@@ -2,8 +2,6 @@ const setTheme = (main = {r: 26, g: 27, b: 30}) => {
 
     const isDark = (((main.r * 299) + (main.g * 587) + (main.b * 114)) / 1000) < 65;
 
-    console.log(isDark)
-
     const getSecondary = (isDark) => {
         if (isDark) {
             return `rgb(${main.r + 19}, ${main.g + 21}, ${main.b + 24})`;

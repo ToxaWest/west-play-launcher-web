@@ -2,8 +2,8 @@ import {useEffect, useRef} from "react";
 
 const styles = {
     position: "fixed",
-    right: '25px',
-    top: '20px',
+    right: 'var(--gap)',
+    top: 'var(--gap)',
     color: 'var(--theme-text-color)',
     fontSize: '20px',
     fontWeight: 'bold',
@@ -15,13 +15,10 @@ const Clock = () => {
 
     function startTime() {
         const today = new Date();
-        let h = today.getHours();
-        let m = today.getMinutes();
-        let s = today.getSeconds();
-        m = checkTime(m);
-        s = checkTime(s);
+        const h = today.getHours();
+        const m = checkTime(today.getMinutes());
         if (ref.current) {
-            ref.current.innerHTML = h + ":" + m + ":" + s;
+            ref.current.innerHTML = h + ":" + m;
         }
         setTimeout(startTime, 1000);
     }

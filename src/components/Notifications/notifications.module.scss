@@ -18,7 +18,7 @@
 }
 
 .content {
-  gap: 3px;
+  gap: var(--gap-half);
   display: flex;
   animation: init .3s linear;
 }
@@ -55,12 +55,12 @@
 
 .contentWrapper {
   background-color: var(--theme-secondary);
-  width: 320px;
-  padding: 10px 20px;
+  width: 340px;
+  padding: var(--padding);
   text-transform: uppercase;
   display: flex;
   flex-direction: column;
-  gap: 5px
+  gap: var(--gap-half);
 }
 
 .heading {
