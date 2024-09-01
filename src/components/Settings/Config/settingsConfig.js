@@ -48,6 +48,20 @@ const SettingsConfig = () => {
                        value={settings.gamesInRow}
                        onChange={({value, name}) => setSettings((s) => ({...s, [name]: value}))}
                 />
+                <Input
+                    label={'Use colored background (game view)'}
+                    type="select"
+                    name="coloredGames"
+                    options={[{
+                        label: 'Yes',
+                        value: 1
+                    }, {
+                        label: 'No',
+                        value: 0
+                    }]}
+                    value={settings.coloredGames}
+                    onChange={onChange}
+                />
                 <Input label='RPCS3 exe path'
                        value={settings.rpcs3}
                        onChange={onChange}

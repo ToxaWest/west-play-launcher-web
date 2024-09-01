@@ -1,6 +1,11 @@
 export default function initLocalStorage() {
     const storage = {
-        config: {settings: {}},
+        config: {
+            settings: {
+                coloredGames: true,
+                gamesInRow: 6
+            }
+        },
         games: [],
         lastPlayed: {},
         achievements: {},
