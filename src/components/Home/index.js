@@ -45,10 +45,17 @@ const Home = () => {
 
     const sortedGames = useMemo(configuredArray, []);
 
+    const renderBackground = () => {
+        if (sortedGames[currentIndex]) {
+            return <img src={sortedGames[currentIndex].img_hero} alt={'background'}/>
+        }
+        return null
+    }
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.image}>
-                <img ref={sortedGames[currentIndex]?.img_hero} alt={'background'}/>
+                {renderBackground()}
             </div>
             <ul id="game-list">
                 {sortedGames.map((game, index) => (
