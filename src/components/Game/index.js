@@ -6,6 +6,7 @@ import useAchievementsWatcher from "../../hooks/useAchievementsWatcher";
 import GameActions from "./actions";
 import setTheme from "../../helpers/setTheme";
 import getColor from "../../helpers/getColor";
+import getAchievements from "../../helpers/getAchievements";
 
 const Game = () => {
     const {id} = useParams();
@@ -14,6 +15,7 @@ const Game = () => {
     useAchievementsWatcher(game.id);
 
     useEffect(() => {
+        getAchievements(game.id, true)
         return () => {
             document.querySelector(':root').style = null;
         }
