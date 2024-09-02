@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import styles from "./home.module.scss";
-import {useEffect, useMemo, useRef} from "react";
+import {useEffect, useMemo} from "react";
 import useAppControls from "../../hooks/useAppControls";
 import {getFromStorage} from "../../helpers/getFromStorage";
 import usePrevPath from "../../hooks/usePrevPath";
@@ -14,8 +14,6 @@ const Home = () => {
             'right': (i) => i + 1
         }
     });
-
-    const bgImage = useRef(null);
 
     useEffect(() => {
         init('#game-list li')
@@ -47,14 +45,10 @@ const Home = () => {
 
     const sortedGames = useMemo(configuredArray, []);
 
-    useEffect(() => {
-        bgImage.current.src = sortedGames[currentIndex].img_hero;
-    }, [currentIndex]);
-
     return (
         <div className={styles.wrapper}>
             <div className={styles.image}>
-                <img ref={bgImage} alt={'background'}/>
+                <img ref={sortedGames[currentIndex]?.img_hero} alt={'background'}/>
             </div>
             <ul id="game-list">
                 {sortedGames.map((game, index) => (
