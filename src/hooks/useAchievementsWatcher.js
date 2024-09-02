@@ -2,7 +2,6 @@ import {useEffect} from "react";
 import {getFromStorage} from "../helpers/getFromStorage";
 import electronConnector from "../helpers/electronConnector";
 import getAchievements from "../helpers/getAchievements";
-import resizeAchievements from "../helpers/resizeAchievements";
 
 const useAchievementsWatcher = (id) => {
     const game = getFromStorage('games').find(g => g.id === id);
@@ -15,8 +14,10 @@ const useAchievementsWatcher = (id) => {
             const difference = _newList.filter(x => !currentList.includes(x));
             difference.forEach(k => {
                 const {displayName, icon, description} = achievements.find(a => a.name === k.toString());
-                resizeAchievements(icon).then(i => {
-                    new Notification(displayName, {body: description, icon: i});
+                electronConnector.sendNotification({
+                    title: displayName,
+                    body: description,
+                    icon: icon
                 })
             })
         })

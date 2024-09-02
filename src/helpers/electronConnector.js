@@ -29,7 +29,8 @@ const electronConnector = {
     getPlayerProfileAchievementsByProductId: (data) => window.electronAPI.getPlayerProfileAchievementsByProductId(data),
     watchFile: (data) => window.electronAPI.watchFile(data),
     stopWatch: (data) => window.electronAPI.stopWatch(data),
-    fileChanged: (data) => window.electronAPI.fileChanged(data)
+    fileChanged: (data) => window.electronAPI.fileChanged(data),
+    sendNotification: (data) => window.electronAPI.sendNotification(data)
 };
 
 export default electronConnector;
