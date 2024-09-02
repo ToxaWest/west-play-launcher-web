@@ -7,7 +7,8 @@ const useAchievementsWatcher = (id) => {
     const game = getFromStorage('games').find(g => g.id === id);
     const {achievements} = game;
 
-    const checker = (_ach) => {
+    const checker = () => {
+        const _ach = getFromStorage('achievements')[id]
         getAchievements(id, true, (latest) => {
             const currentList = Object.keys(_ach);
             const _newList = Object.keys(latest);
@@ -41,9 +42,7 @@ const useAchievementsWatcher = (id) => {
             electronConnector.watchFile(watchMap[game.source])
         }
 
-        electronConnector.fileChanged(() => {
-            checker(getFromStorage('achievements')[id])
-        })
+        electronConnector.fileChanged(checker)
 
         return () => {
             if (watchMap[game.source]) {
