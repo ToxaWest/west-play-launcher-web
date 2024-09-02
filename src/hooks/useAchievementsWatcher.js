@@ -1,64 +1,57 @@
-import {useRef} from "react";
+import {useEffect} from "react";
 import {getFromStorage} from "../helpers/getFromStorage";
 import electronConnector from "../helpers/electronConnector";
 import getAchievements from "../helpers/getAchievements";
+import resizeAchievements from "../helpers/resizeAchievements";
 
 const useAchievementsWatcher = (id) => {
-    const trackTime = 1000
     const game = getFromStorage('games').find(g => g.id === id);
-    const {achPath, achievements} = game;
-    const currentSession = useRef(0);
-    const interval = useRef(null);
+    const {achievements} = game;
 
-    const checker = (_ach, modTime) => {
+    const checker = (_ach) => {
         getAchievements(id, true, (latest) => {
-            const currentList = []
-            Object.entries(_ach).forEach(([k, {earned}]) => {
-                if (earned) {
-                    currentList.push(k);
-                }
+            const currentList = Object.keys(_ach);
+            const _newList = Object.keys(latest);
+            const difference = _newList.filter(x => !currentList.includes(x));
+            difference.forEach(k => {
+                const {displayName, icon, description} = achievements.find(a => a.name === k.toString());
+                resizeAchievements(icon).then(i => {
+                    new Notification(displayName, {body: description, icon: i});
+                })
             })
-            Object.entries(latest).forEach(([k, {earned}]) => {
-                if (earned && (currentList.indexOf(k) === -1)) {
-                    const {displayName, icon, description} = achievements.find(a => a.name === k);
-                    new Notification(displayName, {body: description, icon});
-                }
-            })
-            currentSession.current = modTime;
         })
     }
 
     const init = () => {
-        if (game.source === 'steam' && achPath && achievements) {
-            interval.current = setInterval(() => {
-                electronConnector.lastModify(achPath).then(r => {
-                    const modTime = new Date(r).getTime();
-                    if (modTime !== currentSession.current) {
-                        checker(getFromStorage('achievements')[id], modTime)
-                    }
-                })
-            }, trackTime)
-        }
-        if(game.source === 'rpcs3' && achievements){
-            interval.current = setInterval(() => {
-                checker(getFromStorage('achievements')[id], 0)
-            }, trackTime)
-        }
-        if(game.source === 'egs'){
+        if (game.source === 'egs') {
             getAchievements(id, true)
         }
     }
 
-    const destroy = () => {
-        if (interval.current) {
-            clearInterval(interval.current);
-        }
+    const watchMap = {
+        steam: game.achPath,
+        rpcs3: game.dataPath
     }
 
-    return {
-        init,
-        destroy
-    }
+    useEffect(() => {
+        init();
+
+        if (watchMap[game.source]) {
+            electronConnector.watchFile(watchMap[game.source])
+        }
+
+        electronConnector.fileChanged(() => {
+            checker(getFromStorage('achievements')[id])
+        })
+
+        return () => {
+            if (watchMap[game.source]) {
+                electronConnector.stopWatch(watchMap[game.source])
+            }
+        }
+    }, [])
+
+    return {}
 }
 
 export default useAchievementsWatcher;

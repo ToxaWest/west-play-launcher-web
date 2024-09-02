@@ -2,7 +2,6 @@ import {Outlet, useParams} from "react-router-dom";
 import styles from "./game.module.scss";
 import {useEffect} from "react";
 import {getFromStorage} from "../../helpers/getFromStorage";
-import getAchievements from "../../helpers/getAchievements";
 import useAchievementsWatcher from "../../hooks/useAchievementsWatcher";
 import GameActions from "./actions";
 import setTheme from "../../helpers/setTheme";
@@ -12,15 +11,11 @@ const Game = () => {
     const {id} = useParams();
     const game = getFromStorage('games').find(({id: gid}) => gid.toString() === id);
     const coloredGames = getFromStorage('config').settings.coloredGames;
-    const achievementsWatcher = useAchievementsWatcher(game.id)
+    useAchievementsWatcher(game.id);
 
     useEffect(() => {
-        getAchievements(id)
-        achievementsWatcher.init()
-
         return () => {
             document.querySelector(':root').style = null;
-            achievementsWatcher.destroy()
         }
     }, []);
 

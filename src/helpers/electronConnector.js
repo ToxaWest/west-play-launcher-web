@@ -27,6 +27,9 @@ const electronConnector = {
     getEpicGamesAchievements: (data) => window.electronAPI.getEpicGamesAchievements(data),
     changeTheme: (data) => window.electronAPI.changeTheme(data),
     getPlayerProfileAchievementsByProductId: (data) => window.electronAPI.getPlayerProfileAchievementsByProductId(data),
+    watchFile: (data) => window.electronAPI.watchFile(data),
+    stopWatch: (data) => window.electronAPI.stopWatch(data),
+    fileChanged: (data) => window.electronAPI.fileChanged(data)
 };
 
 export default electronConnector;

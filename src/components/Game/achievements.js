@@ -1,6 +1,7 @@
 import {useParams} from "react-router-dom";
 import styles from './game.module.scss';
 import {getFromStorage} from "../../helpers/getFromStorage";
+import resizeAchievements from "../../helpers/resizeAchievements";
 
 const Achievements = () => {
     const {id} = useParams();
@@ -12,8 +13,16 @@ const Achievements = () => {
     );
 
     const renderTemp = (arr) => arr.map((achievement) => (
-        <li key={achievement.name} onClick={() => {
-            new Notification(achievement.displayName, {body: achievement.description, icon: achievement.icon});
+        <li key={achievement.name} onClick={async () => {
+            const icon = await resizeAchievements(achievement.icon)
+            const notification = new Notification(achievement.displayName, {
+                body: achievement.description,
+                icon
+            });
+            notification.onclick = () => {
+                window.location.href = `/game/${id}/achievements`
+            }
+
         }}>
             <img src={achievement.icongray} alt={achievement.name}/>
             <div>
