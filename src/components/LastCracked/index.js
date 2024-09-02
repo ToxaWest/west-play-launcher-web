@@ -11,7 +11,7 @@ const LastCracked = () => {
     const [games, setGames] = useState([]);
     const [steam, setSteam] = useState(null);
     const wrapperRef = useRef(null);
-    const {init, currentIndex} = useAppControls({
+    const {init, currentIndex, setActiveIndex} = useAppControls({
         map: {
             'left': (i) => i - 1,
             'right': (i) => i + 1,
@@ -57,11 +57,15 @@ const LastCracked = () => {
             <div className={styles.wrapper} ref={wrapperRef}>
                 <h2>Cracked Games</h2>
                 <ul id={'cracked'}>
-                    {games.map(game => (
-                        <li key={game.id} aria-label={game.name} tabIndex={1} onFocus={(e) => {
-                            const color = getColor(e.target.children[0])
-                            wrapperRef.current.style.backgroundColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
-                        }}>
+                    {games.map((game, index) => (
+                        <li key={game.id} aria-label={game.name} tabIndex={1}
+                            onClick={() => {
+                                setActiveIndex(index)
+                            }}
+                            onFocus={(e) => {
+                                const color = getColor(e.target.children[0])
+                                wrapperRef.current.style.backgroundColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
+                            }}>
                             <img src={game.short_image} alt={game.title}/>
                         </li>
                     ))}
