@@ -15,16 +15,8 @@ const Library = () => {
         map: {
             'left': (i) => i - 1,
             'right': (i) => i + 1,
-            'top': (i) => {
-                return i - gamesInRow
-            },
-            bottom: (i) => {
-                const res = i + gamesInRow;
-                if (res > games.length) {
-                    return 0
-                }
-                return res
-            }
+            'top': (i) => i - parseInt(gamesInRow),
+            bottom: (i) => i + parseInt(gamesInRow)
         }
     });
 
