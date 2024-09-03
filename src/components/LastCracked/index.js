@@ -5,7 +5,7 @@ import useAppControls from "../../hooks/useAppControls";
 import {currentLang} from "../../helpers/locales";
 import RenderContent from "../Game/renderContent";
 import RenderMedia from "../Game/renderMedia";
-import getColor from "../../helpers/getColor";
+import {getColorByUrl} from "../../helpers/getColor";
 
 const LastCracked = () => {
     const [games, setGames] = useState([]);
@@ -132,9 +132,10 @@ const LastCracked = () => {
                                 setActiveIndex(index);
                                 getDataFromSteam(game)
                             }}
-                            onFocus={(e) => {
-                                const color = getColor(e.target.children[0])
-                                wrapperRef.current.style.backgroundColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
+                            onFocus={() => {
+                                getColorByUrl(game.short_image).then(color => {
+                                    wrapperRef.current.style.backgroundColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
+                                })
                             }}>
                             <img src={game.short_image} alt={game.title}/>
                         </li>

@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import electronConnector from "../../helpers/electronConnector";
 import styles from './freeGames.module.scss';
 import useAppControls from "../../hooks/useAppControls";
-import getColor from "../../helpers/getColor";
+import {getColorByUrl} from "../../helpers/getColor";
 
 const disabledStores = ["109"]
 
@@ -31,16 +31,10 @@ const FreeGames = () => {
                 onClick={() => {
                     setActiveIndex(index)
                 }}
-                onFocus={(e) => {
-                    const [img] = e.target.children
-                    if(img.complete){
-                        const color = getColor(img)
+                onFocus={() => {
+                    getColorByUrl(img).then(color => {
                         wrapperRef.current.style.backgroundColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
-                    }
-                    img.onLoad = () => {
-                        const color = getColor(img)
-                        wrapperRef.current.style.backgroundColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
-                    }
+                    })
                 }}>
                 <img src={img} alt={game.name}/>
             </li>

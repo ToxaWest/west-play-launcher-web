@@ -5,7 +5,7 @@ import {getFromStorage} from "../../helpers/getFromStorage";
 import useAchievementsWatcher from "../../hooks/useAchievementsWatcher";
 import GameActions from "./actions";
 import setTheme from "../../helpers/setTheme";
-import getColor from "../../helpers/getColor";
+import {getColorByUrl} from "../../helpers/getColor";
 import getAchievements from "../../helpers/getAchievements";
 
 const Game = () => {
@@ -15,18 +15,20 @@ const Game = () => {
     useAchievementsWatcher(game.id);
 
     useEffect(() => {
+        updateThemeColor()
         getAchievements(game.id, true)
         return () => {
             document.querySelector(':root').style = null;
         }
     }, []);
 
-    const imgLoaded = (e) => {
-        if(coloredGames) {
-            const color = getColor(e.target);
-            const theme = setTheme(color);
-            Object.entries(theme).forEach(([key, value]) => {
-                document.querySelector(':root').style.setProperty(key, value)
+    const updateThemeColor = () => {
+        if (coloredGames) {
+            getColorByUrl(game.img_hero).then(color => {
+                const theme = setTheme(color);
+                Object.entries(theme).forEach(([key, value]) => {
+                    document.querySelector(':root').style.setProperty(key, value)
+                })
             })
         }
     }
@@ -37,7 +39,7 @@ const Game = () => {
                 <div className={styles.logo}>
                     <img src={game.img_logo} alt={'logo'}/>
                 </div>
-                <img src={game.img_hero} className={styles.hero} alt={game.name} onLoad={imgLoaded}/>
+                <img src={game.img_hero} className={styles.hero} alt={game.name}/>
             </div>
             <GameActions game={game}/>
             <Outlet/>
