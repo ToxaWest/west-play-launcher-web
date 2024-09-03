@@ -1,6 +1,7 @@
 const setTheme = (main = {r: 26, g: 27, b: 30}) => {
 
-    const isDark = (((main.r * 299) + (main.g * 587) + (main.b * 114)) / 1000) < 65;
+    const _dark = ((main.r * 99) + (main.g * 487) + (main.b * 114)) / 1000
+    const isDark = _dark < 60;
 
     const getSecondary = (isDark) => {
         if (isDark) {

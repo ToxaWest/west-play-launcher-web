@@ -12,20 +12,18 @@ const useAppControls = ({map}) => {
     }
 
     const focus = (i) => {
-        if (ref.current[i]) {
-            ref.current[i].scrollIntoView({
-                inline: 'center',
-                block: 'center',
-                behavior: 'smooth',
-            })
-            ref.current[i].focus();
-        }
+        ref.current[i].scrollIntoView({
+            inline: 'center',
+            block: 'center',
+            behavior: 'smooth',
+        })
+        ref.current[i].focus();
     }
 
     const listener = ({detail}) => {
         Object.entries(map).forEach(([key, funk]) => {
             if (detail === key) {
-                let i = funk(selected.current);
+                const i = funk(selected.current);
                 setActiveIndex(i)
             }
         })
