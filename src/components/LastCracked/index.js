@@ -11,10 +11,16 @@ const LastCracked = () => {
     const [games, setGames] = useState([]);
     const [steam, setSteam] = useState(null);
     const wrapperRef = useRef(null);
+    const [view, setView] = useState('content');
+
+    const toggleViewMode = () => setView(v => v === 'content' ? 'media' : 'content')
+
     const {init, currentIndex, setActiveIndex} = useAppControls({
         map: {
             'left': (i) => i - 1,
             'right': (i) => i + 1,
+            lb: toggleViewMode,
+            rb: toggleViewMode
         }
     })
 
@@ -23,7 +29,7 @@ const LastCracked = () => {
             "type": "Last cracked games",
             "limit": 16,
             "sortBy": "crack_date",
-            "sortDirection": "desc",
+            "sortDirection": "asc",
             "showAAA": false
         }).then((g) => {
             setGames(g.games);
@@ -33,24 +39,87 @@ const LastCracked = () => {
         })
     }, [])
 
-    useEffect(() => {
-        if (games[currentIndex]) {
-            const {steam_prod_id} = games[currentIndex];
-            if (steam_prod_id) {
-                electronConnector.getSteamData({
-                    appID: steam_prod_id,
-                    lang: currentLang()
-                }).then((data) => {
-                    setSteam(data[steam_prod_id].data)
+    const getDataFromSteam = ({steam_prod_id, title, release_date}) => {
+        if (steam_prod_id) {
+            electronConnector.getSteamData({
+                appID: steam_prod_id,
+                lang: currentLang()
+            }).then((data) => {
+                setSteam(data[steam_prod_id].data)
+            })
+        } else {
+            setTimeout(() => {
+                setSteam({
+                    name: title,
+                    release_date: {
+                        date: new Date(release_date).toLocaleDateString()
+                    }
                 })
-            } else {
-                setSteam(null)
-            }
+            }, 100)
         }
+    }
 
-    }, [currentIndex, games])
+    useEffect(() => {
+        setSteam(null)
+        setView('content')
+    }, [currentIndex])
 
-    const currentGame = games[currentIndex];
+
+    const renderView = () => {
+        const currentGame = games[currentIndex];
+        if (view === 'content')
+            return (<RenderContent game={steam} fields={[{
+                label: 'Is AAA',
+                value: currentGame.is_AAA ? 'Yes' : null
+            }, {
+                label: 'Is hot',
+                value: currentGame.is_hot ? 'Yes' : null
+            }, {
+                label: 'Status',
+                value: currentGame.readable_status
+            }, {
+                label: 'Hacked Groups',
+                value: currentGame.hacked_groups
+            }, {
+                label: 'Protections',
+                value: currentGame.protections
+            }, {
+                label: 'Torrent (not recommended)',
+                value: currentGame.torrent_link ?
+                    <div style={{display: 'inline', cursor: 'pointer'}} onClick={() => {
+                        electronConnector.openLink(currentGame.torrent_link)
+                    }}>Link</div> : null
+            }, {
+                label: 'Cracked',
+                value: new Date(currentGame.crack_date).toLocaleDateString()
+            }]}/>)
+        if (view === 'media')
+            return <RenderMedia game={steam}/>
+    }
+
+    const renderAdditionalInfo = () => {
+
+        if (steam) {
+            return (
+                <>
+                    <div className={styles.navigation}>
+                        <img src={'/assets/controller/left-bumper.svg'} alt={'prev'} onClick={toggleViewMode}/>
+                        <div className={view === 'content' ? styles.navActive : ''} onClick={() => setView('content')}>
+                            Description
+                        </div>
+                        <div className={view === 'media' ? styles.navActive : ''} onClick={() => setView('media')}>
+                            Media
+                        </div>
+                        <img src={'/assets/controller/right-bumper.svg'} alt={'next'}
+                             onClick={toggleViewMode}/>
+                    </div>
+                    {renderView()}
+                </>
+            )
+        }
+        return null
+    }
+
 
     return (
         <>
@@ -60,7 +129,8 @@ const LastCracked = () => {
                     {games.map((game, index) => (
                         <li key={game.id} aria-label={game.name} tabIndex={1}
                             onClick={() => {
-                                setActiveIndex(index)
+                                setActiveIndex(index);
+                                getDataFromSteam(game)
                             }}
                             onFocus={(e) => {
                                 const color = getColor(e.target.children[0])
@@ -71,30 +141,7 @@ const LastCracked = () => {
                     ))}
                 </ul>
             </div>
-            {steam && (
-                <>
-                    <RenderContent game={steam} fields={[{
-                        label: 'Status',
-                        value: currentGame.readable_status
-                    }, {
-                        label: 'Hacked Groups',
-                        value: currentGame.hacked_groups
-                    }, {
-                        label: 'protections',
-                        value: currentGame.protections
-                    }, {
-                        label: 'Torrent (not recommended)',
-                        value: currentGame.torrent_link ?
-                            <div onClick={() => {
-                                electronConnector.openLink(currentGame.torrent_link)
-                            }}>Link</div> : null
-                    }, {
-                        label: 'Cracked',
-                        value: new Date(currentGame.crack_date).toLocaleDateString()
-                    }]}/>
-                    <RenderMedia game={steam}/>
-                </>
-            )}
+            {renderAdditionalInfo()}
         </>
 
     )

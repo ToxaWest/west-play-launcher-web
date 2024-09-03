@@ -1,14 +1,14 @@
 import styles from "../settings.module.scss";
 import Input from "../../Input";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import electronConnector from "../../../helpers/electronConnector";
 import {getFromStorage} from "../../../helpers/getFromStorage";
 
-const Rpcs3Fields = ({setGame, game}) => {
+const Rpcs3Fields = ({setGame, game, getGamePath}) => {
     const {settings} = getFromStorage('config');
     const [data, setData] = useState([]);
     const [temp, setTemp] = useState([]);
-
+    const searchRef = useRef(null);
     const update = (e) => {
         setGame(a => {
             if (!a.exeArgs) {
@@ -48,6 +48,7 @@ const Rpcs3Fields = ({setGame, game}) => {
     return (
         <>
             <Input label='Search'
+                   _ref={searchRef}
                    onChange={({value: q}) => {
                        if (q.length > 0) {
                            const res = data.filter(({name}) =>
@@ -67,6 +68,8 @@ const Rpcs3Fields = ({setGame, game}) => {
                                    dataPath: s.dataPath,
                                    name: s.name,
                                }))
+                               searchRef.current.value = ''
+                               searchRef.current.blur()
                                setTemp([])
                            }}>
                                <img src={s.img.header} alt={s.name}/>
@@ -75,6 +78,12 @@ const Rpcs3Fields = ({setGame, game}) => {
                        )}
                    </ul>}
                    name='search'/>
+            <Input label='Path'
+                   value={game.path}
+                   disabled={true}
+                   name='path'>
+                <button onClick={() => getGamePath()}>Get Path</button>
+            </Input>
             <div className={styles.argsWrapper}>
                 {fields.map(field => (
                     <Input key={field.name} {...field}/>

@@ -294,8 +294,10 @@
   z-index: 2;
   height: calc(100vw * (9 / 16));
   margin-bottom: -50px;
+  background-color: var(--theme-color);
 
   video, img {
+    display: block;
     width: 100%;
   }
 }

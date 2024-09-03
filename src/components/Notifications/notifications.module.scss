@@ -18,7 +18,9 @@
 }
 
 .content {
-  gap: var(--gap-half);
+  padding: var(--gap-half);
+  border-radius: var(--border-radius);
+  background-color: var(--theme-color-transparent);
   display: flex;
   animation: init .3s linear;
 }

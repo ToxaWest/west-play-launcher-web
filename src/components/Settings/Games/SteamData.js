@@ -2,10 +2,11 @@ import Input from "../../Input";
 import electronConnector from "../../../helpers/electronConnector";
 import styles from "../settings.module.scss";
 import {currentLang} from "../../../helpers/locales";
-import {useState} from "react";
+import {useRef, useState} from "react";
 
 const SteamData = ({setGame, game}) => {
     const [temp, setTemp] = useState([]);
+    const searchRef = useRef();
     const getSteamData = (steamId) => {
         electronConnector.getSteamData({
             appID: steamId,
@@ -40,6 +41,8 @@ const SteamData = ({setGame, game}) => {
                 movies,
                 screenshots
             }))
+            searchRef.current.value = ''
+            searchRef.current.blur()
             setTemp([])
         })
     }
@@ -54,6 +57,7 @@ const SteamData = ({setGame, game}) => {
     return (
         <>
             <Input label='Search'
+                   _ref={searchRef}
                    onChange={({value: params}) => {
                        electronConnector.steamSearch({params}).then(setTemp)
                    }}
@@ -68,7 +72,7 @@ const SteamData = ({setGame, game}) => {
                        )}
                    </ul>}
                    name='search'/>
-            <Input label='imageName'
+            <Input label='Game Image (dangerous)'
                    value={game.imageName}
                    disabled={true}
                    name='imageName'>

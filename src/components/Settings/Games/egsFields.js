@@ -6,9 +6,11 @@ import Input from "../../Input";
 const EgsFields = ({game, setGame, setLoading}) => {
 
     const getGamePath = () => {
+        setLoading(true);
         electronConnector.getEgsId().then(({path, size, AppName, CatalogNamespace}) => {
             const exePath = `com.epicgames.launcher://apps/${AppName}?action=launch&silent=true`;
             setGame(g => ({...g, path, size: formatBytes(parseInt(size)), exePath}))
+            setLoading(false)
             getAchievements(CatalogNamespace)
         })
     }
@@ -55,6 +57,7 @@ const EgsFields = ({game, setGame, setLoading}) => {
             <SteamData game={game} setGame={setGame}/>
             <Input label='Path'
                    value={game.path}
+                   disabled={true}
                    name='path'>
                 <button onClick={() => getGamePath()}>Get Folder</button>
             </Input>

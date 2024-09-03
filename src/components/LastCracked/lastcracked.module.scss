@@ -44,3 +44,26 @@
     text-align: center;
   }
 }
+
+.navigation {
+  max-width: 80vw;
+  margin: var(--gap) auto;
+  display: flex;
+  gap: var(--gap-half);
+  align-items: center;
+  justify-content: center;
+
+  div {
+    cursor: pointer;
+    padding: var(--padding);
+    border-bottom: 1px solid transparent;
+    &.navActive {
+      border-bottom-color: var(--theme-text-color);
+    }
+  }
+
+  img {
+    cursor: pointer;
+    margin: var(--gap);
+  }
+}

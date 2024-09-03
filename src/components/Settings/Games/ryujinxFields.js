@@ -1,12 +1,13 @@
 import Input from "../../Input";
 import electronConnector from "../../../helpers/electronConnector";
 import styles from "../settings.module.scss";
-import {useState} from "react";
+import {useRef, useState} from "react";
 
-const RyujinxFields = ({setGame, game}) => {
+const RyujinxFields = ({setGame, game, getGamePath, setLoading}) => {
     const [temp, setTemp] = useState([]);
-
+    const searchRef = useRef(null);
     const getSwitchData = (s) => {
+        setLoading(true)
         setGame(g => ({
             ...g,
             nsuid: s.nsuid,
@@ -25,6 +26,9 @@ const RyujinxFields = ({setGame, game}) => {
             .then((nd) => {
                 setGame((g) => ({...g, ...nd}))
                 setTemp([])
+                searchRef.current.value = ''
+                searchRef.current.blur()
+                setLoading(false)
             })
     }
 
@@ -61,6 +65,7 @@ const RyujinxFields = ({setGame, game}) => {
     return (
         <>
             <Input label='Search'
+                   _ref={searchRef}
                    onChange={({value: q}) => {
                        electronConnector.nintendoSearch(q).then(setTemp)
                    }}
@@ -75,14 +80,19 @@ const RyujinxFields = ({setGame, game}) => {
                        )}
                    </ul>}
                    name='search'/>
+            <Input label='Path'
+                   value={game.path}
+                   disabled={true}
+                   name='path'>
+                <button onClick={() => getGamePath()}>Get Path</button>
+            </Input>
+            <Input label='NSP path'
+                   value={game.exeArgs?.path}
+                   disabled={true}
+                   name='path'>
+                <button onClick={() => getExePath()}>Get NSP File</button>
+            </Input>
             <div className={styles.argsWrapper}>
-                <Input label='NSP path'
-                       disabled={true}
-                       value={game.exeArgs?.path}
-                       onChange={update}
-                       name='path'>
-                    <button onClick={() => getExePath()}>Get EXE Path</button>
-                </Input>
                 {fields.map(field => (
                     <Input label={field.label}
                            key={field.name}

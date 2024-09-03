@@ -8,7 +8,7 @@ import usePrevPath from "../../hooks/usePrevPath";
 const Home = () => {
     const navigate = useNavigate();
     const {setPrevPath, prevPath} = usePrevPath()
-    const {init, currentIndex, setActiveIndex} = useAppControls({
+    const {init, currentIndex} = useAppControls({
         map: {
             'left': (i) => i - 1,
             'right': (i) => i + 1
@@ -16,12 +16,8 @@ const Home = () => {
     });
 
     useEffect(() => {
-        init('#game-list li')
-        setTimeout(() => {
-            setActiveIndex(prevPath?.index || 0)
-            setPrevPath(null)
-        }, 100)
-
+        init('#game-list li', prevPath?.index || 0)
+        setPrevPath(null)
     }, []);
 
     const games = getFromStorage('games');

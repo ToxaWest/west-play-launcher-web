@@ -5,7 +5,7 @@ import SteamData from "./SteamData";
 import {getFromStorage} from "../../../helpers/getFromStorage";
 import {currentLang} from "../../../helpers/locales";
 
-const SteamFields = ({game, onChange, setGame , setLoading}) => {
+const SteamFields = ({game, onChange, setGame, setLoading, getGamePath}) => {
     const args = game.exeArgs || {};
     const {steam_api_key} = getFromStorage('config').settings;
 
@@ -26,17 +26,16 @@ const SteamFields = ({game, onChange, setGame , setLoading}) => {
                     setLoading(false)
                 })
         }
-
     }
 
     return (
         <>
             <SteamData game={game} setGame={setGame}/>
-            <Input label='Achievements file path'
-                   value={game.achPath}
-                   onChange={onChange}
-                   name='achPath'>
-                <button onClick={() => getExePath('achPath')}>Get Achievements Path</button>
+            <Input label='Path'
+                   value={game.path}
+                   disabled={true}
+                   name='path'>
+                <button onClick={() => getGamePath()}>Get Path</button>
             </Input>
             <Input label='Exe file path'
                    value={game.exePath}
@@ -44,7 +43,14 @@ const SteamFields = ({game, onChange, setGame , setLoading}) => {
                    name='exePath'>
                 <button onClick={() => getExePath('exePath')}>Get EXE Path</button>
             </Input>
-            {(steam_api_key && game.steamId) && <button onClick={getAchievements}>Get achievements</button>}
+            {(steam_api_key && game.steamId) &&
+                <button onClick={getAchievements}>Get achievements ({game.steamId})</button>}
+            <Input label='Achievements file path'
+                   value={game.achPath}
+                   disabled={true}
+                   name='achPath'>
+                <button onClick={() => getExePath('achPath')}>Get Achievements Path</button>
+            </Input>
             <div className={styles.argsWrapper}>
                 <button onClick={() => {
                     onChange({

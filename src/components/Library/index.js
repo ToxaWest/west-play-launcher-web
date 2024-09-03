@@ -11,7 +11,7 @@ const Library = () => {
     const gamesInRow = getFromStorage('config').settings.gamesInRow || 6;
     const navigation = useNavigate();
 
-    const {init, setActiveIndex} = useAppControls({
+    const {init} = useAppControls({
         map: {
             'left': (i) => i - 1,
             'right': (i) => i + 1,
@@ -29,8 +29,7 @@ const Library = () => {
     });
 
     useEffect(() => {
-        init('#library-list li');
-        setActiveIndex(prevPath?.index || 0)
+        init('#library-list li', prevPath?.index || 0);
         setPrevPath(null)
     }, []);
 

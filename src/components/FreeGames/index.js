@@ -20,7 +20,7 @@ const FreeGames = () => {
             setGames(elements.filter(game => !disabledStores.includes(game.shopId)))
             setTimeout(() => {
                 init('#freeGames li')
-            }, 500)
+            }, 100)
         })
     }, []);
 
@@ -32,9 +32,16 @@ const FreeGames = () => {
                     setActiveIndex(index)
                 }}
                 onFocus={(e) => {
-                const color = getColor(e.target.children[0])
-                wrapperRef.current.style.backgroundColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
-            }}>
+                    const [img] = e.target.children
+                    if(img.complete){
+                        const color = getColor(img)
+                        wrapperRef.current.style.backgroundColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
+                    }
+                    img.onLoad = () => {
+                        const color = getColor(img)
+                        wrapperRef.current.style.backgroundColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
+                    }
+                }}>
                 <img src={img} alt={game.name}/>
             </li>
         )
