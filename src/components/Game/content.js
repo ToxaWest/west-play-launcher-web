@@ -6,8 +6,8 @@ import {secondsToHms} from "../../hooks/usePlayTime";
 const GameContent = () => {
     const {id} = useParams();
     const game = getFromStorage('games').find(({id: gid}) => gid.toString() === id);
-    const lastPlayed = getFromStorage('lastPlayed')[id];
-    const playTime = getFromStorage('playTime')[id];
+    const lastPlayed = getFromStorage('lastPlayed')[game.id];
+    const playTime = getFromStorage('playTime')[game.id];
 
     return <RenderContent game={game} fields={[{
         label: 'Last played',
@@ -18,7 +18,7 @@ const GameContent = () => {
     }, {
         label: 'Size',
         value: game.size
-    },]}/>
+    }]}/>
 
 }
 
