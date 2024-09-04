@@ -29,7 +29,7 @@ const LastCracked = () => {
             "type": "Last cracked games",
             "limit": 16,
             "sortBy": "crack_date",
-            "sortDirection": "asc",
+            "sortDirection": "desc",
             "showAAA": false
         }).then((g) => {
             setGames(g.games);
