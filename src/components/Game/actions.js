@@ -3,6 +3,9 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import useAppControls from "../../hooks/useAppControls";
 import useStartGame from "../../hooks/useStartGame";
+import { ReactComponent as SvgContent } from '../../SVG/content.svg'
+import { ReactComponent as SvgAchievements } from '../../SVG/achievement.svg'
+import { ReactComponent as SvgMedia } from '../../SVG/media.svg'
 
 const GameActions = ({game}) => {
     const navigate = useNavigate();
@@ -11,8 +14,12 @@ const GameActions = ({game}) => {
         map: {
             right: (i) => i + 1,
             left: (i) => i - 1,
-            rb: (i) => i + 1,
-            lb: (i) => i - 1
+            rb: () => {
+                toggleViewMode('next')
+            },
+            lb: () => {
+                toggleViewMode('previous')
+            }
         }
     })
     const {start, status, exePath} = useStartGame(game)
@@ -39,32 +46,48 @@ const GameActions = ({game}) => {
 
     const buttons = [{
         url: `/game/${game.id}`,
-        img: '/assets/content.svg',
+        img: SvgContent,
         active: true
     }, {
         url: `/game/${game.id}/achievements`,
-        img: '/assets/achievement.svg',
+        img: SvgAchievements,
         active: Boolean(game.achievements)
     }, {
         url: `/game/${game.id}/media`,
-        img: '/assets/media.svg',
+        img: SvgMedia,
         active: [...movies, ...screenshots].length > 0
-    }]
+    }].filter(({active}) => active)
 
-    const renderButton = ({url, img, active}) => {
-        if (!active) {
-            return null
+    const toggleViewMode = (direction) => {
+        const index = buttons.findIndex(({url}) => url === window.location.pathname);
+        if (direction === 'previous') {
+            if (index === 0) {
+                navigate(buttons.at(-1).url)
+            } else {
+                navigate(buttons.at(index - 1).url)
+            }
         }
+
+        if (direction === 'next') {
+            if (index === buttons.length - 1) {
+                navigate(buttons.at(0).url)
+            } else {
+                navigate(buttons.at(index + 1).url)
+            }
+        }
+    }
+
+    const renderButton = ({url, img: SvgImage}) => {
         return (
-            <button
+            <div
                 key={url}
                 onClick={() => {
                     navigate(url)
                 }}
                 className={styles.icon + (getActive(url) ? ' ' + styles.activeIcon : '')}
             >
-                <img src={img} alt={'content'}/>
-            </button>
+                <SvgImage/>
+            </div>
         )
     }
 
@@ -77,7 +100,13 @@ const GameActions = ({game}) => {
             >
                 {gameState[status].button}
             </button>
-            {buttons.map(renderButton)}
+            <div className={styles.navigation}>
+                <img src={'/assets/controller/left-bumper.svg'} alt={'prev'}
+                     onClick={() => toggleViewMode('previous')}/>
+                {buttons.map(renderButton)}
+                <img src={'/assets/controller/right-bumper.svg'} alt={'next'}
+                     onClick={() => toggleViewMode('next')}/>
+            </div>
         </div>
     )
 }

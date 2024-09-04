@@ -2,10 +2,10 @@
   height: 100%;
   padding: var(--gap-half);
 
-  img {
+  svg {
     height: 4vh;
+    width: 4vh;
     margin-right: var(--gap);
-    opacity: .5;
   }
 
   ul {
@@ -29,6 +29,11 @@
     color: var(--theme-text-color-seconary);
     font-size: 4.5vh;
 
+    svg {
+      fill: var(--theme-text-color-seconary);
+      stroke: var(--theme-text-color-seconary);
+    }
+
     transition: all 0.2s ease-in;
     &:focus, &:active {
       border: none;
@@ -36,8 +41,9 @@
       padding-left: 5vh;
       background-color: var(--button-bg-color-hover);
       outline: none;
-      img {
-        opacity: 1;
+      svg {
+        fill: var(--theme-text-color);
+        stroke: var(--theme-text-color);
       }
     }
   }

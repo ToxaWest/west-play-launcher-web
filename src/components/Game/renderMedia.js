@@ -34,6 +34,10 @@ const RenderMedia = ({game}) => {
             rt: () => {
                 if (videoRef.current) {
                     videoRef.current.muted = false;
+                    videoRef.current.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
             },
             lt: () => {

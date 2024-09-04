@@ -35,7 +35,7 @@ const LastCracked = () => {
             setGames(g.games);
             setTimeout(() => {
                 init('#cracked li')
-            }, 500)
+            }, 100)
         })
     }, [])
 

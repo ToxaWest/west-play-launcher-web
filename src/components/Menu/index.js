@@ -3,6 +3,9 @@ import styles from './menu.module.scss';
 import {useEffect} from "react";
 import useAppControls from "../../hooks/useAppControls";
 import electronConnector from "../../helpers/electronConnector";
+import {ReactComponent as SvgRestart} from "../../SVG/restart-2.svg";
+import {ReactComponent as SvgShutDown} from "../../SVG/shut-down.svg";
+import {ReactComponent as SvgSettings} from "../../SVG/settings.svg";
 
 const Menu = () => {
     const {init, setActiveIndex} = useAppControls({
@@ -34,20 +37,24 @@ const Menu = () => {
                 </li>
                 <li style={{marginTop: 'auto'}}>
                     <Link to="/settings">
-                        <img src='/assets/settings.svg' alt={'settings'}/> Settings
+                        <SvgSettings/> Settings
                     </Link>
                 </li>
                 <li>
                     <Link to="/" onClick={(e) => {
                         e.preventDefault();
                         electronConnector.shutDownPC()
-                    }}><img src='/assets/shut-down.svg' alt="shut down"/> Shut Down PC</Link>
+                    }}>
+                        <SvgShutDown/> Shut Down PC
+                    </Link>
                 </li>
                 <li>
                     <Link to="/" onClick={(e) => {
                         e.preventDefault();
                         electronConnector.restartPC()
-                    }}><img src='/assets/restart-2.svg' alt="restart"/> Restart PC</Link>
+                    }}>
+                        <SvgRestart/> Restart PC
+                    </Link>
                 </li>
             </ul>
         </div>
