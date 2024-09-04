@@ -25,13 +25,7 @@ const LastCracked = () => {
     })
 
     useEffect(() => {
-        electronConnector.crackWatchRequest({
-            "type": "Last cracked games",
-            "limit": 16,
-            "sortBy": "crack_date",
-            "sortDirection": "desc",
-            "showAAA": false
-        }).then((g) => {
+        electronConnector.crackWatchRequest().then((g) => {
             setGames(g.games);
             setTimeout(() => {
                 init('#cracked li')
@@ -120,6 +114,18 @@ const LastCracked = () => {
         return null
     }
 
+    const renderInfoWrapper = ({is_AAA, crack_date}) => {
+        const d = new Date().getTime()
+        const c = new Date(crack_date).getTime()
+        const diffTime = Math.abs(d - c);
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        return (
+            <div className={styles.infoWrapper}>
+                <span>{`Cracked ${diffDays} day${diffDays === 1 ? '' : 's'} ago`}</span>
+                {is_AAA ? <strong>AAA</strong> : null}
+            </div>
+        )
+    }
 
     return (
         <>
@@ -137,7 +143,8 @@ const LastCracked = () => {
                                     wrapperRef.current.style.backgroundColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
                                 })
                             }}>
-                            <img src={game.short_image} alt={game.title}/>
+                            <img src={game.short_image} alt={game.title} loading={"lazy"}/>
+                            {renderInfoWrapper(game)}
                         </li>
                     ))}
                 </ul>

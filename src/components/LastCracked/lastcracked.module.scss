@@ -33,6 +33,10 @@
       &:focus {
         outline: none;
 
+        .infoWrapper {
+          top: 0;
+        }
+
         img {
           height: 100%;
         }
@@ -65,5 +69,29 @@
   img {
     cursor: pointer;
     margin: var(--gap);
+  }
+}
+
+.infoWrapper {
+  position: absolute;
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  left: 0;
+  top: 3%;
+  width: 100%;
+  transition: top 0.3s ease-in-out;
+  span {
+    padding: var(--padding);
+    background-color: var(--theme-color-transparent);
+    border-radius: var(--border-radius);
+    backdrop-filter: blur(3px);
+    font-size: 14px;
+  }
+  strong {
+    padding: var(--padding);
+    color: var(--theme-text-color);
+    border-radius: 0 var(--border-radius) 0 var(--border-radius);
+    background-color: #00b100;
   }
 }
