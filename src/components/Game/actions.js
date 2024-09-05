@@ -7,7 +7,7 @@ import {ReactComponent as SvgContent} from '../../SVG/content.svg'
 import {ReactComponent as SvgAchievements} from '../../SVG/achievement.svg'
 import {ReactComponent as SvgMedia} from '../../SVG/media.svg'
 
-const GameActions = ({game, audioRef}) => {
+const GameActions = ({game, audioStop}) => {
     const navigate = useNavigate();
     const location = useLocation();
     const {init} = useAppControls({
@@ -90,7 +90,7 @@ const GameActions = ({game, audioRef}) => {
             <button
                 onClick={() => {
                     start();
-                    audioRef.pause()
+                    audioStop()
                 }}
                 className={styles.playButton + ' ' + (gameState[status].modifier)}
                 disabled={status !== 'closed'}

@@ -18,7 +18,8 @@ const Game = () => {
     useAchievementsWatcher(game.id);
 
     useEffect(() => {
-        if(gameAudio){
+        if (gameAudio) {
+
             audioHelper({audioRef, src: game.audio, audioVolume, canvasRef})
         }
         updateThemeColor()
@@ -40,6 +41,14 @@ const Game = () => {
         }
     }
 
+    const audioPlay = () => {
+        audioRef.play()
+    }
+
+    const audioStop = () => {
+        audioRef.pause()
+    }
+
     return (
         <div className={styles.wrapper}>
             <canvas ref={canvasRef}/>
@@ -49,9 +58,10 @@ const Game = () => {
                 </div>
                 <img src={game.img_hero} className={styles.hero} alt={game.name}/>
             </div>
-            <GameActions game={game} audioRef={audioRef}/>
+            <GameActions game={game} audioPlay={audioPlay} audioStop={audioStop}/>
             <Outlet context={{
-                audioRef
+                audioPlay,
+                audioStop
             }}/>
         </div>
     )
