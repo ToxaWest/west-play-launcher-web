@@ -48,6 +48,20 @@ const SettingsConfig = () => {
                        value={settings.gamesInRow}
                        onChange={({value, name}) => setSettings((s) => ({...s, [name]: value}))}
                 />
+                <Input
+                    label={'Use audio background (game view)'}
+                    type="select"
+                    name="gameAudio"
+                    options={[{
+                        label: 'Yes',
+                        value: 1
+                    }, {
+                        label: 'No',
+                        value: 0
+                    }]}
+                    value={settings.gameAudio}
+                    onChange={onChange}
+                />
                 <Input label={'Game Audio volume'}
                        name="audioVolume"
                        type="number"
