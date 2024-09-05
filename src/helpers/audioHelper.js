@@ -3,13 +3,13 @@ const audioHelper = ({audioRef, src, audioVolume, canvasRef}) => {
         return
     }
 
-    audioRef.src = src
-    audioRef.loop = true;
-    audioRef.volume = audioVolume;
+    audioRef.current.src = src
+    audioRef.current.loop = true;
+    audioRef.current.volume = audioVolume;
 
-    audioRef.play().then(() => {
+    audioRef.current.play().then(() => {
         var context = new AudioContext();
-        var src = context.createMediaElementSource(audioRef);
+        var src = context.createMediaElementSource(audioRef.current);
         var analyser = context.createAnalyser();
 
         var canvas = canvasRef.current;

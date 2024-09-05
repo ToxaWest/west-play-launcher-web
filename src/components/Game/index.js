@@ -13,19 +13,18 @@ const Game = () => {
     const {id} = useParams();
     const game = getFromStorage('games').find(({id: gid}) => gid.toString() === id);
     const {coloredGames, audioVolume = .3, gameAudio = true} = getFromStorage('config').settings;
-    const audioRef = new Audio();
+    const audioRef = useRef(new Audio());
     const canvasRef = useRef();
     useAchievementsWatcher(game.id);
 
     useEffect(() => {
         if (gameAudio) {
-
             audioHelper({audioRef, src: game.audio, audioVolume, canvasRef})
         }
         updateThemeColor()
         getAchievements(game.id, true)
         return () => {
-            audioRef.pause()
+            audioRef.current.pause()
             document.querySelector(':root').style = null;
         }
     }, []);
@@ -42,11 +41,11 @@ const Game = () => {
     }
 
     const audioPlay = () => {
-        audioRef.play()
+        audioRef.current.play()
     }
 
     const audioStop = () => {
-        audioRef.pause()
+        audioRef.current.pause()
     }
 
     return (
