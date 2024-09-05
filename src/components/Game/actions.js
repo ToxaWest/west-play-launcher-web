@@ -10,10 +10,8 @@ import {ReactComponent as SvgMedia} from '../../SVG/media.svg'
 const GameActions = ({game, audioRef}) => {
     const navigate = useNavigate();
     const location = useLocation();
-    const {init, setActiveIndex} = useAppControls({
+    const {init} = useAppControls({
         map: {
-            right: (i) => i + 1,
-            left: (i) => i - 1,
             rb: () => {
                 toggleViewMode('next')
             },
@@ -32,11 +30,7 @@ const GameActions = ({game, audioRef}) => {
     }
 
     useEffect(() => {
-        //prevent random start
-        setTimeout(() => {
-            init('#game-actions button');
-            setActiveIndex(0);
-        }, 500)
+        init('#game-actions button');
     }, [])
 
     const {

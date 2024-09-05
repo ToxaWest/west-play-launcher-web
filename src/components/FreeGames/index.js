@@ -1,36 +1,27 @@
 import {useEffect, useRef, useState} from "react";
 import electronConnector from "../../helpers/electronConnector";
 import styles from './freeGames.module.scss';
-import useAppControls from "../../hooks/useAppControls";
 import {getColorByUrl} from "../../helpers/getColor";
+import GamePadNavigation from "../../helpers/gamePadNavigation";
 
 const disabledStores = ["109"]
 
 const FreeGames = () => {
     const [games, setGames] = useState([]);
     const wrapperRef = useRef(null);
-    const {init, currentIndex, setActiveIndex} = useAppControls({
-        map: {
-            'left': (i) => i - 1,
-            'right': (i) => i + 1,
-        }
-    })
+    const [currentIndex, setCurrentIndex] = useState(0);
+
     useEffect(() => {
         electronConnector.getFreeGames().then((elements) => {
             setGames(elements.filter(game => !disabledStores.includes(game.shopId)))
-            setTimeout(() => {
-                init('#freeGames li')
-            }, 100)
         })
     }, []);
 
-    const renderGame = (game, index) => {
+    const renderGame = (game) => {
         const img = game.image.split('_')[0] + '_616xr353.jpg'
         return (
-            <li key={game.containerGameId} tabIndex={1}
-                onClick={() => {
-                    setActiveIndex(index)
-                }}
+            <li key={game.containerGameId}
+                tabIndex={1}
                 onFocus={() => {
                     getColorByUrl(img).then(color => {
                         wrapperRef.current.style.backgroundColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
@@ -84,7 +75,9 @@ const FreeGames = () => {
         <div className={styles.wrapper} ref={wrapperRef}>
             <h2>Free Games ({games.length})</h2>
             <ul id="freeGames">
-                {games.map(renderGame)}
+                <GamePadNavigation focusedIndex={setCurrentIndex}>
+                    {games.map(renderGame)}
+                </GamePadNavigation>
             </ul>
             {renderDescription()}
         </div>

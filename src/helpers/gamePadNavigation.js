@@ -1,23 +1,9 @@
-import {useEffect, useRef, useState} from "react";
+import {cloneElement, useEffect, useRef, useState} from "react";
 
-const useAppControls = ({map} = {map: {}}) => {
+const GamePadNavigation = ({children, defaultIndex = 0, focusedIndex = () => null}) => {
     const ref = useRef([]);
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(defaultIndex);
     const refRowsMatrix = useRef([]);
-
-    const init = (selector, initialFocus = 0) => {
-        if (selector) {
-            ref.current = document.querySelectorAll(selector)
-            const matrix = {};
-            ref.current.forEach((a, i) => {
-                const {top} = a.getBoundingClientRect()
-                if (!matrix[top.toString()]) matrix[top.toString()] = []
-                matrix[top.toString()].push(i)
-            })
-            refRowsMatrix.current = Object.values(matrix)
-            setActiveIndex(initialFocus)
-        }
-    }
 
     const getPosition = (i) => {
         const currentRow = refRowsMatrix.current.findIndex((a) => a.includes(i));
@@ -29,14 +15,6 @@ const useAppControls = ({map} = {map: {}}) => {
     }
 
     const listener = ({detail}) => {
-        Object.entries(map).forEach(([key, funk]) => {
-            if (detail === key) {
-                funk(ref.current[currentIndex])
-            }
-        })
-        if (!ref.current.length) {
-            return
-        }
         if (detail === 'right') {
             setCurrentIndex((i) => {
                 const {currentRow, currentCol} = getPosition(i);
@@ -83,7 +61,7 @@ const useAppControls = ({map} = {map: {}}) => {
 
     const setActiveIndex = (index) => {
         if (index < 0) {
-            setCurrentIndex(ref.current.length - 1);
+            setCurrentIndex(children.length - 1);
             return
         }
         if (index >= ref.current.length) {
@@ -97,7 +75,7 @@ const useAppControls = ({map} = {map: {}}) => {
                 behavior: 'smooth',
             })
             ref.current[index].focus();
-            setCurrentIndex(index)
+            focusedIndex(index)
         }
     }
 
@@ -106,17 +84,36 @@ const useAppControls = ({map} = {map: {}}) => {
     }, [currentIndex])
 
     useEffect(() => {
+        const matrix = {};
+        ref.current.forEach((a, i) => {
+            const {top} = a.getBoundingClientRect()
+            if (!matrix[top.toString()]) matrix[top.toString()] = []
+            matrix[top.toString()].push(i)
+        })
+        refRowsMatrix.current = Object.values(matrix)
+        setActiveIndex(currentIndex)
+    }, [children]);
+
+    useEffect(() => {
         document.addEventListener('gamepadbutton', listener)
         return () => {
             document.removeEventListener('gamepadbutton', listener)
         }
     }, []);
 
-    return {
-        init,
-        setActiveIndex,
-        currentIndex,
-    }
+    const addRef = (child, index) => cloneElement(child, {
+
+        onClick: (e) => {
+            setCurrentIndex(index)
+            if (child.props?.onClick) {
+                child.props.onClick(e);
+            }
+        },
+        ref: (r) => ref.current[index] = r
+    })
+
+
+    return children.map(addRef)
 }
 
-export default useAppControls
+export default GamePadNavigation;

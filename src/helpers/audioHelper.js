@@ -13,7 +13,6 @@ const audioHelper = ({audioRef, src, audioVolume, canvasRef}) => {
         var analyser = context.createAnalyser();
 
         var canvas = canvasRef.current;
-        console.log(canvasRef)
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         var ctx = canvas.getContext("2d");
@@ -24,7 +23,6 @@ const audioHelper = ({audioRef, src, audioVolume, canvasRef}) => {
         analyser.fftSize = 256;
 
         var bufferLength = analyser.frequencyBinCount;
-        console.log(bufferLength);
 
         var dataArray = new Uint8Array(bufferLength);
 

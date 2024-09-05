@@ -1,14 +1,16 @@
 import styles from "./settings.module.scss";
 import {Link, Outlet, useLocation, useNavigate} from "react-router-dom";
 import useAppControls from "../../hooks/useAppControls";
-import {useEffect} from "react";
 
 const Settings = () => {
-
-    const {init, currentIndex, setActiveIndex} = useAppControls({
+    useAppControls({
         map: {
-            lb: (i) => i - 1,
-            rb: (i) => i + 1,
+            lb: () => {
+                toggleViewMode('previous')
+            },
+            rb: () => {
+                toggleViewMode('next')
+            },
         }
     })
 
@@ -20,27 +22,39 @@ const Settings = () => {
         '/settings/config': 'Config',
         '/settings/games': 'Games',
     }
+    const toggleViewMode = (direction) => {
+        const _links = Object.keys(links);
+        const index = _links.findIndex((url) => url === window.location.pathname);
+        if (direction === 'previous') {
+            if (index === 0) {
+                navigate(_links.at(-1))
+            } else {
+                navigate(_links.at(index - 1))
+            }
+        }
 
-    useEffect(() => {
-        init('#navigation a');
-    }, []);
-
-    useEffect(() => {
-        navigate(Object.keys(links)[currentIndex])
-    }, [currentIndex])
+        if (direction === 'next') {
+            if (index === _links.length - 1) {
+                navigate(_links.at(0))
+            } else {
+                navigate(_links.at(index + 1))
+            }
+        }
+    }
 
     const renderNavigation = () => {
         return (
             <div className={styles.navigation} id="navigation">
                 <img src={'/assets/controller/left-bumper.svg'} alt={'prev'} onClick={() => {
-                    setActiveIndex(currentIndex -1);
+                    toggleViewMode('previous')
                 }}/>
                 {Object.entries(links).map(([key, value]) => (
-                    <Link key={key} to={key} className={location.pathname === key ? styles.navActive : ''}>{value}</Link>
+                    <Link key={key} to={key}
+                          className={location.pathname === key ? styles.navActive : ''}>{value}</Link>
                 ))}
                 <img src={'/assets/controller/right-bumper.svg'} alt={'next'}
                      onClick={() => {
-                         setActiveIndex(currentIndex +1);
+                         toggleViewMode('next')
                      }}/>
             </div>
         )

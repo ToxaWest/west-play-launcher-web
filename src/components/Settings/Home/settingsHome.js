@@ -4,17 +4,10 @@ import {useEffect} from "react";
 import useAppControls from "../../../hooks/useAppControls";
 
 const SettingsHome = () => {
-
-    const {init, setActiveIndex} = useAppControls({
-        map: {
-            top: (i) => i - 1,
-            bottom: (i) => i + 1,
-        }
-    })
+    const {init} = useAppControls()
 
     useEffect(() => {
         init('#settingsHome button');
-        setActiveIndex(0)
     }, []);
 
     return (

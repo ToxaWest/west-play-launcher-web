@@ -1,22 +1,15 @@
 import {useNavigate} from "react-router-dom";
 import styles from "./home.module.scss";
-import {useEffect, useMemo} from "react";
-import useAppControls from "../../hooks/useAppControls";
+import {useEffect, useMemo, useState} from "react";
 import {getFromStorage} from "../../helpers/getFromStorage";
 import usePrevPath from "../../hooks/usePrevPath";
+import GamePadNavigation from "../../helpers/gamePadNavigation";
 
 const Home = () => {
     const navigate = useNavigate();
     const {setPrevPath, prevPath} = usePrevPath()
-    const {init, currentIndex} = useAppControls({
-        map: {
-            'left': (i) => i - 1,
-            'right': (i) => i + 1
-        }
-    });
-
+    const [currentIndex, setCurrentIndex] = useState(prevPath?.index || 0);
     useEffect(() => {
-        init('#game-list li', prevPath?.index || 0)
         setPrevPath(null)
     }, []);
 
@@ -54,17 +47,21 @@ const Home = () => {
                 {renderBackground()}
             </div>
             <ul id="game-list">
-                {sortedGames.map((game, index) => (
-                    <li key={game.id} tabIndex={1} onClick={() => {
-                        setPrevPath({
-                            url: '/',
-                            index
-                        })
-                        navigate('/game/' + game.id)
-                    }}>
-                        <img src={index ? game.img_grid : game.img_landscape} alt={game.name}/>
-                    </li>
-                ))}
+                <GamePadNavigation defaultIndex={prevPath?.index || 0} focusedIndex={setCurrentIndex}>
+                    {sortedGames.map((game, index) => (
+                        <li key={game.id}
+                            tabIndex={1}
+                            onClick={() => {
+                                setPrevPath({
+                                    url: '/',
+                                    index
+                                })
+                                navigate('/game/' + game.id)
+                            }}>
+                            <img src={index ? game.img_grid : game.img_landscape} alt={game.name}/>
+                        </li>
+                    ))}
+                </GamePadNavigation>
             </ul>
         </div>
     )
