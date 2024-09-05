@@ -1,8 +1,10 @@
 import {useEffect, useRef, useState} from "react";
 import styles from "./game.module.scss";
 import useFooterActions from "../../hooks/useFooterActions";
+import {useOutletContext} from "react-router-dom";
 
 const RenderMedia = ({game}) => {
+    const {audioRef} = useOutletContext();
     const [current, setCurrent] = useState(0);
     const videoRef = useRef(null)
     const {setFooterActions} = useFooterActions();
@@ -38,10 +40,12 @@ const RenderMedia = ({game}) => {
                         behavior: 'smooth',
                         block: 'start'
                     });
+                    audioRef.pause()
                 }
             },
             lt: () => {
                 if (videoRef.current) {
+                    audioRef.play()
                     videoRef.current.muted = true;
                 }
             }
@@ -58,6 +62,7 @@ const RenderMedia = ({game}) => {
             title: 'Sound OFF',
             onClick: () => {
                 if (videoRef.current) {
+                    audioRef.play()
                     videoRef.current.muted = true;
                 }
             }
@@ -66,6 +71,7 @@ const RenderMedia = ({game}) => {
             title: 'Sound ON',
             onClick: () => {
                 if (videoRef.current) {
+                    audioRef.pause()
                     videoRef.current.muted = false;
                 }
             }
@@ -110,7 +116,7 @@ const RenderMedia = ({game}) => {
         return null;
     }
 
-    if(!media.length) {
+    if (!media.length) {
         return (<h2 align="center">Media not found</h2>)
     }
 

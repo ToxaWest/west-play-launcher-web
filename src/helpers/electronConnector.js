@@ -30,7 +30,8 @@ const electronConnector = {
     watchFile: (data) => window.electronAPI.watchFile(data),
     stopWatch: (data) => window.electronAPI.stopWatch(data),
     fileChanged: (data) => window.electronAPI.fileChanged(data),
-    sendNotification: (data) => window.electronAPI.sendNotification(data)
+    sendNotification: (data) => window.electronAPI.sendNotification(data),
+    downloadAudio: (data) => window.electronAPI.downloadAudio(data)
 };
 
 export default electronConnector;

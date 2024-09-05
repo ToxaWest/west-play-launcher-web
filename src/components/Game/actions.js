@@ -3,11 +3,11 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import useAppControls from "../../hooks/useAppControls";
 import useStartGame from "../../hooks/useStartGame";
-import { ReactComponent as SvgContent } from '../../SVG/content.svg'
-import { ReactComponent as SvgAchievements } from '../../SVG/achievement.svg'
-import { ReactComponent as SvgMedia } from '../../SVG/media.svg'
+import {ReactComponent as SvgContent} from '../../SVG/content.svg'
+import {ReactComponent as SvgAchievements} from '../../SVG/achievement.svg'
+import {ReactComponent as SvgMedia} from '../../SVG/media.svg'
 
-const GameActions = ({game}) => {
+const GameActions = ({game, audioRef}) => {
     const navigate = useNavigate();
     const location = useLocation();
     const {init, setActiveIndex} = useAppControls({
@@ -93,10 +93,14 @@ const GameActions = ({game}) => {
 
     return (
         <div className={styles.content} id={'game-actions'}>
-            <button onClick={start}
-                    className={styles.playButton + ' ' + (gameState[status].modifier)}
-                    disabled={status !== 'closed'}
-                    style={{opacity: exePath ? 1 : 0.7}}
+            <button
+                onClick={() => {
+                    start();
+                    audioRef.pause()
+                }}
+                className={styles.playButton + ' ' + (gameState[status].modifier)}
+                disabled={status !== 'closed'}
+                style={{opacity: exePath ? 1 : 0.7}}
             >
                 {gameState[status].button}
             </button>

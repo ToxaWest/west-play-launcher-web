@@ -7,7 +7,8 @@ const Input = ({
                    type = 'text',
                    options,
                    disabled,
-                   _ref
+                   _ref,
+                   ...props
                }) => {
 
     const [active, setActive] = useState(false);
@@ -35,6 +36,7 @@ const Input = ({
         number: () => {
             return (
                 <input type="number"
+                       {...props}
                        placeholder={label}
                        name={name}
                        ref={_ref}

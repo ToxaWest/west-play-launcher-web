@@ -11,13 +11,21 @@ import getAchievements from "../../helpers/getAchievements";
 const Game = () => {
     const {id} = useParams();
     const game = getFromStorage('games').find(({id: gid}) => gid.toString() === id);
-    const coloredGames = getFromStorage('config').settings.coloredGames;
+    const {coloredGames, audioVolume = .3} = getFromStorage('config').settings;
+    const audioRef = new Audio();
     useAchievementsWatcher(game.id);
 
     useEffect(() => {
+        if (game.audio) {
+            audioRef.src = game.audio
+            audioRef.loop = true;
+            audioRef.volume = audioVolume;
+            audioRef.play()
+        }
         updateThemeColor()
         getAchievements(game.id, true)
         return () => {
+            audioRef.pause()
             document.querySelector(':root').style = null;
         }
     }, []);
@@ -41,8 +49,10 @@ const Game = () => {
                 </div>
                 <img src={game.img_hero} className={styles.hero} alt={game.name}/>
             </div>
-            <GameActions game={game}/>
-            <Outlet/>
+            <GameActions game={game} audioRef={audioRef}/>
+            <Outlet context={{
+                audioRef
+            }}/>
         </div>
     )
 }

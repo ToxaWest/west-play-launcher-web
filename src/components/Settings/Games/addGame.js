@@ -9,6 +9,7 @@ import Rpcs3Fields from "./rpcs3Fields";
 import EgsFields from "./egsFields";
 import formatBytes from "../../../helpers/formatSize";
 import {getFromStorage} from "../../../helpers/getFromStorage";
+import AddAudio from "./addAudio";
 
 const AddGame = ({data, submit, remove}) => {
     const [game, setGame] = useState(data);
@@ -55,6 +56,7 @@ const AddGame = ({data, submit, remove}) => {
         rpcs3 ? 'rpcs3' : null,
     ].filter(a => a)
 
+
     const renderContent = () => {
         if (game.steamgriddb) {
             return (
@@ -71,6 +73,7 @@ const AddGame = ({data, submit, remove}) => {
                     <AddImage id={game.steamgriddb} type="hero" onChange={onChange} value={game.img_hero}/>
                     <AddImage id={game.steamgriddb} type="logo" onChange={onChange} value={game.img_logo}/>
                     <AddImage id={game.steamgriddb} type="icon" onChange={onChange} value={game.img_icon}/>
+                    <AddAudio id={game.steamgriddb} onChange={onChange} name={game.name} value={game.audio}/>
                     <button onClick={() => {
                         wrapperRef.current.open = false
                         submit(game)
