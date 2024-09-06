@@ -1,20 +1,13 @@
 import Input from "../../Input";
 import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
 import styles from '../settings.module.scss';
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import useNotification from "../../../hooks/useNotification";
 import electronConnector from "../../../helpers/electronConnector";
-import useAppControls from "../../../hooks/useAppControls";
 
 const SettingsConfig = () => {
     const [settings, setSettings] = useState(getFromStorage('config').settings);
     const notifications = useNotification();
-
-    const {init} = useAppControls()
-
-    useEffect(() => {
-        init('#settings-config [tabindex="1"], #settings-config button:not(:disabled)')
-    }, [])
 
     const onChange = ({name, value}) => {
         setSettings(g => ({...g, [name]: value}))

@@ -1,41 +1,33 @@
 import {Link} from "react-router-dom";
 import styles from './menu.module.scss';
-import {useEffect} from "react";
-import useAppControls from "../../hooks/useAppControls";
 import electronConnector from "../../helpers/electronConnector";
 import {ReactComponent as SvgRestart} from "../../SVG/restart-2.svg";
 import {ReactComponent as SvgShutDown} from "../../SVG/shut-down.svg";
 import {ReactComponent as SvgSettings} from "../../SVG/settings.svg";
 
 const Menu = () => {
-    const {init} = useAppControls()
-
-    useEffect(() => {
-        init('#main-menu a');
-    }, []);
-
     return (
         <div className={styles.wrapper} id="main-menu">
             <ul>
                 <li>
-                    <Link to="/">Home</Link>
+                    <Link to="/" tabIndex={1}>Home</Link>
                 </li>
                 <li>
-                    <Link to="/library">Library</Link>
+                    <Link to="/library" tabIndex={1}>Library</Link>
                 </li>
                 <li>
-                    <Link to="/lastCracked">Last Cracked games</Link>
+                    <Link to="/lastCracked" tabIndex={1}>Last Cracked games</Link>
                 </li>
                 <li>
-                    <Link to="/freeGames">Free games</Link>
+                    <Link to="/freeGames" tabIndex={1}>Free games</Link>
                 </li>
                 <li style={{marginTop: 'auto'}}>
-                    <Link to="/settings">
+                    <Link to="/settings" tabIndex={1}>
                         <SvgSettings/> Settings
                     </Link>
                 </li>
                 <li>
-                    <Link to="/" onClick={(e) => {
+                    <Link to="/" tabIndex={1} onClick={(e) => {
                         e.preventDefault();
                         electronConnector.shutDownPC()
                     }}>
@@ -43,7 +35,7 @@ const Menu = () => {
                     </Link>
                 </li>
                 <li>
-                    <Link to="/" onClick={(e) => {
+                    <Link to="/" tabIndex={1} onClick={(e) => {
                         e.preventDefault();
                         electronConnector.restartPC()
                     }}>

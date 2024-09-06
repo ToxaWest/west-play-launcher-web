@@ -1,10 +1,12 @@
 import {useEffect, useRef} from "react";
+import {useLocation} from "react-router-dom";
 
 const useAppControls = ({map} = {map: {}}) => {
     const ref = useRef([]);
     const refRowsMatrix = useRef([]);
     const refCurrentIndex = useRef(0);
     const observer = useRef(null);
+    const location = useLocation();
 
     const setMatrix = () => {
         const {matrix} = [...ref.current].reduce(({matrix, keys}, current, index) => {
@@ -18,21 +20,38 @@ const useAppControls = ({map} = {map: {}}) => {
         refRowsMatrix.current = matrix;
     }
 
-    const init = (selector, initialFocus = 0) => {
+    useEffect(() => {
+        refCurrentIndex.current = 0;
+    }, [location]);
+
+
+    const getBackWindow = () => {
+        if (window.__back) {
+            const {index, url} = window.__back;
+            if (url === window.location.pathname) {
+                setTimeout(() => {
+                    ref.current[index].scrollIntoView({inline: 'center', block: 'center'});
+                    window.__back = null;
+                })
+                return index
+            }
+        }
+        return refCurrentIndex.current
+    }
+
+    const init = (selector) => {
         if (selector) {
             ref.current = document.querySelectorAll(selector)
             if (ref.current.length) {
                 setMatrix()
-                setCurrentIndex(() => initialFocus)
+                setCurrentIndex(getBackWindow)
             }
             const [parent] = selector.split(' ')
             const logChanges = () => {
                 ref.current = document.querySelectorAll(selector)
                 if (ref.current.length) {
                     setMatrix()
-                    if (!refCurrentIndex.current) {
-                        setCurrentIndex(() => initialFocus)
-                    }
+                    setCurrentIndex(getBackWindow)
                 }
             }
             observer.current = new MutationObserver(logChanges);
@@ -87,6 +106,7 @@ const useAppControls = ({map} = {map: {}}) => {
             return;
         }
         if (ref.current[index]) {
+            refCurrentIndex.current = index;
             ref.current[index].scrollIntoView({
                 inline: 'center',
                 block: 'center',

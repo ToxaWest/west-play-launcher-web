@@ -1,5 +1,6 @@
 import {createContext, useState} from "react";
 import Notifications from "../components/Notifications";
+import useGamepadButtons from "../hooks/useGamepadButtons";
 
 export const AppContext = createContext({
     notifications: undefined,
@@ -9,10 +10,9 @@ export const AppContext = createContext({
 const Provider = ({children}) => {
     const [notifications, setNotifications] = useState(null);
     const [footerActions, setFooterActions] = useState([]);
-    const [prevPath, setPrevPath] = useState(null);
-
+    useGamepadButtons();
     return (
-        <AppContext.Provider value={{setNotifications, footerActions, setFooterActions, prevPath, setPrevPath}}>
+        <AppContext.Provider value={{setNotifications, footerActions, setFooterActions}}>
             <Notifications notifications={notifications}/>
             {children}
         </AppContext.Provider>

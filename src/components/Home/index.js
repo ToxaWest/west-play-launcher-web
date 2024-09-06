@@ -1,22 +1,13 @@
 import {useNavigate} from "react-router-dom";
 import styles from "./home.module.scss";
-import {useEffect, useMemo, useState} from "react";
+import {useMemo, useState} from "react";
 import {getFromStorage} from "../../helpers/getFromStorage";
-import usePrevPath from "../../hooks/usePrevPath";
-import useAppControls from "../../hooks/useAppControls";
 
 const Home = () => {
     const navigate = useNavigate();
-    const {setPrevPath, prevPath} = usePrevPath()
-    const {init} = useAppControls()
     const [background, setBackground] = useState(null);
     const games = getFromStorage('games');
     const lastPlayed = getFromStorage('lastPlayed');
-
-    useEffect(() => {
-        init('#game-list li', prevPath?.index || 0)
-        setPrevPath(null)
-    }, []);
 
     const configuredArray = () => {
         const renderSort = [];
@@ -53,13 +44,13 @@ const Home = () => {
                     <li key={game.id}
                         tabIndex={1}
                         onFocus={() => {
+                            window.__back = {
+                                index,
+                                url: '/'
+                            }
                             setBackground(game.img_hero)
                         }}
                         onClick={() => {
-                            setPrevPath({
-                                url: '/',
-                                index
-                            })
                             navigate('/game/' + game.id)
                         }}>
                         <img src={index ? game.img_grid : game.img_landscape} alt={game.name}/>

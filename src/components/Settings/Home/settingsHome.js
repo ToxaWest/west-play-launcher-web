@@ -1,14 +1,12 @@
 import styles from "../settings.module.scss";
 import electronConnector from "../../../helpers/electronConnector";
-import {useEffect, useState} from "react";
-import useAppControls from "../../../hooks/useAppControls";
+import {useState} from "react";
 import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
 import Input from "../../Input";
 import {locales} from "../../../helpers/locales";
 import useNotification from "../../../hooks/useNotification";
 
 const SettingsHome = () => {
-    const {init} = useAppControls()
     const notifications = useNotification();
     const [settings, setSettings] = useState(getFromStorage('config').settings);
     const [theme, setTheme] = useState(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
@@ -16,10 +14,6 @@ const SettingsHome = () => {
     const onChange = ({name, value}) => {
         setSettings(g => ({...g, [name]: value}))
     }
-
-    useEffect(() => {
-        init('#settingsHome [tabindex="1"], #settingsHome button:not(:disabled)');
-    }, []);
 
     return (
         <div className={styles.block} id="settingsHome">

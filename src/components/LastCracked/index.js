@@ -15,7 +15,7 @@ const LastCracked = () => {
     const [currentGame, setCurrentGame] = useState(0)
     const toggleViewMode = () => setView(v => v === 'content' ? 'media' : 'content')
 
-    const {init} = useAppControls({
+    useAppControls({
         map: {
             lb: toggleViewMode,
             rb: toggleViewMode
@@ -23,7 +23,6 @@ const LastCracked = () => {
     })
 
     useEffect(() => {
-        init('#cracked li')
         electronConnector.crackWatchRequest().then((g) => {
             setGames(g.games);
         })

@@ -1,37 +1,31 @@
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
-import {useEffect, useRef} from "react";
+import {useEffect} from "react";
 import styles from './root.module.scss';
 import Footer from "../Footer";
 import Clock from "../Clock";
-import useGamepadButtons from "../../hooks/useGamepadButtons";
-import usePrevPath from "../../hooks/usePrevPath";
+import useAppControls from "../../hooks/useAppControls";
 
 const Root = () => {
-    const {prevPath} = usePrevPath()
     const navigate = useNavigate();
     const location = useLocation();
-    const refBack = useRef(null);
-    useGamepadButtons();
+
     const back = {
         '': '/',
         'game': '/',
-        'settings': '/',
-        'menu': '/'
+        'settings': '/'
     }
 
     const backButton = () => {
-        if (refBack.current?.url) {
-            navigate(refBack.current.url);
+        if (window.location.pathname === '/menu') {
+            navigate(-1);
         } else {
-            navigate(
-                back[location.pathname.split('/')[1]]
-            )
+            if (window.__back) {
+                navigate(window.__back.url)
+            } else {
+                navigate(back[location.pathname.split('/').at(1)])
+            }
         }
     }
-
-    useEffect(() => {
-        refBack.current = prevPath
-    }, [prevPath])
 
     const menuButton = () => {
         if (window.location.pathname === '/menu') {
@@ -41,8 +35,8 @@ const Root = () => {
         }
     }
 
-    const listener = ({detail}) => {
-        const map = {
+    const {init} = useAppControls({
+        map: {
             select: menuButton,
             b: backButton,
             a: () => {
@@ -51,14 +45,11 @@ const Root = () => {
                 }
             }
         }
-        if (map[detail]) {
-            map[detail]()
-        }
-    }
+    })
 
     useEffect(() => {
-        document.addEventListener('gamepadbutton', listener)
         const body = document.querySelector('html');
+        init('#contentWrapper [tabindex="1"], #contentWrapper button:not(:disabled)')
         document.addEventListener('mousemove', () => {
             body.style.removeProperty('cursor');
             body.style.removeProperty('pointer-events');
@@ -68,7 +59,7 @@ const Root = () => {
     return (
         <div className={styles.wrapper}>
             <Clock/>
-            <div className={styles.content}>
+            <div className={styles.content} id="contentWrapper">
                 <Outlet/>
             </div>
             <Footer backButton={backButton} menuButton={menuButton}/>

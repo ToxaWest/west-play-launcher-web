@@ -1,6 +1,5 @@
 import {useEffect, useRef, useState} from "react";
 import electronConnector from "../helpers/electronConnector";
-import useNotification from "./useNotification";
 
 const keyMapping = ['a', 'b', 'x', 'y', 'lb', 'rb', 'lt', 'rt', 'options', 'select', 'l3', 'r3', 'top', 'bottom', 'left', 'right', 'home']
 
@@ -18,7 +17,6 @@ const useGamepadButtons = () => {
     const [visible, setVisible] = useState(true);
     const pressedRef = useRef(null);
     const connectedRef = useRef(false);
-    const notifications = useNotification();
 
     const sendEvent = (detail) => {
         if (sound[detail]) {
@@ -96,12 +94,6 @@ const useGamepadButtons = () => {
         window.addEventListener("gamepadconnected", (e) => {
             if (!connectedRef.current) {
                 connectedRef.current = e.gamepad.id
-                notifications({
-                    img: '/assets/controller/xbox-control-for-one.svg',
-                    status: 'success',
-                    name: 'Gamepad connected',
-                    description: 'Let\'s Play!'
-                })
                 init();
                 initLeftStick();
                 initScroll();
@@ -112,12 +104,6 @@ const useGamepadButtons = () => {
         window.addEventListener('gamepaddisconnected', (e) => {
             if (e.gamepad.id === connectedRef.current) {
                 connectedRef.current = false
-                notifications({
-                    img: '/assets/controller/xbox-control-for-one.svg',
-                    status: 'error',
-                    name: 'Gamepad disconnected',
-                    description: ''
-                })
                 window.cancelAnimationFrame(init);
                 window.cancelAnimationFrame(initLeftStick);
                 window.cancelAnimationFrame(initScroll);

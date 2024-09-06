@@ -1,6 +1,5 @@
 import styles from "./game.module.scss";
 import {useLocation, useNavigate} from "react-router-dom";
-import {useEffect} from "react";
 import useAppControls from "../../hooks/useAppControls";
 import useStartGame from "../../hooks/useStartGame";
 import {ReactComponent as SvgContent} from '../../SVG/content.svg'
@@ -10,7 +9,7 @@ import {ReactComponent as SvgMedia} from '../../SVG/media.svg'
 const GameActions = ({game, audioStop}) => {
     const navigate = useNavigate();
     const location = useLocation();
-    const {init} = useAppControls({
+    useAppControls({
         map: {
             rb: () => {
                 toggleViewMode('next')
@@ -28,10 +27,6 @@ const GameActions = ({game, audioStop}) => {
         'starting': {button: 'Starting...', modifier: ''},
         'running': {button: 'Running', modifier: styles.running},
     }
-
-    useEffect(() => {
-        init('#game-actions button');
-    }, [])
 
     const {
         movies = [],

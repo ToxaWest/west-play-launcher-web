@@ -2,7 +2,6 @@ import {useEffect, useRef, useState} from "react";
 import electronConnector from "../../helpers/electronConnector";
 import styles from './freeGames.module.scss';
 import {getColorByUrl} from "../../helpers/getColor";
-import useAppControls from "../../hooks/useAppControls";
 
 const disabledStores = ["109"]
 
@@ -11,10 +10,7 @@ const FreeGames = () => {
     const wrapperRef = useRef(null);
     const [currentGame, setCurrentGame] = useState(null)
 
-    const {init} = useAppControls();
-
     useEffect(() => {
-        init('#freeGames li')
         electronConnector.getFreeGames().then((elements) => {
             setGames(elements.filter(game => !disabledStores.includes(game.shopId)))
         })
@@ -26,7 +22,7 @@ const FreeGames = () => {
             <li key={game.containerGameId}
                 tabIndex={1}
                 onFocus={() => {
-                    setCurrentGame(game)
+                    setCurrentGame(game);
                     getColorByUrl(img).then(color => {
                         wrapperRef.current.style.backgroundColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
                     })
