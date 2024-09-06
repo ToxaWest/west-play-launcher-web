@@ -25,16 +25,16 @@ const AddAudio = ({id, value, name, onChange}) => {
 
 
     return (
-        <div className={styles.addImage}>
-            <div className={styles.addImageField}>
-                <button onClick={getAudio}>Get Audio</button>
-                <input value={query} onChange={(e) => {
-                    setQuery(e.target.value)
-                }}/>
+        <label className={styles.addImage}>
+            <div className={styles.addImageField} style={{width: '100%'}}>
+                <button onClick={getAudio} style={{whiteSpace: 'nowrap'}}>Get Audio</button>
+                    <input style={{margin: '0 var(--gap)', width: '100%'}} value={query} onChange={(e) => {
+                        setQuery(e.target.value)
+                    }}/>
                 {value ? <span>{value}</span> : null}
                 {error ? <span>Error, try change name</span> : null}
             </div>
-        </div>
+        </label>
     )
 }
 

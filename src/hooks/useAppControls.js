@@ -24,16 +24,19 @@ const useAppControls = ({map} = {map: {}}) => {
             if (ref.current.length) {
                 setMatrix()
                 setCurrentIndex(() => initialFocus)
-            } else {
-                const [parent] = selector.split(' ')
-                const logChanges = () => {
-                    ref.current = document.querySelectorAll(selector)
-                    setMatrix()
-                    setCurrentIndex(() => initialFocus)
-                }
-                observer.current = new MutationObserver(logChanges);
-                observer.current.observe(document.querySelector(parent), {childList: true, subtree: true});
             }
+            const [parent] = selector.split(' ')
+            const logChanges = () => {
+                ref.current = document.querySelectorAll(selector)
+                if (ref.current.length) {
+                    setMatrix()
+                    if (!refCurrentIndex.current) {
+                        setCurrentIndex(() => initialFocus)
+                    }
+                }
+            }
+            observer.current = new MutationObserver(logChanges);
+            observer.current.observe(document.querySelector(parent), {childList: true, subtree: true});
         }
     }
 
@@ -45,7 +48,7 @@ const useAppControls = ({map} = {map: {}}) => {
 
     const getPosition = ({i, rowPosition = (i) => i, colPosition = (i) => i}) => {
         const currentRow = refRowsMatrix.current.findIndex((a) => a.includes(i));
-        const currentCol = refRowsMatrix.current[currentRow].findIndex((a) => a === i);
+        const currentCol = refRowsMatrix.current[currentRow]?.findIndex((a) => a === i);
         const _newCol = refRowsMatrix.current[rowPosition(currentRow)]?.[colPosition(currentCol)]
         if (typeof _newCol === "number") {
             return _newCol
@@ -96,7 +99,7 @@ const useAppControls = ({map} = {map: {}}) => {
     useEffect(() => {
         document.addEventListener('gamepadbutton', listener)
         return () => {
-            if(observer.current){
+            if (observer.current) {
                 observer.current.disconnect()
             }
             document.removeEventListener('gamepadbutton', listener)

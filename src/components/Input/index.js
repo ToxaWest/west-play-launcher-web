@@ -55,11 +55,11 @@ const Input = ({
                 return 'select value'
             }
             return (
-                <div className={styles.select} onClick={() => setActive((a) => !a)}>
+                <div className={styles.select} tabIndex={1} onClick={() => setActive((a) => !a)}>
                     <span>{getValue()}</span>
                     {active && <ul>
                         {[{label: 'empty', value: null}, ...data].map((option) => (
-                            <li key={option.value} onClick={() => {
+                            <li key={option.value} tabIndex={1} onClick={() => {
                                 onChange({
                                     value: option.value,
                                     name

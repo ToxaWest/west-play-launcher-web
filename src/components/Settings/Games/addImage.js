@@ -84,7 +84,7 @@ const AddImage = ({id, type, onChange, value}) => {
             </div>
             <ul>
                 {images.map((asset) => (
-                    <li key={asset.id} onClick={() => select(asset.url)}>
+                    <li key={asset.id} onClick={() => select(asset.url)} tabIndex={1}>
                         <img src={asset.thumb} alt={asset.author.name}/>
                     </li>
                 ))}

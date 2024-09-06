@@ -1,14 +1,20 @@
 import Input from "../../Input";
 import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
 import styles from '../settings.module.scss';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import useNotification from "../../../hooks/useNotification";
 import electronConnector from "../../../helpers/electronConnector";
-import {locales} from "../../../helpers/locales";
+import useAppControls from "../../../hooks/useAppControls";
 
 const SettingsConfig = () => {
     const [settings, setSettings] = useState(getFromStorage('config').settings);
     const notifications = useNotification();
+
+    const {init} = useAppControls()
+
+    useEffect(() => {
+        init('#settings-config [tabindex="1"], #settings-config button:not(:disabled)')
+    }, [])
 
     const onChange = ({name, value}) => {
         setSettings(g => ({...g, [name]: value}))
@@ -22,77 +28,30 @@ const SettingsConfig = () => {
 
     return (
         <>
-            <div className={styles.block}>
+            <div className={styles.block} id="settings-config">
                 <h1>Config</h1>
-                <Input
-                    label={'Steam Language'}
-                    name="currentLang"
-                    type="select"
-                    value={settings.currentLang}
-                    options={locales}
-                    onChange={onChange}
-                />
+
                 <Input label={'Steam Web API Key (needed for achievements)'}
                        name="steam_api_key"
                        value={settings.steam_api_key}
-                       onChange={({value, name}) => setSettings((s) => ({...s, [name]: value}))}
+                       onChange={onChange}
                 />
                 <Input label={'EGS profile id (needed for achievements)'}
                        name="egs_profile"
                        value={settings.egs_profile}
-                       onChange={({value, name}) => setSettings((s) => ({...s, [name]: value}))}
+                       onChange={onChange}
                 />
-                <Input label={'Library games in row'}
-                       name="gamesInRow"
-                       type="number"
-                       value={settings.gamesInRow}
-                       onChange={({value, name}) => setSettings((s) => ({...s, [name]: value}))}
-                />
-                <Input
-                    label={'Use audio background (game view)'}
-                    type="select"
-                    name="gameAudio"
-                    options={[{
-                        label: 'Yes',
-                        value: 1
-                    }, {
-                        label: 'No',
-                        value: 0
-                    }]}
-                    value={settings.gameAudio}
-                    onChange={onChange}
-                />
-                <Input label={'Game Audio volume'}
-                       name="audioVolume"
-                       type="number"
-                       step="0.1"
-                       min="0.1"
-                       max="1"
-                       value={settings.audioVolume || 0.3}
-                       onChange={({value, name}) => setSettings((s) => ({...s, [name]: value}))}
-                />
-                <Input
-                    label={'Use colored background (game view)'}
-                    type="select"
-                    name="coloredGames"
-                    options={[{
-                        label: 'Yes',
-                        value: 1
-                    }, {
-                        label: 'No',
-                        value: 0
-                    }]}
-                    value={settings.coloredGames}
-                    onChange={onChange}
-                />
+
                 <Input label='RPCS3 exe path'
                        value={settings.rpcs3}
                        onChange={onChange}
+                       disabled={true}
                        name='rpcs3'>
                     <button onClick={() => getExePath('rpcs3')}>Get exe path</button>
                 </Input>
                 <Input label='Ryujinx exe path'
                        value={settings.ryujinx}
+                       disabled={true}
                        onChange={onChange}
                        name='ryujinx'>
                     <button onClick={() => getExePath('ryujinx')}>Get exe path</button>

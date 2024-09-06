@@ -1,14 +1,20 @@
 import styles from "../settings.module.scss";
 import AddGame from "./addGame";
 import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import useNotification from "../../../hooks/useNotification";
+import useAppControls from "../../../hooks/useAppControls";
 
 const SettingsGames = () => {
     const [games, setGames] = useState(getFromStorage('games'))
     const notifications = useNotification();
+    const {init} = useAppControls();
+    useEffect(() => {
+        init('#settings-games [tabindex="1"], #settings-games button:not(:disabled)')
+    }, [])
+
     return (
-        <div className={styles.block}>
+        <div className={styles.block} id="settings-games">
             <h1>Games</h1>
             <button onClick={() => {
                 setGames((d) => {

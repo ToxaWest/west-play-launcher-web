@@ -13,6 +13,7 @@ import AddAudio from "./addAudio";
 
 const AddGame = ({data, submit, remove}) => {
     const [game, setGame] = useState(data);
+    const [opened, setOpened] = useState(false)
     const wrapperRef = useRef(null);
     const {rpcs3, ryujinx} = getFromStorage('config').settings
 
@@ -75,8 +76,8 @@ const AddGame = ({data, submit, remove}) => {
                     <AddImage id={game.steamgriddb} type="icon" onChange={onChange} value={game.img_icon}/>
                     <AddAudio id={game.steamgriddb} onChange={onChange} name={game.name} value={game.audio}/>
                     <button onClick={() => {
-                        wrapperRef.current.open = false
                         submit(game)
+                        wrapperRef.current.open = false
                     }}
                             disabled={loading}
                     >
@@ -90,14 +91,18 @@ const AddGame = ({data, submit, remove}) => {
     }
 
     return (
-        <details ref={wrapperRef}>
-            <summary>
+        <details ref={wrapperRef} onToggle={() => {
+            setOpened(wrapperRef.current.open)
+        }}>
+            <summary tabIndex={1} onClick={() => {
+                setOpened(wrapperRef.current.open)
+            }}>
                 {game.name}
             </summary>
-            <div>
+            {opened ? <div>
                 <button onClick={() => remove()}>Remove game</button>
                 {renderContent()}
-            </div>
+            </div> : null}
         </details>
     )
 }

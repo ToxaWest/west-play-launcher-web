@@ -1,40 +1,133 @@
 import styles from "../settings.module.scss";
 import electronConnector from "../../../helpers/electronConnector";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import useAppControls from "../../../hooks/useAppControls";
+import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
+import Input from "../../Input";
+import {locales} from "../../../helpers/locales";
+import useNotification from "../../../hooks/useNotification";
 
 const SettingsHome = () => {
     const {init} = useAppControls()
+    const notifications = useNotification();
+    const [settings, setSettings] = useState(getFromStorage('config').settings);
+    const [theme, setTheme] = useState(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+
+    const onChange = ({name, value}) => {
+        setSettings(g => ({...g, [name]: value}))
+    }
 
     useEffect(() => {
-        init('#settingsHome button');
+        init('#settingsHome [tabindex="1"], #settingsHome button:not(:disabled)');
     }, []);
 
     return (
         <div className={styles.block} id="settingsHome">
             <h1>Settings</h1>
-            <div className={styles.settingsHome}>
-                <h2>Change monitor</h2>
-                <button onClick={() => {
-                    electronConnector.changeDisplayMode(1)
-                }}>Internal Monitor
-                </button>
-                <button onClick={() => {
-                    electronConnector.changeDisplayMode(4)
-                }}>External Monitor
-                </button>
-            </div>
-            <div className={styles.settingsHome}>
-                <h2>Change theme</h2>
-                <button onClick={() => {
-                    electronConnector.changeTheme('light')
-                }}>Light
-                </button>
-                <button onClick={() => {
-                    electronConnector.changeTheme('dark')
-                }}>Dark
-                </button>
-            </div>
+            <Input label={'Monitor'}
+                   type="select"
+                   name="changeDisplayMode"
+                   options={[{
+                       label: 'PC Screen',
+                       value: 1
+                   }, {
+                       label: 'Duplicate',
+                       value: 2
+                   }, {
+                       label: 'Extend',
+                       value: 3
+                   }, {
+                       label: 'Second Screen',
+                       value: 4
+                   }]}
+                   onChange={({value}) => {
+                       if (value) {
+                           electronConnector.changeDisplayMode(value)
+                       }
+                   }}
+            />
+            <Input label={'Theme (current session only)'}
+                   type="select"
+                   name="theme"
+                   options={[{
+                       label: 'Light',
+                       value: 'light'
+                   }, {
+                       label: 'Dark',
+                       value: 'dark'
+                   }]}
+                   value={theme}
+                   onChange={({value}) => {
+                       if (value) {
+                           electronConnector.changeTheme(value);
+                           setTheme(value)
+                       }
+                   }}
+            />
+            <Input
+                label={'Steam Language'}
+                name="currentLang"
+                type="select"
+                value={settings.currentLang}
+                options={locales}
+                onChange={onChange}
+            />
+            <Input label={'Library games in row'}
+                   type="select"
+                   name="gamesInRow"
+                   options={Array.from({length: 6}).map((_, index) => (index + 4))}
+                   value={settings.gamesInRow}
+                   onChange={onChange}
+            />
+            <Input
+                label={'Use audio background (game view)'}
+                type="select"
+                name="gameAudio"
+                options={[{
+                    label: 'Yes',
+                    value: 1
+                }, {
+                    label: 'No',
+                    value: 0
+                }]}
+                value={settings.gameAudio}
+                onChange={onChange}
+            />
+            <Input label={'Game Audio volume'}
+                   name="audioVolume"
+                   type="select"
+                   value={settings.audioVolume || 0.3}
+                   options={Array.from({length: 10}).map((_, index) => ({
+                       label: ((index + 1) * 10) + '%',
+                       value: (index + 1) / 10
+                   }))}
+                   onChange={onChange}
+            />
+            <Input
+                label={'Use colored background (game view)'}
+                type="select"
+                name="coloredGames"
+                options={[{
+                    label: 'Yes',
+                    value: 1
+                }, {
+                    label: 'No',
+                    value: 0
+                }]}
+                value={settings.coloredGames}
+                onChange={onChange}
+            />
+            <button onClick={() => {
+                setToStorage('config', {settings})
+                notifications({
+                    img: '/assets/controller/save.svg',
+                    status: 'saving',
+                    name: 'Saved successfully',
+                    description: 'Configuration updated'
+                })
+            }}>
+                Save
+            </button>
         </div>
     )
 }

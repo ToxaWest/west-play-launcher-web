@@ -31,7 +31,7 @@ const SearchGame = ({update}) => {
                    children={(
                        <ul className={styles.search}>
                            {temp.map(({id, name, release_date}) => (
-                               <li key={id} onClick={() => {
+                               <li key={id} tabIndex={1} onClick={() => {
                                    setSearch('')
                                    update({name, id, steamgriddb: id})
                                }}>
