@@ -29,11 +29,11 @@ const useAppControls = ({map} = {map: {}}) => {
         if (window.__back) {
             const {index, url} = window.__back;
             if (url === window.location.pathname) {
+                refCurrentIndex.current = index
                 setTimeout(() => {
-                    ref.current[index].scrollIntoView({inline: 'center', block: 'center'});
-                    window.__back = null;
+                    ref.current[refCurrentIndex.current].scrollIntoView({inline: 'center', block: 'center'});
                 })
-                return index
+                window.__back = null;
             }
         }
         return refCurrentIndex.current
@@ -61,6 +61,13 @@ const useAppControls = ({map} = {map: {}}) => {
 
     const setCurrentIndex = (func) => {
         const i = func(refCurrentIndex.current);
+
+        if (document.activeElement) {
+            if ([...ref.current].includes(document.activeElement)) {
+                if (i === refCurrentIndex.current) return
+            }
+        }
+
         refCurrentIndex.current = i;
         setActiveIndex(i)
     }
