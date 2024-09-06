@@ -86,7 +86,6 @@ const LastCracked = () => {
     }
 
     const renderAdditionalInfo = () => {
-
         if (steam) {
             return (
                 <>
@@ -129,11 +128,12 @@ const LastCracked = () => {
                     {games.map((game) => (
                         <li key={game.id}
                             tabIndex={1}
-                            onClick={() => {
+                            onClick={(e) => {
+                                e.target.focus()
+                                setCurrentGame(game)
                                 getDataFromSteam(game)
                             }}
                             onFocus={() => {
-                                setCurrentGame(game)
                                 getColorByUrl(game.short_image).then(color => {
                                     wrapperRef.current.style.backgroundColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
                                 })
