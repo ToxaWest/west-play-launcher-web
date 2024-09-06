@@ -10,6 +10,7 @@ import EgsFields from "./egsFields";
 import formatBytes from "../../../helpers/formatSize";
 import {getFromStorage} from "../../../helpers/getFromStorage";
 import AddAudio from "./addAudio";
+import AddHowLongToBeat from "./addHowLongToBeat";
 
 const AddGame = ({data, submit, remove}) => {
     const [game, setGame] = useState(data);
@@ -69,6 +70,7 @@ const AddGame = ({data, submit, remove}) => {
                            options={options}
                            name='source'/>
                     {renderByType()}
+                    <AddHowLongToBeat id={game.steamId} onChange={onChange} name={game.name} value={game.howLongToBeat}/>
                     <AddImage id={game.steamgriddb} type="grid" onChange={onChange} value={game.img_grid}/>
                     <AddImage id={game.steamgriddb} type="landscape" onChange={onChange} value={game.img_landscape}/>
                     <AddImage id={game.steamgriddb} type="hero" onChange={onChange} value={game.img_hero}/>

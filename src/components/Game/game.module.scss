@@ -326,3 +326,54 @@
     width: 100%;
   }
 }
+
+.hltb {
+  ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--gap);
+    margin: 0;
+    padding: var(--padding);
+    li {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      width: 25%;
+      max-width: 120px;
+      strong {
+        margin-top: var(--gap);
+      }
+      div {
+        width: 100%;
+        padding-bottom: 100%;
+
+        border-radius: 50%;
+        position: relative;
+        background-color: var(--theme-color-transparent);
+      }
+
+      span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        font-weight: bold;
+        font-size: 22px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  .score {
+    text-align: right;
+    font-size: 14px;
+    strong {
+      margin-right: var(--gap-half);
+    }
+  }
+}

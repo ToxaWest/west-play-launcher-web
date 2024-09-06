@@ -1,6 +1,6 @@
 import styles from "./game.module.scss";
 
-const RenderContent = ({game, fields = []}) => {
+const RenderContent = ({game, fields = [], children}) => {
 
     const renderDevelopers = (devs) => {
         if (!devs) {
@@ -18,7 +18,7 @@ const RenderContent = ({game, fields = []}) => {
     }, {
         label: 'Controller support',
         value: game.controller_support
-    },{
+    }, {
         label: 'Players',
         value: game.players
     }, {
@@ -37,6 +37,7 @@ const RenderContent = ({game, fields = []}) => {
         <div className={styles.content}>
             <div className={styles.description}>
                 <h1>{game.name}</h1>
+                {children}
                 {game.about_the_game && <div dangerouslySetInnerHTML={{__html: game.about_the_game}}/>}
                 {game.pc_requirements && <div className={styles.requirements}>
                     <div dangerouslySetInnerHTML={{__html: game.pc_requirements.minimum}}/>
