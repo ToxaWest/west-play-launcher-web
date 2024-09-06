@@ -60,10 +60,10 @@ const FreeGames = () => {
                 tabIndex={1}
                 onClick={(e) => {
                     e.target.focus()
-                    setCurrentGame(game);
                     getDataFromSteam(game)
                 }}
                 onFocus={() => {
+                    setCurrentGame(game);
                     getColorByUrl(img).then(color => {
                         wrapperRef.current.style.backgroundColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
                     })
