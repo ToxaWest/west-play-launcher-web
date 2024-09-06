@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import {getFromStorage} from "../../helpers/getFromStorage";
 import usePrevPath from "../../hooks/usePrevPath";
-import GamePadNavigation from "../../helpers/gamePadNavigation";
+import useAppControls from "../../hooks/useAppControls";
 
 const Library = () => {
     const {setPrevPath, prevPath} = usePrevPath()
@@ -11,7 +11,10 @@ const Library = () => {
     const gamesInRow = getFromStorage('config').settings.gamesInRow || 6;
     const navigation = useNavigate();
 
+    const {init} = useAppControls()
+
     useEffect(() => {
+        init('#library-list li', prevPath?.index || 0)
         setPrevPath(null)
     }, []);
 
@@ -20,19 +23,17 @@ const Library = () => {
     return (
         <div className={styles.wrapper} style={{'--games-in-row': gamesInRow}}>
             <ul className={styles.list} id="library-list">
-                <GamePadNavigation defaultIndex={prevPath?.index || 0}>
-                    {games.sort(sort).map((game, index) => (
-                        <li key={game.id} tabIndex={1} onClick={() => {
-                            setPrevPath({
-                                index,
-                                url: '/library'
-                            })
-                            navigation('/game/' + game.id)
-                        }}>
-                            <img src={game.img_grid} alt={game.name}/>
-                        </li>
-                    ))}
-                </GamePadNavigation>
+                {games.sort(sort).map((game, index) => (
+                    <li key={game.id} tabIndex={1} onClick={() => {
+                        setPrevPath({
+                            index,
+                            url: '/library'
+                        })
+                        navigation('/game/' + game.id)
+                    }}>
+                        <img src={game.img_grid} alt={game.name}/>
+                    </li>
+                ))}
             </ul>
         </div>
     )

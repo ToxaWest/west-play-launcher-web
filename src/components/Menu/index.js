@@ -8,11 +8,10 @@ import {ReactComponent as SvgShutDown} from "../../SVG/shut-down.svg";
 import {ReactComponent as SvgSettings} from "../../SVG/settings.svg";
 
 const Menu = () => {
-    const {init, setActiveIndex} = useAppControls()
+    const {init} = useAppControls()
 
     useEffect(() => {
         init('#main-menu a');
-        setActiveIndex(0)
     }, []);
 
     return (

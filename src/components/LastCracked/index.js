@@ -6,17 +6,16 @@ import {currentLang} from "../../helpers/locales";
 import RenderContent from "../Game/renderContent";
 import RenderMedia from "../Game/renderMedia";
 import {getColorByUrl} from "../../helpers/getColor";
-import GamePadNavigation from "../../helpers/gamePadNavigation";
 
 const LastCracked = () => {
     const [games, setGames] = useState([]);
     const [steam, setSteam] = useState(null);
     const wrapperRef = useRef(null);
     const [view, setView] = useState('content');
-    const [currentIndex, setCurrentIndex] = useState(0)
+    const [currentGame, setCurrentGame] = useState(0)
     const toggleViewMode = () => setView(v => v === 'content' ? 'media' : 'content')
 
-    useAppControls({
+    const {init} = useAppControls({
         map: {
             lb: toggleViewMode,
             rb: toggleViewMode
@@ -24,6 +23,7 @@ const LastCracked = () => {
     })
 
     useEffect(() => {
+        init('#cracked li')
         electronConnector.crackWatchRequest().then((g) => {
             setGames(g.games);
         })
@@ -52,11 +52,10 @@ const LastCracked = () => {
     useEffect(() => {
         setSteam(null)
         setView('content')
-    }, [currentIndex])
+    }, [currentGame])
 
 
     const renderView = () => {
-        const currentGame = games[currentIndex];
         if (view === 'content')
             return (<RenderContent game={steam} fields={[{
                 label: 'Is AAA',
@@ -128,23 +127,22 @@ const LastCracked = () => {
             <div className={styles.wrapper} ref={wrapperRef}>
                 <h2>Cracked Games</h2>
                 <ul id={'cracked'}>
-                    <GamePadNavigation focusedIndex={setCurrentIndex}>
-                        {games.map((game) => (
-                            <li key={game.id}
-                                tabIndex={1}
-                                onClick={() => {
-                                    getDataFromSteam(game)
-                                }}
-                                onFocus={() => {
-                                    getColorByUrl(game.short_image).then(color => {
-                                        wrapperRef.current.style.backgroundColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
-                                    })
-                                }}>
-                                <img src={game.short_image} alt={game.title} loading={"lazy"}/>
-                                {renderInfoWrapper(game)}
-                            </li>
-                        ))}
-                    </GamePadNavigation>
+                    {games.map((game) => (
+                        <li key={game.id}
+                            tabIndex={1}
+                            onClick={() => {
+                                getDataFromSteam(game)
+                            }}
+                            onFocus={() => {
+                                setCurrentGame(game)
+                                getColorByUrl(game.short_image).then(color => {
+                                    wrapperRef.current.style.backgroundColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
+                                })
+                            }}>
+                            <img src={game.short_image} alt={game.title} loading={"lazy"}/>
+                            {renderInfoWrapper(game)}
+                        </li>
+                    ))}
                 </ul>
             </div>
             {renderAdditionalInfo()}

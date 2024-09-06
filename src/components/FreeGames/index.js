@@ -2,16 +2,19 @@ import {useEffect, useRef, useState} from "react";
 import electronConnector from "../../helpers/electronConnector";
 import styles from './freeGames.module.scss';
 import {getColorByUrl} from "../../helpers/getColor";
-import GamePadNavigation from "../../helpers/gamePadNavigation";
+import useAppControls from "../../hooks/useAppControls";
 
 const disabledStores = ["109"]
 
 const FreeGames = () => {
     const [games, setGames] = useState([]);
     const wrapperRef = useRef(null);
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentGame, setCurrentGame] = useState(null)
+
+    const {init} = useAppControls();
 
     useEffect(() => {
+        init('#freeGames li')
         electronConnector.getFreeGames().then((elements) => {
             setGames(elements.filter(game => !disabledStores.includes(game.shopId)))
         })
@@ -23,6 +26,7 @@ const FreeGames = () => {
             <li key={game.containerGameId}
                 tabIndex={1}
                 onFocus={() => {
+                    setCurrentGame(game)
                     getColorByUrl(img).then(color => {
                         wrapperRef.current.style.backgroundColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
                     })
@@ -53,7 +57,6 @@ const FreeGames = () => {
     }
 
     const renderDescription = () => {
-        const currentGame = games[currentIndex];
         if (currentGame) {
             return (
                 <div className={styles.description}>
@@ -75,9 +78,7 @@ const FreeGames = () => {
         <div className={styles.wrapper} ref={wrapperRef}>
             <h2>Free Games ({games.length})</h2>
             <ul id="freeGames">
-                <GamePadNavigation focusedIndex={setCurrentIndex}>
-                    {games.map(renderGame)}
-                </GamePadNavigation>
+                {games.map(renderGame)}
             </ul>
             {renderDescription()}
         </div>

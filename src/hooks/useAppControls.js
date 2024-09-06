@@ -1,93 +1,86 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useRef} from "react";
 
 const useAppControls = ({map} = {map: {}}) => {
     const ref = useRef([]);
-    const [currentIndex, setCurrentIndex] = useState(0);
     const refRowsMatrix = useRef([]);
+    const refCurrentIndex = useRef(0);
+    const observer = useRef(null);
+
+    const setMatrix = () => {
+        const {matrix} = [...ref.current].reduce(({matrix, keys}, current, index) => {
+            const {top} = current.getBoundingClientRect()
+            if (typeof keys[top] !== "number") keys[top] = Object.keys(keys).length;
+            if (!matrix[keys[top]]) matrix[keys[top]] = []
+            matrix[keys[top]].push(index)
+            return {matrix, keys}
+        }, {keys: {}, matrix: []})
+
+        refRowsMatrix.current = matrix;
+    }
 
     const init = (selector, initialFocus = 0) => {
         if (selector) {
             ref.current = document.querySelectorAll(selector)
-            const matrix = {};
-            ref.current.forEach((a, i) => {
-                const {top} = a.getBoundingClientRect()
-                if (!matrix[top.toString()]) matrix[top.toString()] = []
-                matrix[top.toString()].push(i)
-            })
-            refRowsMatrix.current = Object.values(matrix)
-            setActiveIndex(initialFocus)
+            if (ref.current.length) {
+                setMatrix()
+                setCurrentIndex(() => initialFocus)
+            } else {
+                const [parent] = selector.split(' ')
+                const logChanges = () => {
+                    ref.current = document.querySelectorAll(selector)
+                    setMatrix()
+                    setCurrentIndex(() => initialFocus)
+                }
+                observer.current = new MutationObserver(logChanges);
+                observer.current.observe(document.querySelector(parent), {childList: true, subtree: true});
+            }
         }
     }
 
-    const getPosition = (i) => {
+    const setCurrentIndex = (func) => {
+        const i = func(refCurrentIndex.current);
+        refCurrentIndex.current = i;
+        setActiveIndex(i)
+    }
+
+    const getPosition = ({i, rowPosition = (i) => i, colPosition = (i) => i}) => {
         const currentRow = refRowsMatrix.current.findIndex((a) => a.includes(i));
         const currentCol = refRowsMatrix.current[currentRow].findIndex((a) => a === i);
-        return {
-            currentCol,
-            currentRow
+        const _newCol = refRowsMatrix.current[rowPosition(currentRow)]?.[colPosition(currentCol)]
+        if (typeof _newCol === "number") {
+            return _newCol
         }
+        return i
+    }
+
+    const navKeys = {
+        right: {colPosition: (a) => a + 1},
+        left: {colPosition: (a) => a - 1},
+        bottom: {rowPosition: (a) => a + 1},
+        top: {rowPosition: (a) => a - 1}
     }
 
     const listener = ({detail}) => {
-        Object.entries(map).forEach(([key, funk]) => {
-            if (detail === key) {
-                funk(ref.current[currentIndex])
-            }
-        })
+        if (map[detail]) {
+            map[detail]()
+        }
+
         if (!ref.current.length) {
             return
         }
-        if (detail === 'right') {
-            setCurrentIndex((i) => {
-                const {currentRow, currentCol} = getPosition(i);
-                const _newCol = refRowsMatrix.current[currentRow][currentCol + 1]
-                if (typeof _newCol === "number") {
-                    return _newCol
-                }
 
-                return i
-            })
-        }
-        if (detail === 'left') {
-            setCurrentIndex((i) => {
-                const {currentRow, currentCol} = getPosition(i);
-                const _newCol = refRowsMatrix.current[currentRow][currentCol - 1]
-                if (typeof _newCol === "number") {
-                    return _newCol
-                }
-                return i
-            })
-        }
-
-        if (detail === 'bottom') {
-            setCurrentIndex((i) => {
-                const {currentRow, currentCol} = getPosition(i);
-                const _newCol = refRowsMatrix.current[currentRow + 1]?.[currentCol]
-                if (typeof _newCol === "number") {
-                    return _newCol
-                }
-                return i
-            })
-        }
-        if (detail === 'top') {
-            setCurrentIndex((i) => {
-                const {currentRow, currentCol} = getPosition(i);
-                const _newCol = refRowsMatrix.current[currentRow - 1]?.[currentCol]
-                if (typeof _newCol === "number") {
-                    return _newCol
-                }
-                return i
-            })
+        if (navKeys[detail]) {
+            setCurrentIndex((i) => getPosition({i, ...navKeys[detail]}))
         }
     }
 
     const setActiveIndex = (index) => {
         if (index < 0) {
-            setCurrentIndex(ref.current.length - 1);
+            setCurrentIndex(() => ref.current.length - 1);
             return
         }
         if (index >= ref.current.length) {
-            setCurrentIndex(0)
+            setCurrentIndex(() => 0)
             return;
         }
         if (ref.current[index]) {
@@ -97,25 +90,21 @@ const useAppControls = ({map} = {map: {}}) => {
                 behavior: 'smooth',
             })
             ref.current[index].focus();
-            setCurrentIndex(index)
         }
     }
 
     useEffect(() => {
-        setActiveIndex(currentIndex)
-    }, [currentIndex])
-
-    useEffect(() => {
         document.addEventListener('gamepadbutton', listener)
         return () => {
+            if(observer.current){
+                observer.current.disconnect()
+            }
             document.removeEventListener('gamepadbutton', listener)
         }
     }, []);
 
     return {
-        init,
-        setActiveIndex,
-        currentIndex,
+        init
     }
 }
 

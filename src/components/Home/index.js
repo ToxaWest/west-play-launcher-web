@@ -3,18 +3,20 @@ import styles from "./home.module.scss";
 import {useEffect, useMemo, useState} from "react";
 import {getFromStorage} from "../../helpers/getFromStorage";
 import usePrevPath from "../../hooks/usePrevPath";
-import GamePadNavigation from "../../helpers/gamePadNavigation";
+import useAppControls from "../../hooks/useAppControls";
 
 const Home = () => {
     const navigate = useNavigate();
     const {setPrevPath, prevPath} = usePrevPath()
-    const [currentIndex, setCurrentIndex] = useState(prevPath?.index || 0);
-    useEffect(() => {
-        setPrevPath(null)
-    }, []);
-
+    const {init} = useAppControls()
+    const [background, setBackground] = useState(null);
     const games = getFromStorage('games');
     const lastPlayed = getFromStorage('lastPlayed');
+
+    useEffect(() => {
+        init('#game-list li', prevPath?.index || 0)
+        setPrevPath(null)
+    }, []);
 
     const configuredArray = () => {
         const renderSort = [];
@@ -35,8 +37,8 @@ const Home = () => {
     const sortedGames = useMemo(configuredArray, []);
 
     const renderBackground = () => {
-        if (sortedGames[currentIndex]) {
-            return <img src={sortedGames[currentIndex].img_hero} alt={'background'}/>
+        if (background) {
+            return <img src={background} alt={'background'}/>
         }
         return null
     }
@@ -47,21 +49,22 @@ const Home = () => {
                 {renderBackground()}
             </div>
             <ul id="game-list">
-                <GamePadNavigation defaultIndex={prevPath?.index || 0} focusedIndex={setCurrentIndex}>
-                    {sortedGames.map((game, index) => (
-                        <li key={game.id}
-                            tabIndex={1}
-                            onClick={() => {
-                                setPrevPath({
-                                    url: '/',
-                                    index
-                                })
-                                navigate('/game/' + game.id)
-                            }}>
-                            <img src={index ? game.img_grid : game.img_landscape} alt={game.name}/>
-                        </li>
-                    ))}
-                </GamePadNavigation>
+                {sortedGames.map((game, index) => (
+                    <li key={game.id}
+                        tabIndex={1}
+                        onFocus={() => {
+                            setBackground(game.img_hero)
+                        }}
+                        onClick={() => {
+                            setPrevPath({
+                                url: '/',
+                                index
+                            })
+                            navigate('/game/' + game.id)
+                        }}>
+                        <img src={index ? game.img_grid : game.img_landscape} alt={game.name}/>
+                    </li>
+                ))}
             </ul>
         </div>
     )
