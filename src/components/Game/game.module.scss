@@ -142,12 +142,11 @@
     border-radius: var(--border-radius);
   }
 
-  strong {
-    margin-right: var(--gap-half);
-  }
-
   li {
     margin-bottom: var(--gap-half);
+    gap: var(--gap-half);
+    display: flex;
+    align-items: center;
   }
 
   ul {
