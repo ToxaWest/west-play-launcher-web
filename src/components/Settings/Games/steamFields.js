@@ -72,7 +72,7 @@ const SteamFields = ({game, onChange, setGame, setLoading}) => {
                    name='path'>
                 <button onClick={() => getGamePath()}>Get Path</button>
             </Input>
-            {game.steamId && <SteamData game={game} setGame={setGame}/>}
+            {game.steamId ? null : <SteamData game={game} setGame={setGame}/>}
             <Input label='Exe file path'
                    value={game.exePath}
                    onChange={onChange}
