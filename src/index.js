@@ -22,6 +22,7 @@ import LastCracked from "./components/LastCracked";
 import GamesMedia from "./components/Game/media";
 import FreeGames from "./components/FreeGames";
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import GameDLC from "./components/GameDLC";
 const router = createBrowserRouter([
     {
         element: <Root/>,
@@ -59,6 +60,9 @@ const router = createBrowserRouter([
             children: [{
                 path: "/game/:id",
                 element: <GameContent/>
+            },{
+                path: "/game/:id/dlc",
+                element: <GameDLC/>
             }, {
                 path: "/game/:id/achievements",
                 element: <Achievements/>

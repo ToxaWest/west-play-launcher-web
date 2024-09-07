@@ -4,43 +4,48 @@ import styles from "../settings.module.scss";
 import {currentLang} from "../../../helpers/locales";
 import {useRef, useState} from "react";
 
+export const getSteamDataByAppID = async (appID) => {
+    const r = await electronConnector.getSteamData({
+        appID,
+        lang: currentLang()
+    })
+
+    const {
+        about_the_game,
+        name,
+        release_date,
+        pc_requirements,
+        developers,
+        controller_support,
+        required_age,
+        metacritic,
+        supported_languages,
+        movies,
+        screenshots
+    } = r[appID].data
+
+    return {
+        steamId: appID,
+        about_the_game,
+        name,
+        release_date,
+        pc_requirements,
+        developers,
+        controller_support,
+        required_age,
+        metacritic,
+        supported_languages,
+        movies,
+        screenshots
+    }
+}
+
 const SteamData = ({setGame, game}) => {
     const [temp, setTemp] = useState([]);
     const searchRef = useRef();
     const getSteamData = (steamId) => {
-        electronConnector.getSteamData({
-            appID: steamId,
-            lang: currentLang()
-        }).then((r) => {
-            const {
-                about_the_game,
-                name,
-                release_date,
-                pc_requirements,
-                developers,
-                controller_support,
-                required_age,
-                metacritic,
-                supported_languages,
-                movies,
-                screenshots
-            } = r[steamId].data;
-
-            setGame(g => ({
-                ...g,
-                steamId,
-                supported_languages,
-                about_the_game,
-                name,
-                release_date,
-                pc_requirements,
-                developers,
-                metacritic,
-                controller_support,
-                required_age,
-                movies,
-                screenshots
-            }))
+        getSteamDataByAppID(steamId).then((data) => {
+            setGame(g => ({...g, ...data}));
             searchRef.current.value = ''
             searchRef.current.blur()
             setTemp([])

@@ -29,7 +29,7 @@ const Menu = () => {
                 <li>
                     <Link to="/" tabIndex={1} onClick={(e) => {
                         e.preventDefault();
-                        electronConnector.shutDownPC()
+                        electronConnector.systemAction('Stop-Computer')
                     }}>
                         <SvgShutDown/> Shut Down PC
                     </Link>
@@ -37,7 +37,7 @@ const Menu = () => {
                 <li>
                     <Link to="/" tabIndex={1} onClick={(e) => {
                         e.preventDefault();
-                        electronConnector.restartPC()
+                        electronConnector.systemAction('Restart-Computer')
                     }}>
                         <SvgRestart/> Restart PC
                     </Link>

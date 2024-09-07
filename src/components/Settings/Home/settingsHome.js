@@ -36,7 +36,7 @@ const SettingsHome = () => {
                    }]}
                    onChange={({value}) => {
                        if (value) {
-                           electronConnector.changeDisplayMode(value)
+                           electronConnector.systemAction(`DisplaySwitch ${value}`)
                        }
                    }}
             />
@@ -111,7 +111,7 @@ const SettingsHome = () => {
                 value={settings.coloredGames}
                 onChange={onChange}
             />
-            <button onClick={() => {
+            <button disabled={true} onClick={() => {
                 setToStorage('config', {settings})
                 notifications({
                     img: '/assets/controller/save.svg',

@@ -1,4 +1,5 @@
 const electronConnector = {
+    systemAction: (action) => window.electronAPI.systemAction(action),
     nintendoSearch: (data) => window.electronAPI.nintendoSearch(data),
     nintendoReq: (data) => window.electronAPI.nintendoReq(data),
     openFile: (data) => window.electronAPI.openFile(data),
@@ -13,9 +14,7 @@ const electronConnector = {
     readFile: (data) => window.electronAPI.readFile(data),
     onVisibilityChange: (data) => window.electronAPI.onVisibilityChange(data),
     gameStatus: (data) => window.electronAPI.gameStatus(data),
-    changeDisplayMode: (data) => window.electronAPI.changeDisplayMode(data),
     lastModify: (data) => window.electronAPI.lastModify(data),
-    shutDownPC: () => window.electronAPI.shutDownPC(),
     restartPC: () => window.electronAPI.restartPC(),
     rpcs3: (data) => window.electronAPI.rpcs3(data),
     getGamesRPCS3: (data) => window.electronAPI.getGamesRPCS3(data),

@@ -11,12 +11,6 @@ const FreeGames = () => {
         electronConnector.getFreeGames().then((elements) => {
             const result = elements
                 .filter(game => !disabledStores.includes(game.shopId))
-                .map(game => ({
-                    ...game,
-                    id: game.containerGameId,
-                    short_image: game.image.split('_')[0] + '_616xr353.jpg',
-                    name: game.title
-                }))
             setGames(result)
         })
     }, []);
@@ -45,21 +39,13 @@ const FreeGames = () => {
         return <>From {dateFormatter(startTime)}</>
     }
 
-    const renderSvg = ({platform}) => {
-        if (!platform) {
-            return null
-        }
-        const [, img] = platform.match(new RegExp(/"(.*)"/));
-        const imgFullPath = 'https://gg.deals' + img;
-
-        const [,platformName] = img.split('#')
-
+    const renderSvg = ({platformName, platformSvg}) => {
         const width = {
-            'svg-icon-platform-windows': 18,
-            'svg-icon-platform-xbox-one': 46
+            'windows': 18,
+            'xbox-one': 46
         }
         return <svg height={18} width={width[platformName] || 18} style={{color: 'var(--theme-text-color)'}}>
-            <use xlinkHref={imgFullPath} preserveAspectRatio="xMinYMid" />
+            <use xlinkHref={platformSvg} preserveAspectRatio="xMinYMid" />
         </svg>
     }
 

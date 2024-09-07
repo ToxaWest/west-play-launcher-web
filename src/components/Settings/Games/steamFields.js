@@ -1,11 +1,34 @@
 import Input from "../../Input";
 import electronConnector from "../../../helpers/electronConnector";
 import styles from "../settings.module.scss";
-import SteamData from "./SteamData";
+import SteamData, {getSteamDataByAppID} from "./SteamData";
 import {getFromStorage} from "../../../helpers/getFromStorage";
 import {currentLang} from "../../../helpers/locales";
+import formatBytes from "../../../helpers/formatSize";
 
-const SteamFields = ({game, onChange, setGame, setLoading, getGamePath}) => {
+
+const getDLC = async (dlc) => {
+    const result = [];
+    if (dlc) {
+        for (const appID of Object.keys(dlc)) {
+            const _d = await electronConnector.getSteamData({
+                appID,
+                lang: currentLang()
+            })
+            if (_d) {
+                try {
+                    const {short_description, header_image, name} = _d[appID].data;
+                    result.push({id: appID, short_description, header_image, name})
+                } catch (e) {
+
+                }
+            }
+        }
+    }
+    return result;
+}
+
+const SteamFields = ({game, onChange, setGame, setLoading}) => {
     const args = game.exeArgs || {};
     const {steam_api_key} = getFromStorage('config').settings;
 
@@ -13,6 +36,19 @@ const SteamFields = ({game, onChange, setGame, setLoading, getGamePath}) => {
         electronConnector.getFile().then(achPath => {
             setGame(g => ({...g, [key]: achPath}))
         })
+    }
+
+    const getGamePath = async () => {
+        setLoading(true)
+        const _data = await electronConnector.getFolder()
+        const {path, size, appId, dlc} = _data
+        setGame(g => ({...g, path, size: formatBytes(parseInt(size))}))
+        if (appId) {
+            const d = await getSteamDataByAppID(appId)
+            const dlcList = await getDLC(dlc)
+            setGame(g => ({...g, ...d, dlcList}))
+        }
+        setLoading(false)
     }
 
     const getAchievements = () => {
@@ -30,13 +66,13 @@ const SteamFields = ({game, onChange, setGame, setLoading, getGamePath}) => {
 
     return (
         <>
-            <SteamData game={game} setGame={setGame}/>
             <Input label='Path'
                    value={game.path}
                    disabled={true}
                    name='path'>
                 <button onClick={() => getGamePath()}>Get Path</button>
             </Input>
+            {game.steamId && <SteamData game={game} setGame={setGame}/>}
             <Input label='Exe file path'
                    value={game.exePath}
                    onChange={onChange}

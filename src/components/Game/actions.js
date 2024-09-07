@@ -5,6 +5,7 @@ import useStartGame from "../../hooks/useStartGame";
 import {ReactComponent as SvgContent} from '../../SVG/content.svg'
 import {ReactComponent as SvgAchievements} from '../../SVG/achievement.svg'
 import {ReactComponent as SvgMedia} from '../../SVG/media.svg'
+import {ReactComponent as SvgDLC} from '../../SVG/dlc.svg'
 
 const GameActions = ({game, audioStop}) => {
     const navigate = useNavigate();
@@ -41,7 +42,11 @@ const GameActions = ({game, audioStop}) => {
         url: `/game/${game.id}/achievements`,
         img: SvgAchievements,
         active: Boolean(game.achievements)
-    }, {
+    },  {
+        url: `/game/${game.id}/dlc`,
+        img: SvgDLC,
+        active: Boolean(game.dlcList) && Boolean(game.dlcList.length)
+    },{
         url: `/game/${game.id}/media`,
         img: SvgMedia,
         active: [...movies, ...screenshots].length > 0
@@ -81,7 +86,7 @@ const GameActions = ({game, audioStop}) => {
     }
 
     return (
-        <div className={styles.content} id={'game-actions'}>
+        <div className={styles.content}>
             <button
                 onClick={() => {
                     start();

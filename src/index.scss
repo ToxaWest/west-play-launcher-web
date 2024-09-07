@@ -78,6 +78,9 @@ button {
   border: none;
   border-radius: var(--border-radius);
   transition: background-color 0.2s;
+  &:disabled {
+    opacity: 0.1;
+  }
 }
 
 button:hover, button:focus {

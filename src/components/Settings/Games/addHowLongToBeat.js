@@ -32,13 +32,10 @@ const AddHowLongToBeat = ({id, value, name, onChange}) => {
                     return
                 }
 
-
-
                 onChange({
                     name: 'howLongToBeat',
                     value: data.data[0]
                 })
-                console.log(data.data)
             }, () => {
                 setError(true)
             })
