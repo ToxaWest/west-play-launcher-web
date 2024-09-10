@@ -9,7 +9,9 @@ const GameDLC = () => {
     const renderItem = (item) => {
         return (
             <li key={item.id}>
-                <img src={item.header_image} alt={item.name} />
+                <div className={styles.image}>
+                    <img src={item.header_image} alt={item.name}/>
+                </div>
                 <div className={styles.content}>
                     <h4>{item.name}</h4>
                     <span dangerouslySetInnerHTML={{__html: item.short_description}}/>

@@ -3,7 +3,8 @@ export default function initLocalStorage() {
         config: {
             settings: {
                 coloredGames: true,
-                gamesInRow: 6
+                gamesInRow: 6,
+                currentLang: 'english'
             }
         },
         games: [],

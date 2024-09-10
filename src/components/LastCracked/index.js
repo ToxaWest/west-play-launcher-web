@@ -11,14 +11,13 @@ const LastCracked = () => {
         })
     }, [])
 
-    const getAppId = ({steam_prod_id: appID, release_date}) => {
+    const getAppId = ({steam_prod_id, release_date, title}) => {
         return {
             fields: {
-                release_date: {
-                    date: new Date(release_date).toLocaleDateString()
-                }
+                name: title,
+                release_date: {date: new Date(release_date).toLocaleDateString()}
             },
-            appID
+            appID: steam_prod_id ? {id: steam_prod_id, source: 'steam'} : null
         }
     }
 

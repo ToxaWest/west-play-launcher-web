@@ -9,7 +9,6 @@ import useNotification from "../../../hooks/useNotification";
 const SettingsHome = () => {
     const notifications = useNotification();
     const [settings, setSettings] = useState(getFromStorage('config').settings);
-    const [theme, setTheme] = useState(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
 
     const onChange = ({name, value}) => {
         setSettings(g => ({...g, [name]: value}))
@@ -40,26 +39,24 @@ const SettingsHome = () => {
                        }
                    }}
             />
-            <Input label={'Theme (current session only)'}
+            <Input label={'Theme'}
                    type="select"
                    name="theme"
                    options={[{
+                       label: 'System',
+                       value: 'system'
+                   },{
                        label: 'Light',
                        value: 'light'
                    }, {
                        label: 'Dark',
                        value: 'dark'
                    }]}
-                   value={theme}
-                   onChange={({value}) => {
-                       if (value) {
-                           electronConnector.changeTheme(value);
-                           setTheme(value)
-                       }
-                   }}
+                   value={settings.theme || 'system'}
+                   onChange={onChange}
             />
             <Input
-                label={'Steam Language'}
+                label={'Language'}
                 name="currentLang"
                 type="select"
                 value={settings.currentLang}
@@ -111,7 +108,7 @@ const SettingsHome = () => {
                 value={settings.coloredGames}
                 onChange={onChange}
             />
-            <button disabled={true} onClick={() => {
+            <button onClick={() => {
                 setToStorage('config', {settings})
                 notifications({
                     img: '/assets/controller/save.svg',
@@ -119,6 +116,9 @@ const SettingsHome = () => {
                     name: 'Saved successfully',
                     description: 'Configuration updated'
                 })
+                setTimeout(() => {
+                    window.location.reload();
+                },3000)
             }}>
                 Save
             </button>

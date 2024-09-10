@@ -5,7 +5,6 @@ import RenderContent from "../Game/renderContent";
 import RenderMedia from "../Game/renderMedia";
 import useAppControls from "../../hooks/useAppControls";
 import electronConnector from "../../helpers/electronConnector";
-import {currentLang} from "../../helpers/locales";
 
 const GamesList = ({
                        games,
@@ -34,16 +33,11 @@ const GamesList = ({
         setView('content')
     }, [currentGame])
 
-    const getDataFromSteam = async (game) => {
+    const getData = async (game) => {
         const {title} = game
         const {appID, fields} = await getAppId(game)
         if (appID) {
-            electronConnector.getSteamData({
-                appID,
-                lang: currentLang()
-            }).then((data) => {
-                setSteam(data[appID].data)
-            })
+            electronConnector.getGameByID(appID).then(setSteam)
         } else {
             setTimeout(() => {
                 setSteam({
@@ -60,7 +54,7 @@ const GamesList = ({
             <li key={game.id}
                 tabIndex={1}
                 onClick={() => {
-                    getDataFromSteam(game)
+                    getData(game)
                 }}
                 onFocus={() => {
                     setCurrentGame(game)

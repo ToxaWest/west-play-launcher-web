@@ -117,6 +117,16 @@ const RenderMedia = ({
         if (selected?.path_full) {
             return <img src={selected.path_full} alt={'img'}/>
         }
+
+        if (selected?.playbackURLs) {
+            const _cur = selected.playbackURLs[1];
+            if(!_cur){
+                return null
+            }
+            return <video src={_cur.url} controls={false} muted={true} autoPlay={true} loop={true}
+                          ref={videoRef}/>
+        }
+
         return null;
     }
 

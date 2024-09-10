@@ -32,7 +32,7 @@ const useAchievementsWatcher = (id) => {
 
     const watchMap = {
         steam: game.achPath,
-        rpcs3: game.dataPath
+        rpcs3: game.achPath
     }
 
     useEffect(() => {

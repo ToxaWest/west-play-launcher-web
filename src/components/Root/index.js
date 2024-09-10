@@ -4,6 +4,8 @@ import styles from './root.module.scss';
 import Footer from "../Footer";
 import Clock from "../Clock";
 import useAppControls from "../../hooks/useAppControls";
+import electronConnector from "../../helpers/electronConnector";
+import {getFromStorage} from "../../helpers/getFromStorage";
 
 const Root = () => {
     const navigate = useNavigate();
@@ -48,6 +50,16 @@ const Root = () => {
     })
 
     useEffect(() => {
+        const {settings: {steam_api_key, currentLang, rpcs3, theme, egs_profile, hltbAPI}} = getFromStorage('config');
+        electronConnector.setBeData({
+            hltbAPI,
+            steam_api_key,
+            lang: currentLang,
+            country: 'UA',
+            rpcs3Path: rpcs3,
+            egs_profile,
+            theme
+        })
         const body = document.querySelector('html');
         init('#contentWrapper [tabindex="1"], #contentWrapper button:not(:disabled)')
         document.addEventListener('mousemove', () => {

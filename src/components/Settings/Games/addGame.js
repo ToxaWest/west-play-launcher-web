@@ -5,72 +5,77 @@ import Input from "../../Input";
 import SearchGame from "./searchGame";
 import RyujinxFields from "./ryujinxFields";
 import SteamFields from "./steamFields";
-import Rpcs3Fields from "./rpcs3Fields";
-import EgsFields from "./egsFields";
 import formatBytes from "../../../helpers/formatSize";
-import {getFromStorage} from "../../../helpers/getFromStorage";
 import AddAudio from "./addAudio";
-import AddHowLongToBeat from "./addHowLongToBeat";
 
 const AddGame = ({data, submit, remove}) => {
     const [game, setGame] = useState(data);
     const [opened, setOpened] = useState(false)
     const wrapperRef = useRef(null);
-    const {rpcs3, ryujinx} = getFromStorage('config').settings
 
     const [loading, setLoading] = useState(false);
     const onChange = ({name, value}) => {
         setGame(g => ({...g, [name]: value}))
     }
 
-    const getGamePath = () => {
+    const getGamePathV2 = () => {
         setLoading(true)
-        electronConnector.getFolder().then(({path, size}) => {
-            setGame(g => ({...g, path, size: formatBytes(parseInt(size))}))
+        electronConnector.getDataByFolder(game.id).then((data) => {
+            const {size, ...gameData} = data;
+            setGame(g => ({...g, ...gameData, size: formatBytes(parseInt(size))}))
             setLoading(false)
         })
     }
 
-    const renderByType = () => {
-        const props = {
-            game,
-            setGame,
-            setLoading
-        }
-        if (game.source === 'steam') {
-            return <SteamFields {...props} onChange={onChange} getGamePath={getGamePath}/>
-        }
-        if (game.source === 'ryujinx') {
-            return <RyujinxFields {...props} getGamePath={getGamePath}/>
-        }
-        if (game.source === 'rpcs3') {
-            return <Rpcs3Fields {...props} getGamePath={getGamePath}/>
-        }
-        if (game.source === 'egs') {
-            return <EgsFields {...props}/>
-        }
+    const getImage = () => {
+        electronConnector.getFile().then(p => {
+            const imageName = p.split('\\').at(-1);
+            onChange({
+                name: 'imageName',
+                value: imageName
+            })
+        })
     }
 
-    const options = [
-        'steam',
-        'egs',
-        ryujinx ? 'ryujinx' : null,
-        rpcs3 ? 'rpcs3' : null,
-    ].filter(a => a)
+    const imageName = () => (
+        <Input label='Game Image (dangerous)'
+               value={game.imageName}
+               disabled={true}
+               name='imageName'>
+            <button onClick={() => getImage()}>Get imageName</button>
+        </Input>
+    )
 
+    const renderByType = () => {
+        if (game.source === 'steam') {
+            return <>
+                {imageName()}
+                <SteamFields game={game} onChange={onChange}/>
+            </>
+        }
+
+        if (game.source === 'ryujinx') {
+            return <RyujinxFields game={game} onChange={onChange}/>
+        }
+
+        if (game.source === 'egs') {
+            return imageName()
+        }
+
+        return null;
+    }
 
     const renderContent = () => {
         if (game.steamgriddb) {
             return (
                 <>
-                    <Input label='Source'
-                           value={game.source}
-                           onChange={onChange}
-                           type="select"
-                           options={options}
-                           name='source'/>
+                    <Input label='Path'
+                           value={game.path}
+                           disabled={true}
+                           name='path'>
+                        <button onClick={() => getGamePathV2()}>Get Path</button>
+                    </Input>
                     {renderByType()}
-                    <AddHowLongToBeat id={game.steamId} onChange={onChange} name={game.name} value={game.howLongToBeat}/>
                     <AddImage id={game.steamgriddb} type="grid" onChange={onChange} value={game.img_grid}/>
                     <AddImage id={game.steamgriddb} type="landscape" onChange={onChange} value={game.img_landscape}/>
                     <AddImage id={game.steamgriddb} type="hero" onChange={onChange} value={game.img_hero}/>
