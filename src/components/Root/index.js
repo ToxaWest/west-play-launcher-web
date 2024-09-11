@@ -50,9 +50,8 @@ const Root = () => {
     })
 
     useEffect(() => {
-        const {settings: {steam_api_key, currentLang, rpcs3, theme, egs_profile, hltbAPI}} = getFromStorage('config');
+        const {settings: {steam_api_key, currentLang, rpcs3, theme, egs_profile}} = getFromStorage('config');
         electronConnector.setBeData({
-            hltbAPI,
             steam_api_key,
             lang: currentLang,
             country: 'UA',

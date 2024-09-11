@@ -23,11 +23,6 @@ const SettingsConfig = () => {
         <>
             <div className={styles.block} id="settings-config">
                 <h1>Config</h1>
-                <Input label={'HowLongToBeat™ search key'}
-                       name="hltbAPI"
-                       value={settings.hltbAPI}
-                       onChange={onChange}
-                />
                 <Input label={'Steam Web API Key (needed for achievements)'}
                        name="steam_api_key"
                        value={settings.steam_api_key}
