@@ -9,8 +9,7 @@ const FreeGames = () => {
 
     useEffect(() => {
         electronConnector.getFreeGames().then((elements) => {
-            const result = elements
-                .filter(game => !disabledStores.includes(game.shopId))
+            const result = elements.filter(game => !disabledStores.includes(game.shopId))
             setGames(result)
         })
     }, []);
