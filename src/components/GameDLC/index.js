@@ -8,7 +8,9 @@ const GameDLC = () => {
 
     const renderItem = (item) => {
         return (
-            <li key={item.id}>
+            <li key={item.id} tabIndex={1} onClick={() => {
+
+            }}>
                 <div className={styles.image}>
                     <img src={item.header_image} alt={item.name}/>
                 </div>

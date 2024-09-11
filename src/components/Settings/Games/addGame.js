@@ -27,13 +27,18 @@ const AddGame = ({data, submit, remove}) => {
         })
     }
 
+    const update = () => {
+        setLoading(true)
+        electronConnector.updateDataByFolder({path: game.path, id: game.id}).then((data) => {
+            setGame(g => ({...g, ...data}))
+            setLoading(false)
+        })
+    }
+
     const getImage = () => {
         electronConnector.getFile().then(p => {
             const imageName = p.split('\\').at(-1);
-            onChange({
-                name: 'imageName',
-                value: imageName
-            })
+            onChange({name: 'imageName', value: imageName})
         })
     }
 
@@ -107,7 +112,10 @@ const AddGame = ({data, submit, remove}) => {
                 {game.name}
             </summary>
             {opened ? <div>
-                <button onClick={() => remove()}>Remove game</button>
+                <div style={{padding: 'var(--padding)', display: 'flex', gap: 'var(--gap)'}}>
+                    <button onClick={() => remove()}>Remove game</button>
+                    <button onClick={() => update()}>Update game</button>
+                </div>
                 {renderContent()}
             </div> : null}
         </details>

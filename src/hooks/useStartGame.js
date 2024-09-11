@@ -17,7 +17,8 @@ const useStartGame = (game) => {
             steam: game.exePath,
             ryujinx: settings.ryujinx,
             rpcs3: settings.rpcs3,
-            egs: game.exePath
+            egs: game.exePath,
+            gog: game.exePath,
         }
         return list[game.source]
     }
@@ -49,6 +50,10 @@ const useStartGame = (game) => {
             }
             setStatus(_status)
         })
+
+        return () => {
+            window.api.removeAllListeners('gameStatus')
+        }
     }, []);
 
     return {

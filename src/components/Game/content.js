@@ -3,11 +3,26 @@ import {getFromStorage} from "../../helpers/getFromStorage";
 import RenderContent from "./renderContent";
 import {secondsToHms} from "../../hooks/usePlayTime";
 import styles from './game.module.scss'
+import {useEffect, useState} from "react";
+import electronConnector from "../../helpers/electronConnector";
+
 const GameContent = () => {
     const {id} = useParams();
     const game = getFromStorage('games').find(({id: gid}) => gid.toString() === id);
-    const lastPlayed = getFromStorage('lastPlayed')[game.id];
-    const playTime = getFromStorage('playTime')[game.id];
+    const [playTime, setPlayTime] = useState(0);
+    const [lastPlayed, setLastPlayed] = useState(0);
+
+    useEffect(() => {
+        setPlayTime(getFromStorage('playTime')[game.id]);
+        setLastPlayed(getFromStorage('lastPlayed')[game.id]);
+        electronConnector.getPlayTime({source: game.source, id: game.nspId || game.psId}).then(d => {
+            if (d) {
+                setLastPlayed(d.lastPlayed)
+                setPlayTime(d.playTime)
+            }
+        })
+    }, [])
+
 
     const renderHowLongToBeat = () => {
         if (game.howLongToBeat) {
@@ -30,7 +45,9 @@ const GameContent = () => {
                 <div className={styles.hltb}>
                     <ul>
                         {list.map(({label, value}) => (
-                            <li key={label}><div><span>{secondsToHms(value * 1000)}</span></div><strong>{label}</strong></li>))}
+                            <li key={label}>
+                                <div><span>{secondsToHms(value * 1000)}</span></div>
+                                <strong>{label}</strong></li>))}
                     </ul>
                     <div className={styles.score}>
                         <strong>Users score:</strong><span>{review_score}</span>

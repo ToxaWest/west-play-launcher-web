@@ -9,23 +9,35 @@ const getAchievements = (id, update = true, callback) => {
         return;
     }
 
-    electronConnector.getUserAchievements({
-        data: {
-            achPath: game.achPath,
-            productId: game.productId
-        },
-        source: game.source,
-    }).then(_data => {
-        if (!_data) {
-            return;
-        }
-        if (update) {
-            setToStorage('achievements', {...achievements, [game.id]: _data});
-        }
-        if (callback) {
-            callback(_data);
-        }
-    })
+    if (game.source === 'steam' && !game.achPath && game.steamId && game.exePath.indexOf('steam://') !== -1) {
+        electronConnector.getAchievementsPath({path: game.path, appid: game.steamId}).then((achPath) => {
+            if(achPath) {
+                const games = getFromStorage('games')
+                const index = games.findIndex(({id: gid}) => gid.toString() === id);
+                games[index].achPath = achPath;
+                setToStorage('games', {...games});
+                window.location.reload()
+            }
+        });
+    } else {
+        electronConnector.getUserAchievements({
+            data: {
+                achPath: game.achPath,
+                productId: game.productId
+            },
+            source: game.source,
+        }).then(_data => {
+            if (!_data) {
+                return;
+            }
+            if (update) {
+                setToStorage('achievements', {...achievements, [game.id]: _data});
+            }
+            if (callback) {
+                callback(_data);
+            }
+        })
+    }
 }
 
 

@@ -109,6 +109,9 @@ const useGamepadButtons = () => {
                 window.cancelAnimationFrame(initScroll);
             }
         })
+        return () => {
+            window.api.removeAllListeners('onVisibilityChange')
+        }
 
     }, []);
 }
