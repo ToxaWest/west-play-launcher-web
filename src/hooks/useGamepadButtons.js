@@ -10,8 +10,11 @@ const sound = {
     'right': 'move',
     'a': 'select',
     'b': 'back',
+    'x': 'back',
     'select': 'switchup'
 }
+
+const scrollBooster = 15;
 
 const useGamepadButtons = () => {
     const [visible, setVisible] = useState(true);
@@ -77,12 +80,22 @@ const useGamepadButtons = () => {
             return;
         }
         const verticalR = gamepad.axes[3]
-
-        if (verticalR < -0.5) {
-            window.scrollBy(0, -5)
+        const modal = document.querySelector('#modal>div>div');
+        if (verticalR < -0.3) {
+            if (modal) {
+                modal.scrollTop += verticalR * scrollBooster
+            } else {
+                document.querySelector(':root').scrollTop += verticalR * scrollBooster
+            }
+            sendEvent('topScrollY')
         }
-        if (verticalR > 0.5) {
-            window.scrollBy(0, 5)
+        if (verticalR > 0.3) {
+            if (modal) {
+                modal.scrollTop += verticalR * scrollBooster
+            } else {
+                document.querySelector(':root').scrollTop += verticalR * scrollBooster
+            }
+            sendEvent('bottomScrollY')
         }
 
         setTimeout(() => window.requestAnimationFrame(initScroll))
@@ -96,8 +109,6 @@ const useGamepadButtons = () => {
                 connectedRef.current = e.gamepad.id
                 init();
                 initLeftStick();
-                initScroll();
-                //boost scroll
                 initScroll();
             }
         })

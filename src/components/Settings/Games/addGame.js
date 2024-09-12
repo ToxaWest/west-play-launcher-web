@@ -64,7 +64,10 @@ const AddGame = ({data, submit, remove}) => {
         }
 
         if (game.source === 'egs') {
-            return imageName()
+            return <>
+                {imageName()}
+                <SteamFields game={game} onChange={onChange}/>
+            </>
         }
 
         return null;

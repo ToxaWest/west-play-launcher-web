@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.scss';
+import 'video.js/dist/video-js.min.css'
 import {
     createBrowserRouter,
     RouterProvider,

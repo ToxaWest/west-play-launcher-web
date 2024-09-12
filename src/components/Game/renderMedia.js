@@ -1,6 +1,7 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import styles from "./game.module.scss";
 import useFooterActions from "../../hooks/useFooterActions";
+import Video from "../Video";
 
 const RenderMedia = ({
                          game,
@@ -10,7 +11,6 @@ const RenderMedia = ({
                          }
                      }) => {
     const [current, setCurrent] = useState(0);
-    const videoRef = useRef(null)
     const {setFooterActions} = useFooterActions();
     const {
         movies = [],
@@ -18,6 +18,7 @@ const RenderMedia = ({
     } = game;
 
     const media = [...movies, ...screenshots];
+    const [soundStatus, setSoundStatus] = useState(false);
 
     const listener = ({detail}) => {
         const map = {
@@ -38,20 +39,13 @@ const RenderMedia = ({
                 })
             },
             rt: () => {
-                if (videoRef.current) {
-                    videoRef.current.muted = false;
-                    videoRef.current.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                    play()
-                }
+                setSoundStatus(true)
+                document.querySelector(':root').scrollIntoView({ behavior: 'smooth', block: 'end' })
+                play()
             },
             lt: () => {
-                if (videoRef.current) {
-                    pause()
-                    videoRef.current.muted = true;
-                }
+                pause()
+                setSoundStatus(false)
             }
         }
         if (map[detail]) {
@@ -65,19 +59,15 @@ const RenderMedia = ({
             img: 'left-trigger.svg',
             title: 'Sound OFF',
             onClick: () => {
-                if (videoRef.current) {
-                    pause()
-                    videoRef.current.muted = true;
-                }
+                pause()
+                setSoundStatus(true)
             }
         }, {
             img: 'right-trigger.svg',
             title: 'Sound ON',
             onClick: () => {
-                if (videoRef.current) {
-                    play()
-                    videoRef.current.muted = false;
-                }
+                play()
+                setSoundStatus(false)
             }
         }, {
             img: 'dpad-up.svg',
@@ -107,27 +97,17 @@ const RenderMedia = ({
         }
     }, []);
 
+
     const renderMedia = (i) => {
         const selected = media[i];
-        if (selected?.webm) {
-            return <video src={selected.webm.max} controls={false} muted={true} autoPlay={true} loop={true}
-                          ref={videoRef}/>;
-        }
-
         if (selected?.path_full) {
             return <img src={selected.path_full} alt={'img'}/>
         }
 
-        if (selected?.playbackURLs) {
-            const _cur = selected.playbackURLs[1];
-            if(!_cur){
-                return null
-            }
-            return <video src={_cur.url} controls={false} muted={true} autoPlay={true} loop={true}
-                          ref={videoRef}/>
-        }
-
-        return null;
+        return <Video
+            selected={selected}
+            soundStatus={soundStatus}
+            options={{controls: false, muted: true, autoPlay: true, loop: true}}/>;
     }
 
     if (!media.length) {
