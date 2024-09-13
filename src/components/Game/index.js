@@ -1,16 +1,17 @@
 import {Outlet, useParams} from "react-router-dom";
 import styles from "./game.module.scss";
-import {useEffect, useRef} from "react";
-import {getFromStorage} from "../../helpers/getFromStorage";
+import {useEffect, useRef, useState} from "react";
+import {getFromStorage, setToStorage} from "../../helpers/getFromStorage";
 import useAchievementsWatcher from "../../hooks/useAchievementsWatcher";
 import GameActions from "./actions";
 import setTheme from "../../helpers/setTheme";
 import {getColorByUrl} from "../../helpers/getColor";
 import audioHelper from "../../helpers/audioHelper";
+import electronConnector from "../../helpers/electronConnector";
 
 const Game = () => {
     const {id} = useParams();
-    const game = getFromStorage('games').find(({id: gid}) => gid.toString() === id);
+    const [game, setGame] = useState(getFromStorage('games').find(({id: gid}) => gid.toString() === id));
     const {coloredGames, audioVolume = .3, gameAudio = true} = getFromStorage('config').settings;
     const audioRef = useRef(new Audio());
     const canvasRef = useRef();
@@ -20,6 +21,16 @@ const Game = () => {
         if (gameAudio) {
             audioHelper({audioRef, src: game.audio, audioVolume, canvasRef})
         }
+        electronConnector.updateDataByFolder({path: game.path, id: game.id}).then((data) => {
+            setGame(g => {
+                const _data = {...g, ...data};
+                const games = getFromStorage('games');
+                const index = games.findIndex(({id: gid}) => gid.toString() === id);
+                games[index] = _data;
+                setToStorage('games', games);
+                return _data;
+            })
+        })
         updateThemeColor()
         return () => {
             audioRef.current.pause()
