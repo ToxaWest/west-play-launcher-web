@@ -15,7 +15,7 @@ const getAchievements = (id, update = true, callback) => {
                 const games = getFromStorage('games')
                 const index = games.findIndex(({id: gid}) => gid.toString() === id);
                 games[index].achPath = achPath;
-                setToStorage('games', {...games});
+                setToStorage('games', games);
                 window.location.reload()
             }
         });
