@@ -40,9 +40,8 @@ const useAchievementsWatcher = (id) => {
 
         if (watchMap[game.source]) {
             electronConnector.watchFile(watchMap[game.source])
+            electronConnector.fileChanged(checker)
         }
-
-        electronConnector.fileChanged(checker)
 
         return () => {
             if (watchMap[game.source]) {

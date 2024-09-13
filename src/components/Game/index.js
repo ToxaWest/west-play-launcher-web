@@ -6,7 +6,6 @@ import useAchievementsWatcher from "../../hooks/useAchievementsWatcher";
 import GameActions from "./actions";
 import setTheme from "../../helpers/setTheme";
 import {getColorByUrl} from "../../helpers/getColor";
-import getAchievements from "../../helpers/getAchievements";
 import audioHelper from "../../helpers/audioHelper";
 
 const Game = () => {
@@ -22,7 +21,6 @@ const Game = () => {
             audioHelper({audioRef, src: game.audio, audioVolume, canvasRef})
         }
         updateThemeColor()
-        getAchievements(game.id, true)
         return () => {
             audioRef.current.pause()
             document.querySelector(':root').style = null;

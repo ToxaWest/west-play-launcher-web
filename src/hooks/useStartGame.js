@@ -35,7 +35,7 @@ const useStartGame = (game) => {
         })
         if (exePath) {
             setStatus('starting')
-            electronConnector.openFile({
+            electronConnector.runGame({
                 path: exePath,
                 parameters: Object.values(game.exeArgs || {}).filter((x) => x),
                 imageName: game.imageName
