@@ -48,7 +48,7 @@ const Achievements = () => {
                                 <strong>{displayName}</strong>
                                 <span>{description}</span>
                                 {earned_time ?
-                                    <i>{new Date(earned_time * 1000).toLocaleDateString("en-US")}</i> : null}
+                                    <i>{new Date(earned_time * 1000).toLocaleDateString()}</i> : null}
                             </div>
                         </li>
                     )

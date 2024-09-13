@@ -41,7 +41,7 @@ const useGamepadButtons = () => {
     }
 
     const init = () => {
-        const gamepad = navigator.getGamepads()[0]
+        const [gamepad] = navigator.getGamepads()
         if (!gamepad || !visible) {
             return;
         }
@@ -57,7 +57,7 @@ const useGamepadButtons = () => {
     }
 
     const initLeftStick = () => {
-        const gamepad = navigator.getGamepads()[0]
+        const [gamepad] = navigator.getGamepads()
         if (!gamepad || !visible) {
             return;
         }
@@ -75,34 +75,26 @@ const useGamepadButtons = () => {
     }
 
     const initScroll = () => {
-        const gamepad = navigator.getGamepads()[0]
+        const [gamepad] = navigator.getGamepads()
         if (!gamepad) {
             return;
         }
         const verticalR = gamepad.axes[3]
-        const modal = document.querySelector('#modal>div>div');
-        if (verticalR < -0.3) {
+        if (Math.abs(verticalR) > 0.3) {
+            const modal = document.querySelector('#modal #scroll');
+            const root = document.querySelector(':root');
             if (modal) {
                 modal.scrollTop += verticalR * scrollBooster
             } else {
-                document.querySelector(':root').scrollTop += verticalR * scrollBooster
+                root.scrollTop += verticalR * scrollBooster
             }
-            sendEvent('topScrollY')
-        }
-        if (verticalR > 0.3) {
-            if (modal) {
-                modal.scrollTop += verticalR * scrollBooster
-            } else {
-                document.querySelector(':root').scrollTop += verticalR * scrollBooster
-            }
-            sendEvent('bottomScrollY')
+            sendEvent(verticalR < 0 ? 'topScrollY' : 'bottomScrollY')
         }
 
         setTimeout(() => window.requestAnimationFrame(initScroll))
     }
 
     useEffect(() => {
-
         electronConnector.onVisibilityChange(setVisible)
         window.addEventListener("gamepadconnected", (e) => {
             if (!connectedRef.current) {

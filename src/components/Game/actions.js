@@ -88,6 +88,7 @@ const GameActions = ({game, audioStop}) => {
     return (
         <div className={styles.content}>
             <button
+                tabIndex={1}
                 onClick={() => {
                     start();
                     audioStop()

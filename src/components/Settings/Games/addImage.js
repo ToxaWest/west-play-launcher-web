@@ -79,7 +79,7 @@ const AddImage = ({id, type, onChange, value}) => {
     return (
         <div className={styles.addImage}>
             <div className={styles.addImageField}>
-                <button onClick={getImages}>Select {type} image</button>
+                <button tabIndex={1} onClick={getImages}>Select {type} image</button>
                 {value ? <span>{value}</span> : null}
             </div>
             <ul>

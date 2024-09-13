@@ -11,7 +11,7 @@ const SettingsGames = () => {
     return (
         <div className={styles.block} id="settings-games">
             <h1>Games</h1>
-            <button onClick={() => {
+            <button tabIndex={1} onClick={() => {
                 setGames((d) => {
                     return [{id: new Date().getTime()}, ...d]
                 })
@@ -37,7 +37,7 @@ const SettingsGames = () => {
                     </li>
                 ))}
             </ul>
-            <button onClick={() => {
+            <button tabIndex={1} onClick={() => {
                 setToStorage('games', games)
                 notifications({
                     img: '/assets/controller/save.svg',

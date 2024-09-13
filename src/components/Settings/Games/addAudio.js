@@ -27,7 +27,7 @@ const AddAudio = ({id, value, name, onChange}) => {
     return (
         <label className={styles.addImage}>
             <div className={styles.addImageField} style={{width: '100%'}}>
-                <button onClick={getAudio} style={{whiteSpace: 'nowrap'}}>Get Audio</button>
+                <button tabIndex={1} onClick={getAudio} style={{whiteSpace: 'nowrap'}}>Get Audio</button>
                     <input style={{margin: '0 var(--gap)', width: '100%'}} value={query} onChange={(e) => {
                         setQuery(e.target.value)
                     }}/>

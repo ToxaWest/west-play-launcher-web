@@ -15,20 +15,14 @@ const GameDLC = () => {
             <li key={item.id} tabIndex={1} onClick={() => {
                 setActiveId(item.id)
             }}>
-                <div className={styles.image}>
-                    <img src={item.header_image} alt={item.name}/>
-                </div>
-                <div className={styles.content}>
-                    <h4>{item.name}</h4>
-                    <span dangerouslySetInnerHTML={{__html: item.short_description}}/>
-                </div>
+                <img src={item.header_image} alt={item.name}/>
                 {(activeId === item.id) && <Modal onClose={() => setActiveId(null)}>
                     <div className={styles.modal}>
                         <div className={styles.image}>
                             <img src={item.header_image} alt={item.name}/>
-                            <h4>{item.name}</h4>
                         </div>
-                        <div className={styles.modal_content}>
+                        <div className={styles.modal_content} id={'scroll'}>
+                            <h4>{item.name}</h4>
                             <span dangerouslySetInnerHTML={{__html: item.short_description}}/>
                         </div>
                     </div>

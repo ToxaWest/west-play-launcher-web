@@ -90,7 +90,7 @@ const AddGame = ({data, submit, remove}) => {
                     <AddImage id={game.steamgriddb} type="logo" onChange={onChange} value={game.img_logo}/>
                     <AddImage id={game.steamgriddb} type="icon" onChange={onChange} value={game.img_icon}/>
                     <AddAudio id={game.steamgriddb} onChange={onChange} name={game.name} value={game.audio}/>
-                    <button onClick={() => {
+                    <button tabIndex={1} onClick={() => {
                         submit(game)
                         wrapperRef.current.open = false
                     }}
@@ -116,8 +116,8 @@ const AddGame = ({data, submit, remove}) => {
             </summary>
             {opened ? <div>
                 <div style={{padding: 'var(--padding)', display: 'flex', gap: 'var(--gap)'}}>
-                    <button onClick={() => remove()}>Remove game</button>
-                    <button onClick={() => update()}>Update game</button>
+                    <button tabIndex={1} onClick={() => remove()}>Remove game</button>
+                    <button tabIndex={1} onClick={() => update()}>Update game</button>
                 </div>
                 {renderContent()}
             </div> : null}

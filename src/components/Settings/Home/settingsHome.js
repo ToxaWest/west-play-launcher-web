@@ -108,7 +108,7 @@ const SettingsHome = () => {
                 value={settings.coloredGames}
                 onChange={onChange}
             />
-            <button onClick={() => {
+            <button tabIndex={1} onClick={() => {
                 setToStorage('config', {settings})
                 notifications({
                     img: '/assets/controller/save.svg',

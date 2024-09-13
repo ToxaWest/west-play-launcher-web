@@ -38,10 +38,6 @@
     gap: var(--gap-half);
     margin: var(--gap-half) 0;
 
-    summary {
-      font-size: 16px;
-    }
-
     li details > div {
       display: flex;
       flex-direction: column;
@@ -61,9 +57,12 @@
   summary {
     cursor: pointer;
     font-size: 18px;
-    margin: 0 0 var(--gap-half);
-    padding-bottom: var(--gap-half);
+    line-height: 2;
+    padding: 0 var(--gap-half);
     border-bottom: 1px solid var(--theme-text-color-seconary);
+    &:focus, &:active, &:hover {
+      background-color: var(--theme-color-transparent);
+    }
   }
 }
 

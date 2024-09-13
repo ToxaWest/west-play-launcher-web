@@ -1,21 +1,18 @@
 import {createPortal} from "react-dom";
 import {useEffect} from "react";
 import useFooterActions from "../../hooks/useFooterActions";
+import useAppControls from "../../hooks/useAppControls";
 
 const style = {
     position: 'fixed',
     left: 0,
     top: 0,
-    width: '100vw',
-    zIndex: 2,
-    padding: '5vw',
+    bottom: 0,
+    right: 0,
+    zIndex: 3,
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    overflowY: 'scroll',
-    backgroundColor: 'var(--theme-color)',
-    opacity: '.95',
+    alignItems: 'center'
 }
 
 const Modal = ({children, onClose}) => {
@@ -24,21 +21,9 @@ const Modal = ({children, onClose}) => {
     const close = () => {
         onClose(true)
     }
-
-    const listener = (e) => {
-        const {detail} = e
-
-        const map = {
-            x: close,
-        }
-
-        if (map[detail]) {
-            map[detail]()
-        }
-    }
+    useAppControls({map: {x: close}})
 
     useEffect(() => {
-        document.addEventListener('gamepadbutton', listener)
         setFooterActions([{
             img: 'x-filled-blue.svg',
             title: 'Close',
@@ -46,7 +31,6 @@ const Modal = ({children, onClose}) => {
         }])
         return () => {
             setFooterActions([])
-            window.removeEventListener('gamepadbutton', listener)
         }
     }, []);
 

@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import styles from "./game.module.scss";
 import useFooterActions from "../../hooks/useFooterActions";
 import Video from "../Video";
+import useAppControls from "../../hooks/useAppControls";
 
 const RenderMedia = ({
                          game,
@@ -20,27 +21,20 @@ const RenderMedia = ({
     const media = [...movies, ...screenshots];
     const [soundStatus, setSoundStatus] = useState(false);
 
-    const listener = ({detail}) => {
-        const map = {
+    const next = (i) => i === (media.length - 1) ? 0 : i + 1
+    const prev = (i) => i === 0 ? [...movies, ...screenshots].length - 1 : i - 1
+
+    useAppControls({
+        map: {
             bottom: () => {
-                setCurrent((i) => {
-                    if (i === (media.length - 1)) {
-                        return 0
-                    }
-                    return i + 1
-                })
+                setCurrent(next)
             },
             top: () => {
-                setCurrent((i) => {
-                    if (i === 0) {
-                        return [...movies, ...screenshots].length - 1
-                    }
-                    return i - 1
-                })
+                setCurrent(prev)
             },
             rt: () => {
                 setSoundStatus(true)
-                document.querySelector(':root').scrollIntoView({ behavior: 'smooth', block: 'end' })
+                document.querySelector(':root').scrollIntoView({behavior: 'smooth', block: 'end'})
                 play()
             },
             lt: () => {
@@ -48,13 +42,9 @@ const RenderMedia = ({
                 setSoundStatus(false)
             }
         }
-        if (map[detail]) {
-            map[detail]()
-        }
-    }
+    })
 
     useEffect(() => {
-        document.addEventListener('gamepadbutton', listener)
         setFooterActions([{
             img: 'left-trigger.svg',
             title: 'Sound OFF',
@@ -73,28 +63,15 @@ const RenderMedia = ({
             img: 'dpad-up.svg',
             title: 'Prev',
             onClick: () => {
-                setCurrent((i) => {
-                    if (i === 0) {
-                        return [...movies, ...screenshots].length - 1
-                    }
-                    return i - 1
-                })
+                setCurrent(prev)
             }
         }, {
             img: 'dpad-down.svg',
             title: 'Next',
             onClick: () => {
-                setCurrent((i) => {
-                    if (i === (media.length - 1)) {
-                        return 0
-                    }
-                    return i + 1
-                })
+                setCurrent(next)
             }
         }])
-        return () => {
-            document.removeEventListener('gamepadbutton', listener)
-        }
     }, []);
 
 

@@ -13,42 +13,47 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    gap: var(--gap);
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     width: 100%;
     li {
-      border-radius: var(--border-radius);
-      background-color: var(--theme-color-transparent);
-      gap: var(--gap-half);
-      width: 100%;
-      height: 200px;
-      overflow: hidden;
+      padding: var(--gap-half);
       display: flex;
-      img {
-        max-width: 100%;
-        display: block;
+      align-items: center;
+      transition: padding .3s ease;
+      &:focus{
+        padding: 0;
       }
-      .image {
-        height: 100%;
-        img {
-          border-radius: var(--border-radius);
-          height: 100%;
-          width: auto;
-          max-width: unset;
-        }
+      img {
+        border-radius: var(--border-radius);
+        display: block;
+        width: 100%;
       }
     }
   }
 }
 
 .modal {
-  display: flex;
-  max-width: 100%;
-  max-height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  height: 100%;
   gap: var(--gap);
-  overflow-y: auto;
-  flex-direction: column;
+  align-items: start;
+  width: 100%;
+  position: relative;
+  padding: 60px 5vw;
+  z-index: 3;
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    background-color: var(--theme-color);
+    opacity: 0.9;
+    left: 0;
+    bottom: 0;
+    z-index: -1;
+    right: 0;
+  }
   h4 {
     margin: 0;
     padding: 0;
@@ -58,40 +63,25 @@
     font-size: 18px;
   }
 
-  .image{
-    display: flex;
-    gap: var(--gap);
+  .image {
+    img {
+      display: block;
+      border-radius: var(--border-radius);
+      width: 100%;
+    }
   }
+
   &_content {
     display: flex;
     max-width: 100%;
     flex-direction: column;
+    height: 100%;
+    padding: var(--gap-half);
+    background-color: var(--theme-color-transparent);
+    overflow-y: auto;
     gap: (var(--gap));
     img {
       max-width: 100%;
     }
-  }
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-half);
-  padding: var(--gap-half) var(--gap-half) var(--gap-half) 0;
-  text-overflow: ellipsis;
-  h4 {
-    margin: 0;
-    padding: 0;
-  }
-
-  &>span {
-    display: -webkit-box;
-    -webkit-line-clamp: 5;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  span {
-    font-size: 15px;
   }
 }

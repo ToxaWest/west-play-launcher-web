@@ -60,7 +60,7 @@ const Root = () => {
             theme
         })
         const body = document.querySelector('html');
-        init('#contentWrapper [tabindex="1"], #contentWrapper button:not(:disabled)')
+        init()
         document.addEventListener('mousemove', () => {
             body.style.removeProperty('cursor');
             body.style.removeProperty('pointer-events');

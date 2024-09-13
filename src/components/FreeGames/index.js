@@ -2,14 +2,14 @@ import {useEffect, useState} from "react";
 import electronConnector from "../../helpers/electronConnector";
 import GamesList from "../GamesList";
 
-const disabledStores = ["109"]
+const disabledPlatforms = ["xbox-one", "ps-4"]
 
 const FreeGames = () => {
     const [games, setGames] = useState([]);
 
     useEffect(() => {
         electronConnector.getFreeGames().then((elements) => {
-            const result = elements.filter(game => !disabledStores.includes(game.shopId))
+            const result = elements.filter(game => !disabledPlatforms.includes(game.platformName))
             setGames(result)
         })
     }, []);
@@ -42,9 +42,8 @@ const FreeGames = () => {
         return `From ${dateFormatter(startTime)}`
     }
 
-    const renderSvg = ({platformName, platformSvg}) => {
-        const width = {'windows': 18, 'xbox-one': 46}
-        return <svg height={18} width={width[platformName] || 18} style={{color: 'var(--theme-text-color)'}}>
+    const renderSvg = ({platformSvg}) => {
+        return <svg height={18} width={18} style={{color: 'var(--theme-text-color)'}}>
             <use xlinkHref={platformSvg} preserveAspectRatio="xMinYMid"/>
         </svg>
     }

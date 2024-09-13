@@ -48,7 +48,7 @@ const SettingsConfig = () => {
                        name='ryujinx'>
                     <button onClick={() => getExePath('ryujinx')}>Get exe path</button>
                 </Input>
-                <button onClick={() => {
+                <button tabIndex={1} onClick={() => {
                     setToStorage('config', {settings})
                     notifications({
                         img: '/assets/controller/save.svg',

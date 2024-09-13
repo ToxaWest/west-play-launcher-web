@@ -1,6 +1,15 @@
 import {useEffect, useRef} from "react";
 import {useLocation} from "react-router-dom";
 
+const NAVIGATION_KEYS = {
+    right: {colPosition: (a) => a + 1},
+    left: {colPosition: (a) => a - 1},
+    bottom: {rowPosition: (a) => a + 1},
+    top: {rowPosition: (a) => a - 1}
+}
+
+const selector = '#contentWrapper [tabindex="1"]';
+
 const useAppControls = ({map} = {map: {}}) => {
     const ref = useRef([]);
     const refRowsMatrix = useRef([]);
@@ -18,6 +27,7 @@ const useAppControls = ({map} = {map: {}}) => {
         }, {keys: {}, matrix: []})
 
         refRowsMatrix.current = matrix;
+        setCurrentIndex(getBackWindow)
     }
 
     useEffect(() => {
@@ -39,30 +49,28 @@ const useAppControls = ({map} = {map: {}}) => {
         return refCurrentIndex.current
     }
 
-    const init = (selector) => {
-        if (selector) {
-            ref.current = document.querySelectorAll(selector)
-            if (ref.current.length) {
-                setMatrix()
-                setCurrentIndex(getBackWindow)
-            }
-            const [parent] = selector.split(' ')
-            const logChanges = () => {
-                ref.current = document.querySelectorAll(selector)
-                if (ref.current.length) {
-                    setMatrix()
-                    setCurrentIndex(getBackWindow)
-                }
-            }
-            observer.current = new MutationObserver(logChanges);
-            observer.current.observe(document.querySelector(parent), {childList: true, subtree: true});
-        }
+    const logChanges = () => {
+        ref.current = document.querySelectorAll(selector)
+        setMatrix()
+    }
+
+    const init = () => {
+        logChanges();
+        observer.current = new MutationObserver(logChanges);
+        observer.current.observe(document.querySelector('#contentWrapper'), {childList: true, subtree: true});
     }
 
     const setCurrentIndex = (func) => {
         const i = func(refCurrentIndex.current);
 
         if (document.activeElement) {
+            if (document.activeElement.type === 'text') {
+                return;
+            }
+            if(refCurrentIndex.current === i){
+                ref.current[refCurrentIndex.current]?.focus();
+                return;
+            }
             if ([...ref.current].includes(document.activeElement)) {
                 if (i === refCurrentIndex.current) return
             }
@@ -82,13 +90,6 @@ const useAppControls = ({map} = {map: {}}) => {
         return i
     }
 
-    const navKeys = {
-        right: {colPosition: (a) => a + 1},
-        left: {colPosition: (a) => a - 1},
-        bottom: {rowPosition: (a) => a + 1},
-        top: {rowPosition: (a) => a - 1}
-    }
-
     const listener = ({detail}) => {
         if (map[detail]) {
             map[detail]()
@@ -98,8 +99,8 @@ const useAppControls = ({map} = {map: {}}) => {
             return
         }
 
-        if (navKeys[detail]) {
-            setCurrentIndex((i) => getPosition({i, ...navKeys[detail]}))
+        if (NAVIGATION_KEYS[detail]) {
+            setCurrentIndex((i) => getPosition({i, ...NAVIGATION_KEYS[detail]}))
         }
     }
 
@@ -133,9 +134,7 @@ const useAppControls = ({map} = {map: {}}) => {
         }
     }, []);
 
-    return {
-        init
-    }
+    return {init}
 }
 
 export default useAppControls
