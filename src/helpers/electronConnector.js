@@ -9,6 +9,7 @@ const apiCall = (props, func) => {
 }
 
 const electronConnector = {
+    clearUnusedCache: (idArray) => apiCall(idArray, 'clearUnusedCache'),
     systemAction: (action) => apiCall(action, 'systemAction'),
     runGame: (data) => apiCall(data, 'runGame'),
     getFile: (data) => apiCall(data, 'getFile'),

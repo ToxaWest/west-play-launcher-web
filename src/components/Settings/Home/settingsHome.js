@@ -109,6 +109,11 @@ const SettingsHome = () => {
                 onChange={onChange}
             />
             <button tabIndex={1} onClick={() => {
+                electronConnector.clearUnusedCache(getFromStorage('games').map(({id}) => id.toString()))
+            }}>
+                Remove unused cache
+            </button>
+            <button tabIndex={1} onClick={() => {
                 setToStorage('config', {settings})
                 notifications({
                     img: '/assets/controller/save.svg',
