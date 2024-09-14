@@ -46,8 +46,8 @@ const useAchievementsWatcher = (id) => {
         return () => {
             if (watchMap[game.source]) {
                 electronConnector.stopWatch(watchMap[game.source])
+                window.api.removeAllListeners('fileChanged')
             }
-            window.api.removeAllListeners('fileChanged')
         }
     }, [])
 

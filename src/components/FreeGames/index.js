@@ -53,7 +53,7 @@ const FreeGames = () => {
             label: 'Platform',
             value: renderSvg(currentGame)
         }, {
-            label: 'Shop',
+            label: 'Store',
             value: currentGame.shopName
         }, {
             label: 'Free period',

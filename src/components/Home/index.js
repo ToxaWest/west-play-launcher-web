@@ -43,14 +43,12 @@ const Home = () => {
                 {sortedGames.map((game, index) => (
                     <li key={game.id}
                         tabIndex={1}
+                        id={game.id}
                         onFocus={() => {
-                            window.__back = {
-                                index,
-                                url: '/'
-                            }
                             setBackground(game.img_hero)
                         }}
                         onClick={() => {
+                            window.__back = {id: game.id, url: '/'}
                             navigate('/game/' + game.id)
                         }}>
                         <img src={index ? game.img_grid : game.img_landscape} alt={game.name}/>

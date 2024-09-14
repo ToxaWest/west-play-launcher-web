@@ -12,13 +12,9 @@ const Library = () => {
     return (
         <div className={styles.wrapper} style={{'--games-in-row': gamesInRow}}>
             <ul className={styles.list} id="library-list">
-                {games.sort(sort).map((game, index) => (
-                    <li key={game.id} tabIndex={1} onFocus={() => {
-                        window.__back = {
-                            index,
-                            url: '/library'
-                        }
-                    }} onClick={() => {
+                {games.sort(sort).map((game) => (
+                    <li key={game.id} id={game.id} tabIndex={1} onClick={() => {
+                        window.__back = {id: game.id, url: '/library'}
                         navigation('/game/' + game.id)
                     }}>
                         <img src={game.img_grid} alt={game.name}/>

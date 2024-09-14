@@ -37,11 +37,13 @@ const useAppControls = ({map} = {map: {}}) => {
 
     const getBackWindow = () => {
         if (window.__back) {
-            const {index, url} = window.__back;
+            const {id, url} = window.__back;
             if (url === window.location.pathname) {
-                refCurrentIndex.current = index
+                refCurrentIndex.current = [...ref.current].findIndex(({id: _id}) => _id === id.toString());
                 setTimeout(() => {
-                    ref.current[refCurrentIndex.current].scrollIntoView({inline: 'center', block: 'center'});
+                    if (refCurrentIndex.current >= 1) {
+                        ref.current[refCurrentIndex.current].scrollIntoView({inline: 'center', block: 'center'});
+                    }
                 })
                 window.__back = null;
             }
@@ -67,7 +69,7 @@ const useAppControls = ({map} = {map: {}}) => {
             if (document.activeElement.type === 'text') {
                 return;
             }
-            if(refCurrentIndex.current === i){
+            if (refCurrentIndex.current === i) {
                 ref.current[refCurrentIndex.current]?.focus();
                 return;
             }
