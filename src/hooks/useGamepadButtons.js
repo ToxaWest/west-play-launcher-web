@@ -20,6 +20,7 @@ const scrollBooster = 15;
 const useGamepadButtons = () => {
     const [visible, setVisible] = useState(true);
     const pressedRef = useRef(null);
+    const pressedRef2 = useRef(null);
     const connectedRef = useRef(false);
 
     const sendEvent = (detail) => {
@@ -81,6 +82,7 @@ const useGamepadButtons = () => {
             return;
         }
         const verticalR = gamepad.axes[3]
+        const horizontal = gamepad.axes[2]
         if (Math.abs(verticalR) > 0.3) {
             const modal = document.querySelector('#modal #scroll');
             const root = document.querySelector(':root');
@@ -90,6 +92,15 @@ const useGamepadButtons = () => {
                 root.scrollTop += verticalR * scrollBooster
             }
             sendEvent(verticalR < 0 ? 'topScrollY' : 'bottomScrollY')
+        }
+
+        if (Math.abs(horizontal) > 0.5) {
+            if (!pressedRef2.current) {
+                sendEvent(horizontal < 0 ? 'leftScrollY' : 'rightScrollY');
+                pressedRef2.current = true
+            }
+        } else {
+            pressedRef2.current = null;
         }
 
         setTimeout(() => window.requestAnimationFrame(initScroll))

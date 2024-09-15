@@ -6,6 +6,7 @@ import Clock from "../Clock";
 import useAppControls from "../../hooks/useAppControls";
 import electronConnector from "../../helpers/electronConnector";
 import {getFromStorage} from "../../helpers/getFromStorage";
+import HeaderMenu from "../HeaderMenu";
 
 const Root = () => {
     const navigate = useNavigate();
@@ -69,6 +70,7 @@ const Root = () => {
 
     return (
         <div className={styles.wrapper}>
+            <HeaderMenu/>
             <Clock/>
             <div className={styles.content} id="contentWrapper">
                 <Outlet/>
