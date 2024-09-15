@@ -11,6 +11,7 @@ const GamesList = ({
                        title,
                        getFields,
                        renderInfoWrapper = () => null,
+                       reset = () => null,
                        getAppId
                    }) => {
 
@@ -31,6 +32,7 @@ const GamesList = ({
     useEffect(() => {
         setSteam(null)
         setView('content')
+        reset()
     }, [currentGame])
 
     const getData = async (game) => {

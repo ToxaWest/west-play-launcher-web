@@ -24,6 +24,7 @@ import GamesMedia from "./components/Game/media";
 import FreeGames from "./components/FreeGames";
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import GameDLC from "./components/GameDLC";
+import WishList from "./components/WishList";
 const router = createBrowserRouter([
     {
         element: <Root/>,
@@ -36,6 +37,9 @@ const router = createBrowserRouter([
         }, {
             path: '/lastCracked',
             element: <LastCracked/>
+        },{
+            path: '/wishList',
+            element: <WishList/>
         }, {
             path: '/freeGames',
             element: <FreeGames/>

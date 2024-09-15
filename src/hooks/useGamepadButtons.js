@@ -9,6 +9,7 @@ const sound = {
     'left': 'move',
     'right': 'move',
     'a': 'select',
+    'y': 'select',
     'b': 'back',
     'x': 'back',
     'select': 'switchup'

@@ -21,6 +21,9 @@ const Menu = () => {
                 <li>
                     <Link to="/freeGames" tabIndex={1}>Free games</Link>
                 </li>
+                <li>
+                    <Link to="/wishList" tabIndex={1}>Wishlist</Link>
+                </li>
                 <li style={{marginTop: 'auto'}}>
                     <Link to="/settings" tabIndex={1}>
                         <SvgSettings/> Settings
