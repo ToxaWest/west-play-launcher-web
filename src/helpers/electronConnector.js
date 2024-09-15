@@ -12,6 +12,7 @@ const electronConnector = {
     clearUnusedCache: (idArray) => apiCall(idArray, 'clearUnusedCache'),
     systemAction: (action) => apiCall(action, 'systemAction'),
     runGame: (data) => apiCall(data, 'runGame'),
+    runGameLink: (data) => apiCall(data, 'runGameLink'),
     getFile: (data) => apiCall(data, 'getFile'),
     getImage: (data) => apiCall(data, 'getImage'),
     steamgriddbSearch: (data) => apiCall(data, 'steamgriddbSearch'),

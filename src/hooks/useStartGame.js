@@ -19,11 +19,18 @@ const useStartGame = (game) => {
             rpcs3: settings.rpcs3,
             egs: game.exePath,
             gog: game.exePath,
+            origin: game.exePath,
         }
         return list[game.source]
     }
 
     const exePath = getGamePath();
+
+    const getLinkUrl = () => {
+        if(exePath.includes('://')) return exePath;
+
+        return null;
+    }
 
     const start = () => {
         setToStorage('lastPlayed', {...lastPlayed, [game.id]: new Date().getTime()});
@@ -35,11 +42,19 @@ const useStartGame = (game) => {
         })
         if (exePath) {
             setStatus('starting')
-            electronConnector.runGame({
-                path: exePath,
-                parameters: Object.values(game.exeArgs || {}).filter((x) => x),
-                imageName: game.imageName
-            })
+            const link = getLinkUrl();
+            if (link) {
+                electronConnector.runGameLink({
+                    path: exePath,
+                    imageName: game.imageName
+                })
+            } else {
+                electronConnector.runGame({
+                    path: exePath,
+                    parameters: Object.values(game.exeArgs || {}).filter((x) => x),
+                    imageName: game.imageName
+                })
+            }
         }
     }
 
