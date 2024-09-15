@@ -70,6 +70,10 @@ const AddGame = ({data, submit, remove}) => {
             </>
         }
 
+        if(game.source === 'origin'){
+            return imageName()
+        }
+
         return null;
     }
 
