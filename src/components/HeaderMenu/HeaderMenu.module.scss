@@ -9,7 +9,7 @@
 
   &:before {
     content: '';
-    z-index: 4;
+    z-index: -1;
     border-radius: var(--border-radius);
     background-color: var(--theme-color-transparent);
     position: absolute;

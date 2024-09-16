@@ -7,23 +7,8 @@ import {ReactComponent as SvgSettings} from "../../SVG/settings.svg";
 
 const Menu = () => {
     return (
-        <div className={styles.wrapper} id="main-menu">
+        <div className={styles.wrapper}>
             <ul>
-                <li>
-                    <Link to="/" tabIndex={1}>Home</Link>
-                </li>
-                <li>
-                    <Link to="/library" tabIndex={1}>Library</Link>
-                </li>
-                <li>
-                    <Link to="/lastCracked" tabIndex={1}>Last Cracked games</Link>
-                </li>
-                <li>
-                    <Link to="/freeGames" tabIndex={1}>Free games</Link>
-                </li>
-                <li>
-                    <Link to="/wishList" tabIndex={1}>Wishlist</Link>
-                </li>
                 <li style={{marginTop: 'auto'}}>
                     <Link to="/settings" tabIndex={1}>
                         <SvgSettings/> Settings
