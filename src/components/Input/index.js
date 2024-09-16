@@ -59,7 +59,7 @@ const Input = ({
                     <span>{getValue()}</span>
                     {active && <ul>
                         {[{label: 'empty', value: null}, ...data].map((option) => (
-                            <li key={option.value} tabIndex={1} onClick={() => {
+                            <li key={option.value} tabIndex={2} onClick={() => {
                                 onChange({
                                     value: option.value,
                                     name
