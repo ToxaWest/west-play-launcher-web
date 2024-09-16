@@ -95,6 +95,12 @@ const CrackWatchList = ({games, title}) => {
             getAppId={getAppId}
             renderInfoWrapper={renderInfoWrapper}
             getFields={getFields}
+            getImage={(g) => {
+                if(g.steam_prod_id){
+                    return `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.steam_prod_id}/header.jpg?t=1671484934`
+                }
+                return g.short_image
+            }}
             reset={() => {
                 setTemp(null)
             }}

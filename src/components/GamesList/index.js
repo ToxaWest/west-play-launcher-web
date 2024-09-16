@@ -12,6 +12,7 @@ const GamesList = ({
                        getFields,
                        renderInfoWrapper = () => null,
                        reset = () => null,
+                       getImage = (g) => g.short_image,
                        getAppId
                    }) => {
 
@@ -52,6 +53,7 @@ const GamesList = ({
 
 
     const renderGame = (game) => {
+        const img = getImage(game)
         return (
             <li key={game.id}
                 tabIndex={1}
@@ -60,11 +62,11 @@ const GamesList = ({
                 }}
                 onFocus={() => {
                     setCurrentGame(game)
-                    getColorByUrl(game.short_image).then(color => {
+                    getColorByUrl(img).then(color => {
                         wrapperRef.current.style.backgroundColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.7)`
                     })
                 }}>
-                <img src={game.short_image} alt={game.title} loading={"lazy"}/>
+                <img src={img} alt={game.title} loading={"lazy"}/>
                 <div className={styles.infoWrapper}>
                     {renderInfoWrapper(game)}
                 </div>
