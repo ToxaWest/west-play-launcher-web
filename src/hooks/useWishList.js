@@ -8,7 +8,7 @@ const useWishList = () => {
         setGames((g) => {
             const index = games.findIndex(_game => _game.id === game.id);
             if(index === -1) {
-                const res = [...g, game];
+                const res = [game, ...g];
                 setToStorage('wishList', res)
                 return res;
             } else {
