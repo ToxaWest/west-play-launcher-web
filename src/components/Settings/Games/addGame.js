@@ -7,11 +7,13 @@ import RyujinxFields from "./ryujinxFields";
 import SteamFields from "./steamFields";
 import formatBytes from "../../../helpers/formatSize";
 import AddAudio from "./addAudio";
+import useNotification from "../../../hooks/useNotification";
 
 const AddGame = ({data, submit, remove}) => {
     const [game, setGame] = useState(data);
     const [opened, setOpened] = useState(false)
     const wrapperRef = useRef(null);
+    const notification = useNotification();
 
     const [loading, setLoading] = useState(false);
     const onChange = ({name, value}) => {
@@ -20,18 +22,42 @@ const AddGame = ({data, submit, remove}) => {
 
     const getGamePathV2 = () => {
         setLoading(true)
+        notification({
+            img: '/assets/controller/save.svg',
+            description: 'Please wait for end',
+            name: 'Getting data from folder',
+            status: 'warning'
+        }, 5000)
         electronConnector.getDataByFolder(game.id).then((data) => {
             const {size, ...gameData} = data;
             setGame(g => ({...g, ...gameData, size: formatBytes(parseInt(size))}))
             setLoading(false)
+            notification({
+                img: '/assets/controller/save.svg',
+                description: 'Do not forgot save changes',
+                name: 'Data received',
+                status: 'success'
+            }, 3000)
         })
     }
 
     const update = () => {
         setLoading(true)
+        notification({
+            img: game.img_icon || '/assets/controller/save.svg',
+            description: 'Please wait for end',
+            name: 'Updating game data',
+            status: 'warning'
+        }, 3000)
         electronConnector.updateDataByFolder({path: game.path, id: game.id}).then((data) => {
             setGame(g => ({...g, ...data}))
             setLoading(false)
+            notification({
+                img: game.img_icon || '/assets/controller/save.svg',
+                description: 'Do not forgot save changes',
+                name: 'Data updated',
+                status: 'success'
+            }, 3000)
         })
     }
 
@@ -70,8 +96,35 @@ const AddGame = ({data, submit, remove}) => {
             </>
         }
 
-        if(game.source === 'origin'){
+        if (game.source === 'origin') {
             return imageName()
+        }
+
+        return null;
+    }
+
+    const renderSteamAssets = () => {
+        const {steamId, steamgriddb} = game;
+        if (steamId && steamgriddb) {
+            return <button tabIndex={1} onClick={() => {
+                setLoading(true);
+                notification({
+                    img: game.img_icon || '/assets/controller/save.svg',
+                    description: 'Please wait for end',
+                    name: 'Getting images from steam',
+                    status: 'warning'
+                }, 3000)
+                electronConnector.getSteamAssets({steamId, steamgriddb}).then(data => {
+                    setGame(g => ({...g, ...data}))
+                    setLoading(false);
+                    notification({
+                        img: game.img_icon || '/assets/controller/save.svg',
+                        description: 'Do not forgot save changes',
+                        name: 'Images updated',
+                        status: 'success'
+                    }, 3000)
+                })
+            }}>Get steam Assets</button>
         }
 
         return null;
@@ -88,6 +141,7 @@ const AddGame = ({data, submit, remove}) => {
                         <button onClick={() => getGamePathV2()}>Get Path</button>
                     </Input>
                     {renderByType()}
+                    {renderSteamAssets()}
                     <AddImage id={game.steamgriddb} type="grid" onChange={onChange} value={game.img_grid}/>
                     <AddImage id={game.steamgriddb} type="landscape" onChange={onChange} value={game.img_landscape}/>
                     <AddImage id={game.steamgriddb} type="hero" onChange={onChange} value={game.img_hero}/>

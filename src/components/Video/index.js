@@ -38,8 +38,15 @@ const VideoComponent = ({selected, options, soundStatus}) => {
                 poster: videos[0].outputs.find(({key}) => key === 'thumbnail').url,
                 src: videos.map(v => {
                     const {url, contentType} = v.outputs.find(({key}) => key === 'manifest')
-                    return {src: url, type: contentType,}
+                    return {src: url, type: contentType}
                 })
+            }
+        }
+
+        if (type === 'egsV2') {
+            return {
+                poster: data.poster,
+                src: data.src
             }
         }
 
