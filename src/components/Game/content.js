@@ -59,6 +59,15 @@ const GameContent = () => {
         return null
     }
 
+    const sources = {
+        'steam': 'Steam',
+        'egs': 'Epic Games Store',
+        'origin': 'Electronic Arts',
+        'gog': 'GOG',
+        'ryujinx': 'Nintendo Switch™',
+        'rpcs3': 'PlayStation™ Store'
+    }
+
     return <RenderContent game={game} fields={[{
         label: 'Last played',
         value: lastPlayed ? new Date(lastPlayed).toLocaleDateString() : null
@@ -68,6 +77,12 @@ const GameContent = () => {
     }, {
         label: 'Size',
         value: game.size
+    }, {
+        label: 'Store',
+        value: sources[game.source]
+    }, {
+        label: 'Licensed',
+        value: !game.unofficial ? 'Yes' : 'No'
     }]}>
         {renderHowLongToBeat()}
     </RenderContent>
