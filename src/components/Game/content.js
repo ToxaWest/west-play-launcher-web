@@ -27,27 +27,22 @@ const GameContent = () => {
     const renderHowLongToBeat = () => {
         if (game.howLongToBeat) {
             const {comp_100, comp_all, comp_plus, comp_main, review_score} = game.howLongToBeat
-            const list = [{
-                label: 'Main Story',
-                value: comp_main,
-            }, {
-                label: 'Main + Sides',
-                value: comp_plus,
-            }, {
-                label: 'Completionist',
-                value: comp_100,
-            }, {
-                label: 'All Styles',
-                value: comp_all,
-            }]
+            const list = [
+                {label: 'Main Story', value: comp_main},
+                {label: 'Main + Sides', value: comp_plus},
+                {label: 'Completionist', value: comp_100},
+                {label: 'All Styles', value: comp_all}
+            ]
 
             return (
                 <div className={styles.hltb}>
                     <ul>
-                        {list.map(({label, value}) => (
+                        {list.filter(({value}) => value).map(({label, value}) => (
                             <li key={label}>
                                 <div><span>{secondsToHms(value * 1000)}</span></div>
-                                <strong>{label}</strong></li>))}
+                                <strong>{label}</strong>
+                            </li>
+                        ))}
                     </ul>
                     <div className={styles.score}>
                         <strong>Users score:</strong><span>{review_score}</span>
