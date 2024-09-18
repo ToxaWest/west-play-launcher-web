@@ -45,7 +45,7 @@ const SettingsHome = () => {
                    options={[{
                        label: 'System',
                        value: 'system'
-                   },{
+                   }, {
                        label: 'Light',
                        value: 'light'
                    }, {
@@ -109,7 +109,25 @@ const SettingsHome = () => {
                 onChange={onChange}
             />
             <button tabIndex={1} onClick={() => {
-                electronConnector.clearUnusedCache(getFromStorage('games').map(({id}) => id.toString()))
+                const gamesInList = getFromStorage('games').map(({id}) => id.toString());
+                const playTime = getFromStorage('playTime');
+                Object.keys(playTime).forEach((key) => {
+                    if (gamesInList.indexOf(key.toString()) === -1) delete playTime[key];
+                })
+                setToStorage('playTime', playTime)
+                const lastPlayed = getFromStorage('lastPlayed');
+                Object.keys(lastPlayed).forEach((key) => {
+                    if (gamesInList.indexOf(key.toString()) === -1) delete lastPlayed[key];
+                })
+                setToStorage('lastPlayed', lastPlayed)
+                electronConnector.clearUnusedCache(gamesInList).then(({removed}) => {
+                    notifications({
+                        img: '/assets/controller/save.svg',
+                        status: 'success',
+                        name: 'Assets removed',
+                        description: `Removed ${removed} assets`
+                    })
+                })
             }}>
                 Remove unused cache
             </button>
@@ -123,7 +141,7 @@ const SettingsHome = () => {
                 })
                 setTimeout(() => {
                     window.location.reload();
-                },3000)
+                }, 3000)
             }}>
                 Save
             </button>
