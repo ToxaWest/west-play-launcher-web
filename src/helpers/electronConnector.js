@@ -35,7 +35,9 @@ const electronConnector = {
     gameSearch: ({query, source}) => apiCall({query, source}, 'gameSearch'),
     getUserAchievements: ({data, source}) => apiCall({data, source}, 'getUserAchievements'),
     getGameByID: ({id, source}) => apiCall({id, source}, 'getGameByID'),
-    getAchievementsPath: ({path, appid}) => apiCall({path, appid}, 'getAchievementsPath')
+    getAchievementsPath: ({path, appid}) => apiCall({path, appid}, 'getAchievementsPath'),
+    getFolders: (path) => apiCall(path, 'getFolders'),
+    getDisks: () => apiCall(null, 'getDisks'),
 };
 
 export default electronConnector;

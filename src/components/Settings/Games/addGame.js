@@ -5,40 +5,21 @@ import Input from "../../Input";
 import SearchGame from "./searchGame";
 import RyujinxFields from "./ryujinxFields";
 import SteamFields from "./steamFields";
-import formatBytes from "../../../helpers/formatSize";
 import AddAudio from "./addAudio";
 import useNotification from "../../../hooks/useNotification";
+import Loader from "../../Loader";
+import Modal from "../../Modal";
+import FileManager from "../../FileManager";
 
 const AddGame = ({data, submit, remove}) => {
     const [game, setGame] = useState(data);
     const [opened, setOpened] = useState(false)
     const wrapperRef = useRef(null);
     const notification = useNotification();
-
+    const [openFileManager, setOpenFileManager] = useState(false);
     const [loading, setLoading] = useState(false);
     const onChange = ({name, value}) => {
         setGame(g => ({...g, [name]: value}))
-    }
-
-    const getGamePathV2 = () => {
-        setLoading(true)
-        notification({
-            img: '/assets/controller/save.svg',
-            description: 'Please wait for end',
-            name: 'Getting data from folder',
-            status: 'warning'
-        }, 5000)
-        electronConnector.getDataByFolder(game.id).then((data) => {
-            const {size, ...gameData} = data;
-            setGame(g => ({...g, ...gameData, size: formatBytes(parseInt(size))}))
-            setLoading(false)
-            notification({
-                img: '/assets/controller/save.svg',
-                description: 'Do not forgot save changes',
-                name: 'Data received',
-                status: 'success'
-            }, 3000)
-        })
     }
 
     const update = () => {
@@ -138,7 +119,7 @@ const AddGame = ({data, submit, remove}) => {
                            value={game.path}
                            disabled={true}
                            name='path'>
-                        <button onClick={() => getGamePathV2()}>Get Path</button>
+                        <button tabIndex={1} onClick={() => setOpenFileManager('path')}>Get Path</button>
                     </Input>
                     {renderByType()}
                     {renderSteamAssets()}
@@ -178,6 +159,14 @@ const AddGame = ({data, submit, remove}) => {
                     <button tabIndex={1} onClick={() => update()}>Update game</button>
                 </div>
                 {renderContent()}
+                <Loader loading={loading}/>
+                {Boolean(openFileManager) && <Modal onClose={() => setOpenFileManager(false)}>
+                    <FileManager submit={(value) => {
+                        onChange({value, name: openFileManager})
+                        setOpenFileManager(false)
+                        update()
+                    }} file={false} initial={game[openFileManager] || ''}/>
+                </Modal>}
             </div> : null}
         </details>
     )

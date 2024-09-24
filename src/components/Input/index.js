@@ -2,7 +2,7 @@ import styles from './input.module.scss';
 import {useState} from "react";
 
 const Input = ({
-                   label, value, name, onChange = () => {
+                   label, value = '', name, onChange = () => {
     }, children,
                    type = 'text',
                    options,
@@ -27,8 +27,7 @@ const Input = ({
                        placeholder={label}
                        name={name}
                        ref={_ref}
-                       disabled={disabled}
-                       defaultValue={value}
+                       {...(disabled ? {disabled, value} : {defaultValue: value})}
                        onChange={change}
                 />
             )

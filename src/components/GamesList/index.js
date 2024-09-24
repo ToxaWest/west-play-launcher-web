@@ -3,8 +3,8 @@ import {useEffect, useRef, useState} from "react";
 import {getColorByUrl} from "../../helpers/getColor";
 import RenderContent from "../Game/renderContent";
 import RenderMedia from "../Game/renderMedia";
-import useAppControls from "../../hooks/useAppControls";
 import electronConnector from "../../helpers/electronConnector";
+import useFooterActions from "../../hooks/useFooterActions";
 
 const GamesList = ({
                        games,
@@ -20,15 +20,25 @@ const GamesList = ({
     const [view, setView] = useState('content');
     const [currentGame, setCurrentGame] = useState(null)
     const [steam, setSteam] = useState(null);
-
+    const {setFooterActions, removeFooterActions} = useFooterActions()
     const toggleViewMode = () => setView(v => v === 'content' ? 'media' : 'content')
 
-    useAppControls({
-        map: {
-            lb: toggleViewMode,
-            rb: toggleViewMode
+    useEffect(() => {
+        setFooterActions({
+            rightScrollY: {
+                button: 'rightScrollY',
+                onClick: toggleViewMode
+            },
+            leftScrollY: {
+                button: 'leftScrollY',
+                onClick: toggleViewMode
+            }
+        })
+
+        return () => {
+            removeFooterActions(['rightScrollY', 'leftScrollY'])
         }
-    })
+    }, [])
 
     useEffect(() => {
         setSteam(null)
@@ -86,14 +96,12 @@ const GamesList = ({
             return (
                 <>
                     <div className={styles.navigation}>
-                        <img src={'/assets/controller/left-bumper.svg'} alt={'prev'} onClick={toggleViewMode}/>
                         <div className={view === 'content' ? styles.navActive : ''} onClick={() => setView('content')}>
                             Description
                         </div>
                         <div className={view === 'media' ? styles.navActive : ''} onClick={() => setView('media')}>
                             Media
                         </div>
-                        <img src={'/assets/controller/right-bumper.svg'} alt={'next'} onClick={toggleViewMode}/>
                     </div>
                     {renderView()}
                 </>

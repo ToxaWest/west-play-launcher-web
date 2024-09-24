@@ -1,26 +1,36 @@
 import styles from "./game.module.scss";
 import {useLocation, useNavigate} from "react-router-dom";
-import useAppControls from "../../hooks/useAppControls";
 import useStartGame from "../../hooks/useStartGame";
 import {ReactComponent as SvgContent} from '../../SVG/content.svg'
 import {ReactComponent as SvgAchievements} from '../../SVG/achievement.svg'
 import {ReactComponent as SvgMedia} from '../../SVG/media.svg'
 import {ReactComponent as SvgDLC} from '../../SVG/dlc.svg'
+import {useEffect} from "react";
+import useFooterActions from "../../hooks/useFooterActions";
 
 const GameActions = ({game, audioStop}) => {
     const navigate = useNavigate();
     const location = useLocation();
-    useAppControls({
-        map: {
-            rb: () => {
-                toggleViewMode('next')
-            },
-            lb: () => {
-                toggleViewMode('previous')
-            }
-        }
-    })
+    const {setFooterActions, removeFooterActions} = useFooterActions();
     const {start, status, exePath} = useStartGame(game)
+
+    useEffect(() => {
+        setFooterActions({
+            rightScrollY: {
+                button: 'rightScrollY',
+                onClick: () => toggleViewMode('next')
+            },
+            leftScrollY: {
+                button: 'leftScrollY',
+                onClick: () => toggleViewMode('previous')
+            }
+        })
+
+        return () => {
+            removeFooterActions(['rightScrollY', 'leftScrollY'])
+        }
+    }, [])
+
     const getActive = (e) => e === location.pathname;
 
     const gameState = {
@@ -42,11 +52,11 @@ const GameActions = ({game, audioStop}) => {
         url: `/game/${game.id}/achievements`,
         img: SvgAchievements,
         active: Boolean(game.achievements)
-    },  {
+    }, {
         url: `/game/${game.id}/dlc`,
         img: SvgDLC,
         active: Boolean(game.dlcList) && Boolean(game.dlcList.length)
-    },{
+    }, {
         url: `/game/${game.id}/media`,
         img: SvgMedia,
         active: [...movies, ...screenshots].length > 0
@@ -100,11 +110,7 @@ const GameActions = ({game, audioStop}) => {
                 {gameState[status].button}
             </button>
             <div className={styles.navigation}>
-                <img src={'/assets/controller/left-bumper.svg'} alt={'prev'}
-                     onClick={() => toggleViewMode('previous')}/>
                 {buttons.map(renderButton)}
-                <img src={'/assets/controller/right-bumper.svg'} alt={'next'}
-                     onClick={() => toggleViewMode('next')}/>
             </div>
         </div>
     )

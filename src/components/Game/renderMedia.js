@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import styles from "./game.module.scss";
 import useFooterActions from "../../hooks/useFooterActions";
 import Video from "../Video";
-import useAppControls from "../../hooks/useAppControls";
 
 const RenderMedia = ({
                          game,
@@ -12,7 +11,7 @@ const RenderMedia = ({
                          }
                      }) => {
     const [current, setCurrent] = useState(0);
-    const {setFooterActions} = useFooterActions();
+    const {setFooterActions, removeFooterActions} = useFooterActions();
     const {
         movies = [],
         screenshots = []
@@ -24,54 +23,40 @@ const RenderMedia = ({
     const next = (i) => i === (media.length - 1) ? 0 : i + 1
     const prev = (i) => i === 0 ? [...movies, ...screenshots].length - 1 : i - 1
 
-    useAppControls({
-        map: {
-            bottom: () => {
-                setCurrent(next)
-            },
-            top: () => {
-                setCurrent(prev)
-            },
-            rt: () => {
-                setSoundStatus(true)
-                document.querySelector(':root').scrollIntoView({behavior: 'smooth', block: 'end'})
-                play()
-            },
-            lt: () => {
-                pause()
-                setSoundStatus(false)
-            }
-        }
-    })
-
     useEffect(() => {
-        setFooterActions([{
-            img: 'left-trigger.svg',
-            title: 'Sound OFF',
-            onClick: () => {
-                pause()
-                setSoundStatus(true)
+        setFooterActions({
+            lt: {
+                title: 'Sound OFF',
+                button: 'lt',
+                onClick: () => {
+                    pause()
+                    setSoundStatus(false)
+                }
+            }, rt: {
+                title: 'Sound ON',
+                button: 'rt',
+                onClick: () => {
+                    play()
+                    document.querySelector(':root').scrollIntoView({behavior: 'smooth', block: 'end'})
+                    setSoundStatus(true)
+                }
+            }, top: {
+                title: 'Prev',
+                button: 'top',
+                onClick: () => {
+                    setCurrent(prev)
+                }
+            }, bottom: {
+                title: 'Next',
+                button: 'bottom',
+                onClick: () => {
+                    setCurrent(next)
+                }
             }
-        }, {
-            img: 'right-trigger.svg',
-            title: 'Sound ON',
-            onClick: () => {
-                play()
-                setSoundStatus(false)
-            }
-        }, {
-            img: 'dpad-up.svg',
-            title: 'Prev',
-            onClick: () => {
-                setCurrent(prev)
-            }
-        }, {
-            img: 'dpad-down.svg',
-            title: 'Next',
-            onClick: () => {
-                setCurrent(next)
-            }
-        }])
+        })
+        return () => {
+            removeFooterActions(['bottom', 'lt', 'rt', 'top'])
+        }
     }, []);
 
 

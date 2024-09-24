@@ -2,13 +2,12 @@ import electronConnector from "../../helpers/electronConnector";
 import GamesList from "../GamesList";
 import {useEffect, useRef, useState} from "react";
 import useFooterActions from "../../hooks/useFooterActions";
-import useAppControls from "../../hooks/useAppControls";
 import useWishList from "../../hooks/useWishList";
 
 const CrackWatchList = ({games, title}) => {
     const [temp, setTemp] = useState(null);
     const tempRef = useRef(null)
-    const {setFooterActions} = useFooterActions();
+    const {setFooterActions, removeFooterActions} = useFooterActions();
     const {update, inList, games: wGames} = useWishList();
     const wishListUpdate = () => {
         if (tempRef.current) {
@@ -16,21 +15,21 @@ const CrackWatchList = ({games, title}) => {
         }
     }
 
-    useAppControls({map: {y: wishListUpdate}})
-
     useEffect(() => {
         if (temp) {
-            setFooterActions([{
-                img: 'y-filled-yellow.svg',
-                title: (inList(temp) ? 'Remove from' : 'Add to') + ' Wishlist',
-                onClick: wishListUpdate
-            }])
+            setFooterActions({
+                y: {
+                    button: 'y',
+                    title: (inList(temp) ? 'Remove from' : 'Add to') + ' Wishlist',
+                    onClick: wishListUpdate
+                }
+            })
         } else {
-            setFooterActions([])
+            removeFooterActions(['y'])
         }
         tempRef.current = temp;
         return () => {
-            setFooterActions([])
+            removeFooterActions(['y'])
         }
     }, [temp, wGames])
 
@@ -96,7 +95,7 @@ const CrackWatchList = ({games, title}) => {
             renderInfoWrapper={renderInfoWrapper}
             getFields={getFields}
             getImage={(g) => {
-                if(g.steam_prod_id){
+                if (g.steam_prod_id) {
                     return `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.steam_prod_id}/header.jpg?t=1671484934`
                 }
                 return g.short_image

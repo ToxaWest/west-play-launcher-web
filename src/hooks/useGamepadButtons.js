@@ -1,5 +1,6 @@
 import {useEffect, useRef, useState} from "react";
 import electronConnector from "../helpers/electronConnector";
+import {modalIsActive} from "../helpers/modalIsActive";
 
 const keyMapping = ['a', 'b', 'x', 'y', 'lb', 'rb', 'lt', 'rt', 'options', 'select', 'l3', 'r3', 'top', 'bottom', 'left', 'right', 'home']
 
@@ -21,7 +22,7 @@ const useGamepadButtons = () => {
     const [visible, setVisible] = useState(true);
     const pressedRef = useRef(null);
     const pressedRef2 = useRef(null);
-    const connectedRef = useRef(null);
+    const activeWrapper = useRef(':root');
 
     const sendEvent = (detail) => {
         if (sound[detail]) {
@@ -42,68 +43,33 @@ const useGamepadButtons = () => {
         }
     }
 
-    const getGamePad = () => {
-        if (connectedRef.current) {
-            try {
-                return navigator.getGamepads().find(({id}) => id === connectedRef.current)
-            } catch (e) {
-                console.warn(e)
-            }
-        }
-        const [_gamepad] = navigator.getGamepads();
-        connectedRef.current = _gamepad?.id
-        return _gamepad
-    }
+    const getGamePad = () => navigator.getGamepads().find(a => a);
 
     const init = () => {
         const gamepad = getGamePad()
-        if (!gamepad || !visible) {
-            return;
-        }
-
+        if (!gamepad || !visible) return
         const pressed = gamepad.buttons.findIndex((button) => button.pressed)
-
-        if (pressed !== -1) {
-            buttonsEvent(keyMapping[pressed])
-        } else {
-            pressedRef.current = null;
-        }
+        if (pressed !== -1) buttonsEvent(keyMapping[pressed])
+        else pressedRef.current = null
         setTimeout(() => window.requestAnimationFrame(init), 50)
     }
 
     const initLeftStick = () => {
         const gamepad = getGamePad()
-        if (!gamepad || !visible) {
-            return;
-        }
-
-        const vertical = gamepad.axes[1]
-        const horizontal = gamepad.axes[0]
-
-        if (Math.abs(vertical) > 0.5) {
-            sendEvent(keyMapping[vertical < 0 ? 12 : 13])
-        }
-        if (Math.abs(horizontal) > 0.5) {
-            sendEvent(keyMapping[horizontal < 0 ? 14 : 15])
-        }
+        if (!gamepad || !visible) return;
+        const [horizontal, vertical] = gamepad.axes
+        if (Math.abs(vertical) > 0.5) sendEvent(keyMapping[vertical < 0 ? 12 : 13])
+        if (Math.abs(horizontal) > 0.5) sendEvent(keyMapping[horizontal < 0 ? 14 : 15])
         setTimeout(() => window.requestAnimationFrame(initLeftStick), 120)
     }
 
     const initScroll = () => {
         const gamepad = getGamePad()
-        if (!gamepad) {
-            return;
-        }
-        const verticalR = gamepad.axes[3]
-        const horizontal = gamepad.axes[2]
+        if (!gamepad) return;
+        const [, , horizontal, verticalR] = gamepad.axes
         if (Math.abs(verticalR) > 0.3) {
-            const modal = document.querySelector('#modal #scroll');
-            const root = document.querySelector(':root');
-            if (modal) {
-                modal.scrollTop += verticalR * scrollBooster
-            } else {
-                root.scrollTop += verticalR * scrollBooster
-            }
+            const root = document.querySelector(activeWrapper.current);
+            root.scrollTop += verticalR * scrollBooster
             sendEvent(verticalR < 0 ? 'topScrollY' : 'bottomScrollY')
         }
 
@@ -112,35 +78,30 @@ const useGamepadButtons = () => {
                 sendEvent(horizontal < 0 ? 'leftScrollY' : 'rightScrollY');
                 pressedRef2.current = true
             }
-        } else {
-            pressedRef2.current = null;
-        }
+        } else pressedRef2.current = null;
 
         setTimeout(() => window.requestAnimationFrame(initScroll))
     }
 
-    const connect = (e) => {
-        if (!connectedRef.current) {
-            connectedRef.current = e.gamepad.id
-            init();
-            initLeftStick();
-            initScroll();
-        }
+    const connect = () => {
+        init();
+        initLeftStick();
+        initScroll();
     }
 
-    const disconnect = (e) => {
-        if (e.gamepad.id === connectedRef.current) {
-            connectedRef.current = null
-            window.cancelAnimationFrame(init);
-            window.cancelAnimationFrame(initLeftStick);
-            window.cancelAnimationFrame(initScroll);
-        }
+    const disconnect = () => {
+        window.cancelAnimationFrame(init);
+        window.cancelAnimationFrame(initLeftStick);
+        window.cancelAnimationFrame(initScroll);
     }
 
     useEffect(() => {
         electronConnector.onVisibilityChange(setVisible)
         window.addEventListener("gamepadconnected", connect)
         window.addEventListener('gamepaddisconnected', disconnect)
+        modalIsActive((active) => {
+            activeWrapper.current = active ? '#modal #scroll' : ':root'
+        })
         return () => {
             window.api.removeAllListeners('onVisibilityChange')
             window.removeEventListener('gamepadconnected', connect)

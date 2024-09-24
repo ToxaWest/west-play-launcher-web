@@ -7,9 +7,7 @@ const NAVIGATION_KEYS = {
     top: {rowPosition: (a) => a - 1}
 }
 
-const selector = '#contentWrapper [tabindex="1"]';
-
-const useAppControls = ({map} = {map: {}}) => {
+const useAppControls = () => {
     const ref = useRef([]);
     const refRowsMatrix = useRef([]);
     const refCurrentIndex = useRef(0);
@@ -17,9 +15,11 @@ const useAppControls = ({map} = {map: {}}) => {
     const refCurrentTemp2Index = useRef(0);
     const prevLocation = useRef(window.location.pathname);
     const observer = useRef(null);
+    const activeWrapper = useRef(null);
+    const mapRef = useRef({});
 
     const setMatrix = (s) => {
-        ref.current = document.querySelectorAll(s)
+        ref.current = document.querySelectorAll(activeWrapper.current + ' ' + s)
         const {matrix} = [...ref.current].reduce(({matrix, keys}, current, index) => {
             const {top} = current.getBoundingClientRect()
             if (typeof keys[top] !== "number") keys[top] = Object.keys(keys).length;
@@ -45,9 +45,7 @@ const useAppControls = ({map} = {map: {}}) => {
     const checkNode = (nodeList, ind) => {
         return [...nodeList].some((node) => {
             try {
-                if (node.hasAttribute('tabindex')) {
-                    return node.tabIndex === ind;
-                }
+                if (node.hasAttribute('tabindex')) return node.tabIndex === ind;
                 return node.querySelectorAll(`[tabindex="${ind}"]`).length > 0
             } catch {
                 return false;
@@ -62,42 +60,45 @@ const useAppControls = ({map} = {map: {}}) => {
         const subRemoved = e.some(({removedNodes}) => checkNode(removedNodes, 2))
 
         if (added) {
-            setMatrix(selector)
+            setMatrix('[tabindex="1"]')
             if (prevLocation.current !== window.location.pathname) {
                 refCurrentTemp2Index.current = 0;
                 prevLocation.current = window.location.pathname
                 setCurrentIndex(getBackWindow)
-            } else {
-                refCurrentTemp2Index.current = refCurrentIndex.current
-            }
+            } else refCurrentTemp2Index.current = refCurrentIndex.current
         } else if (removed) {
-            setMatrix(selector)
-            if (prevLocation.current === window.location.pathname) {
-                setCurrentIndex(() => refCurrentTemp2Index.current)
-            } else {
-                setCurrentIndex(() => 0)
-            }
+            setMatrix('[tabindex="1"]')
+            if (prevLocation.current === window.location.pathname) setCurrentIndex(() => refCurrentTemp2Index.current)
+            else setCurrentIndex(() => 0)
         } else if (subAdded) {
             refCurrentTempIndex.current = refCurrentIndex.current;
             setMatrix('[tabindex="2"]')
             setCurrentIndex(() => 0)
         } else if (subRemoved) {
-            setMatrix(selector)
+            setMatrix('[tabindex="1"]')
             setCurrentIndex(() => refCurrentTempIndex.current)
         }
     }
 
-    const init = () => {
-        setMatrix(selector)
+    const init = (selector) => {
+        activeWrapper.current = selector;
+        setMatrix('[tabindex="1"]')
         setCurrentIndex(() => 0)
         observer.current = new MutationObserver(logChanges);
-        observer.current.observe(document.querySelector('#contentWrapper'), {childList: true, subtree: true});
+        observer.current.observe(document.querySelector(selector), {childList: true, subtree: true});
     }
 
     const setCurrentIndex = (func) => {
         const i = func(refCurrentIndex.current);
         if (refCurrentIndex.current === i) {
-            ref.current[i]?.focus();
+            if (ref.current[i]) {
+                ref.current[i]?.focus();
+                return;
+            } else {
+                // refCurrentIndex.current = 0;
+                // setActiveIndex(0)
+            }
+
             return;
         }
         refCurrentIndex.current = i;
@@ -108,20 +109,16 @@ const useAppControls = ({map} = {map: {}}) => {
         const currentRow = refRowsMatrix.current.findIndex((a) => a.includes(i));
         const currentCol = refRowsMatrix.current[currentRow]?.findIndex((a) => a === i);
         const _newCol = refRowsMatrix.current[rowPosition(currentRow)]?.[colPosition(currentCol)]
-        if (typeof _newCol === "number") {
-            return _newCol
-        }
+        if (typeof _newCol === "number") return _newCol
         return i
     }
 
     const listener = ({detail}) => {
-        if (map[detail]) {
-            map[detail]()
+        if (mapRef.current[detail]) {
+            mapRef.current[detail]()
         }
 
-        if (!ref.current.length) {
-            return
-        }
+        if (!ref.current.length) return
 
         if (NAVIGATION_KEYS[detail]) {
             setCurrentIndex((i) => getPosition({i, ...NAVIGATION_KEYS[detail]}))
@@ -138,11 +135,7 @@ const useAppControls = ({map} = {map: {}}) => {
             return;
         }
         if (ref.current[index]) {
-            ref.current[index].scrollIntoView({
-                inline: 'center',
-                block: 'center',
-                behavior: 'smooth',
-            })
+            ref.current[index].scrollIntoView({inline: 'center', block: 'center', behavior: 'smooth',})
             ref.current[index].focus();
         }
     }
@@ -150,14 +143,16 @@ const useAppControls = ({map} = {map: {}}) => {
     useEffect(() => {
         document.addEventListener('gamepadbutton', listener)
         return () => {
-            if (observer.current) {
-                observer.current.disconnect()
-            }
+            if (observer.current) observer.current.disconnect()
             document.removeEventListener('gamepadbutton', listener)
         }
     }, []);
 
-    return {init}
+    return {
+        init, setMap: (r) => {
+            mapRef.current = r
+        }
+    }
 }
 
 export default useAppControls

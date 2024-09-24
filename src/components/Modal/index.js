@@ -1,7 +1,6 @@
 import {createPortal} from "react-dom";
 import {useEffect} from "react";
 import useFooterActions from "../../hooks/useFooterActions";
-import useAppControls from "../../hooks/useAppControls";
 
 const style = {
     position: 'fixed',
@@ -16,21 +15,22 @@ const style = {
 }
 
 const Modal = ({children, onClose}) => {
-    const {setFooterActions} = useFooterActions()
+    const {setFooterActions, removeFooterActions} = useFooterActions()
 
     const close = () => {
         onClose(true)
     }
-    useAppControls({map: {x: close}})
 
     useEffect(() => {
-        setFooterActions([{
-            img: 'x-filled-blue.svg',
-            title: 'Close',
-            onClick: close
-        }])
+        setFooterActions({
+            x: {
+                button: 'x',
+                title: 'Close',
+                onClick: close
+            }
+        })
         return () => {
-            setFooterActions([])
+            removeFooterActions(['x'])
         }
     }, []);
 

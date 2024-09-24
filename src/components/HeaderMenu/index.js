@@ -1,18 +1,12 @@
 import {useLocation, useNavigate} from "react-router-dom";
 import styles from './HeaderMenu.module.scss';
-import useAppControls from "../../hooks/useAppControls";
+import {useEffect} from "react";
+import useFooterActions from "../../hooks/useFooterActions";
 
 const HeaderMenu = () => {
     const navigate = useNavigate();
     const location = useLocation();
-
-    useAppControls({
-        map: {
-            leftScrollY: () => toggleViewMode('previous'),
-            rightScrollY: () => toggleViewMode('next'),
-        }
-    })
-
+    const {setFooterActions} = useFooterActions()
     const links = {
         '/': 'Home',
         '/library': 'Library',
@@ -20,6 +14,19 @@ const HeaderMenu = () => {
         '/lastCracked': 'Last Cracked',
         '/wishList': 'WishList',
     }
+    useEffect(() => {
+        if (Object.keys(links).includes(location.pathname)) {
+            setFooterActions({
+                lb: {
+                    button: 'lb',
+                    onClick: () => toggleViewMode('previous'),
+                }, rb: {
+                    button: 'rb',
+                    onClick: () => toggleViewMode('next'),
+                }
+            })
+        }
+    }, [location.pathname])
 
     const toggleViewMode = (direction) => {
         if (!Object.keys(links).includes(window.location.pathname)) {

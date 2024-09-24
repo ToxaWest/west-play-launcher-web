@@ -1,18 +1,27 @@
 import styles from "./settings.module.scss";
 import {Link, Outlet, useLocation, useNavigate} from "react-router-dom";
-import useAppControls from "../../hooks/useAppControls";
+import {useEffect} from "react";
+import useFooterActions from "../../hooks/useFooterActions";
 
 const Settings = () => {
-    useAppControls({
-        map: {
-            lb: () => {
-                toggleViewMode('previous')
+    const {setFooterActions, removeFooterActions} = useFooterActions()
+
+    useEffect(() => {
+        setFooterActions({
+            rb: {
+                button: 'rb',
+                onClick: () => toggleViewMode('next')
             },
-            rb: () => {
-                toggleViewMode('next')
-            },
+            lb: {
+                button: 'lb',
+                onClick: () => toggleViewMode('previous')
+            }
+        })
+
+        return () => {
+            removeFooterActions(['rb', 'lb'])
         }
-    })
+    }, [])
 
     const navigate = useNavigate();
     const location = useLocation();

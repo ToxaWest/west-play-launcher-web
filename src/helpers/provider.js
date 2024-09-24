@@ -4,12 +4,12 @@ import useGamepadButtons from "../hooks/useGamepadButtons";
 
 export const AppContext = createContext({
     notifications: undefined,
-    footerActions: []
+    footerActions: {}
 });
 
 const Provider = ({children}) => {
     const [notifications, setNotifications] = useState(null);
-    const [footerActions, setFooterActions] = useState([]);
+    const [footerActions, setFooterActions] = useState({});
     useGamepadButtons();
     return (
         <AppContext.Provider value={{setNotifications, footerActions, setFooterActions}}>
