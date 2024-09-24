@@ -24,17 +24,18 @@ const useFooterActions = () => {
         }
     }
     const defaultActions = {
+        b: {
+            button: 'b',
+            title: 'Back',
+            onClick: backButton
+        },
         a: {
             button: 'a',
             title: 'Select',
             onClick: () => {
                 document.activeElement?.click()
             }
-        }, b: {
-            button: 'b',
-            title: 'Back',
-            onClick: backButton
-        }
+        },
     }
 
     return {

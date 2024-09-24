@@ -8,15 +8,12 @@ import SteamFields from "./steamFields";
 import AddAudio from "./addAudio";
 import useNotification from "../../../hooks/useNotification";
 import Loader from "../../Loader";
-import Modal from "../../Modal";
-import FileManager from "../../FileManager";
 
 const AddGame = ({data, submit, remove}) => {
     const [game, setGame] = useState(data);
     const [opened, setOpened] = useState(false)
     const wrapperRef = useRef(null);
     const notification = useNotification();
-    const [openFileManager, setOpenFileManager] = useState(false);
     const [loading, setLoading] = useState(false);
     const onChange = ({name, value}) => {
         setGame(g => ({...g, [name]: value}))
@@ -42,16 +39,17 @@ const AddGame = ({data, submit, remove}) => {
         })
     }
 
-    const getImage = () => {
-        setOpenFileManager('imageName')
-    }
-
     const imageName = () => (
-        <Input label='Game Image (dangerous)'
+        <Input label='Game Image'
                value={game.imageName}
-               disabled={true}
+               onChange={({value, name}) => {
+                   if (value) {
+                       onChange({name, value: value.split('/').at(-1)})
+                   }
+               }}
+               type="path"
+               onlyFile={true}
                name='imageName'>
-            <button onClick={() => getImage()} tabIndex={1}>Get imageName</button>
         </Input>
     )
 
@@ -114,9 +112,15 @@ const AddGame = ({data, submit, remove}) => {
                 <>
                     <Input label='Path'
                            value={game.path}
-                           disabled={true}
+                           onChange={({value, name}) => {
+                               if (value) {
+                                   onChange({name, value})
+                                   update(value)
+                               }
+                           }}
+                           type="path"
+                           onlyFile={false}
                            name='path'>
-                        <button tabIndex={1} onClick={() => setOpenFileManager('path')}>Get Path</button>
                     </Input>
                     {renderByType()}
                     {renderSteamAssets()}
@@ -157,21 +161,6 @@ const AddGame = ({data, submit, remove}) => {
                 </div>
                 {renderContent()}
                 <Loader loading={loading}/>
-                {Boolean(openFileManager) && <Modal onClose={() => setOpenFileManager(false)}>
-                    <FileManager submit={(value) => {
-                        if (openFileManager === 'path') {
-                            console.log(value)
-                            onChange({value, name: openFileManager})
-                            update(value)
-                        } else {
-                            if (value) {
-                                onChange({name: 'imageName', value: value.split('/').at(-1)})
-                            }
-                        }
-                        setOpenFileManager(false)
-
-                    }} file={openFileManager !== 'path'} initial={game[openFileManager] || ''}/>
-                </Modal>}
             </div> : null}
         </details>
     )

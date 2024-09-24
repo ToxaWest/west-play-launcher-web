@@ -1,5 +1,7 @@
 import styles from './input.module.scss';
 import {useState} from "react";
+import FileManager from "../FileManager";
+import Modal from "../Modal";
 
 const Input = ({
                    label, value = '', name, onChange = () => {
@@ -8,6 +10,7 @@ const Input = ({
                    options,
                    disabled,
                    _ref,
+                   onlyFile = false,
                    ...props
                }) => {
 
@@ -30,6 +33,24 @@ const Input = ({
                        {...(disabled ? {disabled, value} : {defaultValue: value})}
                        onChange={change}
                 />
+            )
+        },
+        path: () => {
+            return (
+                <div className={styles.path}>
+                    <input type={"hidden"} ref={_ref} value={value} name={name} style={{display: 'none'}}/>
+                    <button tabIndex={1} onClick={() => setActive(true)}>Get path</button>
+                    <span>{value}</span>
+                    {active ? <Modal onClose={() => setActive(false)}>
+                        <FileManager
+                            submit={(value) => {
+                                onChange({value, name})
+                                setActive(false)
+                            }}
+                            file={onlyFile}
+                            initial={value || ''}/>
+                    </Modal> : null}
+                </div>
             )
         },
         number: () => {

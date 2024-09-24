@@ -1,33 +1,24 @@
 import Input from "../../Input";
 import styles from "../settings.module.scss";
-import {useState} from "react";
-import Modal from "../../Modal";
-import FileManager from "../../FileManager";
 
 const SteamFields = ({game, onChange}) => {
     const args = game.exeArgs || {};
-    const [openFileManager, setOpenFileManager] = useState(false);
 
     return (
         <>
-            {Boolean(openFileManager) && <Modal onClose={() => setOpenFileManager(false)}>
-                <FileManager submit={(value) => {
-                    onChange({value, name: openFileManager})
-                    setOpenFileManager(false)
-                }} file={true} initial={game[openFileManager] || ''}/>
-            </Modal>}
             <Input label='Exe file path'
                    value={game.exePath}
                    onChange={onChange}
-                   disabled={true}
+                   type="path"
+                   onlyFile={true}
                    name='exePath'>
-                <button tabIndex={1} onClick={() => setOpenFileManager('exePath')}>Get EXE Path</button>
             </Input>
             <Input label='Achievements file path'
                    value={game.achPath}
-                   disabled={true}
+                   onChange={onChange}
+                   type="path"
+                   onlyFile={true}
                    name='achPath'>
-                <button tabIndex={1} onClick={() => setOpenFileManager('achPath')}>Get Achievements Path</button>
             </Input>
             <div className={styles.argsWrapper}>
                 <button onClick={() => {

@@ -13,10 +13,7 @@ const AddAudio = ({id, value, name, onChange}) => {
                     setError(true)
                     return;
                 }
-                onChange({
-                    name: 'audio',
-                    value
-                })
+                onChange({name: 'audio', value})
             }, () => {
                 setError(true)
             })
@@ -28,9 +25,9 @@ const AddAudio = ({id, value, name, onChange}) => {
         <label className={styles.addImage}>
             <div className={styles.addImageField} style={{width: '100%'}}>
                 <button tabIndex={1} onClick={getAudio} style={{whiteSpace: 'nowrap'}}>Get Audio</button>
-                    <input style={{margin: '0 var(--gap)', width: '100%'}} value={query} onChange={(e) => {
-                        setQuery(e.target.value)
-                    }}/>
+                <input style={{margin: '0 var(--gap)', width: '100%'}} value={query} onChange={(e) => {
+                    setQuery(e.target.value)
+                }}/>
                 {value ? <span>{value}</span> : null}
                 {error ? <span>Error, try change name</span> : null}
             </div>

@@ -37,11 +37,12 @@ const Footer = () => {
     }, [footerActions]);
 
     const actions = {
+        ...footerActions,
         select: {
             title: 'Menu',
             button: 'select',
             onClick: menuButton
-        }, ...footerActions
+        }
     }
 
     const renderFooterActions = ({onClick, title, button}) => (
@@ -53,7 +54,7 @@ const Footer = () => {
 
     return (
         <footer className={styles.wrapper}>
-            {Object.values(actions).filter(a => a.title).map(renderFooterActions)}
+            {Object.values(actions).filter(a => a.title).reverse().map(renderFooterActions)}
         </footer>
     )
 }
