@@ -22,7 +22,7 @@ const AddGame = ({data, submit, remove}) => {
         setGame(g => ({...g, [name]: value}))
     }
 
-    const update = () => {
+    const update = (value) => {
         setLoading(true)
         notification({
             img: game.img_icon || '/assets/controller/save.svg',
@@ -30,7 +30,7 @@ const AddGame = ({data, submit, remove}) => {
             name: 'Updating game data',
             status: 'warning'
         }, 3000)
-        electronConnector.updateDataByFolder({path: game.path, id: game.id}).then((data) => {
+        electronConnector.updateDataByFolder({path: value || game.path, id: game.id}).then((data) => {
             setGame(g => ({...g, ...data}))
             setLoading(false)
             notification({
@@ -43,10 +43,7 @@ const AddGame = ({data, submit, remove}) => {
     }
 
     const getImage = () => {
-        electronConnector.getFile().then(p => {
-            const imageName = p.split('\\').at(-1);
-            onChange({name: 'imageName', value: imageName})
-        })
+        setOpenFileManager('imageName')
     }
 
     const imageName = () => (
@@ -54,7 +51,7 @@ const AddGame = ({data, submit, remove}) => {
                value={game.imageName}
                disabled={true}
                name='imageName'>
-            <button onClick={() => getImage()}>Get imageName</button>
+            <button onClick={() => getImage()} tabIndex={1}>Get imageName</button>
         </Input>
     )
 
@@ -162,10 +159,18 @@ const AddGame = ({data, submit, remove}) => {
                 <Loader loading={loading}/>
                 {Boolean(openFileManager) && <Modal onClose={() => setOpenFileManager(false)}>
                     <FileManager submit={(value) => {
-                        onChange({value, name: openFileManager})
+                        if (openFileManager === 'path') {
+                            console.log(value)
+                            onChange({value, name: openFileManager})
+                            update(value)
+                        } else {
+                            if (value) {
+                                onChange({name: 'imageName', value: value.split('/').at(-1)})
+                            }
+                        }
                         setOpenFileManager(false)
-                        update()
-                    }} file={false} initial={game[openFileManager] || ''}/>
+
+                    }} file={openFileManager !== 'path'} initial={game[openFileManager] || ''}/>
                 </Modal>}
             </div> : null}
         </details>

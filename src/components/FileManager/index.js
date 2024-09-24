@@ -43,9 +43,7 @@ const FileManager = ({
                     button: 'y',
                     title: 'Select',
                     onClick: () => {
-                        if (document.activeElement.dataset.path) {
-                            submit(document.activeElement.dataset.path)
-                        }
+                        submit(currentFolder.current)
                     }
                 }
             })

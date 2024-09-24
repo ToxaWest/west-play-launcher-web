@@ -18,7 +18,7 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
     "react-scripts": "^5.0.1",
-    "sass": "^1.78.0",
+    "sass": "^1.79.3",
     "video.js": "^8.17.4"
   },
   "scripts": {
@@ -33,9 +33,7 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+      "last 1 chrome version"
     ],
     "development": [
       "last 1 chrome version",
