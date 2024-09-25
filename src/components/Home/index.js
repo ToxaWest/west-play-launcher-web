@@ -31,7 +31,7 @@ const Home = () => {
                 {renderBackground()}
             </div>
             <ul>
-                {configuredArray().map((game, index) => (
+                {configuredArray().map((game) => (
                     <li key={game.id}
                         tabIndex={1}
                         id={game.id}
@@ -42,7 +42,7 @@ const Home = () => {
                             window.__back = {id: game.id, url: '/'}
                             navigate('/game/' + game.id)
                         }}>
-                        <img src={index ? game.img_grid : game.img_landscape} alt={game.name}/>
+                        <img src={game.img_grid} alt={game.name}/>
                     </li>
                 ))}
             </ul>

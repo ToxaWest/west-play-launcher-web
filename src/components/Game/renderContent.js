@@ -46,7 +46,6 @@ const RenderContent = ({game, fields = [], children}) => {
                 }
             </div>
             <div className={styles.info}>
-                {game.img_landscape && <img src={game.img_landscape} alt={'landscape'}/>}
                 <ul>
                     {infoData.filter(({value}) => Boolean(value))
                         .map(({label, value}) => (

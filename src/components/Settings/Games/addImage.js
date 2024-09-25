@@ -23,14 +23,6 @@ const AddImage = ({id, type, onChange, value}) => {
             },
             path: id + '/grids/1'
         },
-        'landscape': {
-            body: {
-                ...defaultConfig,
-                asset_type: "grid",
-                dimensions: ["920x430"]
-            },
-            path: id + '/grids/1'
-        },
         'hero': {
             body: {
                 ...defaultConfig,
