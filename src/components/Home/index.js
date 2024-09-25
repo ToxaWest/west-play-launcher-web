@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import styles from "./home.module.scss";
-import {useMemo, useState} from "react";
+import {useState} from "react";
 import {getFromStorage} from "../../helpers/getFromStorage";
 
 const Home = () => {
@@ -10,22 +10,13 @@ const Home = () => {
     const lastPlayed = getFromStorage('lastPlayed');
 
     const configuredArray = () => {
-        const renderSort = [];
-        Object.entries(lastPlayed)
+        return Object.entries(lastPlayed)
             .sort(([, ap], [, bp]) => ap < bp ? 1 : -1)
-            .forEach(([key]) => {
-                renderSort.push(parseInt(key))
-            });
-        games.forEach(({id}) => {
-            if (renderSort.indexOf(id) === -1) {
-                renderSort.push(id)
-            }
-        })
-
-        return games.sort((a, b) => renderSort.indexOf(a.id) - renderSort.indexOf(b.id))
+            .reduce((acc, [curr]) => {
+                const game = games.find(({id}) => id === parseInt(curr));
+                return game ? [...acc, game] : acc
+            }, [])
     }
-
-    const sortedGames = useMemo(configuredArray, []);
 
     const renderBackground = () => {
         if (background) {
@@ -39,8 +30,8 @@ const Home = () => {
             <div className={styles.image}>
                 {renderBackground()}
             </div>
-            <ul id="game-list">
-                {sortedGames.map((game, index) => (
+            <ul>
+                {configuredArray().map((game, index) => (
                     <li key={game.id}
                         tabIndex={1}
                         id={game.id}

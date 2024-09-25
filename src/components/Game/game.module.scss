@@ -192,11 +192,16 @@
   :global {
     .bb_tag {
       margin-top: var(--gap);
-      margin-bottom: 0;
+      margin-bottom: var(--gap-half);
       background-image: none;
-      color: #51c0ff;
+      background-color: var(--theme-color);
+      color: var(--theme-text-color);
+      padding: var(--gap-half);
       text-transform: none;
       letter-spacing: 0;
+      &:empty{
+        display: none;
+      }
     }
   }
 
