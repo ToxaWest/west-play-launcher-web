@@ -28,7 +28,6 @@ const electronConnector = {
     sendNotification: (data) => apiCall(data, 'sendNotification'),
     downloadAudio: (data) => apiCall(data, 'downloadAudio'),
     setBeData: (data) => apiCall(data, 'setBeData'),
-    getDataByFolder: (steamGridDbId) => apiCall(steamGridDbId, 'getDataByFolder'),
     getPlayTime: ({id, source}) => apiCall({id, source}, 'getPlayTime'),
     updateDataByFolder: ({path, id}) => apiCall({path, id}, 'updateDataByFolder'),
     gameSearch: ({query, source}) => apiCall({query, source}, 'gameSearch'),
