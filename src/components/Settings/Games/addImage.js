@@ -20,40 +20,32 @@ const AddImage = ({id, type, onChange, value}) => {
                 ...defaultConfig,
                 asset_type: "grid",
                 dimensions: ["600x900"]
-            },
-            path: id + '/grids/1'
+            }
         },
         'hero': {
             body: {
                 ...defaultConfig,
                 asset_type: "hero",
-            },
-            path: id + '/heroes/1'
+            }
         },
         'logo': {
             body: {
                 ...defaultConfig,
                 asset_type: "logo",
-            },
-            path: id + '/logos/1'
+            }
         },
         'icon': {
             body: {
                 ...defaultConfig,
                 asset_type: "icon",
-            },
-            path: id + '/icons/1'
+            }
         },
     }
 
-    const select = (value) => {
-        electronConnector.saveImage({
-            url: value,
-            type,
-            id
-        }).then((r) => {
+    const select = (url) => {
+        electronConnector.saveImage({url, type, id}).then((r) => {
             onChange({
-                value: 'file:\\' +r,
+                value: 'file:\\' + r,
                 name: 'img_' + type
             })
             setImages([]);

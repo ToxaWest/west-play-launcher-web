@@ -153,7 +153,7 @@ const AddGame = ({data, submit, remove}) => {
             }}>
                 {game.name}
             </summary>
-            {opened ? <div>
+            {opened ? <div style={{position: 'relative'}}>
                 <div style={{padding: 'var(--padding)', display: 'flex', gap: 'var(--gap)'}}>
                     <button tabIndex={1} onClick={() => remove()}>Remove game</button>
                     <button tabIndex={1} onClick={() => update()}>Update game</button>

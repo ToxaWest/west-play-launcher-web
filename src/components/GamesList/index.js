@@ -5,6 +5,7 @@ import RenderContent from "../Game/renderContent";
 import RenderMedia from "../Game/renderMedia";
 import electronConnector from "../../helpers/electronConnector";
 import useFooterActions from "../../hooks/useFooterActions";
+import Loader from "../Loader";
 
 const GamesList = ({
                        games,
@@ -20,6 +21,7 @@ const GamesList = ({
     const [view, setView] = useState('content');
     const [currentGame, setCurrentGame] = useState(null)
     const [steam, setSteam] = useState(null);
+    const [loading, setLoading] = useState(false);
     const {setFooterActions, removeFooterActions} = useFooterActions()
     const toggleViewMode = () => setView(v => v === 'content' ? 'media' : 'content')
 
@@ -43,20 +45,26 @@ const GamesList = ({
     useEffect(() => {
         setSteam(null)
         setView('content')
+        setLoading(false)
         reset()
     }, [currentGame])
 
     const getData = async (game) => {
         const {title} = game
         const {appID, fields} = await getAppId(game)
+        setLoading(true)
         if (appID) {
-            electronConnector.getGameByID(appID).then(setSteam)
+            electronConnector.getGameByID(appID).then((s) => {
+                setSteam(s);
+                setLoading(false)
+            })
         } else {
             setTimeout(() => {
                 setSteam({
                     name: title,
                     ...fields
                 })
+                setLoading(false)
             }, 100)
         }
     }
@@ -107,7 +115,7 @@ const GamesList = ({
                 </>
             )
         }
-        return null
+        return <Loader loading={loading}/>
     }
 
     return (
