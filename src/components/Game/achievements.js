@@ -1,25 +1,24 @@
 import {useParams} from "react-router-dom";
 import styles from './game.module.scss';
 import {getFromStorage} from "../../helpers/getFromStorage";
-import electronConnector from "../../helpers/electronConnector";
+import {useEffect, useState} from "react";
+import getAchievements from "../../helpers/getAchievements";
 
 const Achievements = () => {
     const {id} = useParams();
     const game = getFromStorage('games').find(({id: gid}) => gid.toString() === id);
-    const achievements = getFromStorage('achievements')[parseInt(id)];
+    const [achievements, setAchievements] = useState(getFromStorage('achievements')[parseInt(id)]);
+
+    useEffect(() => {
+        getAchievements(id, setAchievements)
+    }, []);
 
     if (!game.achievements) return (
         <h2 align="center">Achievements not allowed</h2>
     );
 
     const renderTemp = (arr) => arr.map((achievement) => (
-        <li key={achievement.name} onClick={() => {
-            electronConnector.sendNotification({
-                title: achievement.displayName,
-                body: achievement.description,
-                icon: achievement.icon
-            })
-        }}>
+        <li key={achievement.name}>
             <img src={achievement.icongray} alt={achievement.name}/>
             <div>
                 <strong>{achievement.displayName}</strong>

@@ -1,11 +1,12 @@
 import electronConnector from "./electronConnector";
 import {getFromStorage, setToStorage} from "./getFromStorage";
 
-const getAchievements = (id, update = true, callback) => {
+const getAchievements = (id, callback) => {
     const game = getFromStorage('games').find(({id: gid}) => gid === parseInt(id));
     const achievements = getFromStorage('achievements');
 
     if (!game.achievements) {
+        callback(null)
         return;
     }
 
@@ -25,14 +26,11 @@ const getAchievements = (id, update = true, callback) => {
             source: game.source,
         }).then(_data => {
             if (!_data) {
+                callback(null);
                 return;
             }
-            if (update) {
-                setToStorage('achievements', {...achievements, [game.id]: _data});
-            }
-            if (callback) {
-                callback(_data);
-            }
+            setToStorage('achievements', {...achievements, [game.id]: _data});
+            callback(_data);
         })
     }
 }

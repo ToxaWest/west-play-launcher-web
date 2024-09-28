@@ -2,7 +2,6 @@ import {Outlet, useParams} from "react-router-dom";
 import styles from "./game.module.scss";
 import {useEffect, useRef} from "react";
 import {getFromStorage} from "../../helpers/getFromStorage";
-import useAchievementsWatcher from "../../hooks/useAchievementsWatcher";
 import GameActions from "./actions";
 import setTheme from "../../helpers/setTheme";
 import {getColorByUrl} from "../../helpers/getColor";
@@ -14,7 +13,6 @@ const Game = () => {
     const {coloredGames, audioVolume = .3, gameAudio = true} = getFromStorage('config').settings;
     const audioRef = useRef(new Audio());
     const canvasRef = useRef();
-    useAchievementsWatcher(game.id);
 
     useEffect(() => {
         if (gameAudio) {
@@ -56,10 +54,7 @@ const Game = () => {
                 <img src={game.img_hero} className={styles.hero} alt={game.name}/>
             </div>
             <GameActions game={game} audioPlay={audioPlay} audioStop={audioStop}/>
-            <Outlet context={{
-                audioPlay,
-                audioStop
-            }}/>
+            <Outlet context={{audioPlay, audioStop}}/>
         </div>
     )
 }

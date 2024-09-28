@@ -46,13 +46,15 @@ const useStartGame = (game) => {
             if (link) {
                 electronConnector.runGameLink({
                     path: exePath,
-                    imageName: game.imageName
+                    imageName: game.imageName,
+                    id: game.id
                 })
             } else {
                 electronConnector.runGame({
                     path: exePath,
                     parameters: Object.values(game.exeArgs || {}).filter((x) => x),
-                    imageName: game.imageName
+                    imageName: game.imageName,
+                    id: game.id
                 })
             }
         }
