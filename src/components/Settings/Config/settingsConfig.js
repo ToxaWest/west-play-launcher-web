@@ -21,6 +21,11 @@ const SettingsConfig = () => {
                        value={settings.steam_api_key}
                        onChange={onChange}
                 />
+                <Input label={'Steam profile id (needed for achievements)'}
+                       name="steamid"
+                       value={settings.steamid}
+                       onChange={onChange}
+                />
                 <Input label={'EGS profile id (needed for achievements)'}
                        name="egs_profile"
                        value={settings.egs_profile}

@@ -10,7 +10,7 @@ const getAchievements = (id, callback) => {
         return;
     }
 
-    if (game.source === 'steam' && !game.achPath && game.steamId) {
+    if (game.source === 'steam' && !game.achPath && game.steamId && game.unofficial) {
         electronConnector.getAchievementsPath({appid: game.steamId}).then((achPath) => {
             if (achPath) {
                 const games = getFromStorage('games')
@@ -22,7 +22,7 @@ const getAchievements = (id, callback) => {
         });
     } else {
         electronConnector.getUserAchievements({
-            data: {achPath: game.achPath, productId: game.productId, unofficial: game.unofficial},
+            data: {achPath: game.achPath, productId: game.productId, unofficial: game.unofficial, steamId: game.steamId},
             source: game.source,
         }).then(_data => {
             if (!_data) {
