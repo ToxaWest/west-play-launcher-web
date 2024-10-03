@@ -24,6 +24,14 @@ const FreeGames = () => {
             }
         }
 
+        if(shopId === '10'){
+            const gogGames = await electronConnector.gameSearch({query, source: 'gog'})
+            const current = gogGames.find(({productType}) => productType === "game") || gogGames[0];
+            if (current) {
+                return {appID: {id: current.appid, source: 'gog'}, fields: {}}
+            }
+        }
+
         if (shopId === '4') {
             const [steamSearch] = await electronConnector.gameSearch({query, source: 'steam'})
             if (steamSearch) {
