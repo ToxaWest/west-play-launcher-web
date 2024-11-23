@@ -22,7 +22,6 @@ const electronConnector = {
     getFreeGames: (data) => apiCall(data, 'getFreeGames'),
     saveImage: (data) => apiCall(data, 'saveImage'),
     openLink: (url) => apiCall(url, 'openLink'),
-    downloadAudio: (data) => apiCall(data, 'downloadAudio'),
     setBeData: (data) => apiCall(data, 'setBeData'),
     getPlayTime: ({id, source}) => apiCall({id, source}, 'getPlayTime'),
     updateDataByFolder: ({path, id}) => apiCall({path, id}, 'updateDataByFolder'),

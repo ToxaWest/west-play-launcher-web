@@ -8,7 +8,7 @@ import {ReactComponent as SvgDLC} from '../../SVG/dlc.svg'
 import {useEffect} from "react";
 import useFooterActions from "../../hooks/useFooterActions";
 
-const GameActions = ({game, audioStop}) => {
+const GameActions = ({game}) => {
     const navigate = useNavigate();
     const location = useLocation();
     const {setFooterActions, removeFooterActions} = useFooterActions();
@@ -100,8 +100,7 @@ const GameActions = ({game, audioStop}) => {
             <button
                 tabIndex={1}
                 onClick={() => {
-                    start();
-                    audioStop()
+                    start()
                 }}
                 className={styles.playButton + ' ' + (gameState[status].modifier)}
                 disabled={status !== 'closed'}

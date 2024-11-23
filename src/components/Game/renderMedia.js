@@ -3,13 +3,7 @@ import styles from "./game.module.scss";
 import useFooterActions from "../../hooks/useFooterActions";
 import Video from "../Video";
 
-const RenderMedia = ({
-                         game,
-                         play = () => {
-                         },
-                         pause = () => {
-                         }
-                     }) => {
+const RenderMedia = ({game}) => {
     const [current, setCurrent] = useState(0);
     const {setFooterActions, removeFooterActions} = useFooterActions();
     const {
@@ -29,14 +23,12 @@ const RenderMedia = ({
                 title: 'Sound OFF',
                 button: 'lt',
                 onClick: () => {
-                    pause()
                     setSoundStatus(false)
                 }
             }, rt: {
                 title: 'Sound ON',
                 button: 'rt',
                 onClick: () => {
-                    play()
                     document.querySelector(':root').scrollIntoView({behavior: 'smooth', block: 'end'})
                     setSoundStatus(true)
                 }

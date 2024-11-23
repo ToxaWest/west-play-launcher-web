@@ -71,30 +71,6 @@ const SettingsHome = () => {
                    onChange={onChange}
             />
             <Input
-                label={'Use audio background (game view)'}
-                type="select"
-                name="gameAudio"
-                options={[{
-                    label: 'Yes',
-                    value: 1
-                }, {
-                    label: 'No',
-                    value: 0
-                }]}
-                value={settings.gameAudio}
-                onChange={onChange}
-            />
-            <Input label={'Game Audio volume'}
-                   name="audioVolume"
-                   type="select"
-                   value={settings.audioVolume || 0.3}
-                   options={Array.from({length: 10}).map((_, index) => ({
-                       label: ((index + 1) * 10) + '%',
-                       value: (index + 1) / 10
-                   }))}
-                   onChange={onChange}
-            />
-            <Input
                 label={'Use colored background (game view)'}
                 type="select"
                 name="coloredGames"

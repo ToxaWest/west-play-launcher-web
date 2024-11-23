@@ -5,7 +5,6 @@ import Input from "../../Input";
 import SearchGame from "./searchGame";
 import RyujinxFields from "./ryujinxFields";
 import SteamFields from "./steamFields";
-import AddAudio from "./addAudio";
 import useNotification from "../../../hooks/useNotification";
 import Loader from "../../Loader";
 
@@ -128,7 +127,6 @@ const AddGame = ({data, submit, remove}) => {
                     <AddImage id={game.steamgriddb} type="hero" onChange={onChange} value={game.img_hero}/>
                     <AddImage id={game.steamgriddb} type="logo" onChange={onChange} value={game.img_logo}/>
                     <AddImage id={game.steamgriddb} type="icon" onChange={onChange} value={game.img_icon}/>
-                    <AddAudio id={game.steamgriddb} onChange={onChange} name={game.name} value={game.audio}/>
                     <button tabIndex={1} onClick={() => {
                         submit(game)
                         wrapperRef.current.open = false
