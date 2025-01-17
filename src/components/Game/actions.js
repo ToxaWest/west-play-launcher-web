@@ -4,6 +4,7 @@ import useStartGame from "../../hooks/useStartGame";
 import {ReactComponent as SvgContent} from '../../SVG/content.svg'
 import {ReactComponent as SvgAchievements} from '../../SVG/achievement.svg'
 import {ReactComponent as SvgMedia} from '../../SVG/media.svg'
+import {ReactComponent as SvgNews} from '../../SVG/news.svg'
 import {ReactComponent as SvgDLC} from '../../SVG/dlc.svg'
 import {useEffect} from "react";
 import useFooterActions from "../../hooks/useFooterActions";
@@ -53,6 +54,10 @@ const GameActions = ({game}) => {
         img: SvgAchievements,
         active: Boolean(game.achievements)
     }, {
+        url: `/game/${game.id}/news`,
+        img: SvgNews,
+        active: Boolean(game.steamId)
+    },{
         url: `/game/${game.id}/dlc`,
         img: SvgDLC,
         active: Boolean(game.dlcList) && Boolean(game.dlcList.length)

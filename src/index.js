@@ -25,6 +25,7 @@ import FreeGames from "./components/FreeGames";
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import GameDLC from "./components/GameDLC";
 import WishList from "./components/WishList";
+import News from "./components/Game/news";
 const router = createBrowserRouter([
     {
         element: <Root/>,
@@ -65,6 +66,9 @@ const router = createBrowserRouter([
             children: [{
                 path: "/game/:id",
                 element: <GameContent/>
+            },{
+                path: "/game/:id/news",
+                element: <News/>
             },{
                 path: "/game/:id/dlc",
                 element: <GameDLC/>
