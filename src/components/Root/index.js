@@ -13,12 +13,11 @@ const Root = () => {
     const {init} = useAppControls()
 
     useEffect(() => {
-        const {settings: {steam_api_key, currentLang, rpcs3, theme, egs_profile, steamid}} = getFromStorage('config');
+        const {settings: {steam_api_key, currentLang, theme, egs_profile, steamid}} = getFromStorage('config');
         electronConnector.setBeData({
             steam_api_key,
             lang: currentLang,
             country: 'UA',
-            rpcs3Path: rpcs3,
             egs_profile,
             theme,
             steamid

@@ -31,13 +31,6 @@ const SettingsConfig = () => {
                        value={settings.egs_profile}
                        onChange={onChange}
                 />
-                <Input label='RPCS3 exe path'
-                       value={settings.rpcs3}
-                       onChange={onChange}
-                       type="path"
-                       onlyFile={true}
-                       name='rpcs3'>
-                </Input>
                 <Input label='Ryujinx exe path'
                        value={settings.ryujinx}
                        onChange={onChange}

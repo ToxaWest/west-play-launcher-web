@@ -27,8 +27,7 @@ const GameContent = () => {
         'egs': 'Epic Games Store',
         'origin': 'Electronic Arts',
         'gog': 'GOG',
-        'ryujinx': 'Nintendo Switch™',
-        'rpcs3': 'PlayStation™ Store'
+        'ryujinx': 'Nintendo Switch™'
     }
 
     return <RenderContent game={game} fields={[{
