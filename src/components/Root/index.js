@@ -6,7 +6,6 @@ import Clock from "../Clock";
 import useAppControls from "../../hooks/useAppControls";
 import electronConnector from "../../helpers/electronConnector";
 import {getFromStorage} from "../../helpers/getFromStorage";
-import HeaderMenu from "../HeaderMenu";
 import {modalIsActive} from "../../helpers/modalIsActive";
 
 const Root = () => {
@@ -35,7 +34,6 @@ const Root = () => {
 
     return (
         <div className={styles.wrapper}>
-            <HeaderMenu/>
             <Clock/>
             <div className={styles.content} id="contentWrapper">
                 <Outlet/>

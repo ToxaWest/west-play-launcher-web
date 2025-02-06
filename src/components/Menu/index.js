@@ -9,6 +9,16 @@ const Menu = () => {
     return (
         <div className={styles.wrapper}>
             <ul>
+                <li>
+                    <Link to="/" tabIndex={1}>
+                        Home
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/library" tabIndex={1}>
+                        Library
+                    </Link>
+                </li>
                 <li style={{marginTop: 'auto'}}>
                     <Link to="/settings" tabIndex={1}>
                         <SvgSettings/> Settings

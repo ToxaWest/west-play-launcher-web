@@ -1,4 +1,4 @@
-import {useContext} from "react";
+import {useContext, useEffect} from "react";
 import {AppContext} from "../helpers/provider";
 import {useLocation, useNavigate} from "react-router-dom";
 
@@ -37,6 +37,10 @@ const useFooterActions = () => {
             }
         },
     }
+
+    useEffect(() => {
+        setFooterActions(defaultActions);
+    }, []);
 
     return {
         footerActions,

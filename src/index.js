@@ -19,13 +19,11 @@ import Menu from "./components/Menu";
 import SettingsConfig from "./components/Settings/Config/settingsConfig";
 import SettingsGames from "./components/Settings/Games/settingsGames";
 import SettingsHome from "./components/Settings/Home/settingsHome";
-import LastCracked from "./components/LastCracked";
 import GamesMedia from "./components/Game/media";
-import FreeGames from "./components/FreeGames";
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import GameDLC from "./components/GameDLC";
-import WishList from "./components/WishList";
 import News from "./components/Game/news";
+
 const router = createBrowserRouter([
     {
         element: <Root/>,
@@ -35,15 +33,6 @@ const router = createBrowserRouter([
         }, {
             path: '/menu',
             element: <Menu/>
-        }, {
-            path: '/lastCracked',
-            element: <LastCracked/>
-        },{
-            path: '/wishList',
-            element: <WishList/>
-        }, {
-            path: '/freeGames',
-            element: <FreeGames/>
         }, {
             path: '/library',
             element: <Library/>

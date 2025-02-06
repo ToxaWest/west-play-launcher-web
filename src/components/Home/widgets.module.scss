@@ -1,0 +1,90 @@
+.freeWrapper {
+  display: flex;
+  align-content: center;
+  gap: var(--gap);
+  overflow-x: auto;
+  list-style: none;
+  width: 100vw;
+  position: relative;
+  background-color: var(--theme-color-transparent);
+  backdrop-filter: blur(5px);
+  padding: var(--padding);
+  &>li {
+    white-space: nowrap;
+    width: 450px;
+    border-radius: var(--border-radius);
+    transition: width 0.2s ease-in-out;
+    position: relative;
+    img {
+      height: 100%;
+      width: auto;
+      max-width: 450px;
+    }
+    &.active {
+      background-color: var(--theme-text-color-seconary);
+      display: flex;
+      width: 800px;
+      z-index: 2;
+      ul {
+        padding: var(--gap-half);
+        background-color: var(--theme-color-transparent);
+        width: 350px;
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap-half);
+        li {
+          list-style: none;
+          margin: 0;
+          display: flex;
+          border-bottom: 1px solid var(--theme-color-transparent);
+          strong {
+            margin-right: var(--gap-half);
+          }
+          i {
+            margin-left: auto;
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+}
+
+.lastPlayed {
+  display: flex;
+  align-content: center;
+  gap: var(--gap);
+  overflow-x: auto;
+  list-style: none;
+  width: 100vw;
+  position: relative;
+  background-color: var(--theme-color-transparent);
+  backdrop-filter: blur(5px);
+  margin:0;
+  text-indent: 0;
+  padding: var(--padding);
+  &>li {
+    white-space: nowrap;
+    width: 150px;
+    height: 150px;
+    min-width: 150px;
+    border-radius: var(--border-radius);
+    transition: width 0.2s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    &.active, &:active , &:focus {
+      background-color: var(--theme-text-color-seconary);
+      border-color: var(--theme-text-color-seconary);
+    }
+    img {
+      max-width: 100%;
+      width: 100%;
+      max-height: 100%;
+    }
+  }
+}
