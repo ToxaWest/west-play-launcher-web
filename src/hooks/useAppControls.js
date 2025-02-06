@@ -105,11 +105,21 @@ const useAppControls = () => {
         setActiveIndex(i)
     }
 
-    const getPosition = ({i, rowPosition = (i) => i, colPosition = (i) => i}) => {
+    const getPosition = ({i, rowPosition = (i) => i, colPosition = (i) => i, detail}) => {
         const currentRow = refRowsMatrix.current.findIndex((a) => a.includes(i));
         const currentCol = refRowsMatrix.current[currentRow]?.findIndex((a) => a === i);
         const _newCol = refRowsMatrix.current[rowPosition(currentRow)]?.[colPosition(currentCol)]
         if (typeof _newCol === "number") return _newCol
+        if (detail === 'bottom') {
+            if (refRowsMatrix.current[currentRow + 1]) {
+                return refRowsMatrix.current[currentRow + 1][0]
+            }
+        }
+        if (detail === 'top') {
+            if (refRowsMatrix.current[currentRow - 1]) {
+                return refRowsMatrix.current[currentRow - 1][0]
+            }
+        }
         return i
     }
 
@@ -121,7 +131,7 @@ const useAppControls = () => {
         if (!ref.current.length) return
 
         if (NAVIGATION_KEYS[detail]) {
-            setCurrentIndex((i) => getPosition({i, ...NAVIGATION_KEYS[detail]}))
+            setCurrentIndex((i) => getPosition({i, ...NAVIGATION_KEYS[detail], detail}))
         }
     }
 
