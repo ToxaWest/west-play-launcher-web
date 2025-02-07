@@ -12,7 +12,6 @@ const News = () => {
         fetch(`https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=${game.steamId}&count=8&l=${currentLang}&format=json`)
             .then(res => res.json())
             .then(({appnews: {newsitems}}) => {
-                console.log(newsitems);
                 setData(newsitems)
             })
     }, [])
