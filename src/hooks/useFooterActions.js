@@ -38,10 +38,6 @@ const useFooterActions = () => {
         },
     }
 
-    useEffect(() => {
-        setFooterActions(defaultActions);
-    }, []);
-
     return {
         footerActions,
         setFooterActions: (actions) => {

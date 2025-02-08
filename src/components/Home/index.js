@@ -7,10 +7,11 @@ import {getColorByUrl} from "../../helpers/getColor";
 import setTheme from "../../helpers/setTheme";
 import {secondsToHms} from "../../hooks/usePlayTime";
 import {getFromStorage} from "../../helpers/getFromStorage";
+import useFooterActions from "../../hooks/useFooterActions";
 
 const Home = () => {
     const [game, setGame] = useState({});
-
+    const {setFooterActions} = useFooterActions()
     const getUrl = (url) => {
         if (!url) return ''
 
@@ -18,6 +19,7 @@ const Home = () => {
     }
 
     useEffect(() => {
+        setFooterActions({})
         return () => {
             document.querySelector(':root').style = null;
         }
@@ -54,7 +56,7 @@ const Home = () => {
     }, {
         label: 'Licensed',
         value: !game.unofficial ? 'Yes' : 'No'
-    },{
+    }, {
         label: 'Metacritics',
         value: game.metacritic?.score
     }, {
