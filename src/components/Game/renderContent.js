@@ -16,9 +16,6 @@ const RenderContent = ({game, fields = [], children}) => {
         label: 'Release date',
         value: game.release_date?.date
     }, {
-        label: 'Controller support',
-        value: game.controller_support
-    }, {
         label: 'Players',
         value: game.players
     }, {
@@ -39,11 +36,6 @@ const RenderContent = ({game, fields = [], children}) => {
                 <h1>{game.name}</h1>
                 {children}
                 {game.about_the_game && <div dangerouslySetInnerHTML={{__html: game.about_the_game}}/>}
-                {game.pc_requirements && <div className={styles.requirements}>
-                    <div dangerouslySetInnerHTML={{__html: game.pc_requirements.minimum}}/>
-                    <div dangerouslySetInnerHTML={{__html: game.pc_requirements.recommended}}/>
-                </div>
-                }
             </div>
             <div className={styles.info}>
                 <ul>

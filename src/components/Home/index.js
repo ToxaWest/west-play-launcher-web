@@ -63,9 +63,6 @@ const Home = () => {
         label: 'Release date',
         value: game.release_date?.date
     }, {
-        label: 'Controller support',
-        value: game.controller_support
-    }, {
         label: 'Players',
         value: game.players
     }, {

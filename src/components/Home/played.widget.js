@@ -7,12 +7,16 @@ const PlayedWidget = ({setGame}) => {
     const games = getFromStorage('games');
     const lastPlayed = getFromStorage('lastPlayed');
     const configuredArray = () => {
-        return Object.entries(lastPlayed)
+        const res = Object.entries(lastPlayed)
             .sort(([, ap], [, bp]) => ap < bp ? 1 : -1)
             .reduce((acc, [curr]) => {
                 const game = games.find(({id}) => id === parseInt(curr));
                 return game ? [...acc, game] : acc
             }, [])
+        if (res.length > 12) {
+            res.length = 12;
+        }
+        return res;
     }
 
     const renderGame = (game) => {

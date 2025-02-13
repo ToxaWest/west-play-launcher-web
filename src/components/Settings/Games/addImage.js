@@ -2,7 +2,7 @@ import {useState} from "react";
 import styles from "../settings.module.scss";
 import electronConnector from "../../../helpers/electronConnector";
 
-const AddImage = ({id, type, onChange, value}) => {
+const AddImage = ({id, type, onChange, value, game_id}) => {
     const [images, setImages] = useState([]);
     const defaultConfig = {
         animated: false,
@@ -10,7 +10,7 @@ const AddImage = ({id, type, onChange, value}) => {
         order: "score_desc",
         page: 0,
         epilepsy: false,
-        game_id: [parseInt(id)],
+        game_id: [parseInt(game_id)],
         static: true,
     }
 

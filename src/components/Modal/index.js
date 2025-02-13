@@ -2,7 +2,7 @@ import {createPortal} from "react-dom";
 import {useEffect} from "react";
 import useFooterActions from "../../hooks/useFooterActions";
 
-const style = {
+const defaultStyle = {
     position: 'fixed',
     left: 0,
     top: 0,
@@ -14,7 +14,7 @@ const style = {
     alignItems: 'center'
 }
 
-const Modal = ({children, onClose}) => {
+const Modal = ({children, onClose, style = {}}) => {
     const {setFooterActions, removeFooterActions} = useFooterActions()
 
     const close = () => {
@@ -35,7 +35,7 @@ const Modal = ({children, onClose}) => {
     }, []);
 
     return createPortal(
-        <div style={style}>
+        <div style={{...defaultStyle, ...style}}>
             {children}
         </div>,
         document.querySelector('#modal')

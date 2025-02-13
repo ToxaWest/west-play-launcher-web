@@ -1,15 +1,17 @@
 .innerWrapper {
+  padding-top: 40px;
   background-repeat: no-repeat;
-  background-size: 100% calc(33vw - 60px);
-  background-image: linear-gradient(transparent, transparent 20%, var(--theme-color));
+  //background-size: 100% calc(33vw - 60px);
+  background-image: linear-gradient(var(--theme-color), var(--theme-color) 8vw , transparent 11vw, transparent 29vw, var(--theme-color) 35vw, var(--theme-color));
 }
 
 .wrapper {
   width: 100vw;
   position: relative;
-  padding-top: 60px;
+  //padding-top: 60px;
   background-size: 100% auto;
   background-repeat: no-repeat;
+  background-position-y: 8vw;
 
   h2 {
     padding: var(--padding);

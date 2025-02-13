@@ -207,23 +207,6 @@
   }
 }
 
-.requirements {
-  font-size: 12px;
-  display: flex;
-  gap: var(--gap);
-
-  ul {
-    padding: 0;
-    list-style-type: none;
-    margin-left: 0;
-    line-height: 18px;
-  }
-
-  & > div {
-    width: 50%;
-  }
-}
-
 .playButton {
   font-weight: bold;
   font-size: 20px;

@@ -9,7 +9,7 @@ const apiCall = (props, func) => {
 }
 
 const electronConnector = {
-    getSteamAssets: ({steamId, steamgriddb}) => apiCall({steamId, steamgriddb}, 'getSteamAssets'),
+    getSteamAssets: ({steamId}) => apiCall({steamId}, 'getSteamAssets'),
     clearUnusedCache: (idArray) => apiCall(idArray, 'clearUnusedCache'),
     systemAction: (action) => apiCall(action, 'systemAction'),
     runGame: (data) => apiCall(data, 'runGame'),
@@ -17,7 +17,10 @@ const electronConnector = {
     getImage: (data) => apiCall(data, 'getImage'),
     steamgriddbSearch: (data) => apiCall(data, 'steamgriddbSearch'),
     onVisibilityChange: (data) => apiCall(data, 'onVisibilityChange'),
+    gameSearch: ({query, source}) => apiCall({query, source}, 'gameSearch'),
     gameStatus: (data) => apiCall(data, 'gameStatus'),
+    getSteamId: (data) => apiCall(data, 'getSteamId'),
+    receiveSteamId: (data) => apiCall(data, 'receiveSteamId'),
     crackWatchRequest: (data) => apiCall(data, 'crackWatchRequest'),
     getFreeGames: (data) => apiCall(data, 'getFreeGames'),
     saveImage: (data) => apiCall(data, 'saveImage'),

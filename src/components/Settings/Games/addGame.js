@@ -1,12 +1,13 @@
 import {useRef, useState} from "react";
-import AddImage from "./addImage";
 import electronConnector from "../../../helpers/electronConnector";
 import Input from "../../Input";
-import SearchGame from "./searchGame";
 import RyujinxFields from "./ryujinxFields";
 import SteamFields from "./steamFields";
 import useNotification from "../../../hooks/useNotification";
 import Loader from "../../Loader";
+import Images from "./images";
+import Modal from "../../Modal";
+import SearchSteamGame from "./searchSteamGame";
 
 const AddGame = ({data, submit, remove}) => {
     const [game, setGame] = useState(data);
@@ -14,10 +15,11 @@ const AddGame = ({data, submit, remove}) => {
     const wrapperRef = useRef(null);
     const notification = useNotification();
     const [loading, setLoading] = useState(false);
+    const [active, setActive] = useState(false);
+    const [search, setSearch] = useState("");
     const onChange = ({name, value}) => {
         setGame(g => ({...g, [name]: value}))
     }
-
     const update = (value) => {
         setLoading(true)
         notification({
@@ -26,6 +28,10 @@ const AddGame = ({data, submit, remove}) => {
             name: 'Updating game data',
             status: 'warning'
         }, 3000)
+        electronConnector.getSteamId(({searchParams}) => {
+            setSearch(searchParams)
+            setActive(true)
+        })
         electronConnector.updateDataByFolder({path: value || game.path, id: game.id}).then((data) => {
             setGame(g => ({...g, ...data}))
             setLoading(false)
@@ -35,6 +41,7 @@ const AddGame = ({data, submit, remove}) => {
                 name: 'Data updated',
                 status: 'success'
             }, 3000)
+            window.api.removeAllListeners('getSteamId')
         })
     }
 
@@ -78,68 +85,45 @@ const AddGame = ({data, submit, remove}) => {
         return null;
     }
 
-    const renderSteamAssets = () => {
-        const {steamId, steamgriddb} = game;
-        if (steamId && steamgriddb) {
-            return <button tabIndex={1} onClick={() => {
-                setLoading(true);
-                notification({
-                    img: game.img_icon || '/assets/controller/save.svg',
-                    description: 'Please wait for end',
-                    name: 'Getting images from steam',
-                    status: 'warning'
-                }, 3000)
-                electronConnector.getSteamAssets({steamId, steamgriddb}).then(data => {
-                    setGame(g => ({...g, ...data}))
-                    setLoading(false);
-                    notification({
-                        img: game.img_icon || '/assets/controller/save.svg',
-                        description: 'Do not forgot save changes',
-                        name: 'Images updated',
-                        status: 'success'
-                    }, 3000)
-                })
-            }}>Get steam Assets</button>
-        }
+    const renderContent = () => {
+        return (
+            <>
+                <Input label='Path'
+                       value={game.path}
+                       onChange={({value, name}) => {
+                           if (value) {
+                               onChange({name, value})
+                               update(value)
+                           }
+                       }}
+                       type="path"
+                       onlyFile={false}
+                       name='path'>
+                </Input>
+                {renderByType()}
+                <Images game={game} onChange={onChange} setGame={setGame} setLoading={setLoading}/>
+                {game.unofficial && <Input label='Download link'
+                                           value={game.downloadLink}
+                                           onChange={onChange}
+                                           name='downloadLink'>
+                </Input>}
 
-        return null;
+                <button tabIndex={1} onClick={() => {
+                    submit(game)
+                    wrapperRef.current.open = false
+                }}
+                        disabled={loading}
+                >
+                    submit
+                </button>
+            </>
+        )
     }
 
-    const renderContent = () => {
-        if (game.steamgriddb) {
-            return (
-                <>
-                    <Input label='Path'
-                           value={game.path}
-                           onChange={({value, name}) => {
-                               if (value) {
-                                   onChange({name, value})
-                                   update(value)
-                               }
-                           }}
-                           type="path"
-                           onlyFile={false}
-                           name='path'>
-                    </Input>
-                    {renderByType()}
-                    {renderSteamAssets()}
-                    <AddImage id={game.steamgriddb} type="grid" onChange={onChange} value={game.img_grid}/>
-                    <AddImage id={game.steamgriddb} type="hero" onChange={onChange} value={game.img_hero}/>
-                    <AddImage id={game.steamgriddb} type="logo" onChange={onChange} value={game.img_logo}/>
-                    <AddImage id={game.steamgriddb} type="icon" onChange={onChange} value={game.img_icon}/>
-                    <button tabIndex={1} onClick={() => {
-                        submit(game)
-                        wrapperRef.current.open = false
-                    }}
-                            disabled={loading}
-                    >
-                        submit
-                    </button>
-                </>
-            )
-        } else {
-            return <SearchGame data={game} update={setGame}/>
-        }
+    const close = () => {
+        setActive(false)
+        setSearch('')
+        electronConnector.receiveSteamId(null)
     }
 
     return (
@@ -157,6 +141,15 @@ const AddGame = ({data, submit, remove}) => {
                     <button tabIndex={1} onClick={() => update()}>Update game</button>
                 </div>
                 {renderContent()}
+                {active ? <Modal onClose={close} style={{zIndex: 30}}>
+                    <div>
+                        <SearchSteamGame defaultValue={search} update={e => {
+                            setActive(false)
+                            setSearch('')
+                            electronConnector.receiveSteamId(e)
+                        }}/>
+                    </div>
+                </Modal> : null}
                 <Loader loading={loading}/>
             </div> : null}
         </details>

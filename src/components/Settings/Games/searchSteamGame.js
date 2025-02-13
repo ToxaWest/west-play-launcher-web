@@ -3,7 +3,7 @@ import electronConnector from "../../../helpers/electronConnector";
 import styles from "../settings.module.scss";
 import {useEffect, useState} from "react";
 
-const SearchGame = ({update, defaultValue}) => {
+const SearchSteamGame = ({update, defaultValue}) => {
     const [temp, setTemp] = useState([]);
     const [search, setSearch] = useState('');
 
@@ -15,12 +15,11 @@ const SearchGame = ({update, defaultValue}) => {
 
     useEffect(() => {
         if (search.length > 2) {
-            electronConnector.steamgriddbSearch({
-                params: new URLSearchParams({
-                    term: search
-                }).toString(),
+            electronConnector.gameSearch({
+                query: search,
+                source: 'steam',
             }).then((result) => {
-                setTemp(result.data)
+                setTemp(result)
             })
         } else {
             setTemp([])
@@ -29,7 +28,12 @@ const SearchGame = ({update, defaultValue}) => {
     }, [search])
 
     return (
-        <>
+        <div style={{
+            width: '600px',
+            backgroundColor: 'var(--theme-color)',
+            padding: 'var(--gap-half)',
+            borderRadius: 'var(--border-radius)'
+        }}>
             <Input label='Search'
                    value={search}
                    onChange={({value}) => {
@@ -37,19 +41,23 @@ const SearchGame = ({update, defaultValue}) => {
                    }}
                    children={(
                        <ul className={styles.search}>
-                           {temp.map(({id, name, release_date}) => (
-                               <li key={id} onClick={() => {
+                           {temp.map(({appid, name, logo}) => (
+                               <li key={appid} onClick={() => {
                                    setSearch('')
-                                   update({name: 'steamgriddb', value: id})
+                                   update(appid)
                                }}>
-                                   <span>{name} {release_date ? `(${new Date(release_date * 1000).getFullYear()})` : ''}</span>
+                                   <img src={logo} alt={name} />
+                                   <span>{name}</span>
                                </li>)
                            )}
                        </ul>
                    )}
                    name='search'/>
-        </>
+            <button type='button' onClick={() => {
+                update(null)
+            }}>Decline</button>
+        </div>
     )
 }
 
-export default SearchGame;
+export default SearchSteamGame;
