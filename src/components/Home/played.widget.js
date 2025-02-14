@@ -10,7 +10,7 @@ const PlayedWidget = ({setGame}) => {
         const res = Object.entries(lastPlayed)
             .sort(([, ap], [, bp]) => ap < bp ? 1 : -1)
             .reduce((acc, [curr]) => {
-                const game = games.find(({id}) => id === parseInt(curr));
+                const game = games.find(({id}) => id == curr);
                 return game ? [...acc, game] : acc
             }, [])
         if (res.length > 12) {
