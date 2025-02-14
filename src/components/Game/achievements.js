@@ -6,7 +6,7 @@ import getAchievements from "../../helpers/getAchievements";
 
 const Achievements = () => {
     const {id} = useParams();
-    const game = getFromStorage('games').find(({id: gid}) => gid.toString() === id);
+    const game = getFromStorage('games').find(({id: gid}) => gid == id);
     const [achievements, setAchievements] = useState(getFromStorage('achievements')[parseInt(id)]);
 
     useEffect(() => {

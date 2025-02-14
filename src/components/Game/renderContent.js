@@ -1,6 +1,6 @@
 import styles from "./game.module.scss";
 
-const RenderContent = ({game, fields = [], children}) => {
+const RenderContent = ({game, fields = []}) => {
 
     const renderDevelopers = (devs) => {
         if (!devs) {
@@ -34,7 +34,7 @@ const RenderContent = ({game, fields = [], children}) => {
         <div className={styles.content}>
             <div className={styles.description}>
                 <h1>{game.name}</h1>
-                {children}
+                {game.short_description && <div dangerouslySetInnerHTML={{__html: game.short_description}}/>}
                 {game.about_the_game && <div dangerouslySetInnerHTML={{__html: game.about_the_game}}/>}
             </div>
             <div className={styles.info}>

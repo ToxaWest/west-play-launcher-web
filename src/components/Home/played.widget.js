@@ -13,8 +13,8 @@ const PlayedWidget = ({setGame}) => {
                 const game = games.find(({id}) => id == curr);
                 return game ? [...acc, game] : acc
             }, [])
-        if (res.length > 12) {
-            res.length = 12;
+        if (res.length > 10) {
+            res.length = 10;
         }
         return res;
     }
