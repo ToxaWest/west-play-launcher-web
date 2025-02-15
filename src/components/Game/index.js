@@ -8,7 +8,7 @@ import {getColorByUrl} from "../../helpers/getColor";
 
 const Game = () => {
     const {id} = useParams();
-    const game = getFromStorage('games').find(({id: gid}) => gid.toString() === id);
+    const game = getFromStorage('games').find(({id: gid}) => gid == id);
     const {coloredGames} = getFromStorage('config').settings;
 
     useEffect(() => {

@@ -10,6 +10,7 @@ const GameContent = () => {
     const game = getFromStorage('games').find(({id: gid}) => gid == id);
     const [playTime, setPlayTime] = useState(0);
     const [lastPlayed, setLastPlayed] = useState(0);
+    const ach = getFromStorage('achievements')[id]
 
     useEffect(() => {
         setPlayTime(getFromStorage('playTime')[game.id]);
@@ -40,6 +41,9 @@ const GameContent = () => {
     }
 
     return <RenderContent game={game} fields={[{
+        label: 'Achievements',
+        value: (game.achievements && ach) ? `${Object.keys(ach).length} of ${Object.keys(game.achievements).length}` : null
+    }, {
         label: 'Last played',
         value: lastPlayed ? new Date(lastPlayed).toLocaleDateString() : null
     }, {
