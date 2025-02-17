@@ -10,6 +10,7 @@ export default function initLocalStorage() {
         games: [],
         lastPlayed: {},
         achievements: {},
+        stats: {},
         playTime: {}
     }
 
