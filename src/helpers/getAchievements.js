@@ -4,7 +4,7 @@ import {getFromStorage, setToStorage} from "./getFromStorage";
 const getAchievements = (id, callback) => {
     const game = getFromStorage('games').find(({id: gid}) => gid == id);
     const achievements = getFromStorage('achievements');
-
+    const stats = getFromStorage('stats') || {};
     if (!game?.achievements) {
         callback(null)
         return;
@@ -24,13 +24,14 @@ const getAchievements = (id, callback) => {
         electronConnector.getUserAchievements({
             data: {achPath: game.achPath, productId: game.productId, unofficial: game.unofficial, steamId: game.steamId},
             source: game.source,
-        }).then(_data => {
-            if (!_data) {
+        }).then(({achievements: r_ach, stats: r_stats})  => {
+            setToStorage('stats', {...stats, [game.id]: r_stats});
+            if (!r_ach) {
                 callback(null);
                 return;
             }
-            setToStorage('achievements', {...achievements, [game.id]: _data});
-            callback(_data);
+            setToStorage('achievements', {...achievements, [game.id]: r_ach});
+            callback(r_ach);
         })
     }
 }

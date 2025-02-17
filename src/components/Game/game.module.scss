@@ -8,6 +8,9 @@
 }
 
 .achList {
+  &:empty {
+    display: none;
+  }
   border-radius: var(--border-radius);
   width: 90vw;
   margin: var(--gap) auto;

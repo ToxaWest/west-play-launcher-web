@@ -7,7 +7,8 @@ import getAchievements from "../../helpers/getAchievements";
 const Achievements = () => {
     const {id} = useParams();
     const game = getFromStorage('games').find(({id: gid}) => gid == id);
-    const [achievements, setAchievements] = useState(getFromStorage('achievements')[parseInt(id)]);
+    const [achievements, setAchievements] = useState(getFromStorage('achievements')[id]);
+    const stats = getFromStorage('stats')[id];
 
     useEffect(() => {
         getAchievements(id, setAchievements)
@@ -57,8 +58,29 @@ const Achievements = () => {
         )
     }
 
+    const renderStats = () => {
+        if (!game.stats || !stats) return null
+        const renderStats = (s) => {
+            if (!s.displayName || !stats[s.name]) {
+                return null
+            }
+            return <li key={s.name}>
+                <div>
+                    <strong>{s.displayName}: {stats[s.name] || s.defaultvalue}</strong>
+                </div>
+            </li>
+        }
+
+        return (
+            <ul className={styles.achList}>
+                {game.stats.map(renderStats)}
+            </ul>
+        )
+    }
+
     return (
         <div className={styles.achWrapper}>
+            {renderStats()}
             <ul className={styles.achList}>
                 {achievements ? renderWithEarned(game.achievements, achievements) : renderTemp(game.achievements)}
             </ul>
