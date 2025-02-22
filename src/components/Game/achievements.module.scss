@@ -1,0 +1,67 @@
+.achList {
+  &:empty {
+    display: none;
+  }
+  border-radius: var(--border-radius);
+  width: 90vw;
+  margin: var(--gap) auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gap);
+  padding: var(--gap);
+  background-color: var(--theme-secondary);
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    background-color: var(--theme-color-transparent);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    margin: 0;
+    border-radius: var(--border-radius);
+    border: 2px solid var(--theme-color);
+
+    &.earned {
+      background-color: rgba(0, 177, 0, 0.1);
+      border-color: rgba(0, 177, 0, 1);
+    }
+
+    img {
+      width: 120px;
+      height: 120px;
+      margin: var(--gap) auto;
+    }
+
+    strong, i, span {
+      display: block;
+    }
+
+    i {
+      color: var(--theme-text-color-seconary);
+      margin-top: auto;
+    }
+
+    span {
+      color: var(--theme-text-color-seconary);
+      margin-bottom: var(--gap);
+    }
+
+    div {
+      padding: var(--padding);
+      background-color: var(--theme-color-transparent);
+      width: 100%;
+      height: 100%;
+    }
+
+    span, i {
+      font-size: 16px;
+    }
+  }
+}

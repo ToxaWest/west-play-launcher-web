@@ -84,6 +84,20 @@ const SettingsHome = () => {
                 value={settings.coloredGames}
                 onChange={onChange}
             />
+            <Input
+                label={'Alternative achievements (game view)'}
+                type="select"
+                name="alternativeAchievementsView"
+                options={[{
+                    label: 'Yes',
+                    value: 1
+                }, {
+                    label: 'No',
+                    value: 0
+                }]}
+                value={settings.alternativeAchievementsView}
+                onChange={onChange}
+            />
             <button tabIndex={1} onClick={() => {
                 const gamesInList = getFromStorage('games').map(({id}) => id.toString());
                 const playTime = getFromStorage('playTime');

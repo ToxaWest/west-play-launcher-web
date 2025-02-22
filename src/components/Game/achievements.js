@@ -1,5 +1,6 @@
 import {useParams} from "react-router-dom";
 import styles from './game.module.scss';
+import achStyles from './achievements.module.scss'
 import {getFromStorage} from "../../helpers/getFromStorage";
 import {useEffect, useState} from "react";
 import getAchievements from "../../helpers/getAchievements";
@@ -9,6 +10,7 @@ const Achievements = () => {
     const game = getFromStorage('games').find(({id: gid}) => gid == id);
     const [achievements, setAchievements] = useState(getFromStorage('achievements')[id]);
     const stats = getFromStorage('stats')[id];
+    const {alternativeAchievementsView: alternative} = getFromStorage('config').settings;
 
     useEffect(() => {
         getAchievements(id, setAchievements)
@@ -42,7 +44,8 @@ const Achievements = () => {
                         return null
                     }
                     return (
-                        <li key={n} className={(styles.earned) + (type ? ' ' + styles['ach_' + type] : '')}>
+                        <li key={n}
+                            className={(alternative ? achStyles.earned : styles.earned) + (type ? ' ' + styles['ach_' + type] : '')}>
                             <img src={icon} alt={n}/>
                             <div>
                                 <strong>{displayName}</strong>
@@ -81,7 +84,7 @@ const Achievements = () => {
     return (
         <div className={styles.achWrapper}>
             {renderStats()}
-            <ul className={styles.achList}>
+            <ul className={alternative ? achStyles.achList : styles.achList}>
                 {achievements ? renderWithEarned(game.achievements, achievements) : renderTemp(game.achievements)}
             </ul>
         </div>
