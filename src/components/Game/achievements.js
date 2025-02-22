@@ -9,6 +9,7 @@ const Achievements = () => {
     const {id} = useParams();
     const game = getFromStorage('games').find(({id: gid}) => gid == id);
     const [achievements, setAchievements] = useState(getFromStorage('achievements')[id]);
+    const progress = (getFromStorage('progress') || {})[id] || {};
     const stats = getFromStorage('stats')[id];
     const {alternativeAchievementsView: alternative} = getFromStorage('config').settings;
 
@@ -26,6 +27,7 @@ const Achievements = () => {
             <div>
                 <strong>{achievement.displayName}</strong>
                 <span>{achievement.description}</span>
+                {progress[achievement.name] && <i>Progress: {progress[achievement.name] }</i>}
             </div>
         </li>
     ))

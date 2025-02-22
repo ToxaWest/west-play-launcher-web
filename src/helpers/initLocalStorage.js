@@ -11,6 +11,7 @@ export default function initLocalStorage() {
         lastPlayed: {},
         achievements: {},
         stats: {},
+        progress: {},
         playTime: {}
     }
 
