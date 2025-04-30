@@ -1,20 +1,13 @@
-import {useEffect, useState} from "react";
+import {startTransition, useActionState, useEffect, useState} from "react";
 import electronConnector from "../../helpers/electronConnector";
 import styles from "./widgets.module.scss";
 import Loader from "../Loader";
 
 const FreeWidget = () => {
-    const [games, setGames] = useState([]);
     const [active, setActive] = useState(0);
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        electronConnector.getFreeGames().then(s => {
-            setGames(s);
-            setLoading(false);
-        })
-    }, []);
-
+    const [games, action, loading] = useActionState(electronConnector.getFreeGames, [])
+    useEffect(() => startTransition(action), [])
 
     const renderTime = ({endTime, startTime}) => {
         const dateFormatter = (t) => new Date(parseInt(t) * 1000).toLocaleDateString()

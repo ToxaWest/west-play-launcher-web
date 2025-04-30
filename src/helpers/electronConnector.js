@@ -1,7 +1,7 @@
 const apiCall = (props, func) => {
     if (!window.api) {
-        return () => {
-        }
+        return new Promise(() => {
+        })
     }
     console.log(`%caction: ${func}`, 'color: green')
 

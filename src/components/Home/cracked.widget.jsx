@@ -1,19 +1,12 @@
-import {useEffect, useState} from "react";
+import {startTransition, useActionState, useEffect, useState} from "react";
 import electronConnector from "../../helpers/electronConnector";
 import styles from "./widgets.module.scss";
 import Loader from "../Loader";
 
 const CrackedWidget = () => {
-    const [games, setGames] = useState([]);
     const [active, setActive] = useState(0);
-    const [loading, setLoading] = useState(true);
-    useEffect(() => {
-        electronConnector.crackWatchRequest().then((g) => {
-            setLoading(false);
-            setGames(g.games);
-        })
-    }, [])
-
+    const [{games}, action, loading] = useActionState(electronConnector.crackWatchRequest, {games: []})
+    useEffect(() => startTransition(action), [])
 
     const getImage = (g) => {
         if (g.steam_prod_id) {
