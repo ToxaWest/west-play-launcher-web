@@ -40,9 +40,19 @@ const GameContent = () => {
         return null
     }
 
+    const getAchCount = (a) => Object.values(a).filter(({earned, progress}) => {
+        if (!earned) {
+            return false
+        }
+        if (progress) {
+            return progress === 1
+        }
+        return true
+    }).length
+
     return <RenderContent game={game} fields={[{
         label: 'Achievements',
-        value: (game.achievements && ach) ? `${Object.keys(ach).length} of ${Object.keys(game.achievements).length}` : null
+        value: (game.achievements && ach) ? `${getAchCount(ach)} of ${Object.keys(game.achievements).length}` : null
     }, {
         label: 'Last played',
         value: lastPlayed ? new Date(lastPlayed).toLocaleDateString() : null

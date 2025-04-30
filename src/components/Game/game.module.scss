@@ -34,7 +34,19 @@
 
     &.earned {
       background-color: var(--theme-color);
-
+      position: relative;
+      &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: calc(100% - var(--progress));
+        height: 3px;
+        opacity: 0.8;
+        background-color: #00b100;
+        border-bottom:  1px solid var(--theme-color);
+        z-index: 1;
+      }
       strong {
         color: #00b100;
       }

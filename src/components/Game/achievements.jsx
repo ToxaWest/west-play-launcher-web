@@ -27,7 +27,7 @@ const Achievements = () => {
             <div>
                 <strong>{achievement.displayName}</strong>
                 <span>{achievement.description}</span>
-                {progress[achievement.name] && <i>Progress: {progress[achievement.name] }</i>}
+                {progress[achievement.name] && <i>Progress: {progress[achievement.name]}</i>}
             </div>
         </li>
     ))
@@ -40,13 +40,14 @@ const Achievements = () => {
         const notEarnedFilter = ({name}) => !earnedList.includes(name.toString());
         return (
             <>
-                {Object.entries(ach).sort(sort).map(([n, {earned_time}]) => {
+                {Object.entries(ach).sort(sort).map(([n, {earned_time, progress, xp}]) => {
                     const {icon, displayName, description, name, type} = getObj(n);
                     if (!name) {
                         return null
                     }
                     return (
                         <li key={n}
+                            style={{'--progress': `${100 - (progress * 100)}%`}}
                             className={(alternative ? achStyles.earned : styles.earned) + (type ? ' ' + styles['ach_' + type] : '')}>
                             <img src={icon} alt={n}/>
                             <div>
@@ -54,6 +55,9 @@ const Achievements = () => {
                                 <span>{description}</span>
                                 {earned_time ?
                                     <i>{new Date(earned_time * 1000).toLocaleDateString()}</i> : null}
+                                {(progress && progress !== 1) ?
+                                    <i>{Math.floor(progress * 100)}%</i> : null}
+                                {xp ? <small>{xp} XP</small> : null}
                             </div>
                         </li>
                     )

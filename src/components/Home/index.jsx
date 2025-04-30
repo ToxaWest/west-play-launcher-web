@@ -6,10 +6,12 @@ import PlayedWidget from "./played.widget";
 import {getColorByUrl} from "../../helpers/getColor";
 import setTheme from "../../helpers/setTheme";
 import useFooterActions from "../../hooks/useFooterActions";
+import {getFromStorage} from "../../helpers/getFromStorage";
 
 const Home = () => {
     const [game, setGame] = useState({});
     const {setFooterActions} = useFooterActions()
+    const {coloredGames} = getFromStorage('config').settings;
     const getUrl = (url) => {
         if (!url) return ''
 
@@ -38,12 +40,14 @@ const Home = () => {
         <div className={styles.wrapper} style={{backgroundImage: `url('${getUrl(game.img_hero)}')`}}>
             <div className={styles.innerWrapper}>
                 <PlayedWidget setGame={g => {
-                    getColorByUrl(g.img_hero).then(color => {
-                        const theme = setTheme(color);
-                        Object.entries(theme).forEach(([key, value]) => {
-                            document.querySelector(':root').style.setProperty(key, value)
+                    if(coloredGames){
+                        getColorByUrl(g.img_hero).then(color => {
+                            const theme = setTheme(color);
+                            Object.entries(theme).forEach(([key, value]) => {
+                                document.querySelector(':root').style.setProperty(key, value)
+                            })
                         })
-                    })
+                    }
                     setGame(g)
                 }}/>
                 <div className={styles.game}>
