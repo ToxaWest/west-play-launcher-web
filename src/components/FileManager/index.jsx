@@ -1,8 +1,8 @@
 import {useEffect, useRef, useState} from "react";
 import electronConnector from "../../helpers/electronConnector";
 import styles from "./FileManager.module.scss";
-import {ReactComponent as SvgFolder} from '../../SVG/folder-open.svg'
-import {ReactComponent as SvgFile} from '../../SVG/file.svg'
+import SvgFolder from '../../SVG/folder-open.svg?react'
+import SvgFile from '../../SVG/file.svg?react'
 import useFooterActions from "../../hooks/useFooterActions";
 import Loader from "../Loader";
 

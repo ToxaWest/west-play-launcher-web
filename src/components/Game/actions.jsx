@@ -1,11 +1,11 @@
 import styles from "./game.module.scss";
 import {useLocation, useNavigate} from "react-router-dom";
 import useStartGame from "../../hooks/useStartGame";
-import {ReactComponent as SvgContent} from '../../SVG/content.svg'
-import {ReactComponent as SvgAchievements} from '../../SVG/achievement.svg'
-import {ReactComponent as SvgMedia} from '../../SVG/media.svg'
-import {ReactComponent as SvgNews} from '../../SVG/news.svg'
-import {ReactComponent as SvgDLC} from '../../SVG/dlc.svg'
+import SvgContent from '../../SVG/content.svg?react'
+import SvgAchievements from '../../SVG/achievement.svg?react'
+import SvgMedia from '../../SVG/media.svg?react'
+import SvgNews from '../../SVG/news.svg?react'
+import SvgDLC from '../../SVG/dlc.svg?react'
 import {useEffect} from "react";
 import useFooterActions from "../../hooks/useFooterActions";
 

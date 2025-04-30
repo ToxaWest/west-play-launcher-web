@@ -1,28 +1,10 @@
 import {useEffect, useRef} from "react";
-import videojs from "video.js";
 
 const VideoComponent = ({selected, options, soundStatus}) => {
-    const videoRef = useRef(null);
-    const playerRef = useRef(null);
-
+    const videoRef = useRef();
     useEffect(() => {
-        setPlayerData()
-    }, [selected])
-
-    useEffect(() => {
-        if (playerRef.current) {
-            playerRef.current.muted(!soundStatus)
-        }
-    }, [soundStatus]);
-
-    const setPlayerData = () => {
-        if (playerRef.current) {
-            const {src, poster} = getData(selected);
-            playerRef.current.poster(poster)
-            playerRef.current.src(src)
-        }
-    }
-
+        videoRef.current?.load();
+    }, [selected]);
     const getData = (data) => {
         const {type, thumbnail} = data;
         if (data.webm) {
@@ -73,13 +55,6 @@ const VideoComponent = ({selected, options, soundStatus}) => {
         return {}
     }
 
-    useEffect(() => {
-        if (videoRef.current) {
-            playerRef.current = videojs(videoRef.current, {width: window.innerWidth});
-            setPlayerData()
-        }
-    }, [])
-
     if (selected.provider) {
         if (selected.provider === "youtube") {
             return <iframe width={window.innerWidth} height={window.innerWidth / (16 / 9)}
@@ -93,9 +68,14 @@ const VideoComponent = ({selected, options, soundStatus}) => {
         }
     }
 
+
+    const {src, poster} = getData(selected);
+
     return (
         <div>
-            <video ref={videoRef} {...options}/>
+            <video ref={videoRef} {...options} poster={poster} muted={!soundStatus}>
+                {src.map(s => <source {...s} key={s.type}/>)}
+            </video>
         </div>
     );
 };

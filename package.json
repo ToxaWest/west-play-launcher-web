@@ -3,27 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "workbox-background-sync": "^7.3.0",
-    "workbox-broadcast-update": "^7.3.0",
-    "workbox-cacheable-response": "^7.3.0",
-    "workbox-core": "^7.3.0",
-    "workbox-expiration": "^7.3.0",
-    "workbox-navigation-preload": "^7.3.0",
-    "workbox-precaching": "^7.3.0",
-    "workbox-range-requests": "^7.3.0",
-    "workbox-routing": "^7.3.0",
-    "workbox-strategies": "^7.3.0",
-    "workbox-streams": "^7.3.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-router-dom": "^7.2.0",
-    "react-scripts": "^5.0.1",
-    "sass": "^1.85.0",
-    "video.js": "^8.21.0"
+    "vite-plugin-pwa": "^1.0.0",
+    "vite-plugin-svgr": "^4.3.0",
+    "@vitejs/plugin-react-swc": "^3.9.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.5.3",
+    "sass": "^1.87.0"
+  },
+  "devDependencies": {
+    "vite": "^6.3.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build"
+    "start": "vite",
+    "build": "vite build"
   },
   "eslintConfig": {
     "extends": [

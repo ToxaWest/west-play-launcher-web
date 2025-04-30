@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.scss';
-import 'video.js/dist/video-js.min.css'
 import {
     createBrowserRouter,
     RouterProvider,
@@ -20,7 +19,6 @@ import SettingsConfig from "./components/Settings/Config/settingsConfig";
 import SettingsGames from "./components/Settings/Games/settingsGames";
 import SettingsHome from "./components/Settings/Home/settingsHome";
 import GamesMedia from "./components/Game/media";
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import GameDLC from "./components/GameDLC";
 import News from "./components/Game/news";
 
@@ -82,6 +80,3 @@ root.render(
         <RouterProvider router={router}/>
     </Provider>
 );
-
-
-serviceWorkerRegistration.register()

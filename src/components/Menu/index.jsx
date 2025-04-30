@@ -1,9 +1,9 @@
 import {Link} from "react-router-dom";
 import styles from './menu.module.scss';
 import electronConnector from "../../helpers/electronConnector";
-import {ReactComponent as SvgRestart} from "../../SVG/restart-2.svg";
-import {ReactComponent as SvgShutDown} from "../../SVG/shut-down.svg";
-import {ReactComponent as SvgSettings} from "../../SVG/settings.svg";
+import SvgRestart from "../../SVG/restart-2.svg?react";
+import SvgShutDown from "../../SVG/shut-down.svg?react";
+import SvgSettings from "../../SVG/settings.svg?react";
 
 const Menu = () => {
     return (
