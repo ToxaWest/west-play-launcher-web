@@ -11,15 +11,23 @@ const SteamFields = ({game, onChange}) => {
                    onChange={onChange}
                    type="path"
                    onlyFile={true}
-                   name='exePath'>
-            </Input>
-            <Input label='Achievements file path'
-                   value={game.achPath}
-                   onChange={onChange}
-                   type="path"
-                   onlyFile={true}
-                   name='achPath'>
-            </Input>
+                   name='exePath'/>
+
+            {(game?.unofficial && game?.source === 'steam') && (
+                <>
+                    <Input label={'Exe file path'}
+                           name="exePath"
+                           value={game.exePath}
+                           onChange={onChange}
+                    />
+                    <Input label='Achievements file path'
+                           value={game.achPath}
+                           onChange={onChange}
+                           type="path"
+                           onlyFile={true}
+                           name='achPath'/>
+                </>
+            )}
             <div className={styles.argsWrapper}>
                 <button onClick={() => {
                     onChange({

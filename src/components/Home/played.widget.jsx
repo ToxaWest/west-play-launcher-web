@@ -13,10 +13,13 @@ const PlayedWidget = ({setGame}) => {
                 const game = games.find(({id}) => id == curr);
                 return game ? [...acc, game] : acc
             }, [])
-        if (res.length > 10) {
-            res.length = 10;
+        if (res.length > 8) {
+            res.length = 8;
         }
-        return res;
+        return [...res, {
+            id: 'library',
+            img_icon: '/assets/library-icon-1181955-512.png'
+        }];
     }
 
     const renderGame = (game) => {
@@ -25,6 +28,10 @@ const PlayedWidget = ({setGame}) => {
                 tabIndex={1}
                 id={game.id}
                 onClick={() => {
+                    if(game.id === 'library'){
+                        navigate('/' + game.id)
+                        return;
+                    }
                     window.__back = {id: game.id, url: '/'}
                     navigate('/game/' + game.id)
                 }}

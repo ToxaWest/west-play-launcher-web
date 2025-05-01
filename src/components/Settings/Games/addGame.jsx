@@ -46,17 +46,24 @@ const AddGame = ({data, submit, remove}) => {
     }
 
     const imageName = () => (
-        <Input label='Game Image'
-               value={game.imageName}
-               onChange={({value, name}) => {
-                   if (value) {
-                       onChange({name, value: value.split('/').at(-1)})
-                   }
-               }}
-               type="path"
-               onlyFile={true}
-               name='imageName'>
-        </Input>
+        <div style={{display: 'flex', gap: 'var(--gap)'}}>
+            <Input label='Game Image'
+                   value={game.imageName}
+                   onChange={({value, name}) => {
+                       if (value) {
+                           onChange({name, value: value.split('/').at(-1)})
+                       }
+                   }}
+                   type="path"
+                   onlyFile={true}
+                   name='imageName'>
+            </Input>
+            <button onClick={() => {
+                onChange({name: 'imageName', value: ''})
+            }}>Clear
+            </button>
+        </div>
+
     )
 
     const renderByType = () => {
