@@ -1,7 +1,8 @@
 .freeWrapper {
-  display: flex;
-  align-content: center;
   gap: var(--gap);
+  display: grid;
+  grid-template-rows: repeat(var(--lines), 1fr);
+  grid-auto-flow: column;
   overflow-x: auto;
   list-style: none;
   width: 100vw;
@@ -12,40 +13,51 @@
   min-height: 80px;
   &>li {
     white-space: nowrap;
-    width: 450px;
+    width: 22vw;
+    border: 2px solid var(--theme-secondary);
     border-radius: var(--border-radius);
-    transition: width 0.2s ease-in-out;
     position: relative;
+    &:active, &:focus {
+      border-color: var(--theme-text-color);
+    }
+
     img {
       height: 100%;
-      width: auto;
-      max-width: 450px;
+      width: 100%;
+    }
+    ul {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: opacity 0.3s;
+      width: 100%;
+      height: 100%;
+      padding: var(--gap-half);
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap-half);
+      li {
+        list-style: none;
+        margin: 0;
+        display: flex;
+        border-bottom: 1px solid var(--theme-secondary);
+        strong {
+          margin-right: var(--gap-half);
+        }
+        i {
+          margin-left: auto;
+          text-align: right;
+        }
+      }
     }
     &.active {
       background-color: var(--theme-text-color-seconary);
-      display: flex;
-      width: 800px;
       z-index: 2;
       ul {
-        padding: var(--gap-half);
-        background-color: var(--theme-color-transparent);
-        width: 350px;
-        display: flex;
-        flex-direction: column;
-        gap: var(--gap-half);
-        li {
-          list-style: none;
-          margin: 0;
-          display: flex;
-          border-bottom: 1px solid var(--theme-color-transparent);
-          strong {
-            margin-right: var(--gap-half);
-          }
-          i {
-            margin-left: auto;
-            text-align: right;
-          }
-        }
+        opacity: .9;
+        background-color: var(--theme-color);
       }
     }
   }

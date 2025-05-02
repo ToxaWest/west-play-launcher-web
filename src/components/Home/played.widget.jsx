@@ -48,7 +48,7 @@ const PlayedWidget = ({setGame}) => {
     }
 
     return (
-        <ul className={styles.lastPlayed}>
+        <ul className={styles.lastPlayed} style={{'--lines': '1'}}>
             {configuredArray().map(renderGame)}
         </ul>
     )

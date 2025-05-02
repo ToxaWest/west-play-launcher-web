@@ -54,14 +54,12 @@ const FreeWidget = () => {
             <li key={game.id}
                 tabIndex={1}
                 className={enabled ? styles.active : ""}
+                onClick={() => setActive(game.id)}
                 onBlur={() => {
                     setActive(0);
-                }}
-                onFocus={() => {
-                    setActive(game.id);
                 }}>
                 <img src={game.short_image} alt={game.title} loading={"lazy"}/>
-                {enabled ? renderDescription(game) : null}
+                {renderDescription(game)}
             </li>
         )
     }

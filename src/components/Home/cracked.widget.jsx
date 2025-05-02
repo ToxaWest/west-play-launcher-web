@@ -60,17 +60,17 @@ const CrackedWidget = () => {
                 onBlur={() => {
                     setActive(0);
                 }}
-                onFocus={() => {
+                onClick={() => {
                     setActive(game.id);
                 }}>
                 <img src={getImage(game)} alt={game.title} loading={"lazy"}/>
-                {enabled ? renderDescription(game) : null}
+                {renderDescription(game)}
             </li>
         )
     }
 
     return (
-        <ul className={styles.freeWrapper}>
+        <ul className={styles.freeWrapper} style={{'--lines': '3'}}>
             {games.map(renderGame)}
             <Loader loading={loading}/>
         </ul>
