@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import styles from "./game.module.scss";
 import useFooterActions from "../../hooks/useFooterActions";
 import Video from "../Video";
+import electronConnector from "../../helpers/electronConnector";
 
 const RenderMedia = ({game}) => {
     const [current, setCurrent] = useState(0);
@@ -55,7 +56,12 @@ const RenderMedia = ({game}) => {
     const renderMedia = (i) => {
         const selected = media[i];
         if (selected?.path_full) {
-            return <img src={selected.path_full} alt={'img'}/>
+            return <img src={selected.path_full} onError={e => {
+                if (e.target.src !== (selected.path_full)) return;
+                electronConnector.imageProxy(e.target.src).then(bytes => {
+                    e.target.src = URL.createObjectURL(new Blob(bytes))
+                })
+            }} alt={'img'}/>
         }
 
         return <Video

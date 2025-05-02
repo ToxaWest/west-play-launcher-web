@@ -1,9 +1,22 @@
 import {useEffect, useRef} from "react";
+import electronConnector from "../../helpers/electronConnector";
+
+
+const hideFooter = () => {
+    document.querySelector('footer').style.opacity = '1';
+    setTimeout(() => {
+        document.querySelector('footer').style.opacity = '0';
+    }, 2500)
+}
 
 const VideoComponent = ({selected, options, soundStatus}) => {
     const videoRef = useRef();
     useEffect(() => {
         videoRef.current?.load();
+        hideFooter();
+        return () => {
+            document.querySelector('footer').style.opacity = '1';
+        }
     }, [selected]);
     const getData = (data) => {
         const {type, thumbnail} = data;
@@ -35,7 +48,15 @@ const VideoComponent = ({selected, options, soundStatus}) => {
         if (type === 'upload') {
             return {
                 poster: null,
-                src: [{src: data.path + data.publicId, type: 'video/mp4'}],
+                src: [{
+                    src: data.path + data.publicId, type: 'video/mp4', onError: (e) => {
+                        if (e.target.src !== (data.path + data.publicId)) return;
+                        electronConnector.imageProxy(e.target.src).then(bytes => {
+                            e.target.src = URL.createObjectURL(new Blob(bytes))
+                            videoRef.current?.load();
+                        })
+                    }
+                }],
             }
         }
 
@@ -72,7 +93,7 @@ const VideoComponent = ({selected, options, soundStatus}) => {
     const {src, poster} = getData(selected);
 
     return (
-        <div>
+        <div onClick={hideFooter}>
             <video ref={videoRef} {...options} poster={poster} muted={!soundStatus}>
                 {src.map(s => <source {...s} key={s.type}/>)}
             </video>

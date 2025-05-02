@@ -9,6 +9,7 @@
   background-color: var(--theme-color-transparent);
   backdrop-filter: blur(5px);
   padding: var(--padding);
+  min-height: 80px;
   &>li {
     white-space: nowrap;
     width: 450px;

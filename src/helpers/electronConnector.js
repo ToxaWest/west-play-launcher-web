@@ -9,6 +9,7 @@ const apiCall = (props, func) => {
 }
 
 const electronConnector = {
+    imageProxy: (data) => apiCall(data, 'imageProxy'),
     getSteamAssets: ({steamId}) => apiCall({steamId}, 'getSteamAssets'),
     clearUnusedCache: (idArray) => apiCall(idArray, 'clearUnusedCache'),
     systemAction: (action) => apiCall(action, 'systemAction'),
