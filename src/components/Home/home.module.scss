@@ -2,7 +2,7 @@
   padding-top: 40px;
   background-repeat: no-repeat;
   //background-size: 100% calc(33vw - 60px);
-  background-image: linear-gradient(var(--theme-color), var(--theme-color) 8vw , transparent 11vw, transparent 29vw, var(--theme-color) 35vw, var(--theme-color));
+  background-image: linear-gradient(var(--theme-color), var(--theme-color) 10vw , transparent 13vw, transparent 31vw, var(--theme-color) 37vw, var(--theme-color));
 }
 
 .achievements{
@@ -20,7 +20,7 @@
   //padding-top: 60px;
   background-size: 100% auto;
   background-repeat: no-repeat;
-  background-position-y: 8vw;
+  background-position-y: 10vw;
 
   h2 {
     padding: var(--padding);
@@ -42,7 +42,7 @@
   }
 
   h1 {
-    font-size: 50px;
+    font-size: 2vw;
   }
 
   .info {

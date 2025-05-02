@@ -1,12 +1,17 @@
 import styles from './library.module.scss';
 import {useNavigate} from "react-router-dom";
 import {getFromStorage} from "../../helpers/getFromStorage";
+import {useEffect} from "react";
+import useFooterActions from "../../hooks/useFooterActions";
 
 const Library = () => {
     const games = getFromStorage('games');
     const gamesInRow = getFromStorage('config').settings.gamesInRow || 6;
     const navigation = useNavigate();
-
+    const {setFooterActions} = useFooterActions()
+    useEffect(() => {
+        setFooterActions({})
+    }, [])
     const sort = (a, b) => a.name.localeCompare(b.name);
 
     return (

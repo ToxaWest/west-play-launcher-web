@@ -18,7 +18,11 @@ const PlayedWidget = ({setGame}) => {
         }
         return [...res, {
             id: 'library',
-            img_icon: '/assets/library-icon-1181955-512.png'
+            name: 'Library',
+            title: 'Library',
+            img_icon: '/assets/library-icon-1181955-512.png',
+            img_grid: '/assets/library-icon-1181955-512.png',
+            short_description: 'Installed games library'
         }];
     }
 

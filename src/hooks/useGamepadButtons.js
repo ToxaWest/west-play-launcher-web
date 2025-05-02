@@ -23,6 +23,7 @@ const useGamepadButtons = () => {
     const pressedRef = useRef(null);
     const pressedRef2 = useRef(null);
     const activeWrapper = useRef(':root');
+    const root = document.getElementById('root');
 
     const sendEvent = (detail) => {
         if (sound[detail]) {
@@ -34,6 +35,9 @@ const useGamepadButtons = () => {
         body.style.setProperty('pointer-events', 'none');
         const event = new CustomEvent('gamepadbutton', {detail: detail});
         document.dispatchEvent(event);
+        if (document.pointerLockElement === root) {
+            root.requestPointerLock()
+        }
     }
 
     const buttonsEvent = (e) => {
@@ -96,6 +100,11 @@ const useGamepadButtons = () => {
     }
 
     useEffect(() => {
+        window.addEventListener('mousemove', () => {
+            if (document.pointerLockElement === root) {
+                document.exitPointerLock();
+            }
+        })
         electronConnector.onVisibilityChange(setVisible)
         window.addEventListener("gamepadconnected", connect)
         window.addEventListener('gamepaddisconnected', disconnect)

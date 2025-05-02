@@ -3,6 +3,7 @@ import {getFromStorage} from "../../helpers/getFromStorage";
 import styles from './GameDLC.module.scss';
 import Modal from "../Modal";
 import {useState} from "react";
+import electronConnector from "../../helpers/electronConnector";
 
 const GameDLC = () => {
     const {id} = useParams();
@@ -10,16 +11,25 @@ const GameDLC = () => {
 
     const [activeId, setActiveId] = useState(null);
 
+    const renderImage = (item) => {
+        return <img src={item.header_image} alt={item.name} onError={e => {
+            if (e.target.src !== (item.header_image)) return;
+            electronConnector.imageProxy(e.target.src).then(bytes => {
+                e.target.src = URL.createObjectURL(new Blob(bytes))
+            })
+        }}/>
+    }
+
     const renderItem = (item) => {
         return (
             <li key={item.id} tabIndex={1} onClick={() => {
                 setActiveId(item.id)
             }}>
-                <img src={item.header_image} alt={item.name}/>
+                {renderImage(item)}
                 {(activeId === item.id) && <Modal onClose={() => setActiveId(null)}>
                     <div className={styles.modal}>
                         <div className={styles.image}>
-                            <img src={item.header_image} alt={item.name}/>
+                            {renderImage(item)}
                         </div>
                         <div className={styles.modal_content} id={'scroll'}>
                             <h4>{item.name}</h4>

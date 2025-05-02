@@ -58,15 +58,15 @@
   overflow-x: auto;
   list-style: none;
   max-width: 100vw;
-  height: 213px;
+  height: 8vw;
   position: relative;
   margin:0;
   padding: var(--padding);
   &>li {
     white-space: nowrap;
-    width: 130px;
-    height: 130px;
-    min-width: 130px;
+    width: 6vw;
+    height: 6vw;
+    min-width: 6vw;
     border-radius: var(--border-radius);
     transition: all 0.2s ease-in-out;
     position: relative;
@@ -79,9 +79,9 @@
     &.active, &:active , &:focus {
       background-color: var(--theme-text-color-seconary);
       border-color: var(--theme-text-color-seconary);
-      width: 180px;
-      height: 180px;
-      min-width: 180px;
+      width: 7vw;
+      height: 7vw;
+      min-width: 7vw;
     }
     img {
       max-width: 100%;
