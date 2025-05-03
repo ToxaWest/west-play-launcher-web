@@ -19,6 +19,11 @@ const Menu = () => {
                         Library
                     </Link>
                 </li>
+                <li>
+                    <Link to="/steam-library" tabIndex={1}>
+                        Steam Library
+                    </Link>
+                </li>
                 <li style={{marginTop: 'auto'}}>
                     <Link to="/settings" tabIndex={1}>
                         <SvgSettings/> Settings

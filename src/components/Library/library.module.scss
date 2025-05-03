@@ -14,7 +14,8 @@
   grid-template-columns: repeat(var(--games-in-row), 1fr);
 
   li {
-    display: block;
+    display: flex;
+    align-items: center;
     padding: var(--gap-half);
     height: calc(((90vw - 30px) / var(--games-in-row)) * 1.5);
     transition: padding 0.2s ease-in-out;

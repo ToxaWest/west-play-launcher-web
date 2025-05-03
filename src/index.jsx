@@ -21,6 +21,10 @@ import SettingsHome from "./components/Settings/Home/settingsHome";
 import GamesMedia from "./components/Game/media";
 import GameDLC from "./components/GameDLC";
 import News from "./components/Game/news";
+import SteamLibrary from "./components/SteamLibrary";
+import SteamGame from "./components/SteamGame";
+import Steam_content from "./components/SteamGame/steam_content";
+import Steam_news from "./components/SteamGame/steam_news";
 
 const router = createBrowserRouter([
     {
@@ -34,6 +38,9 @@ const router = createBrowserRouter([
         }, {
             path: '/library',
             element: <Library/>
+        }, {
+            path: '/steam-library',
+            element: <SteamLibrary/>
         }, {
             path: "/settings",
             element: <Settings/>,
@@ -64,6 +71,25 @@ const router = createBrowserRouter([
                 element: <Achievements/>
             }, {
                 path: "/game/:id/media",
+                element: <GamesMedia/>
+            }]
+        }, {
+            path: "/steam-game/:id",
+            element: <SteamGame/>,
+            children: [{
+                path: "/steam-game/:id",
+                element: <Steam_content/>
+            },{
+                path: "/steam-game/:id/news",
+                element: <Steam_news/>
+            },{
+                path: "/steam-game/:id/dlc",
+                element: <GameDLC/>
+            }, {
+                path: "/steam-game/:id/achievements",
+                element: <Achievements/>
+            }, {
+                path: "/steam-game/:id/media",
                 element: <GamesMedia/>
             }]
         }

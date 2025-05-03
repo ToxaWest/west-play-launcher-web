@@ -63,7 +63,12 @@ const CrackedWidget = () => {
                 onClick={() => {
                     setActive(game.id);
                 }}>
-                <img src={getImage(game)} alt={game.title} loading={"lazy"}/>
+                <img src={getImage(game)} alt={game.title} loading={"lazy"}
+                    onError={(e) => {
+                        if(e.target.src === game.short_image) return;
+                        e.target.src = game.short_image
+                    }}
+                />
                 {renderDescription(game)}
             </li>
         )

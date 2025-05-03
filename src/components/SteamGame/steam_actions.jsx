@@ -1,0 +1,121 @@
+import styles from "../Game/game.module.scss";
+import {useLocation, useNavigate} from "react-router-dom";
+import SvgContent from '../../SVG/content.svg?react'
+import SvgAchievements from '../../SVG/achievement.svg?react'
+import SvgMedia from '../../SVG/media.svg?react'
+import SvgNews from '../../SVG/news.svg?react'
+import SvgDLC from '../../SVG/dlc.svg?react'
+import {useEffect, useState} from "react";
+import useFooterActions from "../../hooks/useFooterActions";
+
+const GameActions = ({game}) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [status, setStatus] = useState('closed');
+    const {setFooterActions, removeFooterActions} = useFooterActions();
+
+    useEffect(() => {
+        setFooterActions({
+            rightScrollY: {
+                button: 'rightScrollY',
+                onClick: () => toggleViewMode('next')
+            },
+            leftScrollY: {
+                button: 'leftScrollY',
+                onClick: () => toggleViewMode('previous')
+            }
+        })
+
+        return () => {
+            removeFooterActions(['rightScrollY', 'leftScrollY'])
+        }
+    }, [])
+
+    const getActive = (e) => e === location.pathname;
+
+    const gameState = {
+        'closed': {button: 'play', modifier: ''},
+        'starting': {button: 'Starting...', modifier: ''},
+        'running': {button: 'Running', modifier: styles.running},
+    }
+
+    const {
+        movies = [],
+        screenshots = []
+    } = game;
+
+    const buttons = [{
+        url: `/steam-game/${game.id}`,
+        img: SvgContent,
+        active: true
+    }, {
+        url: `/steam-game/${game.id}/achievements`,
+        img: SvgAchievements,
+        active: Boolean(game.achievements)
+    }, {
+        url: `/steam-game/${game.id}/news`,
+        img: SvgNews,
+        active: Boolean(game.steamId)
+    },{
+        url: `/steam-game/${game.id}/dlc`,
+        img: SvgDLC,
+        active: Boolean(game.dlcList) && Boolean(game.dlcList.length)
+    }, {
+        url: `/steam-game/${game.id}/media`,
+        img: SvgMedia,
+        active: [...movies, ...screenshots].length > 0
+    }].filter(({active}) => active)
+
+    const toggleViewMode = (direction) => {
+        const index = buttons.findIndex(({url}) => url === window.location.pathname);
+        if (direction === 'previous') {
+            if (index === 0) {
+                navigate(buttons.at(-1).url)
+            } else {
+                navigate(buttons.at(index - 1).url)
+            }
+        }
+
+        if (direction === 'next') {
+            if (index === buttons.length - 1) {
+                navigate(buttons.at(0).url)
+            } else {
+                navigate(buttons.at(index + 1).url)
+            }
+        }
+    }
+
+    const renderButton = ({url, img: SvgImage}) => {
+        return (
+            <div
+                key={url}
+                onClick={() => {
+                    navigate(url)
+                }}
+                className={styles.icon + (getActive(url) ? ' ' + styles.activeIcon : '')}
+            >
+                <SvgImage/>
+            </div>
+        )
+    }
+
+    return (
+        <div className={styles.content}>
+            <button
+                tabIndex={1}
+                onClick={() => {
+                    start()
+                }}
+                className={styles.playButton + ' ' + (gameState[status].modifier)}
+                disabled={status !== 'closed'}
+            >
+                {gameState[status].button}
+            </button>
+            <div className={styles.navigation}>
+                {buttons.map(renderButton)}
+            </div>
+        </div>
+    )
+}
+
+export default GameActions;
