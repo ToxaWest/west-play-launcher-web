@@ -7,6 +7,7 @@ import SvgNews from '../../SVG/news.svg?react'
 import SvgDLC from '../../SVG/dlc.svg?react'
 import {useEffect, useState} from "react";
 import useFooterActions from "../../hooks/useFooterActions";
+import electronConnector from "../../helpers/electronConnector";
 
 const GameActions = ({game}) => {
     const navigate = useNavigate();
@@ -34,9 +35,7 @@ const GameActions = ({game}) => {
     const getActive = (e) => e === location.pathname;
 
     const gameState = {
-        'closed': {button: 'play', modifier: ''},
-        'starting': {button: 'Starting...', modifier: ''},
-        'running': {button: 'Running', modifier: styles.running},
+        'closed': {button: 'play', modifier: ''}
     }
 
     const {
@@ -104,10 +103,9 @@ const GameActions = ({game}) => {
             <button
                 tabIndex={1}
                 onClick={() => {
-                    start()
+                    electronConnector.openLink(`steam://rungameid/${game.id}`)
                 }}
                 className={styles.playButton + ' ' + (gameState[status].modifier)}
-                disabled={status !== 'closed'}
             >
                 {gameState[status].button}
             </button>
