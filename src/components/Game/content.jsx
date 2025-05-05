@@ -15,7 +15,7 @@ const GameContent = () => {
     useEffect(() => {
         setPlayTime(getFromStorage('playTime')[game.id]);
         setLastPlayed(getFromStorage('lastPlayed')[game.id]);
-        electronConnector.getPlayTime({source: game.source, id: game.nspId}).then(d => {
+        electronConnector.getPlayTime({source: game.source, id: (game.nspId || game.steamId), unofficial: game.unofficial}).then(d => {
             if (d) {
                 setLastPlayed(d.lastPlayed)
                 setPlayTime(d.playTime)

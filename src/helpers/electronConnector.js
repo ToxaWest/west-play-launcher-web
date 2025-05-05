@@ -9,6 +9,7 @@ const apiCall = (props, func) => {
 }
 
 const electronConnector = {
+    proxyRequest: (url, options) => apiCall({url, options}, 'proxyRequest'),
     getGameByID: (data) => apiCall(data, 'getGameByID'),
     imageProxy: (data) => apiCall(data, 'imageProxy'),
     getSteamAssets: ({steamId}) => apiCall({steamId}, 'getSteamAssets'),
@@ -28,7 +29,7 @@ const electronConnector = {
     saveImage: (data) => apiCall(data, 'saveImage'),
     openLink: (url) => apiCall(url, 'openLink'),
     setBeData: (data) => apiCall(data, 'setBeData'),
-    getPlayTime: ({id, source}) => apiCall({id, source}, 'getPlayTime'),
+    getPlayTime: ({id, source, unofficial}) => apiCall({id, source, unofficial}, 'getPlayTime'),
     updateDataByFolder: ({path, id}) => apiCall({path, id}, 'updateDataByFolder'),
     getUserAchievements: ({data, source}) => apiCall({data, source}, 'getUserAchievements'),
     getAchievementsPath: ({path, appid}) => apiCall({path, appid}, 'getAchievementsPath'),
