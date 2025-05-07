@@ -25,6 +25,7 @@ import SteamLibrary from "./components/SteamLibrary";
 import SteamGame from "./components/SteamGame";
 import Steam_content from "./components/SteamGame/steam_content";
 import Steam_news from "./components/SteamGame/steam_news";
+import Utorrent from "./components/utorrent";
 
 const router = createBrowserRouter([
     {
@@ -38,6 +39,9 @@ const router = createBrowserRouter([
         }, {
             path: '/library',
             element: <Library/>
+        },{
+            path: '/utorrent',
+            element: <Utorrent/>
         }, {
             path: '/steam-library',
             element: <SteamLibrary/>

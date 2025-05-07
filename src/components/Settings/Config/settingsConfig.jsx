@@ -31,6 +31,11 @@ const SettingsConfig = () => {
                        value={settings.egs_profile}
                        onChange={onChange}
                 />
+                <Input label={'Green steam auth key'}
+                       name="torrent_auth"
+                       value={settings.torrent_auth}
+                       onChange={onChange}
+                />
                 <Input label='Ryujinx exe path'
                        value={settings.ryujinx}
                        onChange={onChange}
