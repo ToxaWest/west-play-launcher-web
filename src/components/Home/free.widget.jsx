@@ -65,7 +65,7 @@ const FreeWidget = () => {
     }
 
     return (
-        <ul className={styles.freeWrapper}>
+        <ul className={styles.freeWrapper} style={{'--lines': '1'}}>
             {games.map(renderGame)}
             <Loader loading={loading}/>
         </ul>

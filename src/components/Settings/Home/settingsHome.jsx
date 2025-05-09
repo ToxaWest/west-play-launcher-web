@@ -70,6 +70,11 @@ const SettingsHome = () => {
                    value={settings.gamesInRow}
                    onChange={onChange}
             />
+            <Input label={'Home screen live wallpaper url'}
+                   name="videoBg"
+                   value={settings.videoBg}
+                   onChange={onChange}
+            />
             <Input
                 label={'Use colored background (game view)'}
                 type="select"

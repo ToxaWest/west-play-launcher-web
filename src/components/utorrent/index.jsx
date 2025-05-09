@@ -3,6 +3,7 @@ import {startTransition, useActionState, useEffect, useState} from "react";
 import useFooterActions from "../../hooks/useFooterActions";
 import styles from './utorrent.module.scss';
 import {secondsToHms} from "../../hooks/usePlayTime";
+import electronConnector from "../../helpers/electronConnector";
 
 const torrentInterface = {
     TORRENT_HASH: 0,
@@ -43,7 +44,7 @@ const Utorrent = props => {
     useEffect(() => {
         setFooterActions({})
         if (torrent_auth) {
-            fetch('http://127.0.0.1:19575/gui/token.html?localauth=' + torrent_auth).then(res => res.text()).then(innerHTML => {
+            electronConnector.proxyRequest('http://127.0.0.1:19575/gui/token.html?localauth=' + torrent_auth, {isText: true}).then(innerHTML => {
                 const tok = Object.assign(document.createElement('div'), {innerHTML}).querySelector('#token').innerHTML;
                 setToken(tok)
             })
@@ -63,8 +64,7 @@ const Utorrent = props => {
     }, [])
 
     const getData = async () => {
-        const r = await fetch(`http://127.0.0.1:19575/gui/?token=${token}&localauth=${torrent_auth}&list=1&getmsg=1&cid=0`)
-        const {torrents} = await r.json()
+        const {torrents} = await electronConnector.proxyRequest(`http://127.0.0.1:19575/gui/?token=${token}&localauth=${torrent_auth}&list=1&getmsg=1&cid=0`)
         return torrents
     }
 
@@ -94,11 +94,10 @@ const Utorrent = props => {
 
         return (
             <li key={item[torrentInterface.TORRENT_HASH]}>
-                <div>name: {item[torrentInterface.TORRENT_NAME]}</div>
+                <div>{item[torrentInterface.TORRENT_NAME]} <strong style={{float: 'right'}}>{status}</strong></div>
                 <div>seed: {item[torrentInterface.TORRENT_SEEDS_CONNECTED]}</div>
                 <div>upload: {formatBytes(item[torrentInterface.TORRENT_UPSPEED], 2)}</div>
                 <div>download: {formatBytes(item[torrentInterface.TORRENT_DOWNSPEED], 2)}</div>
-                <div>status: {status}</div>
                 <div>downloaded: {downloaded}</div>
                 <div>Percent: {percent}%</div>
                 <div>{secondsToHms(item[torrentInterface.TORRENT_ETA] * 1000)}</div>
