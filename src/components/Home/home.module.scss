@@ -3,6 +3,11 @@
   background-repeat: no-repeat;
   //background-size: 100% calc(33vw - 60px);
   background-image: linear-gradient(var(--theme-color), var(--theme-color) 10vw , transparent 13vw, transparent 31vw, var(--theme-color) 37vw, var(--theme-color));
+  h2 {
+    padding: var(--padding);
+    position: relative;
+    z-index: 2;
+  }
 }
 
 .videoBg {
@@ -39,9 +44,7 @@
   background-repeat: no-repeat;
   background-position-y: 10vw;
 
-  h2 {
-    padding: var(--padding);
-  }
+
 }
 
 .game {
