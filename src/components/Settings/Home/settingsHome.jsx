@@ -104,15 +104,15 @@ const SettingsHome = () => {
                 onChange={onChange}
             />
             <button tabIndex={1} onClick={() => {
-                const gamesInList = getFromStorage('games').map(({id}) => id.toString());
+                const gamesInList = getFromStorage('games');
                 const playTime = getFromStorage('playTime');
                 Object.keys(playTime).forEach((key) => {
-                    if (gamesInList.indexOf(key.toString()) === -1) delete playTime[key];
+                    if (gamesInList.indexOf(key) === -1) delete playTime[key];
                 })
                 setToStorage('playTime', playTime)
                 const lastPlayed = getFromStorage('lastPlayed');
                 Object.keys(lastPlayed).forEach((key) => {
-                    if (gamesInList.indexOf(key.toString()) === -1) delete lastPlayed[key];
+                    if (gamesInList.indexOf(key) === -1) delete lastPlayed[key];
                 })
                 setToStorage('lastPlayed', lastPlayed)
                 electronConnector.clearUnusedCache(gamesInList).then(({removed}) => {
