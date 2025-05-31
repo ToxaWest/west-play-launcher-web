@@ -9,12 +9,8 @@ const FreeWidget = () => {
     const [games, action, loading] = useActionState(electronConnector.getFreeGames, [])
     useEffect(() => startTransition(action), [])
 
-    const renderTime = ({endTime, startTime}) => {
+    const renderTime = ({startTime}) => {
         const dateFormatter = (t) => new Date(parseInt(t) * 1000).toLocaleDateString()
-        if (endTime) {
-            return `${dateFormatter(startTime)} - ${dateFormatter(endTime)}`
-        }
-
         return `From ${dateFormatter(startTime)}`
     }
 
@@ -26,6 +22,9 @@ const FreeWidget = () => {
             label: 'Store',
             value: currentGame.shopName
         }, {
+            label: 'Price',
+            value: currentGame.price
+        },{
             label: 'Free period',
             value: renderTime(currentGame)
         }, {

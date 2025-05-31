@@ -34,6 +34,8 @@ const electronConnector = {
     getUserAchievements: ({data, source}) => apiCall({data, source}, 'getUserAchievements'),
     getAchievementsPath: ({path, appid}) => apiCall({path, appid}, 'getAchievementsPath'),
     getFolders: (path) => apiCall(path, 'getFolders'),
+    igdbSearch: (search) => apiCall(search, 'igdbSearch'),
+    igdbHltb: (id) => apiCall(id, 'igdbHltb'),
     getDisks: () => apiCall(null, 'getDisks'),
 };
 

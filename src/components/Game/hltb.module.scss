@@ -1,0 +1,16 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--gap);
+  margin: var(--gap) auto;
+  span {
+    padding: var(--padding);
+    font-size: 24px;
+    background-color: var(--theme-color-transparent);
+    border-radius: var(--border-radius);
+    strong {
+      font-size: 20px;
+    }
+  }
+}

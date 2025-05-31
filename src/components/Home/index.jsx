@@ -7,6 +7,7 @@ import {getColorByUrl} from "../../helpers/getColor";
 import setTheme from "../../helpers/setTheme";
 import useFooterActions from "../../hooks/useFooterActions";
 import {getFromStorage} from "../../helpers/getFromStorage";
+import RenderHLTB from "../Game/renderHLTB";
 
 const Home = () => {
     const [game, setGame] = useState({});
@@ -96,6 +97,7 @@ const Home = () => {
                 <div className={styles.info}>
                     <h1>{game.name}</h1>
                     {renderDescription()}
+                    <RenderHLTB game={game} />
                     {renderAchievements()}
                 </div>
             </div>
