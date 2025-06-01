@@ -16,6 +16,9 @@ const VideoComponent = ({selected, options, soundStatus}) => {
         hideFooter();
         return () => {
             document.querySelector('footer').style.opacity = '1';
+            setTimeout(() => {
+                document.querySelector('footer').style.opacity = '1';
+            }, 2500)
         }
     }, [selected]);
     const getData = (data) => {
