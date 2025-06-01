@@ -36,6 +36,7 @@ const electronConnector = {
     getFolders: (path) => apiCall(path, 'getFolders'),
     igdbSearch: (search) => apiCall(search, 'igdbSearch'),
     igdbHltb: (id) => apiCall(id, 'igdbHltb'),
+    howLongToBeat: (querystring) => apiCall(querystring, 'howLongToBeat'),
     getDisks: () => apiCall(null, 'getDisks'),
 };
 

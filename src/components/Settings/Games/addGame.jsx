@@ -9,6 +9,7 @@ import Images from "./images";
 import Modal from "../../Modal";
 import SearchSteamGame from "./searchSteamGame";
 import SearchIGDB from "./searchIGDB";
+import SearchHLTB from "./searchHLTB";
 
 const AddGame = ({data, submit, remove}) => {
     const [game, setGame] = useState(data);
@@ -148,6 +149,9 @@ const AddGame = ({data, submit, remove}) => {
                     <button tabIndex={1} onClick={() => remove()}>Remove game</button>
                     <button tabIndex={1} onClick={() => update()}>Update game</button>
                     <SearchIGDB defaultValue={game.name} update={e=> {
+                        onChange(e)
+                    }}/>
+                    <SearchHLTB defaultValue={game.name} update={e=> {
                         onChange(e)
                     }}/>
                 </div>
