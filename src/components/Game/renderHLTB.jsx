@@ -3,19 +3,24 @@ import styles from './hltb.module.scss';
 
 const RenderHLTB = ({game}) => {
 
-    if (!game.igdb) return null
+    if (!game?.igdb?.hltb) return null
+
+    const {hastily, normally, completely} = game.igdb.hltb
+
+    const renderItem = (label, value) => {
+        if(!value) return null
+        return (
+            <span>
+                <strong>{label}: </strong>{secondsToHms(value * 1000)}
+            </span>
+        )
+    }
 
     return (
         <div className={styles.wrapper}>
-            <span>
-                <strong>Main: </strong>{secondsToHms(game.igdb.hltb.hastily * 1000)}
-            </span>
-            <span>
-                <strong>Main + Sides: </strong>{secondsToHms(game.igdb.hltb.normally * 1000)}
-            </span>
-            <span>
-                <strong>100%: </strong>{secondsToHms(game.igdb.hltb.completely * 10000)}
-            </span>
+            {renderItem('Main', hastily)}
+            {renderItem('Main + Sides', normally)}
+            {renderItem('100%', completely)}
         </div>
     )
 }

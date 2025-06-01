@@ -20,6 +20,7 @@ const SearchIGDB = ({update, defaultValue}) => {
         if (search.length > 2 && active) {
             electronConnector.igdbSearch(search).then((result) => {
                 setTemp(result)
+                console.log(result)
             })
         } else {
             setTemp([])
@@ -50,23 +51,23 @@ const SearchIGDB = ({update, defaultValue}) => {
                                }}
                                children={(
                                    <ul className={styles.search}>
-                                       {temp.map(({id, name}) => (
-                                           <li key={id} onClick={() => {
+                                       {temp.map(({game, name,published_at}) => (
+                                           <li key={game} onClick={() => {
                                                setSearch('')
-                                               update({name: 'steamgriddb', value: id})
-                                               electronConnector.igdbHltb(id)
-                                                   .then(([{normally, hastily, completely}] = [{}]) => {
+                                               update({
+                                                   name: 'igdb',
+                                                   value: {id: game}
+                                               })
+                                               electronConnector.igdbHltb(game)
+                                                   .then((r) => {
                                                        update({
                                                            name: 'igdb',
-                                                           value: {
-                                                               id: id,
-                                                               hltb: {normally, hastily, completely}
-                                                           }
+                                                           value: {id: game, hltb: r[0]}
                                                        })
                                                        setActive(false)
                                                    })
                                            }}>
-                                               <span>{name}</span>
+                                               <span>{name} {published_at ? `(${new Date(published_at * 1000).getFullYear()})` : ''}</span>
                                            </li>)
                                        )}
                                    </ul>
