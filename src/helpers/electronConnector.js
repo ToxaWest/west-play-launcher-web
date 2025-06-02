@@ -3,8 +3,7 @@ const apiCall = (props, func) => {
         return new Promise(() => {
         })
     }
-    console.log(`%caction: ${func}`, 'color: green')
-
+    console.log(`%cAction: ${func}`, 'color: green')
     return window.api[func](props)
 }
 

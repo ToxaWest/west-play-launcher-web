@@ -1,6 +1,6 @@
-import {createContext, useState} from "react";
+import {createContext, useEffect, useState} from "react";
 import Notifications from "../components/Notifications";
-import useGamepadButtons from "../hooks/useGamepadButtons";
+import GamepadApi from "../helpers/gamepad";
 
 export const AppContext = createContext({
     notifications: undefined,
@@ -10,7 +10,19 @@ export const AppContext = createContext({
 const Provider = ({children}) => {
     const [notifications, setNotifications] = useState(null);
     const [footerActions, setFooterActions] = useState({});
-    useGamepadButtons();
+
+    useEffect(() => {
+        window.addEventListener("gamepadconnected", ({gamepad}) => {
+            const gp = new GamepadApi(gamepad)
+            gp.connect();
+            window.addEventListener('gamepaddisconnected', (e) => {
+                if(e.gamepad.index === gamepad.index) {
+                    gp.disconnect()
+                }
+            })
+        })
+    },[])
+
     return (
         <AppContext.Provider value={{setNotifications, footerActions, setFooterActions}}>
             <Notifications notifications={notifications}/>
