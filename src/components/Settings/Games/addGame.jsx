@@ -8,7 +8,6 @@ import Loader from "../../Loader";
 import Images from "./images";
 import Modal from "../../Modal";
 import SearchSteamGame from "./searchSteamGame";
-import SearchIGDB from "./searchIGDB";
 import SearchHLTB from "./searchHLTB";
 
 const AddGame = ({data, submit, remove}) => {
@@ -148,9 +147,6 @@ const AddGame = ({data, submit, remove}) => {
                 <div style={{padding: 'var(--padding)', display: 'flex', gap: 'var(--gap)'}}>
                     <button tabIndex={1} onClick={() => remove()}>Remove game</button>
                     <button tabIndex={1} onClick={() => update()}>Update game</button>
-                    <SearchIGDB defaultValue={game.name} update={e=> {
-                        onChange(e)
-                    }}/>
                     <SearchHLTB defaultValue={game.name} update={e=> {
                         onChange(e)
                     }}/>

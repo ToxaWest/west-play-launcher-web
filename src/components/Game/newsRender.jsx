@@ -6,7 +6,7 @@ import Loader from "../Loader";
 const NewsRender = ({id}) => {
     const {settings: {currentLang}} = getFromStorage('config')
     const [data, fetchData, loading] = useActionState(async () => {
-        const {appnews: {newsitems}} = await fetch(`https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=${id}&count=8&l=${currentLang}&format=json`)
+        const {appnews: {newsitems}} = await fetch(`https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=${id}&count=10&l=${currentLang}&tags=patchnotes&format=json`)
             .then(res => res.json())
         return newsitems
     }, [])
@@ -48,9 +48,9 @@ const NewsRender = ({id}) => {
 
     const renderItem = (item) => {
         return (
-            <li key={item.gid} tabIndex={1}>
+            <li key={item.gid} tabIndex={1} className={styles.item}>
                 <h3>{item.title}</h3>
-                <div style={{display: 'flex', marginBottom: '5px', gap: '5px'}}>
+                <div className={styles.date}>
                     <address>By {item.author}</address>
                     on <time dateTime={new Date(item.date * 1000).toLocaleDateString()}
                              title={new Date(item.date * 1000).toLocaleDateString()}>{new Date(item.date * 1000).toLocaleDateString()}</time>
