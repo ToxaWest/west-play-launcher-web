@@ -1,6 +1,8 @@
 .wrapper {
   z-index: 5;
   position: relative;
+  display: flex;
+  flex-direction: column;
   time {
     font-weight: bold;
     font-size: 1.4rem;
@@ -10,6 +12,10 @@
     align-items: center;
     gap: var(--gap-half);
     margin-bottom: var(--gap);
+  }
+
+  &>button {
+    margin: var(--gap) auto;
   }
 
   .item {

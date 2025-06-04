@@ -5,14 +5,15 @@ import Loader from "../Loader";
 
 const NewsRender = ({id}) => {
     const {settings: {currentLang}} = getFromStorage('config')
-    const [data, fetchData, loading] = useActionState(async () => {
-        const {appnews: {newsitems}} = await fetch(`https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=${id}&count=10&l=${currentLang}&tags=patchnotes&format=json`)
+    const [{data}, fetchData, loading] = useActionState(async (prev, page = 0) => {
+        const {page: p} = prev;
+        const {appnews: {newsitems}} = await fetch(`https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=${id}&count=${(p + page) * 6}&l=${currentLang}&format=json`)
             .then(res => res.json())
-        return newsitems
-    }, [])
+        return {data:newsitems, page:page + p};
+    }, {data: [], page: 1})
 
     useEffect(() => {
-        startTransition(fetchData)
+        startTransition(() => fetchData(0))
     }, [])
 
     const editorParser = (c) => c
@@ -50,7 +51,7 @@ const NewsRender = ({id}) => {
 
     const renderItem = (item) => {
         return (
-            <li key={item.gid} tabIndex={1} className={styles.item}>
+            <li key={item.gid} className={styles.item}>
                 <h3>{item.title}</h3>
                 <div className={styles.date}>
                     <address>By {item.author}</address>
@@ -69,6 +70,9 @@ const NewsRender = ({id}) => {
             <ul>
                 {data.map(renderItem)}
             </ul>
+            <button tabIndex={1} onClick={() => {
+                startTransition(() => fetchData(1))
+            }}>Load More</button>
         </div>
     )
 }
