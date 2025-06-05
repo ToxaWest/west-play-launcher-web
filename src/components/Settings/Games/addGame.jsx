@@ -9,6 +9,7 @@ import Images from "./images";
 import Modal from "../../Modal";
 import SearchSteamGame from "./searchSteamGame";
 import SearchHLTB from "./searchHLTB";
+import SearchGame from "./searchGame";
 
 const AddGame = ({data, submit, remove}) => {
     const [game, setGame] = useState(data);
@@ -147,9 +148,8 @@ const AddGame = ({data, submit, remove}) => {
                 <div style={{padding: 'var(--padding)', display: 'flex', gap: 'var(--gap)'}}>
                     <button tabIndex={1} onClick={() => remove()}>Remove game</button>
                     <button tabIndex={1} onClick={() => update()}>Update game</button>
-                    <SearchHLTB defaultValue={game.name} update={e=> {
-                        onChange(e)
-                    }}/>
+                    <SearchHLTB defaultValue={game.name} update={onChange}/>
+                    <SearchGame defaultValue={game.name} update={onChange}/>
                 </div>
                 {renderContent()}
                 {active ? <Modal onClose={close} style={{zIndex: 30}}>

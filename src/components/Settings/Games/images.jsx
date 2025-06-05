@@ -34,6 +34,7 @@ const Images = ({game, onChange, setLoading, setGame}) => {
     }
 
     return (<>
+        <SearchGame update={onChange} defaultValue={game.name}/>
         {renderSteamAssets()}
         {game.steamgriddb ?
             <>
@@ -46,7 +47,7 @@ const Images = ({game, onChange, setLoading, setGame}) => {
                 <AddImage id={game.id} game_id={game.steamgriddb} type="icon" onChange={onChange}
                           value={game.img_icon}/>
             </>
-            : <SearchGame update={onChange} defaultValue={game.name}/>
+            : null
         }</>)
 }
 
