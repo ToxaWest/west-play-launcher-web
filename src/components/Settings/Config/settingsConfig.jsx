@@ -16,11 +16,6 @@ const SettingsConfig = () => {
         <>
             <div className={styles.block} id="settings-config">
                 <h1>Config</h1>
-                <Input label={'Steam Web API Key (needed for achievements)'}
-                       name="steam_api_key"
-                       value={settings.steam_api_key}
-                       onChange={onChange}
-                />
                 <Input label={'Steam profile id (needed for achievements)'}
                        name="steamid"
                        value={settings.steamid}
