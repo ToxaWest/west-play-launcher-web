@@ -20,12 +20,14 @@ const NewsRender = ({id}) => {
         .replaceAll(/\r/gm, '')
         .replaceAll(/\[\*](.*?)\n/gm, `<li>$1</li>`)
         .replaceAll(/\n/gm, `<div style="padding: 2px 0"></div>`)
+        .replaceAll(/\[p](.*?)\[\/p]/gm, `<p>$1</p>`)
         .replaceAll(/\[list]/gm, `<ul>`)
         .replaceAll(/\[\/list]/gm, `</ul>`)
         .replaceAll(/\[olist]/gm, `<ol>`)
         .replaceAll(/\[\/olist]/gm, `</ol>`)
         .replaceAll(/\[\*](.*?)<\/ol>/gm, `<li>$1</ol></li>`)
         .replaceAll(/\[\*](.*?)<\/ul>/gm, `<li>$1</ul></li>`)
+        .replaceAll(/\[url="(.*?)"](.*?)\[\/url]/gm, '<a href=$1>$2</a>')
         .replaceAll(/\[url=(.*?)](.*?)\[\/url]/gm, '<a href="$1">$2</a>')
         .replaceAll(/\[b](.*?)\[\/b]/gm, `<b>$1</b>`)
         .replaceAll(/\[h1](.*?)\[\/h1]/gm, `<h1>$1</h1>`)
@@ -44,12 +46,14 @@ const NewsRender = ({id}) => {
         .replaceAll(/\[quote](.*?)\[\/quote]/gm, `<quote>$1</quote>`)
         .replaceAll(/\[video mp4=(.*?) webm=(.*?) poster=(.*?) autoplay=(.*?) controls=(.*?)]\[\/video]/gm, `<video src="$2" controls="$5" autoplay="$4" style="max-width: 100%;" poster="$3"/>`)
         .replaceAll(/\[img](.*?)\[\/img]/gm, `<img src="$1" style="max-width: 100%;"/>`)
+        .replaceAll(/\[img src="(.*?)"]\[\/img]/gm, `<img src="$1" style="max-width: 100%;"/>`)
         .replaceAll(/width="(.*?)"/gm, 'style="max-width: 100%;"')
         .replaceAll(/height="(.*?)"/gm, '')
         .replaceAll(/<img /gm, `<img onerror="this.style.display='none'" `)
         .replaceAll(/\{STEAM_CLAN_IMAGE}/gm, 'https://clan.fastly.steamstatic.com/images/')
 
     const renderItem = (item) => {
+        console.log(item)
         return (
             <li key={item.gid} className={styles.item}>
                 <h3>{item.title}</h3>
