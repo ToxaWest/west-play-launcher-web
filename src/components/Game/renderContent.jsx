@@ -35,7 +35,6 @@ const RenderContent = ({game, fields = []}) => {
         <div className={styles.content}>
             <div className={styles.description}>
                 <h1>{game.name}</h1>
-                <RenderHLTB game={game} />
                 {game.short_description && <div dangerouslySetInnerHTML={{__html: game.short_description}}/>}
                 {game.about_the_game && <div dangerouslySetInnerHTML={{__html: game.about_the_game}}/>}
             </div>
@@ -49,6 +48,7 @@ const RenderContent = ({game, fields = []}) => {
                             </li>
                         ))}
                 </ul>
+                <RenderHLTB game={game} />
             </div>
         </div>
 

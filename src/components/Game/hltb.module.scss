@@ -7,7 +7,7 @@
   margin: var(--gap) auto;
   span {
     padding: var(--padding);
-    font-size: 24px;
+    font-size: 1vw;
     background-color: var(--theme-color-transparent);
     border-radius: var(--border-radius);
     display: flex;
@@ -16,7 +16,7 @@
     flex-direction: column;
     gap: var(--gap);
     strong {
-      font-size: 20px;
+      font-size: 0.8vw;
     }
   }
 }

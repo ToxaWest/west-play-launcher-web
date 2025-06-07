@@ -4,9 +4,24 @@ import electronConnector from "../../helpers/electronConnector";
 import SvgRestart from "../../SVG/restart-2.svg?react";
 import SvgShutDown from "../../SVG/shut-down.svg?react";
 import SvgSettings from "../../SVG/settings.svg?react";
+import {getFromStorage} from "../../helpers/getFromStorage";
 
 const Menu = () => {
-    return (
+    const {videoBg} = getFromStorage('config').settings;
+    const renderWrapper = (children) => {
+        if (videoBg) {
+            return (
+                <div className={styles.videoBg}>
+                    <video src={videoBg} autoPlay={true} muted={true} loop={true}/>
+                    {children}
+                </div>
+            )
+        }
+
+        return children
+    }
+
+    return renderWrapper(
         <div className={styles.wrapper}>
             <ul>
                 <li>

@@ -1,3 +1,22 @@
+.videoBg {
+  position: relative;
+  video {
+    max-width: 100vw;
+    width: 100%;
+    height: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+  .wrapper {
+    z-index: 2;
+    position: relative;
+    height: calc(100vh - 60px);
+    background: transparent;
+  }
+}
+
 .wrapper {
   height: 100%;
   padding: var(--gap-half);
@@ -10,24 +29,28 @@
 
   ul {
     margin: 0;
-    padding: 0;
     list-style: none;
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
-    gap: var(--gap);
+    gap: var(--gap-half);
     align-items: start;
     height: 100%;
+    background-color: var(--theme-color-transparent);
+    padding: 0;
+    backdrop-filter: blur(5px);
+    li {
+      width: 100%;
+    }
   }
 
   a {
     display: flex;
     align-items: center;
     padding: var(--padding);
-    min-width: 30vw;
     background-color: var(--button-bg-color);
     border-radius: var(--border-radius);
     color: var(--theme-text-color-seconary);
-    font-size: 4.5vh;
+    font-size: 3.5vh;
 
     svg {
       fill: var(--theme-text-color-seconary);
@@ -35,10 +58,12 @@
     }
 
     transition: all 0.2s ease-in;
+    padding-right: calc(var(--gap) * 2);
     &:focus, &:active {
       border: none;
       color: var(--theme-text-color);
-      padding-left: 5vh;
+      padding-left: calc(var(--gap) * 2);
+      padding-right: calc(var(--gap));
       background-color: var(--button-bg-color-hover);
       outline: none;
       svg {
