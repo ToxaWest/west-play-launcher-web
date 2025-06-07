@@ -27,8 +27,8 @@ const NewsRender = ({id}) => {
         .replaceAll(/\[\/olist]/gm, `</ol>`)
         .replaceAll(/\[\*](.*?)<\/ol>/gm, `<li>$1</ol></li>`)
         .replaceAll(/\[\*](.*?)<\/ul>/gm, `<li>$1</ul></li>`)
-        .replaceAll(/\[url="(.*?)"](.*?)\[\/url]/gm, '<button  onclick="event.preventDefault();window.api.openLink(\'$1\')">$2</button>')
-        .replaceAll(/\[url=(.*?)](.*?)\[\/url]/gm, '<button onclick="event.preventDefault();window.api.openLink(\'$1\')">$2</button>')
+        .replaceAll(/\[url="(.*?)"](.*?)\[\/url]/gm, '<button onclick="event.preventDefault();window.api.openLink(\'$1\'.split(\' \')[0])">$2</button>')
+        .replaceAll(/\[url=(.*?)](.*?)\[\/url]/gm, '<button onclick="event.preventDefault();window.api.openLink(\'$1\'.split(\' \')[0])">$2</button>')
         .replaceAll(/\[b](.*?)\[\/b]/gm, `<b>$1</b>`)
         .replaceAll(/\[h1](.*?)\[\/h1]/gm, `<h1>$1</h1>`)
         .replaceAll(/\[h2](.*?)\[\/h2]/gm, `<h2>$1</h2>`)
@@ -50,11 +50,12 @@ const NewsRender = ({id}) => {
         .replaceAll(/width="(.*?)"/gm, 'style="max-width: 100%;"')
         .replaceAll(/height="(.*?)"/gm, '')
         .replaceAll(/<img /gm, `<img onerror="this.style.display='none'" `)
-        .replaceAll(/<a href="(.*?)">(.*?)<\/a>/gm, `<button onclick="event.preventDefault();window.api.openLink($1)">$2</button>`)
+        .replaceAll(/<a /gm, `<a onclick="event.preventDefault();window.api.openLink(event.target.href)" `)
         .replaceAll(/\{STEAM_CLAN_IMAGE}/gm, 'https://clan.fastly.steamstatic.com/images/')
+        .replaceAll(/\[\*]/gm, '')
+        .replaceAll(/\[\/\*]/gm, '')
 
     const renderItem = (item) => {
-        console.log(item)
         return (
             <li key={item.gid} className={styles.item}>
                 <h3>{item.title}</h3>

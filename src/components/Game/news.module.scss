@@ -61,6 +61,11 @@
       }
     }
   }
+
+  a {
+    text-decoration: underline;
+    color: var(--theme-text-color-seconary);
+  }
   img {
     max-width: 100%;
     margin: auto;
