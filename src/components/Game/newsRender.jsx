@@ -36,6 +36,7 @@ const NewsRender = ({id}) => {
         .replaceAll(/\[h3](.*?)\[\/h3]/gm, `<h3>$1</h3>`)
         .replaceAll(/\[h4](.*?)\[\/h4]/gm, `<h4>$1</h4>`)
         .replaceAll(/\[h5](.*?)\[\/h5]/gm, `<h5>$1</h5>`)
+        .replaceAll(/\[hr]\[\/hr]/gm, `<hr/>`)
         .replaceAll(/\[table](.*?)\[\/table]/gm, `<table>$1</table>`)
         .replaceAll(/\[tr](.*?)\[\/tr]/gm, `<tr>$1</tr>`)
         .replaceAll(/\[th](.*?)\[\/th]/gm, `<th>$1</th>`)
