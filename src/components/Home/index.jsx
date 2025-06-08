@@ -59,6 +59,12 @@ const Home = () => {
                 {getAchCount(ach)} of {Object.keys(game.achievements).length}
             </div>
         }
+        if(game.id === 'library'){
+            return <div className={styles.achievements}>
+                <span>Achievements: </span>
+                {Object.values(getFromStorage('achievements') || {}).reduce((acc,a) => acc + getAchCount(a), 0)}
+            </div>
+        }
         return null
     }
 

@@ -1,5 +1,4 @@
 import AddImage from "./addImage";
-import SearchGame from "./searchGame";
 import electronConnector from "../../../helpers/electronConnector";
 import useNotification from "../../../hooks/useNotification";
 
@@ -34,7 +33,6 @@ const Images = ({game, onChange, setLoading, setGame}) => {
     }
 
     return (<>
-        <SearchGame update={onChange} defaultValue={game.name}/>
         {renderSteamAssets()}
         {game.steamgriddb ?
             <>

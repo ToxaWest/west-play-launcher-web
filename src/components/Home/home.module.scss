@@ -44,7 +44,6 @@
   background-repeat: no-repeat;
   background-position-y: 10vw;
 
-
 }
 
 .game {
@@ -60,10 +59,12 @@
     overflow: hidden;
     width: 17vw;
     position: relative;
+    background-color: var(--theme-color-transparent);
   }
 
   h1 {
-    font-size: 2vw;
+    font-size: 1.5vw;
+    margin: var(--gap-half) 0;
   }
 
   .info {
@@ -72,6 +73,7 @@
     border-radius: var(--border-radius);
     padding: var(--padding);
     max-width: 33vw;
+    width: 100%;
 
     li {
       margin-bottom: var(--gap-half);
