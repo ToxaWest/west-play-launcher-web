@@ -10,7 +10,7 @@ const CrackedWidget = () => {
 
     const getImage = (g) => {
         if (g.steam_prod_id) {
-            return `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.steam_prod_id}/header.jpg?t=1671484934`
+            return `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.steam_prod_id}/header.jpg`
         }
         return g.short_image
     }
@@ -22,19 +22,25 @@ const CrackedWidget = () => {
         }, {
             label: 'Is AAA',
             value: currentGame.is_AAA ? 'Yes' : 'No'
-        }, {
+        }, ...(currentGame.steam_prod_id  ? [{
+            label: 'Store Link',
+            value: currentGame.steam_prod_id ?
+                <div style={{display: 'inline', cursor: 'pointer'}} onClick={() => {
+                    electronConnector.openLink(`https://store.steampowered.com/app/${currentGame.steam_prod_id}`)
+                }}>Steam Link</div> : null
+        }] : []) , {
             label: 'Status',
             value: currentGame.readable_status
         }, {
             label: 'Hacked Groups',
             value: currentGame.hacked_groups
-        }, {
+        }, ...(currentGame.torrent_link  ? [{
             label: 'Torrent (not recommended)',
             value: currentGame.torrent_link ?
                 <div style={{display: 'inline', cursor: 'pointer'}} onClick={() => {
                     electronConnector.openLink(currentGame.torrent_link)
                 }}>Link</div> : null
-        }, {
+        }] : []) , {
             label: 'Cracked',
             value: new Date(currentGame.crack_date).toLocaleDateString()
         }]
@@ -42,6 +48,7 @@ const CrackedWidget = () => {
 
     const renderDescription = (game) => {
         const fields = getFields(game)
+
         return (<ul>
             {fields.map((field, i) => (
                 <li key={i}>
@@ -49,6 +56,17 @@ const CrackedWidget = () => {
                 </li>
             ))}
         </ul>)
+    }
+
+    const renderTeaser = (game) => {
+        if (!game.teaser_link) return;
+        const id = new URL(game.teaser_link).searchParams.get('v');
+        return (
+            <iframe
+                loading="lazy"
+                src={`https://www.youtube.com/embed/${id}?autoplay=1&loop=1&rel=0&mute=1&showinfo=0`}
+                frameBorder="0"/>
+        )
     }
 
     const renderGame = (game) => {
@@ -64,11 +82,12 @@ const CrackedWidget = () => {
                     setActive(game.id);
                 }}>
                 <img src={getImage(game)} alt={game.title} loading={"lazy"}
-                    onError={(e) => {
-                        if(e.target.src === game.short_image) return;
-                        e.target.src = game.short_image
-                    }}
+                     onError={(e) => {
+                         if (e.target.src === game.short_image) return;
+                         e.target.src = game.short_image
+                     }}
                 />
+                {renderTeaser(game)}
                 {renderDescription(game)}
             </li>
         )

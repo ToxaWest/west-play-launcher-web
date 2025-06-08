@@ -32,6 +32,12 @@
       border-bottom: 1px solid var(--theme-color-transparent);
     }
   }
+
+  iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+
   &>ul {
     margin: var(--padding);
     padding: 0;
@@ -68,12 +74,6 @@
   }
   img {
     max-width: 100%;
-    margin: auto;
-  }
-
-  iframe {
-    width: 40vw;
-    height: calc(9/16 * 40vw);
     margin: auto;
   }
 }

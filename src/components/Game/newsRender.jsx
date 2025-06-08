@@ -5,12 +5,12 @@ import Loader from "../Loader";
 
 const NewsRender = ({id}) => {
     const {settings: {currentLang}} = getFromStorage('config')
-    const [{data}, fetchData, loading] = useActionState(async (prev, page = 0) => {
+    const [{data, showMore}, fetchData, loading] = useActionState(async (prev, page = 0) => {
         const {page: p} = prev;
         const {appnews: {newsitems}} = await fetch(`https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=${id}&count=${(p + page) * 6}&l=${currentLang}&format=json`)
             .then(res => res.json())
-        return {data:newsitems, page:page + p};
-    }, {data: [], page: 1})
+        return {data: newsitems, page: page + p, showMore: ((p + page) * 6) === newsitems.length};
+    }, {data: [], page: 1, showMore: true})
 
     useEffect(() => {
         startTransition(() => fetchData(0))
@@ -76,9 +76,10 @@ const NewsRender = ({id}) => {
             <ul>
                 {data.map(renderItem)}
             </ul>
-            <button tabIndex={1} onClick={() => {
+            {showMore && <button tabIndex={1} onClick={() => {
                 startTransition(() => fetchData(1))
-            }}>Load More</button>
+            }}>Load More
+            </button>}
         </div>
     )
 }
