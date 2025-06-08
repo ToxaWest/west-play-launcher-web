@@ -5,6 +5,7 @@ import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
 import Input from "../../Input";
 import {locales} from "../../../helpers/locales";
 import useNotification from "../../../hooks/useNotification";
+import SettingsWeather from "./settingsWeather";
 
 const SettingsHome = () => {
     const notifications = useNotification();
@@ -137,6 +138,7 @@ const SettingsHome = () => {
             }}>
                 Reset hidden free games
             </button>
+            <SettingsWeather/>
             <button tabIndex={1} onClick={() => {
                 setToStorage('config', {settings})
                 notifications({

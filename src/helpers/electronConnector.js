@@ -35,6 +35,8 @@ const electronConnector = {
     getFolders: (path) => apiCall(path, 'getFolders'),
     howLongToBeat: (querystring) => apiCall(querystring, 'howLongToBeat'),
     getDisks: () => apiCall(null, 'getDisks'),
+    weatherById: (data) => apiCall(data, 'weatherById'),
+    weatherSearch: (data) => apiCall(data, 'weatherSearch'),
 };
 
 export default electronConnector;

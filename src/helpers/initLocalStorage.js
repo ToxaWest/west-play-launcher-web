@@ -7,6 +7,7 @@ export default function initLocalStorage() {
                 currentLang: 'english'
             }
         },
+        weather: {},
         hiddenFree: [],
         games: [],
         lastPlayed: {},
