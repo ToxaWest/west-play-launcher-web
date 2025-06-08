@@ -127,6 +127,17 @@ const SettingsHome = () => {
                 Remove unused cache
             </button>
             <button tabIndex={1} onClick={() => {
+                setToStorage('hiddenFree', [])
+                notifications({
+                    img: '/assets/controller/save.svg',
+                    status: 'saving',
+                    name: 'Reset successfully',
+                    description: 'Hidden free games updated'
+                })
+            }}>
+                Reset hidden free games
+            </button>
+            <button tabIndex={1} onClick={() => {
                 setToStorage('config', {settings})
                 notifications({
                     img: '/assets/controller/save.svg',

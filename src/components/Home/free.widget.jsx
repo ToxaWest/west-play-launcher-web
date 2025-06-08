@@ -2,10 +2,12 @@ import {startTransition, useActionState, useEffect, useState} from "react";
 import electronConnector from "../../helpers/electronConnector";
 import styles from "./widgets.module.scss";
 import Loader from "../Loader";
+import {getFromStorage, setToStorage} from "../../helpers/getFromStorage";
 
 const FreeWidget = () => {
     const [active, setActive] = useState(0);
 
+    const hiddenFree = getFromStorage('hiddenFree')
     const [games, action, loading] = useActionState(electronConnector.getFreeGames, [])
     useEffect(() => startTransition(action), [])
 
@@ -22,17 +24,23 @@ const FreeWidget = () => {
             label: 'Store',
             value: currentGame.shopName
         }, {
+            label: 'Store Link',
+            value: currentGame.link ?
+                <div style={{display: 'inline', cursor: 'pointer'}} onClick={() => {
+                    electronConnector.openLink(currentGame.link)
+                }}>Link</div> : null
+        }, {
             label: 'Price',
             value: currentGame.price
         },{
             label: 'Free period',
             value: renderTime(currentGame)
         }, {
-            label: 'Store Link',
-            value: currentGame.link ?
-                <div style={{display: 'inline', cursor: 'pointer'}} onClick={() => {
-                    electronConnector.openLink(currentGame.link)
-                }}>Link</div> : null
+            label: 'Hide this game',
+            value: <div style={{display: 'inline', cursor: 'pointer'}} onClick={() => {
+                setToStorage('hiddenFree', [...getFromStorage('hiddenFree'), currentGame.id]);
+                startTransition(action)
+            }}>Hide</div>
         }]
     }
 
@@ -65,7 +73,7 @@ const FreeWidget = () => {
 
     return (
         <ul className={styles.freeWrapper} style={{'--lines': '1'}}>
-            {games.map(renderGame)}
+            {games.filter(({id}) => !hiddenFree.includes(id)).map(renderGame)}
             <Loader loading={loading}/>
         </ul>
     )
