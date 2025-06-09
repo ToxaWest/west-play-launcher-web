@@ -37,6 +37,7 @@ const electronConnector = {
     getDisks: () => apiCall(null, 'getDisks'),
     weatherById: (data) => apiCall(data, 'weatherById'),
     weatherSearch: (data) => apiCall(data, 'weatherSearch'),
+    CheckVersion: (data) => apiCall(data, 'CheckVersion')
 };
 
 export default electronConnector;

@@ -110,6 +110,10 @@ const AddGame = ({data, submit, remove}) => {
                        name='path'>
                 </Input>
                 {renderByType()}
+                <Input label='Version'
+                       value={game.buildVersion}
+                       onChange={onChange}
+                       name='buildVersion'/>
                 <Images game={game} onChange={onChange} setGame={setGame} setLoading={setLoading}/>
                 {game.unofficial && <Input label='Download link'
                                            value={game.downloadLink}

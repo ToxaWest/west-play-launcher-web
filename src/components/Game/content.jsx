@@ -40,6 +40,18 @@ const GameContent = () => {
         return null
     }
 
+    const checkVersion = (link) => {
+        if(link){
+            return (<div style={{display: 'inline', cursor: 'pointer'}} onClick={(e) => {
+                    electronConnector.CheckVersion(link).then(r => {
+                        e.target.innerHTML = 'Version - ' + r;
+                    })
+                }}>Check</div>
+            )
+        }
+        return null
+    }
+
     const getAchCount = (a) => Object.values(a).filter(({earned, progress}) => {
         if (!earned) {
             return false
@@ -77,6 +89,12 @@ const GameContent = () => {
     }, {
         label: 'Download link',
         value: renderLink(game.downloadLink)
+    }, {
+        label: 'Check Version',
+        value: checkVersion(game.downloadLink)
+    },{
+        label: 'Version',
+        value: game.buildVersion
     }]}/>
 
 }
