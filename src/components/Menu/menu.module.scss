@@ -1,3 +1,4 @@
+@use "../../index";
 .videoBg {
   position: relative;
   video {
@@ -35,9 +36,8 @@
     gap: var(--gap-half);
     align-items: start;
     height: 100%;
-    background-color: var(--theme-color-transparent);
     padding: 0;
-    backdrop-filter: blur(5px);
+    @include index.glass;
     li {
       width: 100%;
     }
@@ -59,6 +59,7 @@
 
     transition: all 0.2s ease-in;
     padding-right: calc(var(--gap) * 2);
+    @include index.glass;
     &:focus, &:active {
       border: none;
       color: var(--theme-text-color);

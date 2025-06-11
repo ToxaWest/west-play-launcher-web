@@ -1,7 +1,8 @@
+@use "../../index";
+
 .innerWrapper {
   padding-top: 40px;
   background-repeat: no-repeat;
-  //background-size: 100% calc(33vw - 60px);
   background-image: linear-gradient(var(--theme-color), var(--theme-color) 10vw , transparent 13vw, transparent 31vw, var(--theme-color) 37vw, var(--theme-color));
   h2 {
     padding: var(--padding);
@@ -39,7 +40,6 @@
 .wrapper {
   width: 100vw;
   position: relative;
-  //padding-top: 60px;
   background-size: 100% auto;
   background-repeat: no-repeat;
   background-position-y: 10vw;
@@ -58,8 +58,7 @@
     border-radius: var(--border-radius);
     overflow: hidden;
     width: 17vw;
-    position: relative;
-    background-color: var(--theme-color-transparent);
+    @include index.glass;
   }
 
   h1 {
@@ -68,13 +67,10 @@
   }
 
   .info {
-    background-color: var(--theme-color-transparent);
-    backdrop-filter: blur(5px);
-    border-radius: var(--border-radius);
     padding: var(--padding);
     max-width: 33vw;
     width: 100%;
-
+    @include index.glass;
     li {
       margin-bottom: var(--gap-half);
       gap: var(--gap-half);

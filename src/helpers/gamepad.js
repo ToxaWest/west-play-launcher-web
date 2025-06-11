@@ -1,6 +1,7 @@
 import electronConnector from "./electronConnector";
 import {modalIsActive} from "./modalIsActive";
-const keyMapping = ['a', 'b', 'x', 'y', 'lb', 'rb', 'lt', 'rt', 'options', 'select', 'l3', 'r3', 'top', 'bottom', 'left', 'right', 'home']
+
+const keyMapping = ['a', 'b', 'x', 'y', 'lb', 'rb', 'lt', 'rt', 'options', 'select', 'l3', 'r3', 'top', 'bottom', 'left', 'right', 'home', 'top', 'bottom', 'left', 'right', 'leftScrollY', 'rightScrollY']
 
 const sound = {
     'top': 'move',
@@ -21,8 +22,8 @@ class GamepadApi {
     gamepad;
     activeWrapper = ':root';
     root = document.getElementById('root');
-    pressedRef = null;
-    pressedRef2 = null;
+    pressed = {};
+    stickPress = {};
 
     constructor(gamepad) {
         this.gamepad = gamepad.index;
@@ -43,45 +44,43 @@ class GamepadApi {
         }
     }
 
-    buttonsEvent = (e) => {
-        if (!this.pressedRef) {
-            this.sendEvent(e);
-            this.pressedRef = e
-        }
-    }
-
-    init = () => {
-        if (!this.visible) return
-        const pressed = navigator.getGamepads()[this.gamepad].buttons.findIndex((button) => button.pressed)
-        if (pressed !== -1) this.buttonsEvent(keyMapping[pressed])
-        else this.pressedRef = null
-        setTimeout(() => window.requestAnimationFrame(this.init), 50)
-    }
-
-    initLeftStick = () => {
+    initV2 = () => {
         if (!this.visible) return;
-        const [horizontal, vertical] = navigator.getGamepads()[this.gamepad].axes
-        if (Math.abs(vertical) > 0.5) this.sendEvent(keyMapping[vertical < 0 ? 12 : 13])
-        if (Math.abs(horizontal) > 0.5) this.sendEvent(keyMapping[horizontal < 0 ? 14 : 15])
-        setTimeout(() => window.requestAnimationFrame(this.initLeftStick), 120)
-    }
+        const {axes: [horizontal, vertical, horizontalR, verticalR], buttons} = navigator.getGamepads()[this.gamepad];
+        const pressed = buttons.reduce((acc, button, index) => {
+            acc[index] = button.pressed;
+            return acc;
+        }, {})
+        const stickPress = {
+            17: (vertical < 0 && Math.abs(vertical) > 0.5) ? new Date().getTime() : false,
+            18: (vertical > 0 && Math.abs(vertical) > 0.5) ? new Date().getTime() : false,
+            19: (horizontal < 0 && Math.abs(horizontal) > 0.5) ? new Date().getTime() : false,
+            20: (horizontal > 0 && Math.abs(horizontal) > 0.5) ? new Date().getTime() : false,
+            21: (horizontalR < 0 && Math.abs(horizontalR) > 0.5) ? new Date().getTime() : false,
+            22: (horizontalR > 0 && Math.abs(horizontalR) > 0.5) ? new Date().getTime() : false,
+        }
 
-    initScroll = () => {
-        const [, , horizontal, verticalR] = navigator.getGamepads()[this.gamepad].axes
-        if (Math.abs(verticalR) > 0.3) {
+        Object.entries(stickPress).forEach(([key, value]) => {
+            if (value) {
+                if (!this.stickPress[key]) {
+                    this.sendEvent(keyMapping[key])
+                    this.stickPress[key] = value;
+                } else if (value - this.stickPress[key] >= 350) {
+                    this.sendEvent(keyMapping[key])
+                    this.stickPress[key] = value;
+                }
+            } else this.stickPress[key] = value;
+        })
+
+        Object.entries(pressed).forEach(([key, value]) => {
+            if (!value && this.pressed[key] === true) this.sendEvent(keyMapping[key])
+        })
+        this.pressed = pressed;
+        if (Math.abs(verticalR) > 0.3) { // scroll
             const root = document.querySelector(this.activeWrapper);
             root.scrollTop += verticalR * scrollBooster
-            this.sendEvent(verticalR < 0 ? 'topScrollY' : 'bottomScrollY')
         }
-
-        if (Math.abs(horizontal) > 0.5) {
-            if (!this.pressedRef2) {
-                this.sendEvent(horizontal < 0 ? 'leftScrollY' : 'rightScrollY');
-                this.pressedRef2 = true
-            }
-        } else this.pressedRef2 = null;
-
-        setTimeout(() => window.requestAnimationFrame(this.initScroll))
+        setTimeout(() => window.requestAnimationFrame(this.initV2))
     }
 
     connect = () => {
@@ -89,15 +88,11 @@ class GamepadApi {
         modalIsActive((active) => {
             this.activeWrapper = active ? '#modal #scroll' : ':root'
         })
-        this.init();
-        this.initLeftStick();
-        this.initScroll();
+        this.initV2()
     }
 
     disconnect = () => {
-        window.cancelAnimationFrame(this.init);
-        window.cancelAnimationFrame(this.initLeftStick);
-        window.cancelAnimationFrame(this.initScroll);
+        window.cancelAnimationFrame(this.initV2);
     }
 
 }
