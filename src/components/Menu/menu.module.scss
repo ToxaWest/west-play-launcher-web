@@ -1,4 +1,4 @@
-@use "../../index";
+@use "../../mixin";
 .videoBg {
   position: relative;
   video {
@@ -37,7 +37,7 @@
     align-items: start;
     height: 100%;
     padding: 0;
-    @include index.glass;
+    @include mixin.glass;
     li {
       width: 100%;
     }
@@ -59,14 +59,14 @@
 
     transition: all 0.2s ease-in;
     padding-right: calc(var(--gap) * 2);
-    @include index.glass;
+    @include mixin.glass;
     &:focus, &:active {
       border: none;
       color: var(--theme-text-color);
       padding-left: calc(var(--gap) * 2);
       padding-right: calc(var(--gap));
-      background-color: var(--button-bg-color-hover);
       outline: none;
+      @include mixin.glassActive;
       svg {
         fill: var(--theme-text-color);
         stroke: var(--theme-text-color);

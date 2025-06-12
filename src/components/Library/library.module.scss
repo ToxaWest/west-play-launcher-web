@@ -1,10 +1,10 @@
+@use "../../mixin";
 .wrapper {
 
 }
 
 .list {
   width: 90vw;
-  background-color: var(--theme-secondary);
   padding: var(--gap);
   margin: var(--gap-half) auto;
   list-style: none;
@@ -13,6 +13,7 @@
   display: grid;
   grid-template-columns: repeat(var(--games-in-row), 1fr);
 
+  @include mixin.glass;
   li {
     display: flex;
     align-items: center;

@@ -1,4 +1,4 @@
-@use "../../index";
+@use "../../mixin";
 
 .freeWrapper {
   gap: var(--gap);
@@ -10,11 +10,9 @@
   list-style: none;
   width: 100vw;
   position: relative;
-  background-color: var(--theme-color-transparent);
-  backdrop-filter: blur(5px);
   padding: var(--padding);
   min-height: 80px;
-
+  @include mixin.glass;
   iframe {
     position: absolute;
     left: 0;
@@ -30,13 +28,11 @@
     white-space: nowrap;
     aspect-ratio: 16 / 9;
     width: 22vw;
-    border: 2px solid var(--theme-secondary);
     border-radius: var(--border-radius);
     position: relative;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     perspective: 1000px;
     &:active, &:focus {
-      border-color: var(--theme-text-color);
       transform: rotateX(7deg) translateY(-2px) scale(1.05);
       box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5);
       iframe{
@@ -109,13 +105,12 @@
     align-items: center;
     justify-content: center;
     padding: 5px;
-    @include index.glass;
+    @include mixin.glass;
     &.active, &:active , &:focus {
-      background-color: var(--theme-text-color-seconary);
-      border-color: var(--theme-text-color-seconary);
       width: 7vw;
       height: 7vw;
       min-width: 7vw;
+      @include mixin.glassActive;
     }
     img {
       max-width: 100%;
