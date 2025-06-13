@@ -30,6 +30,8 @@ class GamepadApi {
     }
 
     sendEvent = (detail) => {
+        if (!this.visible) return;
+
         if (sound[detail]) {
             const audio = new Audio('/assets/sound/ui/' + sound[detail] + '.mp3');
             audio.play()
@@ -45,7 +47,6 @@ class GamepadApi {
     }
 
     initV2 = () => {
-        if (!this.visible) return;
         const {axes: [horizontal, vertical, horizontalR, verticalR], buttons} = navigator.getGamepads()[this.gamepad];
         const pressed = buttons.reduce((acc, button, index) => {
             acc[index] = button.pressed;
