@@ -3,7 +3,7 @@
   justify-content: center;
   width: 100%;
   align-items: center;
-  gap: var(--gap);
+  gap: var(--gap-half);
   margin: var(--gap) auto;
   span {
     padding: var(--padding);
@@ -14,9 +14,9 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: var(--gap);
+    gap: var(--gap-half);
     strong {
-      font-size: 0.8vw;
+      font-size: 0.7vw;
     }
   }
 }

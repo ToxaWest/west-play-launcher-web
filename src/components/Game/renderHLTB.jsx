@@ -11,16 +11,16 @@ const RenderHLTB = ({game}) => {
         if(!value) return null
         return (
             <span>
-                <strong>{label}</strong>{secondsToHms(value * 1000)}
+                {secondsToHms(value * 1000)}<strong>{label}</strong>
             </span>
         )
     }
 
     return (
         <div className={styles.wrapper}>
-            {renderItem('Main', mainTime)}
+            {renderItem('Main Story', mainTime)}
             {renderItem('Main + Sides', mainExtraTime)}
-            {renderItem('100%', completionistTime)}
+            {renderItem('Completionist', completionistTime)}
             {renderItem('All Styles', allStylesTime)}
         </div>
     )
