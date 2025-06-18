@@ -30,6 +30,7 @@ const Settings = () => {
         '/settings': 'Home',
         '/settings/config': 'Config',
         '/settings/games': 'Games',
+        '/settings/import-egs': 'Import EGS',
     }
     const toggleViewMode = (direction) => {
         const _links = Object.keys(links);

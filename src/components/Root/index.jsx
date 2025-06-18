@@ -12,11 +12,10 @@ const Root = () => {
     const {init} = useAppControls()
 
     useEffect(() => {
-        const {settings: {currentLang, theme, egs_profile, steamid}} = getFromStorage('config');
+        const {settings: {currentLang, theme, steamid}} = getFromStorage('config');
         electronConnector.setBeData({
             lang: currentLang,
             country: 'UA',
-            egs_profile,
             theme,
             steamid
         })

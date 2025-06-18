@@ -21,11 +21,6 @@ const SettingsConfig = () => {
                        value={settings.steamid}
                        onChange={onChange}
                 />
-                <Input label={'EGS profile id (needed for achievements)'}
-                       name="egs_profile"
-                       value={settings.egs_profile}
-                       onChange={onChange}
-                />
                 <Input label='Ryujinx exe path'
                        value={settings.ryujinx}
                        onChange={onChange}

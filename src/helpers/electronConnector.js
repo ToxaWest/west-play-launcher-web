@@ -8,6 +8,7 @@ const apiCall = (props, func) => {
 }
 
 const electronConnector = {
+    getInstalledEGS: () => apiCall(null, 'getInstalledEGS'),
     proxyRequest: (url, options) => apiCall({url, options}, 'proxyRequest'),
     getGameByID: (data) => apiCall(data, 'getGameByID'),
     imageProxy: (data) => apiCall(data, 'imageProxy'),

@@ -21,6 +21,7 @@ import SettingsHome from "./components/Settings/Home/settingsHome";
 import GamesMedia from "./components/Game/media";
 import GameDLC from "./components/GameDLC";
 import News from "./components/Game/news";
+import SettingsImportEGS from "./components/Settings/importEGS/settingsImportEGS";
 
 const router = createBrowserRouter([
     {
@@ -46,6 +47,9 @@ const router = createBrowserRouter([
             }, {
                 path: "/settings/games",
                 element: <SettingsGames/>
+            }, {
+                path: "/settings/import-egs",
+                element: <SettingsImportEGS/>
             }]
         }, {
             path: "/game/:id",

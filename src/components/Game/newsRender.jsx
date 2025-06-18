@@ -5,8 +5,7 @@ import Loader from "../Loader";
 
 const NewsRender = ({id}) => {
     const {settings: {currentLang}} = getFromStorage('config')
-    const [{data, showMore}, fetchData, loading] = useActionState(async (prev, page = 0) => {
-        const {page: p} = prev;
+    const [{data, showMore}, fetchData, loading] = useActionState(async ({page: p}, page = 0) => {
         const {appnews: {newsitems}} = await fetch(`https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=${id}&count=${(p + page) * 6}&l=${currentLang}&format=json`)
             .then(res => res.json())
         return {data: newsitems, page: page + p, showMore: ((p + page) * 6) === newsitems.length};
@@ -59,14 +58,13 @@ const NewsRender = ({id}) => {
         .replaceAll(/\[\/\*]/gm, '')
 
     const renderItem = (item) => {
+        const date = new Date(item.date * 1000).toLocaleDateString()
         return (
             <li key={item.gid} className={styles.item}>
                 <h3>{item.title}</h3>
                 <div className={styles.date}>
                     <address>By {item.author}</address>
-                    on <time dateTime={new Date(item.date * 1000).toLocaleDateString()}
-                             title={new Date(item.date * 1000).toLocaleDateString()}>{new Date(item.date * 1000).toLocaleDateString()}</time>
-
+                    on <time dateTime={date} title={date}>{date}</time>
                 </div>
                 <div dangerouslySetInnerHTML={{__html: editorParser(item.contents)}}/>
             </li>
