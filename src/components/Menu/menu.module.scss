@@ -40,6 +40,9 @@
     @include mixin.glass;
     li {
       width: 100%;
+      &.active {
+        border-left: 2px solid #00b100;
+      }
     }
   }
 

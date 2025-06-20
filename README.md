@@ -18,9 +18,14 @@ ___
 ___
 ### For what sources achievements tracking working
 - Steam: +
-- EGS: only show your achievements (add profile id in settings menu and make your profile public)
+- EGS: +
 - Origin: -
 - GOG: in future
 - Cracked games: + (only if crack team created achievements.ini/json file with tracking user achievements)
 - Ryujinx: -
 ___
+
+
+### Required thrid party utils
+#### PowerShell
+    `Install-Module -Name DisplayConfig`

@@ -30,7 +30,9 @@ const Settings = () => {
         '/settings': 'Home',
         '/settings/config': 'Config',
         '/settings/games': 'Games',
+        '/settings/import-steam': 'Import Steam',
         '/settings/import-egs': 'Import EGS',
+        '/settings/import-nintendo': 'Import Nintendo Switch',
     }
     const toggleViewMode = (direction) => {
         const _links = Object.keys(links);

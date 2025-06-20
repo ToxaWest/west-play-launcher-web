@@ -7,18 +7,23 @@
 
     li {
       background: var(--theme-secondary);
-      display: grid;
       border-radius: var(--border-radius);
-      gap: var(--gap-half);
-      //padding: var(--padding);
-      grid-template-areas:
-              'img h2 span'
-              'img div div'
-      'img div div';
+      display: flex;
+      align-items: start;
 
       &>div {
         grid-area: div;
         padding-right: var(--gap-half);
+        width: 100%;
+      }
+      .content {
+        width: 100%;
+        gap: var(--gap-half);
+        display: grid;
+        padding: var(--padding);
+        grid-template-areas:
+              'h2 span'
+              'div div'
       }
       h2 {
         grid-area: h2;

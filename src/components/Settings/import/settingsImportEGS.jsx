@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import electronConnector from "../../../helpers/electronConnector";
 import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
-import styles from './settingsImportEGS.module.scss';
+import styles from './settingsImport.module.scss';
 import Loader from "../../Loader";
 import {formatBytes} from "../../../helpers/convertBytes";
 import useNotification from "../../../hooks/useNotification";
@@ -31,7 +31,7 @@ const SettingsImportEGS = () => {
             short_description: item.shortDescription,
             source: 'egs',
             storeUrl: item.storeUrl,
-            size: formatBytes(item.InstallSize),
+            size: item.size,
             type: 'game',
             buildVersion: item.AppVersionString,
             unofficial: false,
@@ -41,33 +41,35 @@ const SettingsImportEGS = () => {
         return (
             <li key={item.CatalogItemId}>
                 <img src={item.media.card3x4?.imageSrc || item.media.logo?.imageSrc} alt={item.title}/>
-                <h2>{item.DisplayName}</h2>
-                {installed ? <span/> : <button tabIndex={1} onClick={() => {
-                    setToStorage('games', [result, ...games]);
-                    notifications({
-                        img: '/assets/controller/save.svg',
-                        status: 'saving',
-                        name: 'Saved successfully',
-                        description: 'Configuration updated'
-                    })
-                }}>Install</button>}
-                <div>
-                    {item.shortDescription}
+                <div className={styles.content}>
+                    <h2>{item.DisplayName}</h2>
+                    {installed ? <span/> : <button tabIndex={1} onClick={() => {
+                        setToStorage('games', [result, ...games]);
+                        notifications({
+                            img: '/assets/controller/save.svg',
+                            status: 'saving',
+                            name: 'Saved successfully',
+                            description: 'Configuration updated'
+                        })
+                    }}>Install</button>}
                     <div>
-                        {installed && <button
-                            tabIndex={1}
-                            onClick={() => {
-                                const index = games.findIndex(({egsID}) => egsID === item.CatalogNamespace);
-                                if (!index) return;
-                                games[index] = {...games[index], ...result};
-                                setToStorage('games', games);
-                                notifications({
-                                    img: '/assets/controller/save.svg',
-                                    status: 'saving',
-                                    name: 'Saved successfully',
-                                    description: 'Configuration updated'
-                                })
-                            }}>Update</button>}
+                        {item.shortDescription}
+                        <div>
+                            {installed && <button
+                                tabIndex={1}
+                                onClick={() => {
+                                    const index = games.findIndex(({egsID}) => egsID === item.CatalogNamespace);
+                                    if (!index) return;
+                                    games[index] = {...games[index], ...result};
+                                    setToStorage('games', games);
+                                    notifications({
+                                        img: '/assets/controller/save.svg',
+                                        status: 'saving',
+                                        name: 'Saved successfully',
+                                        description: 'Configuration updated'
+                                    })
+                                }}>Update</button>}
+                        </div>
                     </div>
                 </div>
             </li>

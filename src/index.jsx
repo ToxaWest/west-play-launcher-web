@@ -21,7 +21,9 @@ import SettingsHome from "./components/Settings/Home/settingsHome";
 import GamesMedia from "./components/Game/media";
 import GameDLC from "./components/GameDLC";
 import News from "./components/Game/news";
-import SettingsImportEGS from "./components/Settings/importEGS/settingsImportEGS";
+import SettingsImportEGS from "./components/Settings/import/settingsImportEGS";
+import SettingsImportSteam from "./components/Settings/import/settingsImportSteam";
+import SettingsImportNintendo from "./components/Settings/import/settingsImportNintendo";
 
 const router = createBrowserRouter([
     {
@@ -50,6 +52,12 @@ const router = createBrowserRouter([
             }, {
                 path: "/settings/import-egs",
                 element: <SettingsImportEGS/>
+            }, {
+                path: "/settings/import-nintendo",
+                element: <SettingsImportNintendo/>
+            }, {
+                path: "/settings/import-steam",
+                element: <SettingsImportSteam/>
             }]
         }, {
             path: "/game/:id",

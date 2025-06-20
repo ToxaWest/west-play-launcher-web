@@ -8,6 +8,11 @@ const apiCall = (props, func) => {
 }
 
 const electronConnector = {
+    getRyujinxGameData: (props) => apiCall(props, 'getRyujinxGameData'),
+    getInstalledSteam: () => apiCall(null, 'getInstalledSteam'),
+    getInstalledRyujinx: () => apiCall(null, 'getInstalledRyujinx'),
+    getConnectedMonitors: () => apiCall(null, 'getConnectedMonitors'),
+    setMainDisplay: (id) => apiCall(id, 'setMainDisplay'),
     getInstalledEGS: () => apiCall(null, 'getInstalledEGS'),
     proxyRequest: (url, options) => apiCall({url, options}, 'proxyRequest'),
     getGameByID: (data) => apiCall(data, 'getGameByID'),

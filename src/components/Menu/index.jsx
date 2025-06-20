@@ -5,9 +5,11 @@ import SvgRestart from "../../SVG/restart-2.svg?react";
 import SvgShutDown from "../../SVG/shut-down.svg?react";
 import SvgSettings from "../../SVG/settings.svg?react";
 import {getFromStorage} from "../../helpers/getFromStorage";
+import {useEffect, useState} from "react";
 
 const Menu = () => {
     const {videoBg} = getFromStorage('config').settings;
+    const [connectedMonitors, setConnectedMonitors] = useState([]);
     const renderWrapper = (children) => {
         if (videoBg) {
             return (
@@ -21,6 +23,26 @@ const Menu = () => {
         return children
     }
 
+    useEffect(() => {
+        electronConnector.getConnectedMonitors().then(setConnectedMonitors)
+    }, [])
+
+    const renderMonitors = ({id, name, active, primary}) => {
+
+        return (
+            <li key={id} className={active ? [styles.active] : ''}>
+                <Link to="/" tabIndex={1} onClick={(e) => {
+                    e.preventDefault();
+                    electronConnector.setMainDisplay(id).then(() => {
+                        electronConnector.getConnectedMonitors().then(setConnectedMonitors)
+                    })
+                }}>
+                    {primary ? 'Main' : 'Select'}: {name}
+                </Link>
+            </li>
+        )
+    }
+
     return renderWrapper(
         <div className={styles.wrapper}>
             <ul>
@@ -29,12 +51,13 @@ const Menu = () => {
                         Home
                     </Link>
                 </li>
-                <li>
+                <li style={{marginBottom: 'auto'}}>
                     <Link to="/library" tabIndex={1}>
                         Library
                     </Link>
                 </li>
-                <li style={{marginTop: 'auto'}}>
+                {connectedMonitors.map(renderMonitors)}
+                <li>
                     <Link to="/settings" tabIndex={1}>
                         <SvgSettings/> Settings
                     </Link>
