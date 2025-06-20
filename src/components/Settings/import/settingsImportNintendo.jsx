@@ -3,7 +3,6 @@ import electronConnector from "../../../helpers/electronConnector";
 import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
 import styles from './settingsImport.module.scss';
 import Loader from "../../Loader";
-import {formatBytes} from "../../../helpers/convertBytes";
 import useNotification from "../../../hooks/useNotification";
 
 const SettingsImportNintendo = () => {
@@ -19,7 +18,7 @@ const SettingsImportNintendo = () => {
     }, []);
 
     const renderItem = (item) => {
-        const installed = games.some(({nspId}) => nspId == item.nspId)
+        const installed = games.some(({nspId}) => nspId === item.nspId)
         return (
             <li key={item.id}>
                 <div className={styles.content}>
@@ -45,7 +44,7 @@ const SettingsImportNintendo = () => {
                             {installed && <button
                                 tabIndex={1}
                                 onClick={() => {
-                                    const index = games.findIndex(({nspId}) => nspId == item.nspId);
+                                    const index = games.findIndex(({nspId}) => nspId === item.nspId);
                                     if (!index) return;
                                     setLoading(true);
                                     electronConnector.getRyujinxGameData(item).then(g => {

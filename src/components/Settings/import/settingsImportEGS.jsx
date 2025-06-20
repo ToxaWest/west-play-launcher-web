@@ -3,7 +3,6 @@ import electronConnector from "../../../helpers/electronConnector";
 import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
 import styles from './settingsImport.module.scss';
 import Loader from "../../Loader";
-import {formatBytes} from "../../../helpers/convertBytes";
 import useNotification from "../../../hooks/useNotification";
 
 const SettingsImportEGS = () => {

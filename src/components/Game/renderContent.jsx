@@ -48,6 +48,7 @@ const RenderContent = ({game, fields = []}) => {
                             </li>
                         ))}
                 </ul>
+                {game.img_landscape && <img src={game.img_landscape} onError={e => e.target.style.display = 'none'}  alt={game.name}/>}
                 <RenderHLTB game={game} />
             </div>
         </div>

@@ -3,7 +3,6 @@ import electronConnector from "../../../helpers/electronConnector";
 import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
 import styles from './settingsImport.module.scss';
 import Loader from "../../Loader";
-import {formatBytes} from "../../../helpers/convertBytes";
 import useNotification from "../../../hooks/useNotification";
 
 const SettingsImportSteam = () => {
@@ -23,6 +22,7 @@ const SettingsImportSteam = () => {
 
         return (
             <li key={item.id}>
+                <img src={item.img_grid} alt={item.name}/>
                 <div className={styles.content}>
                     <h2>{item.name}</h2>
                     {installed ? <span/> : <button tabIndex={1} onClick={() => {
@@ -35,6 +35,8 @@ const SettingsImportSteam = () => {
                         })
                     }}>Install</button>}
                     <div>
+                        <strong>ID:</strong> <i>{item.steamId}</i>
+                        <br/>
                         {installed && <button
                             tabIndex={1}
                             onClick={() => {
