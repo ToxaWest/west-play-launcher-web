@@ -14,7 +14,9 @@ const Home = () => {
     const {setFooterActions} = useFooterActions()
     const {
         coloredGames,
-        videoBg
+        videoBg,
+        showFreeWidget,
+        showCrackedWidget,
     } = getFromStorage('config').settings;
     const getUrl = (url) => {
         if (!url) return ''
@@ -59,10 +61,10 @@ const Home = () => {
                 {getAchCount(ach)} of {Object.keys(game.achievements).length}
             </div>
         }
-        if(game.id === 'library'){
+        if (game.id === 'library') {
             return <div className={styles.achievements}>
                 <span>Achievements: </span>
-                {Object.values(getFromStorage('achievements') || {}).reduce((acc,a) => acc + getAchCount(a), 0)}
+                {Object.values(getFromStorage('achievements') || {}).reduce((acc, a) => acc + getAchCount(a), 0)}
             </div>
         }
         return null
@@ -103,14 +105,18 @@ const Home = () => {
                 <div className={styles.info}>
                     <h1>{game.name}</h1>
                     {renderDescription()}
-                    <RenderHLTB game={game} />
+                    <RenderHLTB game={game}/>
                     {renderAchievements()}
                 </div>
             </div>
-            <h2>Free Games</h2>
-            <FreeWidget/>
-            <h2>Cracked Games</h2>
-            <CrackedWidget/>
+            {showFreeWidget && <>
+                <h2>Free Games</h2>
+                <FreeWidget/>
+            </>}
+            {showCrackedWidget && <>
+                <h2>Cracked Games</h2>
+                <CrackedWidget/>
+            </>}
         </div>
     )
 }

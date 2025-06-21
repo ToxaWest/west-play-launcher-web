@@ -77,6 +77,45 @@ const SettingsHome = () => {
                    onChange={onChange}
             />
             <Input
+                label={'Show cracked widget'}
+                type="select"
+                name="showCrackedWidget"
+                options={[{
+                    label: 'Yes',
+                    value: 1
+                }, {
+                    label: 'No',
+                    value: 0
+                }]}
+                value={settings.showCrackedWidget}
+                onChange={onChange}
+            />
+            <Input
+                label={'Show free widget'}
+                type="select"
+                name="showFreeWidget"
+                options={[{
+                    label: 'Yes',
+                    value: 1
+                }, {
+                    label: 'No',
+                    value: 0
+                }]}
+                value={settings.showFreeWidget}
+                onChange={onChange}
+            />
+            <button tabIndex={1} onClick={() => {
+                setToStorage('hiddenFree', [])
+                notifications({
+                    img: '/assets/controller/save.svg',
+                    status: 'saving',
+                    name: 'Reset successfully',
+                    description: 'Hidden free games updated'
+                })
+            }}>
+                Reset hidden free games
+            </button>
+            <Input
                 label={'Use colored background (game view)'}
                 type="select"
                 name="coloredGames"
@@ -127,17 +166,7 @@ const SettingsHome = () => {
             }}>
                 Remove unused cache
             </button>
-            <button tabIndex={1} onClick={() => {
-                setToStorage('hiddenFree', [])
-                notifications({
-                    img: '/assets/controller/save.svg',
-                    status: 'saving',
-                    name: 'Reset successfully',
-                    description: 'Hidden free games updated'
-                })
-            }}>
-                Reset hidden free games
-            </button>
+
             <SettingsWeather/>
             <button tabIndex={1} onClick={() => {
                 setToStorage('config', {settings})

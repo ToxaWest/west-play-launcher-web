@@ -4,7 +4,9 @@ export default function initLocalStorage() {
             settings: {
                 coloredGames: true,
                 gamesInRow: 6,
-                currentLang: 'english'
+                currentLang: 'english',
+                showFreeWidget: true,
+                showCrackedWidget: true,
             }
         },
         weather: {},
