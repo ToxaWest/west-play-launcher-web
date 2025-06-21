@@ -74,7 +74,6 @@ const Home = () => {
         if (videoBg) {
             return (
                 <div className={styles.videoBg}>
-                    <video src={videoBg} autoPlay={true} muted={true} loop={true}/>
                     {children}
                 </div>
             )
@@ -109,14 +108,14 @@ const Home = () => {
                     {renderAchievements()}
                 </div>
             </div>
-            {showFreeWidget && <>
+            {showFreeWidget ? <>
                 <h2>Free Games</h2>
                 <FreeWidget/>
-            </>}
-            {showCrackedWidget && <>
+            </> : null}
+            {showCrackedWidget ? <>
                 <h2>Cracked Games</h2>
                 <CrackedWidget/>
-            </>}
+            </> : null}
         </div>
     )
 }

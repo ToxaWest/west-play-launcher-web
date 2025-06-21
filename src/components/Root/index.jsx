@@ -10,6 +10,7 @@ import {modalIsActive} from "../../helpers/modalIsActive";
 
 const Root = () => {
     const {init} = useAppControls()
+    const {videoBg} = getFromStorage('config').settings;
 
     useEffect(() => {
         const {settings: {currentLang, theme, steamid}} = getFromStorage('config');
@@ -30,7 +31,20 @@ const Root = () => {
         })
     }, [])
 
-    return (
+    const renderWrapper = (children) => {
+        if (videoBg) {
+            return (
+                <div className={styles.videoBg}>
+                    <video src={videoBg} autoPlay={true} muted={true} loop={true} className={styles.video} />
+                    {children}
+                </div>
+            )
+        }
+
+        return children
+    }
+
+    return renderWrapper(
         <div className={styles.wrapper}>
             <Clock/>
             <div className={styles.content} id="contentWrapper">

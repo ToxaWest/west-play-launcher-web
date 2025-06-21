@@ -8,7 +8,7 @@ const styles = {
     gap: 'var(--gap)',
     position: "fixed",
     right: 'var(--gap)',
-    top: 'var(--gap)',
+    top: '0',
     color: 'var(--theme-text-color)',
     fontSize: '20px',
     fontWeight: 'bold',

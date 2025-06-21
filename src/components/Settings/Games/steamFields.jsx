@@ -10,6 +10,7 @@ const SteamFields = ({game, onChange}) => {
                    value={game.exePath}
                    onChange={onChange}
                    type="path"
+                   initial={game.path}
                    onlyFile={true}
                    name='exePath'/>
 

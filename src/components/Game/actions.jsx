@@ -26,7 +26,7 @@ const GameActions = ({game}) => {
                 onClick: () => toggleViewMode('previous')
             }
         })
-
+        window.scrollTo(0, 0);
         return () => {
             removeFooterActions(['rightScrollY', 'leftScrollY'])
         }
@@ -91,7 +91,8 @@ const GameActions = ({game}) => {
             <div
                 key={url}
                 onClick={() => {
-                    navigate(url)
+                    navigate(url);
+                    window.scrollTo(0, 0);
                 }}
                 className={styles.icon + (getActive(url) ? ' ' + styles.activeIcon : '')}
             >

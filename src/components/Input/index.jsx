@@ -5,7 +5,7 @@ import Modal from "../Modal";
 
 const Input = ({
                    label, value = '', name, onChange = () => {
-    }, children,
+    }, children,initial = '',
                    type = 'text',
                    options,
                    disabled,
@@ -48,7 +48,7 @@ const Input = ({
                                 setActive(false)
                             }}
                             file={onlyFile}
-                            initial={value || ''}/>
+                            initial={initial || value || ''}/>
                     </Modal> : null}
                 </div>
             )

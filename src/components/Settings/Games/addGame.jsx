@@ -58,6 +58,7 @@ const AddGame = ({data, submit, remove}) => {
                    }}
                    type="path"
                    onlyFile={true}
+                   initial={game.path}
                    name='imageName'>
             </Input>
             <button onClick={() => {

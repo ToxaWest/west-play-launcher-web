@@ -1,82 +1,98 @@
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import electronConnector from "../../helpers/electronConnector";
-
-
-const hideFooter = () => {
-    document.querySelector('footer').style.opacity = '1';
-    setTimeout(() => {
-        document.querySelector('footer').style.opacity = '0';
-    }, 2500)
-}
+import Loader from "../Loader";
 
 const VideoComponent = ({selected, options, soundStatus}) => {
+    const [loading, setLoading] = useState(false);
     const videoRef = useRef();
+    const [videoData, setVideoData] = useState({src: []});
+    const timerRef = useRef();
+
+    const hideFooter = () => {
+        document.querySelector('footer').style.opacity = '1';
+        timerRef.current = setTimeout(() => {
+            document.querySelector('footer').style.opacity = '0';
+        }, 4000)
+    }
+
+    useEffect(() => {
+        setLoading(true)
+        setVideoData({src: []});
+        getData(selected)
+        hideFooter()
+    }, [selected]);
+
+    useEffect(() => {
+        return () => {
+            clearInterval(timerRef.current);
+            setVideoData({src: []});
+            document.querySelector('footer').style.opacity = '1';
+        }
+    }, [])
+
     useEffect(() => {
         videoRef.current?.load();
-        hideFooter();
-        return () => {
-            document.querySelector('footer').style.opacity = '1';
-            setTimeout(() => {
-                document.querySelector('footer').style.opacity = '1';
-            }, 2500)
-        }
-    }, [selected]);
+    }, [videoData])
+
     const getData = (data) => {
         const {type, thumbnail} = data;
         if (data.webm) {
-            return {
+            setVideoData({
                 poster: thumbnail,
                 src: [{src: data.mp4.max, type: "video/mp4",}, {src: data.webm.max, type: "video/webm",}]
-            }
+            })
+            setLoading(false);
         }
 
         if (type === 'epicHosted') {
             const [videos] = Object.values(JSON.parse(data.recipes));
-            return {
+            setVideoData({
                 poster: videos[0].outputs.find(({key}) => key === 'thumbnail').url,
                 src: videos.map(v => {
                     const {url, contentType} = v.outputs.find(({key}) => key === 'manifest')
                     return {src: url, type: contentType}
                 })
-            }
+            })
+            setLoading(false);
         }
 
         if (type === 'egsV2') {
-            return {
-                poster: data.poster,
-                src: data.src
-            }
+            setVideoData({poster: data.poster, src: data.src})
+            setLoading(false);
         }
 
         if (type === 'upload') {
-            return {
-                poster: null,
-                src: [{
-                    src: data.path + data.publicId, type: 'video/mp4', onError: (e) => {
-                        if (e.target.src !== (data.path + data.publicId)) return;
-                        electronConnector.imageProxy(e.target.src).then(bytes => {
-                            e.target.src = URL.createObjectURL(new Blob(bytes))
-                            videoRef.current?.load();
-                        })
-                    }
-                }],
-            }
+            const src = data.path + data.publicId;
+            electronConnector.imageProxy(src
+                .replace('/video/upload/', '/image/upload/')
+                .replace('/Video/', '/Video/posters/')
+            ).then(bytes => {
+                setVideoData(({src}) => ({
+                    src,
+                    poster: URL.createObjectURL(new Blob(bytes))
+                }))
+            })
+
+            electronConnector.imageProxy(src).then(bytes => {
+                setVideoData(({poster}) => ({
+                    poster,
+                    src: [{src: URL.createObjectURL(new Blob(bytes)), type: 'video/mp4'}]
+                }))
+                setLoading(false);
+            })
         }
 
         if (data.playbackURLs) {
             const getType = (t) => {
-                if (t === 'M3U8') {
-                    return 'application/x-mpegURL'
-                }
+                if (t === 'M3U8') return 'application/x-mpegURL';
                 return 'video/' + t
             }
-            return {
-                poster: data.thumbnail.url,
+            setVideoData({
+                poster: thumbnail.url,
                 src: data.playbackURLs.map(({url, videoMimeType}) => ({src: url, type: getType(videoMimeType)}))
-            }
+            })
+            setLoading(false);
         }
-
-        return {}
     }
 
     if (selected.provider) {
@@ -92,13 +108,11 @@ const VideoComponent = ({selected, options, soundStatus}) => {
         }
     }
 
-
-    const {src, poster} = getData(selected);
-
     return (
-        <div onClick={hideFooter}>
-            <video ref={videoRef} {...options} poster={poster} muted={!soundStatus}>
-                {src.map(s => <source {...s} key={s.type}/>)}
+        <div onClick={hideFooter} style={{position: 'relative'}}>
+            <Loader loading={loading} opacity={0.6}/>
+            <video ref={videoRef}  {...options} poster={videoData.poster} muted={!soundStatus}>
+                {videoData.src.map(s => <source {...s} key={s.type}/>)}
             </video>
         </div>
     );

@@ -4,24 +4,10 @@ import electronConnector from "../../helpers/electronConnector";
 import SvgRestart from "../../SVG/restart-2.svg?react";
 import SvgShutDown from "../../SVG/shut-down.svg?react";
 import SvgSettings from "../../SVG/settings.svg?react";
-import {getFromStorage} from "../../helpers/getFromStorage";
 import {useEffect, useState} from "react";
 
 const Menu = () => {
-    const {videoBg} = getFromStorage('config').settings;
     const [connectedMonitors, setConnectedMonitors] = useState([]);
-    const renderWrapper = (children) => {
-        if (videoBg) {
-            return (
-                <div className={styles.videoBg}>
-                    <video src={videoBg} autoPlay={true} muted={true} loop={true}/>
-                    {children}
-                </div>
-            )
-        }
-
-        return children
-    }
 
     useEffect(() => {
         electronConnector.getConnectedMonitors().then(setConnectedMonitors)
@@ -43,7 +29,7 @@ const Menu = () => {
         )
     }
 
-    return renderWrapper(
+    return (
         <div className={styles.wrapper}>
             <ul>
                 <li>
