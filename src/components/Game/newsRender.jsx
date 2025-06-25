@@ -2,6 +2,7 @@ import {getFromStorage} from "../../helpers/getFromStorage";
 import {startTransition, useActionState, useEffect} from "react";
 import styles from "./news.module.scss";
 import Loader from "../Loader";
+import slider from "../../helpers/slider";
 
 const NewsRender = ({id}) => {
     const {settings: {currentLang}} = getFromStorage('config')
@@ -10,6 +11,10 @@ const NewsRender = ({id}) => {
             .then(res => res.json())
         return {data: newsitems, page: page + p, showMore: ((p + page) * 6) === newsitems.length};
     }, {data: [], page: 1, showMore: true})
+
+    useEffect(() => {
+        slider()
+    }, [data])
 
     useEffect(() => {
         startTransition(() => fetchData(0))
@@ -54,6 +59,7 @@ const NewsRender = ({id}) => {
         .replaceAll(/<img /gm, `<img onerror="this.style.display='none'" `)
         .replaceAll(/<a /gm, `<a onclick="event.preventDefault();window.api.openLink(event.target.href)" `)
         .replaceAll(/\{STEAM_CLAN_IMAGE}/gm, 'https://clan.fastly.steamstatic.com/images/')
+        .replaceAll(/\[carousel autoadvance="true"](.*?)\[\/carousel]/gm, '<div data-slider="true">$1</div>')
         .replaceAll(/\[\*]/gm, '')
         .replaceAll(/\[\/\*]/gm, '')
 

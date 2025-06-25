@@ -21,6 +21,7 @@ const SettingsImportNintendo = () => {
         const installed = games.some(({nspId}) => nspId === item.nspId)
         return (
             <li key={item.id}>
+                {item.originalImage ? <img src={item.originalImage} alt={item.name}/> : null}
                 <div className={styles.content}>
                     <h2>{item.name}</h2>
                     {installed ? <span/> : <button tabIndex={1} onClick={() => {

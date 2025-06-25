@@ -26,31 +26,18 @@ const SettingsImportSteam = () => {
                 <div className={styles.content}>
                     <h2>{item.name}</h2>
                     {installed ? <span/> : <button tabIndex={1} onClick={() => {
-                        setToStorage('games', [item, ...games]);
-                        notifications({
-                            img: '/assets/controller/save.svg',
-                            status: 'saving',
-                            name: 'Saved successfully',
-                            description: 'Configuration updated'
+                        electronConnector.getDataByGameId(item).then(r => {
+                            setToStorage('games', [{...r, ...item}, ...games]);
+                            notifications({
+                                img: '/assets/controller/save.svg',
+                                status: 'saving',
+                                name: 'Saved successfully',
+                                description: 'Configuration updated'
+                            })
                         })
                     }}>Install</button>}
                     <div>
                         <strong>ID:</strong> <i>{item.steamId}</i>
-                        <br/>
-                        {installed && <button
-                            tabIndex={1}
-                            onClick={() => {
-                                const index = games.findIndex(({steamId}) => steamId === item.steamId);
-                                if (!index) return;
-                                games[index] = {...games[index], ...item};
-                                setToStorage('games', games);
-                                notifications({
-                                    img: '/assets/controller/save.svg',
-                                    status: 'saving',
-                                    name: 'Saved successfully',
-                                    description: 'Configuration updated'
-                                })
-                            }}>Update</button>}
                     </div>
                 </div>
 
@@ -62,7 +49,6 @@ const SettingsImportSteam = () => {
         <div className={styles.wrapper}>
             <ul>
                 <Loader loading={loading}/>
-
                 {list.sort((a, b) => a.name.localeCompare(b.name)).map(renderItem)}
             </ul>
         </div>

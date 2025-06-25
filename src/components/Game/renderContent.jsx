@@ -25,9 +25,6 @@ const RenderContent = ({game, fields = []}) => {
     }, {
         label: 'Developers',
         value: renderDevelopers(game.developers)
-    }, {
-        label: 'Languages',
-        value: game.supported_languages ? <span dangerouslySetInnerHTML={{__html: game.supported_languages}}/> : null
     }]
 
 

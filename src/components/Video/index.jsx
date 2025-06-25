@@ -96,15 +96,24 @@ const VideoComponent = ({selected, options, soundStatus}) => {
     }
 
     if (selected.provider) {
+        const providerWrapper = {
+            position: 'relative',
+            background: `url('${selected._links.thumbnail.href}') top center no-repeat`,
+            backgroundSize: 'cover'
+        }
         if (selected.provider === "youtube") {
-            return <iframe width={window.innerWidth} height={window.innerWidth / (16 / 9)}
-                           src={`https://www.youtube.com/embed/${selected.videoId}?autoplay=${soundStatus ? 1 : 0}&loop=1&rel=0&mute=1`}
-                           frameBorder="0"/>
+            return <div onClick={hideFooter} style={providerWrapper}>
+                <iframe width={window.innerWidth} height={window.innerWidth / (16 / 9)}
+                        src={`https://www.youtube.com/embed/${selected.videoId}?autoplay=true&loop=1&rel=0&mute=${soundStatus ? 0 : 1}`}
+                        frameBorder="0"/>
+            </div>
         }
         if (selected.provider === 'wistia') {
-            return <iframe width={window.innerWidth} height={window.innerWidth / (16 / 9)}
-                           src={`https://fast.wistia.net/embed/iframe/${selected.videoId}`}
-                           frameBorder="0"/>
+            return <div onClick={hideFooter} style={providerWrapper}>
+                <iframe width={window.innerWidth} height={window.innerWidth / (16 / 9)}
+                        src={`https://fast.wistia.net/embed/iframe/${selected.videoId}`}
+                        frameBorder="0"/>
+            </div>
         }
     }
 

@@ -4,12 +4,15 @@ import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
 import styles from './settingsImport.module.scss';
 import Loader from "../../Loader";
 import useNotification from "../../../hooks/useNotification";
+import SearchSteamGame from "../Games/searchSteamGame";
 
 const SettingsImportEGS = () => {
     const [list, setList] = useState([]);
     const games = getFromStorage('games');
     const [loading, setLoading] = useState(true);
     const notifications = useNotification();
+    const [active, setActive] = useState(false);
+    const [search, setSearch] = useState("");
     useEffect(() => {
         electronConnector.getInstalledEGS().then(r => {
             setLoading(false);
@@ -18,57 +21,31 @@ const SettingsImportEGS = () => {
     }, []);
 
     const renderItem = (item) => {
-        const result = {
-            developers: item.developers,
-            egsID: item.CatalogNamespace,
-            exePath: `com.epicgames.launcher://apps/${item.AppName}?action=launch&silent=true`,
-            id: item.CatalogNamespace,
-            imageName: item.LaunchExecutable,
-            name: item.DisplayName,
-            path: item.InstallLocation,
-            productId: item.id,
-            short_description: item.shortDescription,
-            source: 'egs',
-            storeUrl: item.storeUrl,
-            size: item.size,
-            type: 'game',
-            buildVersion: item.AppVersionString,
-            unofficial: false,
-        }
-        const installed = games.some(({egsID}) => egsID === item.CatalogNamespace)
-
+        const installed = games.some(({egsID}) => egsID === item.egsID)
         return (
-            <li key={item.CatalogItemId}>
-                <img src={item.media.card3x4?.imageSrc || item.media.logo?.imageSrc} alt={item.title}/>
+            <li key={item.id}>
+                <img src={item.originalImage} alt={item.name}/>
                 <div className={styles.content}>
-                    <h2>{item.DisplayName}</h2>
+                    <h2>{item.name}</h2>
                     {installed ? <span/> : <button tabIndex={1} onClick={() => {
-                        setToStorage('games', [result, ...games]);
-                        notifications({
-                            img: '/assets/controller/save.svg',
-                            status: 'saving',
-                            name: 'Saved successfully',
-                            description: 'Configuration updated'
+                        electronConnector.getSteamId(({searchParams}) => {
+                            setSearch(searchParams)
+                            setActive(true)
                         })
+                        electronConnector.getDataByGameId(item).then(r => {
+                            setToStorage('games', [{...r, ...item}, ...games]);
+                            notifications({
+                                img: '/assets/controller/save.svg',
+                                status: 'saving',
+                                name: 'Saved successfully',
+                                description: 'Configuration updated'
+                            })
+                            window.api.removeAllListeners('getSteamId')
+                        })
+
                     }}>Install</button>}
                     <div>
-                        {item.shortDescription}
-                        <div>
-                            {installed && <button
-                                tabIndex={1}
-                                onClick={() => {
-                                    const index = games.findIndex(({egsID}) => egsID === item.CatalogNamespace);
-                                    if (!index) return;
-                                    games[index] = {...games[index], ...result};
-                                    setToStorage('games', games);
-                                    notifications({
-                                        img: '/assets/controller/save.svg',
-                                        status: 'saving',
-                                        name: 'Saved successfully',
-                                        description: 'Configuration updated'
-                                    })
-                                }}>Update</button>}
-                        </div>
+                        {item.short_description}
                     </div>
                 </div>
             </li>
@@ -79,9 +56,9 @@ const SettingsImportEGS = () => {
         <div className={styles.wrapper}>
             <ul>
                 <Loader loading={loading}/>
-
-                {list.sort((a, b) => a.DisplayName.localeCompare(b.DisplayName)).map(renderItem)}
+                {list.sort((a, b) => a.name.localeCompare(b.name)).map(renderItem)}
             </ul>
+            <SearchSteamGame defaultValue={search} active={active} setActive={setActive}/>
         </div>
     )
 }

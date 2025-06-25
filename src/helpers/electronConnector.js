@@ -8,6 +8,8 @@ const apiCall = (props, func) => {
 }
 
 const electronConnector = {
+    getDataByGameId: (props) => apiCall(props, 'getDataByGameId'),
+    getGameByFolder: (path) => apiCall(path, 'getGameByFolder'),
     getRyujinxGameData: (props) => apiCall(props, 'getRyujinxGameData'),
     getInstalledSteam: () => apiCall(null, 'getInstalledSteam'),
     getInstalledRyujinx: () => apiCall(null, 'getInstalledRyujinx'),
@@ -15,7 +17,6 @@ const electronConnector = {
     setMainDisplay: (id) => apiCall(id, 'setMainDisplay'),
     getInstalledEGS: () => apiCall(null, 'getInstalledEGS'),
     proxyRequest: (url, options) => apiCall({url, options}, 'proxyRequest'),
-    getGameByID: (data) => apiCall(data, 'getGameByID'),
     imageProxy: (data) => apiCall(data, 'imageProxy'),
     getSteamAssets: ({steamId}) => apiCall({steamId}, 'getSteamAssets'),
     clearUnusedCache: (idArray) => apiCall(idArray, 'clearUnusedCache'),
@@ -25,7 +26,7 @@ const electronConnector = {
     getImage: (data) => apiCall(data, 'getImage'),
     steamgriddbSearch: (data) => apiCall(data, 'steamgriddbSearch'),
     onVisibilityChange: (data) => apiCall(data, 'onVisibilityChange'),
-    gameSearch: ({query, source}) => apiCall({query, source}, 'gameSearch'),
+    gameSearch: (search) => apiCall(search, 'gameSearch'),
     gameStatus: (data) => apiCall(data, 'gameStatus'),
     getSteamId: (data) => apiCall(data, 'getSteamId'),
     receiveSteamId: (data) => apiCall(data, 'receiveSteamId'),
@@ -35,7 +36,6 @@ const electronConnector = {
     openLink: (url) => apiCall(url, 'openLink'),
     setBeData: (data) => apiCall(data, 'setBeData'),
     getPlayTime: ({id, source, unofficial}) => apiCall({id, source, unofficial}, 'getPlayTime'),
-    updateDataByFolder: ({path, id}) => apiCall({path, id}, 'updateDataByFolder'),
     getUserAchievements: ({data, source}) => apiCall({data, source}, 'getUserAchievements'),
     getAchievementsPath: ({path, appid}) => apiCall({path, appid}, 'getAchievementsPath'),
     getFolders: (path) => apiCall(path, 'getFolders'),
