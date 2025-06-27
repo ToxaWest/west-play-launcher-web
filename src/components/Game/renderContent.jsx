@@ -27,13 +27,24 @@ const RenderContent = ({game, fields = []}) => {
         value: renderDevelopers(game.developers)
     }]
 
+    const renderAboutContent = (content) => {
+        if (!content) return null;
+        const contentParser = () => {
+            if (game.source === 'egs' && !game.steamId) {
+                return content.replaceAll(/!\[(.*?)] \((.*?)\)/gm, `<img src="$2" alt="$1" onerror="this.style.display='none'"/>`)
+            }
+            return content
+        }
+
+        return <div dangerouslySetInnerHTML={{__html: contentParser()}}/>
+    }
 
     return (
         <div className={styles.content}>
             <div className={styles.description}>
                 <h1>{game.name}</h1>
                 {game.short_description && <div dangerouslySetInnerHTML={{__html: game.short_description}}/>}
-                {game.about_the_game && <div dangerouslySetInnerHTML={{__html: game.about_the_game}}/>}
+                {renderAboutContent(game.about_the_game)}
             </div>
             <div className={styles.info}>
                 <ul>
@@ -45,8 +56,9 @@ const RenderContent = ({game, fields = []}) => {
                             </li>
                         ))}
                 </ul>
-                {game.img_landscape && <img src={game.img_landscape} onError={e => e.target.style.display = 'none'}  alt={game.name}/>}
-                <RenderHLTB game={game} />
+                {game.img_landscape &&
+                    <img src={game.img_landscape} onError={e => e.target.style.display = 'none'} alt={game.name}/>}
+                <RenderHLTB game={game}/>
             </div>
         </div>
 

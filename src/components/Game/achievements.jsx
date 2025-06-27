@@ -10,7 +10,7 @@ const Achievements = () => {
     const game = getFromStorage('games').find(({id: gid}) => gid == id);
     const [achievements, setAchievements] = useState(getFromStorage('achievements')[id]);
     const progress = (getFromStorage('progress') || {})[id] || {};
-    const stats = getFromStorage('stats')[id];
+    const stats = getFromStorage('stats')[id] || {};
     const {alternativeAchievementsView: alternative} = getFromStorage('config').settings;
 
     useEffect(() => {
@@ -27,6 +27,7 @@ const Achievements = () => {
             <div>
                 <strong>{achievement.displayName}</strong>
                 <span>{achievement.description}</span>
+                {stats['stat_' + achievement.name] && <i>Progress: {stats['stat_' + achievement.name]}</i>}
                 {progress[achievement.name] && <i>Progress: {progress[achievement.name]}</i>}
             </div>
         </li>
@@ -36,7 +37,7 @@ const Achievements = () => {
     const renderWithEarned = (arr, ach) => {
         const earnedList = Object.keys(ach);
         const getObj = (n) => arr.find(({name}) => name.toString() === n) || {}
-        const sort = ([_, {earned_time}], [_2, {earned_time: earned_timePrev}]) => earned_time > earned_timePrev ? -1 : 1
+        const sort = ([_, {earned_time}], [_2, {earned_time: earned_timePrev}]) => new Date(earned_timePrev) - new Date(earned_time)
         const notEarnedFilter = ({name}) => !earnedList.includes(name.toString());
         return (
             <>

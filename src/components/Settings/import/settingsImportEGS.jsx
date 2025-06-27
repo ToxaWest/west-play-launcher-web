@@ -24,7 +24,6 @@ const SettingsImportEGS = () => {
         const installed = games.some(({egsID}) => egsID === item.egsID)
         return (
             <li key={item.id}>
-                <img src={item.originalImage} alt={item.name}/>
                 <div className={styles.content}>
                     <h2>{item.name}</h2>
                     {installed ? <span/> : <button tabIndex={1} onClick={() => {
@@ -44,9 +43,6 @@ const SettingsImportEGS = () => {
                         })
 
                     }}>Install</button>}
-                    <div>
-                        {item.short_description}
-                    </div>
                 </div>
             </li>
         )

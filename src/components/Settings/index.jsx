@@ -28,7 +28,6 @@ const Settings = () => {
 
     const links = {
         '/settings': 'Home',
-        '/settings/config': 'Config',
         '/settings/games': 'Games',
         '/settings/import-steam': 'Import Steam',
         '/settings/import-egs': 'Import EGS',

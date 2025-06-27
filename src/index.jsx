@@ -15,7 +15,6 @@ import GameContent from "./components/Game/content";
 import Achievements from "./components/Game/achievements";
 import initLocalStorage from "./helpers/initLocalStorage";
 import Menu from "./components/Menu";
-import SettingsConfig from "./components/Settings/Config/settingsConfig";
 import SettingsGames from "./components/Settings/Games/settingsGames";
 import SettingsHome from "./components/Settings/Home/settingsHome";
 import GamesMedia from "./components/Game/media";
@@ -43,9 +42,6 @@ const router = createBrowserRouter([
             children: [{
                 path: "/settings",
                 element: <SettingsHome/>
-            }, {
-                path: "/settings/config",
-                element: <SettingsConfig/>
             }, {
                 path: "/settings/games",
                 element: <SettingsGames/>

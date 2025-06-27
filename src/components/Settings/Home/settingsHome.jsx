@@ -6,6 +6,7 @@ import Input from "../../Input";
 import {locales} from "../../../helpers/locales";
 import useNotification from "../../../hooks/useNotification";
 import SettingsWeather from "./settingsWeather";
+import SettingsSteamProfile from "./settingsSteamProfile";
 
 const SettingsHome = () => {
     const notifications = useNotification();
@@ -166,7 +167,14 @@ const SettingsHome = () => {
             }}>
                 Remove unused cache
             </button>
-
+            <Input label='Ryujinx exe path'
+                   value={settings.ryujinx}
+                   onChange={onChange}
+                   type="path"
+                   onlyFile={true}
+                   name='ryujinx'>
+            </Input>
+            <SettingsSteamProfile onChange={onChange} steamProfile={settings.steamProfile}/>
             <SettingsWeather/>
             <button tabIndex={1} onClick={() => {
                 setToStorage('config', {settings})
