@@ -1,4 +1,4 @@
-import {useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import electronConnector from "../../../helpers/electronConnector";
 import Input from "../../Input";
 import RyujinxFields from "./ryujinxFields";
@@ -10,18 +10,23 @@ import SearchSteamGame from "./searchSteamGame";
 import SearchHLTB from "./searchHLTB";
 import SearchGame from "./searchGame";
 import {getFromStorage} from "../../../helpers/getFromStorage";
+import styles from '../settings.module.scss';
 
 const AddGame = ({data, submit, remove}) => {
     const [game, setGame] = useState(data);
-    const [opened, setOpened] = useState(false)
-    const wrapperRef = useRef(null);
     const notification = useNotification();
     const [loading, setLoading] = useState(false);
     const [active, setActive] = useState(false);
     const [search, setSearch] = useState("");
+
+    useEffect(() => {
+        setGame(data)
+    }, [data])
+
     const onChange = ({name, value}) => {
         setGame(g => ({...g, [name]: value}))
     }
+
     const update = async () => {
         setLoading(true)
         notification({
@@ -30,7 +35,7 @@ const AddGame = ({data, submit, remove}) => {
             name: 'Updating game data',
             status: 'warning'
         }, 3000)
-        if(game.source === 'gog' || game.source === 'egs'){
+        if (game.source === 'gog' || game.source === 'egs') {
             electronConnector.getSteamId(({searchParams}) => {
                 setSearch(searchParams)
                 setActive(true)
@@ -39,7 +44,7 @@ const AddGame = ({data, submit, remove}) => {
 
         const additional = await electronConnector.getDataByGameId(game)
         setGame((g) => ({...g, ...additional}))
-        if(game.source === 'gog' || game.source === 'egs'){
+        if (game.source === 'gog' || game.source === 'egs') {
             window.api.removeAllListeners('getSteamId')
         }
         setLoading(false)
@@ -58,7 +63,7 @@ const AddGame = ({data, submit, remove}) => {
             }, 3000);
             return;
         }
-        if(getFromStorage('games').some(({id}) => id === data.id)){
+        if (getFromStorage('games').some(({id}) => id === data.id)) {
             setLoading(false)
             notification({
                 img: game.img_icon || '/assets/controller/save.svg',
@@ -69,7 +74,7 @@ const AddGame = ({data, submit, remove}) => {
             return;
         }
 
-        if(data.source === 'gog' || data.source === 'egs'){
+        if (data.source === 'gog' || data.source === 'egs') {
             electronConnector.getSteamId(({searchParams}) => {
                 setSearch(searchParams)
                 setActive(true)
@@ -78,7 +83,7 @@ const AddGame = ({data, submit, remove}) => {
 
         const additional = await electronConnector.getDataByGameId(data)
         setGame((g) => ({...g, ...data, ...additional}))
-        if(data.source === 'gog' || data.source === 'egs'){
+        if (data.source === 'gog' || data.source === 'egs') {
             window.api.removeAllListeners('getSteamId')
         }
         setLoading(false)
@@ -183,8 +188,13 @@ const AddGame = ({data, submit, remove}) => {
                 <button tabIndex={1}
                         disabled={loading}
                         onClick={() => {
-                            submit(game)
-                            wrapperRef.current.open = false
+                            submit(game);
+                            notification({
+                                img: '/assets/controller/save.svg',
+                                status: 'saving',
+                                name: 'Saved successfully',
+                                description: 'Games configuration updated'
+                            })
                         }}
                 >
                     submit
@@ -194,24 +204,20 @@ const AddGame = ({data, submit, remove}) => {
     }
 
     return (
-        <details ref={wrapperRef} onToggle={() => {
-            setOpened(wrapperRef.current.open)
-        }}>
-            <summary tabIndex={1} onClick={() => {
-                setOpened(wrapperRef.current.open)
-            }}>{game.name}</summary>
-            {opened ? <div style={{position: 'relative'}}>
+        <div className={styles.addGameWrapper}>
+            <h3>{game.name}</h3>
+            <div style={{position: 'relative'}}>
                 <div style={{padding: 'var(--padding)', display: 'flex', gap: 'var(--gap)'}}>
                     {render.remove()}
-                    {(game.source !== 'ryujinx') ? render.update() : null}
+                    {(game.source !== 'ryujinx' && game.id) ? render.update() : null}
                     {game.name && render.howLongToBeat()}
                     {game.name && render.steamGridDB()}
                 </div>
                 {renderContent()}
                 <SearchSteamGame defaultValue={search} active={active} setActive={setActive}/>
                 <Loader loading={loading}/>
-            </div> : null}
-        </details>
+            </div>
+        </div>
     )
 }
 

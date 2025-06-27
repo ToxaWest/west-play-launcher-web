@@ -39,12 +39,14 @@
     flex-direction: column;
     gap: var(--gap-half);
     margin: var(--gap-half) 0;
+  }
+}
 
-    li details > div {
-      display: flex;
-      flex-direction: column;
-      gap: var(--gap-half);
-    }
+.addGameWrapper {
+  &>div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-half);
   }
 }
 
@@ -115,6 +117,47 @@
 
     &:focus, &:active, &:hover {
       background-color: var(--theme-color-transparent);
+    }
+  }
+
+  .iconsWrapper {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: var(--gap-half);
+    width: 100%;
+    li {
+      background-color: var(--theme-color);
+      max-width: 100%;
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--theme-color-transparent);
+      padding: 1px;
+      gap: var(--gap-half);
+      min-width: 0;
+      overflow: hidden;
+      &:hover, &:active, &:focus {
+        background-color: var(--theme-color-transparent);
+        border-color: var(--theme-text-color);
+      }
+      &.active {
+        background-color: var(--theme-text-color);
+        border-color: var(--theme-color);
+        color: var(--theme-color);
+      }
+      img {
+        height: 2.4vw;
+        width: 2.4vw;
+        background-color: var(--theme-color-transparent);
+      }
+      span {
+        font-size: .5vw;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        padding: var(--gap-half);
+        max-width: 100%;
+        text-align: center;
+      }
     }
   }
 }

@@ -14,14 +14,15 @@
     padding: 0;
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     width: 100%;
     li {
       padding: var(--gap-half);
       display: flex;
       align-items: center;
       transition: padding .3s ease;
-      &:focus{
+      cursor: pointer;
+      &:focus, &:hover {
         padding: 0;
       }
       img {

@@ -2,52 +2,62 @@ import styles from "../settings.module.scss";
 import AddGame from "./addGame";
 import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
 import {useState} from "react";
-import useNotification from "../../../hooks/useNotification";
 
 const SettingsGames = () => {
     const [games, setGames] = useState(getFromStorage('games'))
-    const notifications = useNotification();
+    const [activeIndex, setActiveIndex] = useState(null);
+
+    const renderForm = () => {
+        if (typeof activeIndex !== 'number') return null
+
+        return (
+            <AddGame
+                data={games[activeIndex]}
+                remove={() => {
+                    setGames(g => {
+                        g.splice(activeIndex, 1)
+                        return [...g];
+                    })
+                    setActiveIndex(null)
+                    setToStorage('games', games)
+                }}
+                submit={(d) => {
+                    setGames(g => {
+                        g[activeIndex] = d
+                        return [...g]
+                    })
+                    setActiveIndex(null)
+                    setToStorage('games', games)
+                }}
+            />
+
+        )
+    }
 
     return (
         <div className={styles.block} id="settings-games">
             <h1>Games</h1>
-            <button tabIndex={1} onClick={() => {
-                setGames((d) => {
-                    return [{id: new Date().getTime()}, ...d]
-                })
-            }}>Add Game
-            </button>
-            <ul>
+            <ul className={styles.iconsWrapper}>
                 {games.map((game, index) => (
-                    <li key={game.id}>
-                        <AddGame data={game}
-                             remove={() => {
-                                 setGames(g => {
-                                     g.splice(index, 1)
-                                     return [...g];
-                                 })
-                             }}
-                             submit={(d) => {
-                                 setGames(g => {
-                                     g[index] = {id: game.id, ...d}
-                                     return [...g]
-                                 })
-                             }}
-                        />
+                    <li key={game.id} onClick={() => {
+                        setActiveIndex((i) => {
+                            if(i === index) return null
+                            return index
+                        })
+                    }} className={activeIndex === index ? styles.active : ''} tabIndex={1}>
+                        {game.img_icon && <img src={game.img_icon} alt={game.name}/>}
+                        <span>{game.name}</span>
                     </li>
                 ))}
             </ul>
             <button tabIndex={1} onClick={() => {
-                setToStorage('games', games)
-                notifications({
-                    img: '/assets/controller/save.svg',
-                    status: 'saving',
-                    name: 'Saved successfully',
-                    description: 'Games configuration updated'
+                setGames((d) => {
+                    return [{}, ...d]
                 })
-            }}>
-                Save
+                setActiveIndex(0)
+            }}>Add Game
             </button>
+            {renderForm()}
         </div>
 
     )
