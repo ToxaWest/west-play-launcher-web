@@ -27,6 +27,7 @@ const SettingsImportEGS = () => {
                 <div className={styles.content}>
                     <h2>{item.name}</h2>
                     {installed ? <span/> : <button tabIndex={1} onClick={() => {
+                        setLoading(true);
                         electronConnector.getSteamId(({searchParams}) => {
                             setSearch(searchParams)
                             setActive(true)
@@ -40,9 +41,24 @@ const SettingsImportEGS = () => {
                                 description: 'Configuration updated'
                             })
                             window.api.removeAllListeners('getSteamId')
+                            setLoading(false)
                         })
 
                     }}>Install</button>}
+                    {installed ? <button
+                        onClick={() => {
+                            const index = games.findIndex(({egsID}) => egsID === item.egsID);
+                            if (index === -1) return;
+                            games[index] = {...games[index], ...item};
+                            setToStorage('games', games);
+                            notifications({
+                                img: '/assets/controller/save.svg',
+                                status: 'saving',
+                                name: 'Saved successfully',
+                                description: 'Configuration updated'
+                            })
+                        }}
+                    >Update from local data</button>: null}
                 </div>
             </li>
         )

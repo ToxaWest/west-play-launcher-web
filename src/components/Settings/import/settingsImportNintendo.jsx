@@ -46,7 +46,7 @@ const SettingsImportNintendo = () => {
                                 tabIndex={1}
                                 onClick={() => {
                                     const index = games.findIndex(({nspId}) => nspId === item.nspId);
-                                    if (!index) return;
+                                    if (index === -1) return;
                                     setLoading(true);
                                     electronConnector.getRyujinxGameData(item).then(g => {
                                         games[index] = {...games[index], ...g};

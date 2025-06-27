@@ -26,6 +26,7 @@ const SettingsImportSteam = () => {
                 <div className={styles.content}>
                     <h2>{item.name}</h2>
                     {installed ? <span/> : <button tabIndex={1} onClick={() => {
+                        setLoading(true);
                         electronConnector.getDataByGameId(item).then(r => {
                             setToStorage('games', [{...r, ...item}, ...games]);
                             notifications({
@@ -34,10 +35,26 @@ const SettingsImportSteam = () => {
                                 name: 'Saved successfully',
                                 description: 'Configuration updated'
                             })
+                            setLoading(false);
                         })
                     }}>Install</button>}
                     <div>
                         <strong>ID:</strong> <i>{item.steamId}</i>
+                        {installed ? <button
+                            style={{display: 'block', marginTop: '10px'}}
+                            onClick={() => {
+                                const index = games.findIndex(({steamId}) => steamId === item.steamId);
+                                if (index === -1) return;
+                                games[index] = {...games[index], ...item};
+                                setToStorage('games', games);
+                                notifications({
+                                    img: '/assets/controller/save.svg',
+                                    status: 'saving',
+                                    name: 'Saved successfully',
+                                    description: 'Configuration updated'
+                                })
+                            }}
+                        >Update from local data</button> : null}
                     </div>
                 </div>
 
