@@ -7,6 +7,7 @@ export default function initLocalStorage() {
                 currentLang: 'english',
                 showFreeWidget: true,
                 showCrackedWidget: true,
+                steamProfile: {}
             }
         },
         weather: {},

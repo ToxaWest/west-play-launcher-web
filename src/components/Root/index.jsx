@@ -13,12 +13,12 @@ const Root = () => {
     const {videoBg} = getFromStorage('config').settings;
 
     useEffect(() => {
-        const {settings: {currentLang, theme, steamid}} = getFromStorage('config');
+        const {settings: {currentLang, theme, steamProfile}} = getFromStorage('config');
         electronConnector.setBeData({
             lang: currentLang,
             country: 'UA',
             theme,
-            steamid
+            steamProfile
         })
         const body = document.querySelector('html');
         init('#contentWrapper')

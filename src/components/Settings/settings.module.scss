@@ -9,9 +9,11 @@
   a {
     padding: var(--padding);
     border-bottom: 1px solid transparent;
+
     &.navActive {
       border-bottom-color: var(--theme-text-color);
     }
+
     &:focus {
       outline: none;
     }
@@ -46,6 +48,56 @@
   }
 }
 
+.profileWrapper {
+  background-color: var(--theme-color-transparent);
+  padding: var(--padding);
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--gap-half);
+
+    li {
+      background-color: var(--theme-color);
+      gap: var(--gap-half);
+      border-radius: var(--border-radius);
+      display: flex;
+      border: 2px solid var(--theme-color-transparent);
+      transition: all .3s ease;
+      position: relative;
+
+      img {
+        max-height: 100px;
+      }
+
+      div {
+        padding: var(--padding);
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+        justify-content: center;
+      }
+
+      .selected {
+        display: inline-block;
+        transform: rotate(45deg);
+        height: 25px;
+        width: 12px;
+        border-bottom: 7px solid #78b13f;
+        border-right: 7px solid #78b13f;
+        margin-left: auto;
+        margin-top: var(--gap);
+        margin-right: var(--gap);
+      }
+
+      &:focus, &:active, &:hover {
+        background-color: var(--theme-color-transparent);
+        border-color: var(--theme-color);
+      }
+    }
+  }
+}
+
 .block {
   padding: var(--gap);
   border-radius: var(--border-radius);
@@ -60,6 +112,7 @@
     line-height: 2;
     padding: 0 var(--gap-half);
     border-bottom: 1px solid var(--theme-text-color-seconary);
+
     &:focus, &:active, &:hover {
       background-color: var(--theme-color-transparent);
     }
@@ -68,14 +121,18 @@
 
 .argsWrapper {
   margin: var(--gap-half) 0;
+
   span {
     font-size: 13px;
   }
+
   label {
     padding: var(--padding);
+
     div {
       display: flex;
     }
+
     button {
       margin: 2px 2px 2px auto;
     }
@@ -124,10 +181,12 @@
 .search {
   display: flex;
   flex-wrap: wrap;
+
   li {
     img {
       max-width: 130px;
     }
+
     width: 100%;
     gap: var(--gap-half);
     display: flex;
@@ -136,6 +195,7 @@
     cursor: pointer;
     background-color: var(--theme-color-transparent);
     align-items: center;
+
     &:hover {
       background-color: var(--theme-color);
     }

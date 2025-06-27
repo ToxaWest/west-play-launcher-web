@@ -8,6 +8,7 @@ const apiCall = (props, func) => {
 }
 
 const electronConnector = {
+    getSteamUserId: () => apiCall(null, 'getSteamUserId'),
     getDataByGameId: (props) => apiCall(props, 'getDataByGameId'),
     getGameByFolder: (path) => apiCall(path, 'getGameByFolder'),
     getRyujinxGameData: (props) => apiCall(props, 'getRyujinxGameData'),
