@@ -20,8 +20,6 @@ const GameDLC = () => {
         }}/>
     }
 
-    console.log(dlcList)
-
     const renderItem = (item) => {
         return (
             <li key={item.id} tabIndex={1} onClick={() => {

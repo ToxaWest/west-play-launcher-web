@@ -30,7 +30,7 @@ const RenderContent = ({game, fields = []}) => {
     const renderAboutContent = (content) => {
         if (!content) return null;
         const contentParser = () => {
-            if (game.source === 'egs' && !game.steamId) {
+            if (game.source === 'egs') {
                 return content.replaceAll(/!\[(.*?)] \((.*?)\)/gm, `<img src="$2" alt="$1" onerror="this.style.display='none'"/>`)
             }
             return content
