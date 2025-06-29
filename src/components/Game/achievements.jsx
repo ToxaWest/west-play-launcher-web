@@ -27,7 +27,6 @@ const Achievements = () => {
             <div>
                 <strong>{achievement.displayName}</strong>
                 <span>{achievement.description}</span>
-                {stats['stat_' + achievement.name] && <i>Progress: {stats['stat_' + achievement.name]}</i>}
                 {progress[achievement.name] && <i>Progress: {progress[achievement.name]}</i>}
             </div>
         </li>
@@ -70,20 +69,19 @@ const Achievements = () => {
 
     const renderStats = () => {
         if (!game.stats || !stats) return null
-        const renderStats = (s) => {
-            if (!s.displayName || !stats[s.name]) {
-                return null
-            }
-            return <li key={s.name}>
+        const renderStats = ([key, value]) => {
+            const statInterface = game.stats.find(({name}) => name === key)
+            if (!statInterface || !statInterface.displayName) return null;
+            return <li key={key}>
                 <div>
-                    <strong>{s.displayName}: {stats[s.name] || s.defaultvalue}</strong>
+                    <strong>{statInterface.displayName}: {value}</strong>
                 </div>
             </li>
         }
 
         return (
             <ul className={styles.achList}>
-                {game.stats.map(renderStats)}
+                {Object.entries(stats).map(renderStats)}
             </ul>
         )
     }
