@@ -1,35 +1,15 @@
 import {useParams} from "react-router-dom";
-import {getFromStorage, setToStorage} from "../../helpers/getFromStorage";
+import {getFromStorage} from "../../helpers/getFromStorage";
 import RenderContent from "./renderContent";
 import {secondsToHms} from "../../hooks/usePlayTime";
-import {useEffect, useState} from "react";
 import electronConnector from "../../helpers/electronConnector";
 
 const GameContent = () => {
     const {id} = useParams();
     const game = getFromStorage('games').find(({id: gid}) => gid == id);
-    const [playTime, setPlayTime] = useState(0);
-    const [lastPlayed, setLastPlayed] = useState(0);
     const ach = getFromStorage('achievements')[id]
-
-    useEffect(() => {
-        const playTime = getFromStorage('playTime');
-        const lastPlayed = getFromStorage('lastPlayed');
-        setPlayTime(playTime[game.id]);
-        setLastPlayed(lastPlayed[game.id]);
-        electronConnector.getPlayTime({
-            source: game.source,
-            id: (game.nspId || game.steamId),
-            unofficial: game.unofficial
-        }).then(d => {
-            if (d) {
-                setLastPlayed(d.lastPlayed)
-                setToStorage('lastPlayed', {...lastPlayed, [game.id]: d.lastPlayed})
-                setPlayTime(d.playTime)
-                setToStorage('playTime', {...playTime, [game.id]: d.playTime})
-            }
-        })
-    }, [])
+    const playTime = getFromStorage('playTime')[game.id];
+    const lastPlayed = getFromStorage('lastPlayed')[game.id];
 
     const sources = {
         'steam': 'Steam',
@@ -60,15 +40,7 @@ const GameContent = () => {
         return null
     }
 
-    const getAchCount = (a) => Object.values(a).filter(({earned, progress}) => {
-        if (!earned) {
-            return false
-        }
-        if (progress) {
-            return progress === 1
-        }
-        return true
-    }).length
+    const getAchCount = (a) => Object.values(a).filter(({earned}) => earned).length
 
     return <RenderContent game={game} fields={[{
         label: 'Achievements',
@@ -90,7 +62,7 @@ const GameContent = () => {
         value: renderLink(game.storeUrl)
     }, {
         label: 'App id',
-        value: (game.unofficial && game.source === 'steam') ? game.steamId : null
+        value: game.source === 'steam' ? game.steamId : null
     }, {
         label: 'Licensed',
         value: !game.unofficial ? 'Yes' : 'No'

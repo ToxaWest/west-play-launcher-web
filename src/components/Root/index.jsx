@@ -5,7 +5,7 @@ import Footer from "../Footer";
 import Clock from "../Clock";
 import useAppControls from "../../hooks/useAppControls";
 import electronConnector from "../../helpers/electronConnector";
-import {getFromStorage} from "../../helpers/getFromStorage";
+import {getFromStorage, setToStorage} from "../../helpers/getFromStorage";
 import {modalIsActive} from "../../helpers/modalIsActive";
 
 const Root = () => {
@@ -29,13 +29,24 @@ const Root = () => {
             body.style.removeProperty('cursor');
             body.style.removeProperty('pointer-events');
         })
+        electronConnector.getPlayTime(getFromStorage('games') || []).then(d => {
+            const playTime = getFromStorage('playTime');
+            const lastPlayed = getFromStorage('lastPlayed');
+            Object.entries(d).forEach(([key, value]) => {
+                playTime[key] = value.playTime;
+                lastPlayed[key] = value.lastPlayed;
+            })
+            setToStorage('playTime', playTime);
+            setToStorage('lastPlayed', lastPlayed);
+
+        })
     }, [])
 
     const renderWrapper = (children) => {
         if (videoBg) {
             return (
                 <div className={styles.videoBg}>
-                    <video src={videoBg} autoPlay={true} muted={true} loop={true} className={styles.video} />
+                    <video src={videoBg} autoPlay={true} muted={true} loop={true} className={styles.video}/>
                     {children}
                 </div>
             )
