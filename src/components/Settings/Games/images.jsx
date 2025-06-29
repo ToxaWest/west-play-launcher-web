@@ -6,8 +6,8 @@ const Images = ({game, onChange, setLoading, setGame}) => {
     const notification = useNotification();
 
     const renderSteamAssets = () => {
-        const {steamId, id} = game;
-        if (steamId) {
+        const {id, steamgriddb} = game;
+        if (steamgriddb) {
             return <button tabIndex={1} onClick={() => {
                 setLoading(true);
                 notification({
@@ -16,7 +16,7 @@ const Images = ({game, onChange, setLoading, setGame}) => {
                     name: 'Getting images from steam',
                     status: 'warning'
                 }, 3000)
-                electronConnector.getSteamAssets({steamId, id}).then(data => {
+                electronConnector.getSteamAssets({id, steamgriddb}).then(data => {
                     setGame(g => ({...g, ...data}))
                     setLoading(false);
                     notification({
