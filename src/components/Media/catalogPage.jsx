@@ -3,11 +3,16 @@ import CategoryFinder from "./categoryFinder";
 import movieStorage from "./movieStorage";
 import Input from "../Input";
 import electronConnector from "../../helpers/electronConnector";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import useFooterActions from "../../hooks/useFooterActions";
 
 const catalogPage = ({pageData, selectMovie, goTo}) => {
     const [temp, setTemp] = useState([]);
-
+    const {setFooterActions} = useFooterActions()
+    const [activeCategory, setActiveCategory] = useState(null)
+    useEffect(() => {
+        setFooterActions({})
+    }, [])
     const renderPagination = () => {
         return (
             <div className={styles.pagination}>
@@ -27,11 +32,13 @@ const catalogPage = ({pageData, selectMovie, goTo}) => {
 
         return (
             <ul className={styles.categories}>
-                {pageData.categories.map((category) => (
+                {pageData.categories.map((category, index) => (
                     <li key={category.title}>
                         <details>
-                            <summary>{category.title}</summary>
-                            <CategoryFinder data={category.data} goTo={goTo}/>
+                            <summary tabIndex={1} onClick={()=> {
+                                setActiveCategory(a => a === index ? null : index)
+                            }}>{category.title}</summary>
+                            {activeCategory === index ? <CategoryFinder data={category.data} goTo={goTo}/> : null}
                         </details>
                     </li>
                 ))}
@@ -51,7 +58,7 @@ const catalogPage = ({pageData, selectMovie, goTo}) => {
                 children={(
                     <ul className={styles.search}>
                         {temp.map(({title, href, description}) => (
-                            <li key={href} onClick={() => {
+                            <li key={href} tabIndex={1} onClick={() => {
                                 selectMovie(href)
                             }}>
                                 <span>{title} {description}</span>

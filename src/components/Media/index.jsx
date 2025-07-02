@@ -2,6 +2,7 @@ import React, {useEffect} from "react";
 import MoviePage from "./moviePage";
 import electronConnector from "../../helpers/electronConnector";
 import CatalogPage from "./catalogPage";
+import useFooterActions from "../../hooks/useFooterActions";
 
 const Media = () => {
     const [url, setUrl] = React.useState(null);

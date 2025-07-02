@@ -5,8 +5,21 @@ import Loader from "../Loader";
 import Hls from "hls.js";
 import Input from "../Input";
 import movieStorage from "./movieStorage";
+import useFooterActions from "../../hooks/useFooterActions";
 
 const moviePage = ({url, setUrl}) => {
+    const {setFooterActions} = useFooterActions()
+    useEffect(() => {
+        setFooterActions({
+            b: {
+                button: 'b',
+                title: 'Back',
+                onClick: () => {
+                    setUrl(null);
+                }
+            },
+        })
+    }, [])
     const [data, setData] = useState({
         movie: {},
         translations: [],
@@ -125,24 +138,24 @@ const moviePage = ({url, setUrl}) => {
             <img src={data.movie.image} alt={data.movie.title}/>
             <p>{data.movie.description}</p>
             <div className={styles.optionsWrapper}>
-                <button onClick={() => {
+                <button tabIndex={1} onClick={() => {
                     setUrl(null);
                 }}>Back
                 </button>
-                <button onClick={() => {
+                <button tabIndex={1} onClick={() => {
                     movieStorage.removeHistory(url)
                     setUrl(null);
                 }}>Remove from history
                 </button>
-                <button onClick={() => {
+                <button tabIndex={1} onClick={() => {
                     playerRef.current.requestFullscreen();
                 }}>FullScreen
                 </button>
-                <button onClick={() => {
+                <button tabIndex={1} onClick={() => {
                     playerRef.current.play();
                 }}>Play
                 </button>
-                <button onClick={() => {
+                <button  tabIndex={1} onClick={() => {
                     playerRef.current.pause();
                 }}>Pause
                 </button>
@@ -201,6 +214,7 @@ const moviePage = ({url, setUrl}) => {
             </div>
             <div className={styles.videoWrapper}>
                 <video className={styles.player} controls={true} ref={playerRef} autoPlay={true}
+                       tabIndex={1}
                        onPlay={() => {
                            const {season_id, episode_id, translation_id} = data;
                            movieStorage.update({season_id, episode_id, translation_id, url})

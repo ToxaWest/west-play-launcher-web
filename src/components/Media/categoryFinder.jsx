@@ -19,6 +19,7 @@ const CategoryFinder = ({data, goTo}) => {
             ))}
             <button
                 disabled={!Object.values(current).every(v => v)}
+                tabIndex={1}
                 onClick={() => {
                     const url = `${current["select-category"]}${current["select-year"] === '0' ? '' : current["select-year"]}`
                     goTo(url)
