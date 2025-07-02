@@ -23,6 +23,7 @@ import News from "./components/Game/news";
 import SettingsImportEGS from "./components/Settings/import/settingsImportEGS";
 import SettingsImportSteam from "./components/Settings/import/settingsImportSteam";
 import SettingsImportNintendo from "./components/Settings/import/settingsImportNintendo";
+import Media from "./components/Media";
 
 const router = createBrowserRouter([
     {
@@ -30,6 +31,9 @@ const router = createBrowserRouter([
         children: [{
             path: "/",
             element: <Home/>
+        },{
+            path: '/media',
+            element: <Media/>
         }, {
             path: '/menu',
             element: <Menu/>

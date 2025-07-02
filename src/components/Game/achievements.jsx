@@ -40,7 +40,7 @@ const Achievements = () => {
         const notEarnedFilter = ({name}) => !earnedList.includes(name.toString());
         return (
             <>
-                {Object.entries(ach).sort(sort).sort((a) => a.earned ? 1 : -1).map(([n, {earned_time, progress, xp}]) => {
+                {Object.entries(ach).sort(sort).map(([n, {earned_time, progress, xp}]) => {
                     const {icon, displayName, description, name, type} = getObj(n);
                     if (!name) {
                         return null

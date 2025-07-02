@@ -38,7 +38,7 @@
     display: flex;
     margin: 0;
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
-
+    --progress-height: 3px;
     &.earned {
       background-color: var(--theme-color);
       position: relative;
@@ -48,7 +48,7 @@
         top: 0;
         left: 0;
         width: calc(100% - var(--progress));
-        height: 3px;
+        height: var(--progress-height);
         opacity: 0.8;
         background-color: #00b100;
         border-bottom:  1px solid var(--theme-color);
@@ -62,6 +62,7 @@
     img {
       width: 120px;
       height: 120px;
+      padding: var(--progress-height);
     }
 
     strong, i, span {

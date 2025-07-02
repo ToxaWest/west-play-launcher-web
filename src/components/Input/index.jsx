@@ -5,7 +5,7 @@ import Modal from "../Modal";
 
 const Input = ({
                    label, value = '', name, onChange = () => {
-    }, children,initial = '',
+    }, children, initial = '',
                    type = 'text',
                    options,
                    disabled,
@@ -70,7 +70,9 @@ const Input = ({
             const data = typeof options[0] === 'object' ? options : options.map(a => ({label: a, value: a}))
             const getValue = () => {
                 if (typeof value !== null && value !== undefined) {
-                    return data.find(a => a.value === value)?.label || 'select value'
+                    const cur = data.find(a => a.value === value);
+                    if (!cur) return 'select value'
+                    return cur.html ? <span dangerouslySetInnerHTML={{__html: cur.html}}/> : cur.label
                 }
                 return 'select value'
             }
@@ -80,11 +82,9 @@ const Input = ({
                     {active && <ul>
                         {[{label: 'empty', value: null}, ...data].map((option) => (
                             <li key={option.value} tabIndex={2} onClick={() => {
-                                onChange({
-                                    value: option.value,
-                                    name
-                                })
-                            }}>{option.label}</li>
+                                onChange({value: option.value, name})
+                            }}>{option.html ?
+                                <span dangerouslySetInnerHTML={{__html: option.html}}/> : option.label}</li>
                         ))}
                     </ul>
                     }
@@ -95,7 +95,7 @@ const Input = ({
 
     return (
         <label className={styles.wrapper}>
-            <span>{label || name}:</span>
+            <span data-display={Boolean(label || name)}>{label || name}:</span>
             {renderInput[type]()}
             <div className={styles.child}>
                 {children}

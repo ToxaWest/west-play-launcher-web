@@ -37,9 +37,14 @@ const Menu = () => {
                         Home
                     </Link>
                 </li>
-                <li style={{marginBottom: 'auto'}}>
+                <li>
                     <Link to="/library" tabIndex={1}>
                         Library
+                    </Link>
+                </li>
+                <li style={{marginBottom: 'auto'}}>
+                    <Link to="/media" tabIndex={1}>
+                        Media
                     </Link>
                 </li>
                 {connectedMonitors.map(renderMonitors)}
