@@ -27,6 +27,29 @@
       width: 100%;
     }
   }
+
+  .description {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: var(--gap-half);
+
+    img {
+      width: 100%;
+    }
+
+
+    h1 , h3{
+      margin: 0;
+    }
+
+    &Content {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap);
+      padding: var(--padding);
+      background-color: var(--theme-color-transparent);
+    }
+  }
 }
 
 .wrapperCatalog {
@@ -35,6 +58,7 @@
   gap: var(--gap);
   padding: var(--padding);
   background-color: var(--theme-color-transparent);
+
   .catalogList {
     margin: 0;
     list-style: none;
@@ -43,6 +67,7 @@
     display: grid;
     gap: var(--gap);
     grid-template-columns: repeat(9, 1fr);
+
     li {
       background-color: var(--theme-color);
       border-radius: var(--border-radius);
@@ -54,14 +79,18 @@
       gap: var(--gap-half);
       overflow: hidden;
       transition: all .3s ease;
+
       &:hover, &:active, &:focus {
         background-color: var(--theme-color-transparent);
         border-color: var(--theme-text-color);
       }
+
       img {
         min-width: 0;
         width: 100%;
+        aspect-ratio: 83 / 125;
       }
+
       span {
         padding: var(--gap-half);
       }
@@ -79,10 +108,12 @@
     flex-direction: column;
     gap: var(--gap);
     list-style: none;
+
     button {
       margin: 0;
     }
   }
+
   .search {
     display: flex;
     flex-wrap: wrap;

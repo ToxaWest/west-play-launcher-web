@@ -29,14 +29,6 @@ const Input = ({
                 <input type="text"
                        placeholder={label}
                        name={name}
-                       tabIndex={1}
-                       onClick={(e) => {
-                           if(e.target === window.document.activeElement) {
-                               if ("virtualKeyboard" in navigator) {
-                                   navigator.virtualKeyboard.show();
-                               }
-                           }
-                       }}
                        ref={_ref}
                        {...(disabled ? {disabled, value} : {defaultValue: value})}
                        onChange={change}

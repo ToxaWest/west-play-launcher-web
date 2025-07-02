@@ -2,13 +2,14 @@ import React, {useEffect, useState} from "react";
 import electronConnector from "../../helpers/electronConnector";
 import styles from "./media.module.scss";
 import Loader from "../Loader";
-import Hls from "hls.js";
 import Input from "../Input";
 import movieStorage from "./movieStorage";
 import useFooterActions from "../../hooks/useFooterActions";
+import Player from "./player";
 
 const moviePage = ({url, setUrl}) => {
     const {setFooterActions} = useFooterActions()
+    const playerRef = React.createRef();
     useEffect(() => {
         setFooterActions({
             b: {
@@ -23,22 +24,19 @@ const moviePage = ({url, setUrl}) => {
     const [data, setData] = useState({
         movie: {},
         translations: [],
-        episodes: {}
+        episodes: {},
+        streams: {}
     })
-    const [quality, setQuality] = useState('1080p')
-    const [streams, setStreams] = useState({})
+
+    const [quality, setQuality] = useState('1080p Ultra')
     const [loading, setLoading] = useState(true)
-    const playerRef = React.useRef(null);
-    const hlsRef = React.useRef(null);
 
     useEffect(() => {
-        hlsRef.current = new Hls();
-        hlsRef.current.attachMedia(playerRef.current);
         setLoading(true)
         electronConnector.getSerialData(url).then(r => {
             setLoading(false)
-            setStreams(r.streams)
             setData({
+                streams: r.streams,
                 movie: r.movie,
                 translation_id: r.translation_id,
                 trl_favs: r.trl_favs,
@@ -49,31 +47,8 @@ const moviePage = ({url, setUrl}) => {
                 episode_id: parseInt(r.episode_id),
             })
             movieStorage.addToHistory({url, image: r.movie.image, title: r.movie.title})
-            initPlayer(r.streams)
         })
     }, [url])
-
-    const initPlayer = (streams) => {
-        if (!playerRef.current) return;
-        if (!streams[quality]) return;
-        const files = streams[quality].filter(s => s.endsWith('.m3u8'));
-        hlsRef.current.loadSource(files[0]);
-        hlsRef.current.on(Hls.Events.ERROR, function (event, data) {
-            console.log("Hls.Events.ERROR", data);
-            if (data.fatal) {
-                if (files[1] && data.url !== files[1]) {
-                    hlsRef.current.loadSource(files[1]);
-                }
-                hlsRef.current.startLoad();
-            }
-        });
-    }
-
-    useEffect(() => {
-        if (streams.hasOwnProperty(quality)) {
-            initPlayer(streams)
-        }
-    }, [quality])
 
     const setTranslation = (translation_id) => {
         setLoading(true);
@@ -86,10 +61,10 @@ const moviePage = ({url, setUrl}) => {
                 action: 'get_episodes'
             }
         }).then(r => {
-            setStreams(r.streams)
             setData((d) => {
                 return {
                     ...d,
+                    streams: r.streams,
                     translation_id,
                     episodes: r.episodes,
                     translations: d.translations.map((t) => {
@@ -99,7 +74,6 @@ const moviePage = ({url, setUrl}) => {
                 }
             })
             setLoading(false);
-            initPlayer(r.streams)
         })
     }
 
@@ -117,48 +91,30 @@ const moviePage = ({url, setUrl}) => {
                 action: 'get_episodes'
             }
         }).then(r => {
-            setStreams(r.streams)
             setData((d) => {
                 return {
                     ...d,
+                    streams: r.streams,
                     season_id: parseInt(currentVideo.season),
                     episode_id: parseInt(currentVideo.episode),
                     episodes: r.episodes
                 }
             })
             setLoading(false);
-            initPlayer(r.streams)
         })
     }
 
     return (
         <div className={styles.wrapperMovie}>
-            <h1>{data.movie.title}</h1>
-            <h3>{data.movie.originalTitle}</h3>
-            <img src={data.movie.image} alt={data.movie.title}/>
-            <p>{data.movie.description}</p>
+            <div className={styles.description}>
+                <img src={data.movie.image} alt={data.movie.title}/>
+                <div className={styles.descriptionContent}>
+                    <h1>{data.movie.title}</h1>
+                    <h3>{data.movie.originalTitle}</h3>
+                    <p>{data.movie.description}</p>
+                </div>
+            </div>
             <div className={styles.optionsWrapper}>
-                <button tabIndex={1} onClick={() => {
-                    setUrl(null);
-                }}>Back
-                </button>
-                <button tabIndex={1} onClick={() => {
-                    movieStorage.removeHistory(url)
-                    setUrl(null);
-                }}>Remove from history
-                </button>
-                <button tabIndex={1} onClick={() => {
-                    playerRef.current.requestFullscreen();
-                }}>FullScreen
-                </button>
-                <button tabIndex={1} onClick={() => {
-                    playerRef.current.play();
-                }}>Play
-                </button>
-                <button  tabIndex={1} onClick={() => {
-                    playerRef.current.pause();
-                }}>Pause
-                </button>
                 {data.translations.length ?
                     <Input label={'Translation'}
                            type="select"
@@ -202,9 +158,9 @@ const moviePage = ({url, setUrl}) => {
                                setEpisode(ep)
                            }}/>
                     : null}
-                {Object.keys(streams || {}).length ?
+                {Object.keys(data.streams || {}).length ?
                     <Input label={'Quality'} type="select"
-                           options={Object.keys(streams).map(key => ({
+                           options={Object.keys(data.streams).map(key => ({
                                value: key,
                                label: key
                            }))} value={quality}
@@ -212,20 +168,37 @@ const moviePage = ({url, setUrl}) => {
                                setQuality(value)
                            }}/> : null}
             </div>
+            <div className={styles.optionsWrapper}>
+                <button tabIndex={1} onClick={() => {
+                    movieStorage.removeHistory(url)
+                    setUrl(null);
+                }}>Remove from history
+                </button>
+                <button tabIndex={1} onClick={() => {
+                    console.log(playerRef)
+                    playerRef.current.requestFullscreen();
+                }}>FullScreen
+                </button>
+                <button tabIndex={1} onClick={() => {
+                    playerRef.current.play();
+                }}>Play
+                </button>
+                <button tabIndex={1} onClick={() => {
+                    playerRef.current.pause();
+                }}>Pause
+                </button>
+            </div>
             <div className={styles.videoWrapper}>
-                <video className={styles.player} controls={true} ref={playerRef} autoPlay={true}
-                       tabIndex={1}
-                       onPlay={() => {
-                           const {season_id, episode_id, translation_id} = data;
-                           movieStorage.update({season_id, episode_id, translation_id, url})
-                       }}
-                       onEnded={() => {
-                           if (data.episodes.hasOwnProperty(data.season_id)) {
-                               const nS = data.episodes[data.season_id].find(b => parseInt(b.episode) === (data.episode_id + 1) && parseInt(b.season) === data.season_id)
-                               if (nS) setEpisode(nS)
-                           }
-
-                       }}/>
+                <Player episode_id={data.episode_id}
+                        season_id={data.season_id}
+                        quality={quality}
+                        translation_id={data.translation_id}
+                        episodes={data.episodes}
+                        ref={playerRef}
+                        streams={data.streams}
+                        setEpisode={setEpisode}
+                        setQuality={setQuality}
+                />
             </div>
             <Loader loading={loading}/>
         </div>
