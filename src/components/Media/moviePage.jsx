@@ -20,12 +20,30 @@ const moviePage = ({url, setUrl}) => {
 
     useEffect(() => {
         setFooterActions({
+            a: {
+                button: 'a',
+                title: 'Select',
+                onClick: () => {
+                    if (document.fullscreenElement) {
+                        const player = document.querySelector('#hlsPlayer');
+                        if (player) {
+                            player.paused ? player.play() : player.pause()
+                        }
+                    } else {
+                        document.activeElement?.click();
+                    }
+
+                }
+            },
             b: {
                 button: 'b',
                 title: 'Back',
                 onClick: () => {
-                    if (document.fullscreenElement) document.exitFullscreen();
-                    else setUrl(null);
+                    if (document.fullscreenElement) {
+                        const player = document.querySelector('#hlsPlayer');
+                        if (player) player.pause();
+                        document.exitFullscreen();
+                    } else setUrl(null);
                 }
             },
             rt: {
@@ -44,8 +62,10 @@ const moviePage = ({url, setUrl}) => {
                 onClick: () => {
                     const player = document.querySelector('#hlsPlayer');
                     if (player) {
-                        if (document.fullscreenElement) document.exitFullscreen();
-                        else player.requestFullscreen();
+                        if (document.fullscreenElement) {
+                            player.pause();
+                            document.exitFullscreen();
+                        } else player.requestFullscreen();
                     }
                 }
             },
@@ -61,7 +81,7 @@ const moviePage = ({url, setUrl}) => {
             }
         })
         return () => {
-            removeFooterActions(['lt', 'rt', 'x', 'y', 'b']);
+            removeFooterActions(['lt', 'rt', 'x', 'y', 'b', 'a']);
         }
     }, [])
     const [data, setData] = useState({
@@ -79,6 +99,7 @@ const moviePage = ({url, setUrl}) => {
         electronConnector.getSerialData(url).then(r => {
             setLoading(false)
             setData({
+                trailer: r.trailer,
                 type: r.type,
                 step: 'init',
                 streams: r.streams,
@@ -160,6 +181,21 @@ const moviePage = ({url, setUrl}) => {
         })
     }
 
+    const renderTrailer = () => {
+        if (!data.trailer) return null
+        const url = new URL(data.trailer);
+        if (url.hostname.includes('youtube')) {
+            const id = url.pathname.split('/').at(-1);
+            return (
+                <iframe
+                    loading="lazy"
+                    src={`https://www.youtube.com/embed/${id}?iv_load_policy=3&autoplay=1&loop=1&rel=0&mute=1&showinfo=0`}
+                    frameBorder="0"/>
+            )
+        }
+        return null
+    }
+
     return (
         <div className={styles.wrapperMovie}>
             <div className={styles.description}>
@@ -168,6 +204,7 @@ const moviePage = ({url, setUrl}) => {
                     <h1>{data.movie.title}</h1>
                     <h3>{data.movie.originalTitle}</h3>
                     <p>{data.movie.description}</p>
+                    {renderTrailer()}
                 </div>
             </div>
             <div className={styles.optionsWrapper}>
@@ -193,11 +230,7 @@ const moviePage = ({url, setUrl}) => {
                            value={data.season_id}
                            onChange={({value}) => {
                                setData((d) => {
-                                   return {
-                                       ...d,
-                                       episode_id: null,
-                                       season_id: parseInt(value)
-                                   }
+                                   return {...d, episode_id: null, season_id: parseInt(value)}
                                })
                            }}/> : null}
                 {(data.episodes[data.season_id] || []).length ?

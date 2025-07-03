@@ -25,6 +25,8 @@ const Footer = () => {
         x: 'x-filled-blue.svg',
         lt: 'left-trigger.svg',
         rt: 'right-trigger.svg',
+        rb: 'right-bumper.svg',
+        lb: 'left-bumper.svg',
         top: 'dpad-up.svg',
         bottom: 'dpad-down.svg'
     }

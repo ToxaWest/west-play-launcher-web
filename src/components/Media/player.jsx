@@ -73,6 +73,8 @@ const Player = ({
         });
     }
 
+    if (!streams) return;
+
     return (
         <video
             className={styles.player}

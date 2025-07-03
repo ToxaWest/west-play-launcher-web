@@ -35,6 +35,11 @@
       gap: var(--gap);
       padding: var(--padding);
       background-color: var(--theme-color-transparent);
+
+      iframe {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+      }
     }
   }
 }
@@ -48,11 +53,10 @@
 
   .catalogList {
     margin: 0;
+    padding: 0;
     list-style: none;
-    padding: var(--padding);
-    background-color: var(--theme-color-transparent);
     display: grid;
-    gap: var(--gap);
+    gap: var(--gap-half);
     grid-template-columns: repeat(9, 1fr);
 
     li {
@@ -62,20 +66,24 @@
       display: flex;
       flex-direction: column;
       min-width: 0;
-      padding: 1px;
-      gap: var(--gap-half);
       overflow: hidden;
       transition: all .3s ease;
+      cursor: pointer;
 
       &:hover, &:active, &:focus {
         background-color: var(--theme-color-transparent);
-        border-color: var(--theme-text-color);
+        border-color: var(--theme-text-color-seconary);
+        img {
+          padding: 0;
+        }
       }
 
       img {
         min-width: 0;
         width: 100%;
         aspect-ratio: 83 / 125;
+        padding: var(--gap-half);
+        transition: all .3s ease-in;
       }
 
       span {
