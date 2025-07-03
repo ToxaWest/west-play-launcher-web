@@ -40,13 +40,14 @@ class MovieStorage {
         }
     }
 
-    update({season_id, episode_id, translation_id, url}) {
+    update({season_id, episode_id, translation_id, url, currentTime}) {
         const pathname = url.startsWith('http') ? new URL(url).pathname : url;
         const index = this.history.findIndex(({href: u}) => u === pathname);
         if (index !== -1) {
             if (season_id) this.history[index].season_id = season_id;
             if (episode_id) this.history[index].episode_id = episode_id;
             if (translation_id) this.history[index].translation_id = translation_id;
+            if (typeof currentTime === "number") this.history[index].currentTime = currentTime;
             setToStorage('history', this.history);
         }
     }

@@ -267,14 +267,7 @@ const moviePage = ({url, setUrl}) => {
                         translation_id={data.translation_id}
                         episodes={data.episodes}
                         ref={playerRef}
-                        onPlay={() => {
-                            movieStorage.update({
-                                url,
-                                episode_id: data.episode_id,
-                                season_id: data.season_id,
-                                translation_id: data.translation_id
-                            })
-                        }}
+                        url={url}
                         streams={data.streams}
                         setEpisode={setEpisode}
                         setQuality={setQuality}

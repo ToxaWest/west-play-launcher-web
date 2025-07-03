@@ -65,6 +65,7 @@
     top: 30px;
     left: 0;
     min-width: 100%;
+    color: var(--theme-text-color);
     background-color: var(--theme-secondary);
     padding: var(--gap-half);
     z-index: 1;
@@ -77,7 +78,8 @@
       cursor: pointer;
       padding: var(--padding);
       &:hover, &:focus, &:active {
-        background-color: var(--theme-color-transparent);
+        background-color: var(--theme-text-color);
+        color: var(--theme-color);
       }
     }
   }

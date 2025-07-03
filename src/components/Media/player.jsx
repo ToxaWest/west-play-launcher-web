@@ -3,6 +3,7 @@ import React, {useEffect} from "react";
 import Hls from "hls.js";
 import video from "../Video";
 import Loader from "../Loader";
+import movieStorage from "./movieStorage";
 
 const Player = ({
                     streams,
@@ -10,13 +11,31 @@ const Player = ({
                     season_id,
                     episode_id,
                     translation_id,
+                    url,
                     setEpisode,
                     quality,
                     setQuality,
-                    ref,
-                    onPlay
+                    ref
                 }) => {
     const playerRef = ref || React.useRef(null);
+
+    const getStartPosition = () => {
+        const s = movieStorage.getHistory(url)
+        if (s.translation_id === translation_id) {
+            if (episode_id && season_id){
+                if (episode_id === s.episode_id && season_id === s.season_id)
+                    return s.currentTime || 0
+            }
+
+            else return s.currentTime || 0
+        }
+        return 0
+    }
+
+    useEffect(() => {
+        playerRef.current.currentTime = getStartPosition();
+    }, [episode_id, season_id, translation_id])
+
     const hlsRef = React.useRef(new Hls({
         manifestLoadingTimeOut: 2000,
         "maxBufferLength": 180,
@@ -85,6 +104,9 @@ const Player = ({
                 id={'hlsPlayer'}
                 controls={false}
                 ref={playerRef}
+                onClick={e => {
+                    e.target.paused ? e.target.play() : e.target.pause()
+                }}
                 autoPlay={false}
                 onLoadedData={(e) => {
                     setLoading(false);
@@ -94,13 +116,21 @@ const Player = ({
                     progressBar.max = e.target.duration;
                 }}
                 onPlay={() => {
-                    onPlay();
                     playerRef.current.autoplay = false;
                     document.getElementById('playButton').style.display = 'none';
                 }}
                 onTimeUpdate={(e) => {
                     const progressBar = document.getElementById('progressBar');
                     progressBar.value = e.target.currentTime;
+                    if (e.target.currentTime) {
+                        movieStorage.update({
+                            url,
+                            episode_id: episode_id,
+                            season_id: season_id,
+                            translation_id: translation_id,
+                            currentTime: e.target.currentTime
+                        })
+                    }
                 }}
                 onPause={() => {
                     document.getElementById('playButton').style.display = 'block';
@@ -112,16 +142,24 @@ const Player = ({
                             setQuality('1080p Ultra')
                             setEpisode(nS);
                             playerRef.current.autoplay = true;
+                            return;
                         } else {
-                            if (document.fullscreenElement) document.exitFullscreen();
+                            if (episodes.hasOwnProperty(season_id + 1)) {
+                                const nSe = episodes[season_id + 1].find(b => parseInt(b.episode) === 1)
+                                if (nSe) {
+                                    setQuality('1080p Ultra')
+                                    setEpisode(nSe);
+                                    playerRef.current.autoplay = true;
+                                    return;
+                                }
+                            }
                         }
                     }
+                    if (document.fullscreenElement) document.exitFullscreen();
                 }}/>
-            <div className={styles.playButton} id={'playButton'} onClick={() => {
-                playerRef.current.play()
-            }}/>
-            <input type="range" id={'progressBar'} className={styles.progress} onChange={(e) => {
-                playerRef.current.currentTime = e.target.value;
+            <div className={styles.playButton} id={'playButton'}/>
+            <input type="range" id={'progressBar'} className={styles.progress} step={1} onChange={(e) => {
+                playerRef.current.currentTime = parseInt(e.target.value);
             }}/>
             <Loader loading={loading}/>
         </div>
