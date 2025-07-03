@@ -36,7 +36,7 @@ const moviePage = ({url, setUrl}) => {
             lt: {
                 button: 'lt',
                 title: 'Forward -',
-                onClick: () => forward(15)
+                onClick: () => forward(-15)
             },
             y: {
                 button: 'y',
