@@ -8,6 +8,13 @@
 
   input {
     min-width: 400px;
+
+    &[type="text"] {
+      &:hover, &:focus, &:active {
+        background-color: var(--theme-text-color);
+        color: var(--theme-color);
+      }
+    }
   }
 }
 
@@ -45,6 +52,11 @@
   border: 1px solid var(--theme-text-color-seconary);
   background-color: transparent;
   min-width: 400px;
+  &:hover, &:focus, &:active {
+    background-color: var(--theme-text-color);
+    color: var(--theme-color);
+  }
+
   span {
     font-size: 14px;
   }
@@ -64,7 +76,7 @@
       font-size: 12px;
       cursor: pointer;
       padding: var(--padding);
-      &:hover {
+      &:hover, &:focus, &:active {
         background-color: var(--theme-color-transparent);
       }
     }

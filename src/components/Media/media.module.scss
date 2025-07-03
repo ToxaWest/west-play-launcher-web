@@ -132,6 +132,10 @@
       line-height: 2;
       padding: var(--gap-half);
       border-bottom: 1px solid var(--theme-text-color-seconary);
+      &:hover, &:focus, &:active {
+        background-color: var(--theme-text-color);
+        color: var(--theme-color);
+      }
     }
     button {
       margin: 0;
@@ -141,19 +145,23 @@
   .search {
     display: flex;
     flex-wrap: wrap;
+    margin: 0;
+    padding: var(--gap) 0;
+    list-style: none;
+    gap: var(--gap-half);
 
     li {
       width: 100%;
-      gap: var(--gap-half);
       display: flex;
       padding: var(--gap-half);
       border-radius: var(--border-radius);
       cursor: pointer;
-      background-color: var(--theme-color-transparent);
+      background-color: var(--theme-color);
       align-items: center;
 
-      &:hover {
-        background-color: var(--theme-color);
+      &:hover, &:focus, &:active {
+        background-color: var(--theme-text-color);
+        color: var(--theme-color);
       }
     }
   }
