@@ -30,6 +30,7 @@ const Input = ({
                        placeholder={label}
                        name={name}
                        ref={_ref}
+                       tabIndex={1}
                        {...(disabled ? {disabled, value} : {defaultValue: value})}
                        onChange={change}
                 />
