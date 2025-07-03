@@ -1,4 +1,4 @@
-import {useContext, useEffect} from "react";
+import {useContext} from "react";
 import {AppContext} from "../helpers/provider";
 import {useLocation, useNavigate} from "react-router-dom";
 
@@ -9,7 +9,8 @@ const useFooterActions = () => {
     const back = {
         '': '/',
         'game': '/',
-        'settings': '/'
+        'settings': '/',
+        'media': '/'
     }
 
     const backButton = () => {

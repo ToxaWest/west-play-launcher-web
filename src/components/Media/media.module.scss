@@ -2,30 +2,16 @@
   max-width: 90vw;
   margin: 50px auto;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 3fr 2fr;
   gap: var(--gap);
   padding: var(--padding);
   background-color: var(--theme-color-transparent);
 
-  .optionsWrapper {
-    display: flex;
-    flex-direction: column;
-    gap: var(--gap-half);
-    padding: var(--padding);
-    background-color: var(--theme-secondary);
-
-    button {
-      margin: 0;
-    }
-  }
-
-  .videoWrapper {
-    .player {
-      background-color: black;
-      position: relative;
-      aspect-ratio: 16 / 9;
-      width: 100%;
-    }
+  .player {
+    background-color: black;
+    position: relative;
+    aspect-ratio: 16 / 9;
+    width: 100%;
   }
 
   .description {
@@ -35,6 +21,7 @@
 
     img {
       width: 100%;
+      min-width: 0;
     }
 
 
@@ -106,9 +93,16 @@
     background-color: var(--theme-color-transparent);
     display: flex;
     flex-direction: column;
-    gap: var(--gap);
     list-style: none;
-
+    padding: var(--padding);
+    margin: 0;
+    summary {
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 2;
+      padding: var(--gap-half);
+      border-bottom: 1px solid var(--theme-text-color-seconary);
+    }
     button {
       margin: 0;
     }

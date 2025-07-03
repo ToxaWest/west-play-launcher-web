@@ -28,7 +28,7 @@ class MovieStorage {
     getHistory(url) {
         const pathname = url.startsWith('http') ? new URL(url).pathname : url;
         const index = this.history.findIndex(({href: u}) => u === pathname);
-        return this.history[index] || null;
+        return this.history[index] || {};
     }
 
     removeHistory(url) {
@@ -44,9 +44,9 @@ class MovieStorage {
         const pathname = url.startsWith('http') ? new URL(url).pathname : url;
         const index = this.history.findIndex(({href: u}) => u === pathname);
         if (index !== -1) {
-            this.history[index].season_id = season_id;
-            this.history[index].episode_id = episode_id;
-            this.history[index].translation_id = translation_id;
+            if (season_id) this.history[index].season_id = season_id;
+            if (episode_id) this.history[index].episode_id = episode_id;
+            if (translation_id) this.history[index].translation_id = translation_id;
             setToStorage('history', this.history);
         }
     }

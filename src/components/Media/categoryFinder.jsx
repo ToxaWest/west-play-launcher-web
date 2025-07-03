@@ -12,9 +12,9 @@ const CategoryFinder = ({data, goTo}) => {
         <div>
             {data.map((d) => (
                 <Input key={d.id} type="select" label={''} value={current[d.id]} options={d.options}
-                       onChange={({value, name}) => {
+                       onChange={({value}) => {
                            if (!value) return
-                           setCurrent(a => ({...a, [name]: value}))
+                           setCurrent(a => ({...a, [d.id]: value}))
                        }}/>
             ))}
             <button

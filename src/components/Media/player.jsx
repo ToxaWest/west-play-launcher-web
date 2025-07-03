@@ -3,9 +3,25 @@ import React, {useEffect} from "react";
 import Hls from "hls.js";
 import video from "../Video";
 
-const Player = ({streams, episodes, season_id, episode_id, translation_id, setEpisode, quality, setQuality, ref}) => {
+const Player = ({
+                    streams,
+                    episodes,
+                    season_id,
+                    episode_id,
+                    translation_id,
+                    setEpisode,
+                    quality,
+                    setQuality,
+                    ref,
+                    onPlay
+                }) => {
     const playerRef = ref || React.useRef(null);
-    const hlsRef = React.useRef(new Hls());
+    const hlsRef = React.useRef(new Hls({
+        manifestLoadingTimeOut: 2000,
+        "maxBufferLength": 180,
+        "maxMaxBufferLength": 600,
+        "maxBufferSize": 33554432000
+    }));
 
     useEffect(() => {
         hlsRef.current.attachMedia(playerRef.current);
@@ -23,11 +39,12 @@ const Player = ({streams, episodes, season_id, episode_id, translation_id, setEp
             if (!res.hasOwnProperty(type)) res[type] = [];
             res[type].push(s)
         })
-        return res;
+        return res
     }
 
     const initPlayer = () => {
         if (!playerRef.current) return;
+        if (!streams) return;
         if (!streams[quality]) {
             if (Object.keys(streams).length > 0) {
                 setQuality(Object.keys(streams).at(-1));
@@ -38,7 +55,6 @@ const Player = ({streams, episodes, season_id, episode_id, translation_id, setEp
         const h = [m3u8[0]];
         hlsRef.current.loadSource(m3u8[0]);
         hlsRef.current.on(Hls.Events.ERROR, function (event, data) {
-            console.log("Hls.Events.ERROR", data);
             if (data.fatal) {
                 if (h.includes(data.url)) {
                     const m3uSource = m3u8.find(s => !h.includes(s))
@@ -60,16 +76,24 @@ const Player = ({streams, episodes, season_id, episode_id, translation_id, setEp
     return (
         <video
             className={styles.player}
-            controls={true}
+            id={'hlsPlayer'}
+            controls={false}
             ref={playerRef}
-            autoPlay={true}
+            autoPlay={false}
             onPlay={() => {
-
+                onPlay();
+                playerRef.current.autoplay = false;
             }}
             onEnded={() => {
                 if (episodes.hasOwnProperty(season_id)) {
                     const nS = episodes[season_id].find(b => parseInt(b.episode) === (episode_id + 1) && parseInt(b.season) === season_id)
-                    if (nS) setEpisode(nS)
+                    if (nS) {
+                        setQuality('1080p Ultra')
+                        setEpisode(nS);
+                        playerRef.current.autoplay = true;
+                    } else {
+                        if (document.fullscreenElement) document.exitFullscreen();
+                    }
                 }
 
             }}/>

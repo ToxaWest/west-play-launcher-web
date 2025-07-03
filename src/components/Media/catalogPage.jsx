@@ -16,7 +16,8 @@ const catalogPage = ({pageData, selectMovie, goTo}) => {
     const renderPagination = () => {
         return (
             <div className={styles.pagination}>
-                <button tabIndex={1} onClick={() => goTo(pageData.pagination.prev)}
+                <button tabIndex={Boolean(pageData.pagination.prev) ? 1 : -1}
+                        onClick={() => goTo(pageData.pagination.prev)}
                         disabled={!Boolean(pageData.pagination.prev)}
                 >Previous
                 </button>
@@ -35,7 +36,7 @@ const catalogPage = ({pageData, selectMovie, goTo}) => {
                 {pageData.categories.map((category, index) => (
                     <li key={category.title}>
                         <details>
-                            <summary tabIndex={1} onClick={()=> {
+                            <summary tabIndex={1} onClick={() => {
                                 setActiveCategory(a => a === index ? null : index)
                             }}>{category.title}</summary>
                             {activeCategory === index ? <CategoryFinder data={category.data} goTo={goTo}/> : null}
@@ -72,9 +73,9 @@ const catalogPage = ({pageData, selectMovie, goTo}) => {
 
     return (
         <div className={styles.wrapperCatalog}>
-            <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', alignItems: 'start'}}>
-                {renderSearch()}
+            <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', alignItems: 'start', gap: 'var(--gap)'}}>
                 {renderCategories()}
+                {renderSearch()}
             </div>
             {renderPagination()}
             <h2>Catalog</h2>

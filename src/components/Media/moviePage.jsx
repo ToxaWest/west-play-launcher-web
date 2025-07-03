@@ -8,18 +8,61 @@ import useFooterActions from "../../hooks/useFooterActions";
 import Player from "./player";
 
 const moviePage = ({url, setUrl}) => {
-    const {setFooterActions} = useFooterActions()
+    const {setFooterActions, removeFooterActions} = useFooterActions()
     const playerRef = React.createRef();
+
+    const forward = (t) => {
+        const player = document.querySelector('#hlsPlayer');
+        if (player) {
+            player.currentTime += t
+        }
+    }
+
     useEffect(() => {
         setFooterActions({
             b: {
                 button: 'b',
                 title: 'Back',
                 onClick: () => {
-                    setUrl(null);
+                    if (document.fullscreenElement) document.exitFullscreen();
+                    else setUrl(null);
                 }
             },
+            rt: {
+                button: 'rt',
+                title: 'Forward +',
+                onClick: () => forward(15)
+            },
+            lt: {
+                button: 'lt',
+                title: 'Forward -',
+                onClick: () => forward(15)
+            },
+            y: {
+                button: 'y',
+                title: 'FullScreen',
+                onClick: () => {
+                    const player = document.querySelector('#hlsPlayer');
+                    if (player) {
+                        if (document.fullscreenElement) document.exitFullscreen();
+                        else player.requestFullscreen();
+                    }
+                }
+            },
+            x: {
+                button: 'x',
+                title: 'Play/Pause',
+                onClick: () => {
+                    const player = document.querySelector('#hlsPlayer');
+                    if (player) {
+                        player.paused ? player.play() : player.pause()
+                    }
+                }
+            }
         })
+        return () => {
+            removeFooterActions(['lt', 'rt', 'x', 'y', 'b']);
+        }
     }, [])
     const [data, setData] = useState({
         movie: {},
@@ -36,6 +79,8 @@ const moviePage = ({url, setUrl}) => {
         electronConnector.getSerialData(url).then(r => {
             setLoading(false)
             setData({
+                type: r.type,
+                step: 'init',
                 streams: r.streams,
                 movie: r.movie,
                 translation_id: r.translation_id,
@@ -48,7 +93,23 @@ const moviePage = ({url, setUrl}) => {
             })
             movieStorage.addToHistory({url, image: r.movie.image, title: r.movie.title})
         })
-    }, [url])
+    }, [])
+
+    useEffect(() => {
+        const h = movieStorage.getHistory(url);
+
+        if (data.step === 'init') {
+            if (h.season_id && h.episode_id && h.translation_id) {
+                if (h.season_id !== data.season_id || h.episode_id !== data.episode_id || h.translation_id === data.translation_id) {
+                    const r = data.episodes[h.season_id].find(e => parseInt(e.episode) === parseInt(h.episode_id));
+                    setEpisode(r, h.translation_id)
+                }
+            } else if (h.translation_id && (h.translation_id !== data.translation_id)) {
+                setTranslation(h.translation_id)
+            }
+        }
+
+    }, [data.step])
 
     const setTranslation = (translation_id) => {
         setLoading(true);
@@ -58,28 +119,22 @@ const moviePage = ({url, setUrl}) => {
                 id: parseInt(data.post_id),
                 translator_id: parseInt(translation_id),
                 favs: data.trl_favs,
-                action: 'get_episodes'
+                action: data.type === "initCDNMoviesEvents" ? 'get_movie' : 'get_episodes'
             }
         }).then(r => {
-            setData((d) => {
-                return {
-                    ...d,
-                    streams: r.streams,
-                    translation_id,
-                    episodes: r.episodes,
-                    translations: d.translations.map((t) => {
-                        t.current = t.id === translation_id;
-                        return t;
-                    })
-                }
-            })
+            setData((d) => ({
+                ...d,
+                streams: r.streams,
+                translation_id,
+                episodes: r.episodes,
+            }))
             setLoading(false);
         })
     }
 
-    const setEpisode = (currentVideo) => {
+    const setEpisode = (currentVideo, transId) => {
         setLoading(true);
-        const translator_id = data.translations.length ? data.translations.find(t => t.current).id : data.translation_id;
+        const translator_id = transId || data.translation_id;
         electronConnector.getAjaxVideo({
             method: 'get_cdn_series',
             data: {
@@ -94,6 +149,7 @@ const moviePage = ({url, setUrl}) => {
             setData((d) => {
                 return {
                     ...d,
+                    translation_id: translator_id,
                     streams: r.streams,
                     season_id: parseInt(currentVideo.season),
                     episode_id: parseInt(currentVideo.episode),
@@ -167,34 +223,25 @@ const moviePage = ({url, setUrl}) => {
                            onChange={({value}) => {
                                setQuality(value)
                            }}/> : null}
-            </div>
-            <div className={styles.optionsWrapper}>
                 <button tabIndex={1} onClick={() => {
                     movieStorage.removeHistory(url)
                     setUrl(null);
                 }}>Remove from history
                 </button>
-                <button tabIndex={1} onClick={() => {
-                    console.log(playerRef)
-                    playerRef.current.requestFullscreen();
-                }}>FullScreen
-                </button>
-                <button tabIndex={1} onClick={() => {
-                    playerRef.current.play();
-                }}>Play
-                </button>
-                <button tabIndex={1} onClick={() => {
-                    playerRef.current.pause();
-                }}>Pause
-                </button>
-            </div>
-            <div className={styles.videoWrapper}>
                 <Player episode_id={data.episode_id}
                         season_id={data.season_id}
                         quality={quality}
                         translation_id={data.translation_id}
                         episodes={data.episodes}
                         ref={playerRef}
+                        onPlay={() => {
+                            movieStorage.update({
+                                url,
+                                episode_id: data.episode_id,
+                                season_id: data.season_id,
+                                translation_id: data.translation_id
+                            })
+                        }}
                         streams={data.streams}
                         setEpisode={setEpisode}
                         setQuality={setQuality}
