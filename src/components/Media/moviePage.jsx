@@ -10,7 +10,7 @@ import Player from "./player";
 const moviePage = ({url, setUrl}) => {
     const {setFooterActions, removeFooterActions} = useFooterActions()
     const playerRef = React.createRef();
-
+    const [showTrailer, setShowTrailer] = useState(false)
     const forward = (t) => {
         const player = document.querySelector('#hlsPlayer');
         if (player) {
@@ -183,6 +183,9 @@ const moviePage = ({url, setUrl}) => {
 
     const renderTrailer = () => {
         if (!data.trailer) return null
+        if(!showTrailer){
+            return <button tabIndex={1} onClick={() => setShowTrailer(true)}>Show trailer</button>
+        }
         const url = new URL(data.trailer);
         if (url.hostname.includes('youtube')) {
             const id = url.pathname.split('/').at(-1);
