@@ -8,6 +8,7 @@ const apiCall = (props, func) => {
 }
 
 const electronConnector = {
+    openKeyboard: () => apiCall(null, 'openKeyboard'),
     movieSearch: (query) => apiCall(query, 'movieSearch'),
     getPageData: (url) => apiCall(url, 'getPageData'),
     getAjaxVideo: (data) => apiCall(data, 'getAjaxVideo'),

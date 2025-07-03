@@ -2,6 +2,7 @@ import styles from './input.module.scss';
 import {useState} from "react";
 import FileManager from "../FileManager";
 import Modal from "../Modal";
+import electronConnector from "../../helpers/electronConnector";
 
 const Input = ({
                    label, value = '', name, onChange = () => {
@@ -31,6 +32,11 @@ const Input = ({
                        name={name}
                        ref={_ref}
                        tabIndex={1}
+                       onClick={e => {
+                           if(document.activeElement === e.target){
+                               electronConnector.openKeyboard()
+                           }
+                       }}
                        {...(disabled ? {disabled, value} : {defaultValue: value})}
                        onChange={change}
                 />
@@ -61,6 +67,12 @@ const Input = ({
                        placeholder={label}
                        name={name}
                        ref={_ref}
+                       tabIndex={1}
+                       onClick={e => {
+                           if(document.activeElement === e.target){
+                               electronConnector.openKeyboard()
+                           }
+                       }}
                        disabled={disabled}
                        defaultValue={value}
                        onChange={change}
