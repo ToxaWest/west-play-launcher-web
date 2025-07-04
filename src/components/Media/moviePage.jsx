@@ -7,9 +7,8 @@ import movieStorage from "./movieStorage";
 import useFooterActions from "../../hooks/useFooterActions";
 import Player from "./player";
 
-const moviePage = ({url, setUrl}) => {
+const moviePage = ({url, setUrl, goTo}) => {
     const {setFooterActions, removeFooterActions} = useFooterActions()
-    const playerRef = React.createRef();
     const [showTrailer, setShowTrailer] = useState(false)
     const forward = (t) => {
         const player = document.querySelector('#hlsPlayer');
@@ -94,6 +93,21 @@ const moviePage = ({url, setUrl}) => {
     const [quality, setQuality] = useState('1080p Ultra')
     const [loading, setLoading] = useState(true)
 
+    const clickListener = (evt) => {
+        function getDataAttr(node, attrValue) {
+            if (node && !node.getAttribute(attrValue)) {
+                return getDataAttr(node.parentNode, attrValue)
+            }
+            const pageUrl = node.getAttribute(attrValue)
+            if(!pageUrl.startsWith('http')) return;
+            if(pageUrl.includes('/person/')) return;
+            goTo(pageUrl)
+            setUrl(null);
+        }
+
+        getDataAttr(evt.target, 'data-url')
+    }
+
     useEffect(() => {
         setLoading(true)
         electronConnector.getSerialData(url).then(r => {
@@ -114,6 +128,7 @@ const moviePage = ({url, setUrl}) => {
             })
             movieStorage.addToHistory({url, image: r.movie.image, title: r.movie.title})
         })
+        document.getElementById('movieTable').addEventListener('click', clickListener)
     }, [])
 
     useEffect(() => {
@@ -183,7 +198,7 @@ const moviePage = ({url, setUrl}) => {
 
     const renderTrailer = () => {
         if (!data.trailer) return null
-        if(!showTrailer){
+        if (!showTrailer) {
             return <button tabIndex={1} onClick={() => setShowTrailer(true)}>Show trailer</button>
         }
         const url = new URL(data.trailer);
@@ -199,6 +214,19 @@ const moviePage = ({url, setUrl}) => {
         return null
     }
 
+    const renderTable = () => {
+        if (!data.movie.table) return null
+        return (
+            <tbody>
+            {data.movie.table.map(item => <tr key={item.title}>
+                    <td>{item.title}</td>
+                    <td dangerouslySetInnerHTML={{__html: item.value}}/>
+                </tr>
+            )}
+            </tbody>
+        )
+    }
+
     return (
         <div className={styles.wrapperMovie}>
             <div className={styles.description}>
@@ -207,7 +235,6 @@ const moviePage = ({url, setUrl}) => {
                     <h1>{data.movie.title}</h1>
                     <h3>{data.movie.originalTitle}</h3>
                     <p>{data.movie.description}</p>
-                    {renderTrailer()}
                 </div>
             </div>
             <div className={styles.optionsWrapper}>
@@ -259,22 +286,22 @@ const moviePage = ({url, setUrl}) => {
                            onChange={({value}) => {
                                setQuality(value)
                            }}/> : null}
-                <button tabIndex={1} onClick={() => {
-                    movieStorage.removeHistory(url)
-                    setUrl(null);
-                }}>Remove from history
-                </button>
                 <Player episode_id={data.episode_id}
                         season_id={data.season_id}
                         quality={quality}
                         translation_id={data.translation_id}
                         episodes={data.episodes}
-                        ref={playerRef}
                         url={url}
                         streams={data.streams}
                         setEpisode={setEpisode}
                         setQuality={setQuality}
                 />
+            </div>
+            <div style={{backgroundColor: 'var(--theme-color-transparent)'}}>
+                {renderTrailer()}
+                <table id={'movieTable'}>
+                    {renderTable()}
+                </table>
             </div>
             <Loader loading={loading}/>
         </div>

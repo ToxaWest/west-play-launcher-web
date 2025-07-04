@@ -11,10 +11,12 @@ const Media = () => {
         electronConnector.getPageData('').then(setPageData)
     }, [])
 
-    if (url) return <MoviePage url={url} setUrl={setUrl}/>
-    if (pageData) return <CatalogPage pageData={pageData} selectMovie={setUrl} goTo={u => {
+    const updatePageUrl = (u) => {
         electronConnector.getPageData(u).then(setPageData)
-    }}/>
+    }
+
+    if (url) return <MoviePage url={url} setUrl={setUrl} goTo={updatePageUrl}/>
+    if (pageData) return <CatalogPage pageData={pageData} selectMovie={setUrl} goTo={updatePageUrl}/>
     return null
 }
 

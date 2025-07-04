@@ -27,7 +27,7 @@
     border-left: 20px solid var(--theme-text-color);
     border-bottom: 15px solid transparent;
     position:absolute;
-    top: calc(50% - 15px);
+    top: calc(50% - 30px);
     left: calc(50% - 10px);
     cursor: pointer;
     transition: all .3s ease;
@@ -38,7 +38,7 @@
 
   .description {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 2.5fr;
     gap: var(--gap-half);
 
     img {
@@ -57,12 +57,12 @@
       gap: var(--gap);
       padding: var(--padding);
       background-color: var(--theme-color-transparent);
-
-      iframe {
-        width: 100%;
-        aspect-ratio: 16 / 9;
-      }
     }
+  }
+
+  iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
   }
 }
 

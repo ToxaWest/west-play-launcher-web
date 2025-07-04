@@ -14,20 +14,18 @@ const Player = ({
                     url,
                     setEpisode,
                     quality,
-                    setQuality,
-                    ref
+                    setQuality
                 }) => {
-    const playerRef = ref || React.useRef(null);
+    const playerRef = React.useRef(null);
 
     const getStartPosition = () => {
         const s = movieStorage.getHistory(url)
         if (s.translation_id === translation_id) {
-            if (episode_id && season_id){
+            if (episode_id && season_id) {
                 if (episode_id === s.episode_id && season_id === s.season_id)
                     return s.currentTime || 0
-            }
-
-            else return s.currentTime || 0
+            } else
+                return s.currentTime || 0
         }
         return 0
     }
@@ -157,10 +155,13 @@ const Player = ({
                     }
                     if (document.fullscreenElement) document.exitFullscreen();
                 }}/>
-            <div className={styles.playButton} id={'playButton'}/>
-            <input type="range" id={'progressBar'} className={styles.progress} step={1} onChange={(e) => {
-                playerRef.current.currentTime = parseInt(e.target.value);
+            <div className={styles.playButton} id={'playButton'} onClick={() => {
+                playerRef.current.play()
             }}/>
+            <input type="range" id={'progressBar'} disabled={loading} className={styles.progress} step={1}
+                   onChange={(e) => {
+                       playerRef.current.currentTime = parseInt(e.target.value);
+                   }}/>
             <Loader loading={loading}/>
         </div>
 

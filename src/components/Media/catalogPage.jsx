@@ -95,12 +95,35 @@ const catalogPage = ({pageData, selectMovie, goTo}) => {
 
     const tabs = [<>
         {renderPagination()}
-        <h2>Catalog</h2>
+        <h2>{pageData.heading}</h2>
         <ul className={styles.catalogList}>
             {pageData.list.map((item) => (
-                <li key={item.href} tabIndex={1} onClick={() => {
-                    selectMovie(item.href)
-                }}>
+                <li key={item.href} tabIndex={1}
+                    onFocus={() => {
+                        const action = (inHistory) => ({
+                            y: {
+                                button: 'y',
+                                title: inHistory ? 'Remove from history' : 'Add to history',
+                                onClick: () => {
+                                    if (inHistory) movieStorage.removeHistory(item.href)
+                                    else movieStorage.addToHistory({
+                                        url: item.href,
+                                        title: item.title,
+                                        image: item.image
+                                    })
+
+                                    setFooterActions(action(movieStorage.getHistory(item.href).href))
+                                }
+                            }
+                        })
+                        setFooterActions(action(movieStorage.getHistory(item.href).href))
+                    }}
+                    onBlur={() => {
+                        removeFooterActions(['y'])
+                    }}
+                    onClick={() => {
+                        selectMovie(item.href)
+                    }}>
                     <img src={item.image} alt={item.title}/>
                     <span>{item.title}</span>
                 </li>
@@ -111,9 +134,25 @@ const catalogPage = ({pageData, selectMovie, goTo}) => {
         <h2>History</h2>
         <ul className={styles.catalogList}>
             {movieStorage.history.map((item) => (
-                <li key={item.href} tabIndex={1} onClick={() => {
-                    selectMovie(item.href)
-                }}>
+                <li key={item.href} tabIndex={1}
+                    onFocus={() => {
+                        setFooterActions({
+                            y: {
+                                button: 'y',
+                                title: 'Remove from history',
+                                onClick: () => {
+                                    movieStorage.removeHistory(item.href)
+                                    removeFooterActions(['y'])
+                                }
+                            }
+                        })
+                    }}
+                    onBlur={() => {
+                        removeFooterActions([])
+                    }}
+                    onClick={() => {
+                        selectMovie(item.href)
+                    }}>
                     <img src={item.image} alt={item.title}/>
                     <span>{item.title}</span>
                 </li>
