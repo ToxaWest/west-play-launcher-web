@@ -1,4 +1,4 @@
-export const modalIsActive = (callback) => {
+export const modalIsActive = (callback : (addedNodes: number) => void) => {
     const observer = new MutationObserver(([{addedNodes}]) => {
         callback(addedNodes.length)
     });

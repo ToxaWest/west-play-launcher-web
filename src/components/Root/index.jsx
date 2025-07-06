@@ -20,14 +20,13 @@ const Root = () => {
             theme,
             steamProfile
         })
-        const body = document.querySelector('html');
         init('#contentWrapper')
         modalIsActive((active) => {
             init(active ? '#modal' : '#contentWrapper')
         })
         document.addEventListener('mousemove', () => {
-            body.style.removeProperty('cursor');
-            body.style.removeProperty('pointer-events');
+            document.documentElement.style.cursor = '';
+            document.documentElement.style.pointerEvents = '';
         })
         electronConnector.getPlayTime(getFromStorage('games') || []).then(d => {
             const playTime = getFromStorage('playTime');
