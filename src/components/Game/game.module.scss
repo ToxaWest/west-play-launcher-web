@@ -94,7 +94,7 @@
 .heading {
   position: relative;
   height: 32.3vw;
-  margin-bottom: calc(-61px - 5vw);
+  margin-bottom: calc(-61px - 7vw);
 
   &:before {
     content: '';
@@ -122,7 +122,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2vw 5vw calc(4vw + 61px);
+  padding: 2vw 5vw calc(6vw + 61px);
 
   img {
     display: block;
