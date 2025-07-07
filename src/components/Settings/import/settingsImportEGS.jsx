@@ -42,6 +42,7 @@ const SettingsImportEGS = () => {
                             })
                             window.api.removeAllListeners('getSteamId')
                             setLoading(false)
+                            window.location.reload()
                         })
 
                     }}>Install</button>}
@@ -57,6 +58,7 @@ const SettingsImportEGS = () => {
                                 name: 'Saved successfully',
                                 description: 'Configuration updated'
                             })
+                            window.location.reload()
                         }}
                     >Update from local data</button>: null}
                 </div>

@@ -36,6 +36,7 @@ const SettingsImportSteam = () => {
                                 description: 'Configuration updated'
                             })
                             setLoading(false);
+                            window.location.reload()
                         })
                     }}>Install</button>}
                     <div>
@@ -53,6 +54,7 @@ const SettingsImportSteam = () => {
                                     name: 'Saved successfully',
                                     description: 'Configuration updated'
                                 })
+                                window.location.reload()
                             }}
                         >Update from local data</button> : null}
                     </div>

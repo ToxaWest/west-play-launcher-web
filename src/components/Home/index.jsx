@@ -3,8 +3,6 @@ import {useEffect, useState} from "react";
 import FreeWidget from "./free.widget";
 import CrackedWidget from "./cracked.widget";
 import PlayedWidget from "./played.widget";
-import {getColorByUrl} from "../../helpers/getColor";
-import setTheme from "../../helpers/setTheme";
 import useFooterActions from "../../hooks/useFooterActions";
 import {getFromStorage} from "../../helpers/getFromStorage";
 import RenderHLTB from "../Game/renderHLTB";
@@ -13,7 +11,6 @@ const Home = () => {
     const [game, setGame] = useState({});
     const {setFooterActions} = useFooterActions()
     const {
-        coloredGames,
         videoBg,
         showFreeWidget,
         showCrackedWidget,
@@ -26,29 +23,18 @@ const Home = () => {
 
     useEffect(() => {
         setFooterActions({})
-        return () => {
-            document.querySelector(':root').style = null;
-        }
     }, [])
 
     const renderDescription = () => {
         if (game.short_description) {
-            return (
-                <p>
-                    {game.short_description}
-                </p>
-            )
+            return (<p>{game.short_description}</p>)
         }
         return null
     }
 
     const getAchCount = (a) => Object.values(a).filter(({earned, progress}) => {
-        if (!earned) {
-            return false
-        }
-        if (progress) {
-            return progress === 1
-        }
+        if (!earned) return false
+        if (progress) return progress === 1
         return true
     }).length
 
@@ -89,14 +75,6 @@ const Home = () => {
     return renderWrapper(
         <div className={styles.innerWrapper}>
             <PlayedWidget setGame={g => {
-                if (coloredGames && !videoBg) {
-                    getColorByUrl(g.img_hero).then(color => {
-                        const theme = setTheme(color);
-                        Object.entries(theme).forEach(([key, value]) => {
-                            document.querySelector(':root').style.setProperty(key, value)
-                        })
-                    })
-                }
                 setGame(g)
             }}/>
             <div className={styles.game}>

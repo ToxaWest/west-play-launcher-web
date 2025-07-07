@@ -13,6 +13,9 @@
       &:hover, &:focus, &:active {
         background-color: var(--theme-text-color);
         color: var(--theme-color);
+        &::placeholder {
+          color: var(--theme-secondary);
+        }
       }
     }
   }

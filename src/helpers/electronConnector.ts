@@ -36,17 +36,7 @@ const electronConnector = {
     getSteamAssets: ({steamgriddb, id}) => apiCall({steamgriddb, id}, 'getSteamAssets'),
     clearUnusedCache: (idArray) => apiCall(idArray, 'clearUnusedCache'),
     systemAction: (action: string): void => apiCall(action, 'systemAction'),
-    runGame: (props: {
-        path: string
-        imageName?: string
-        parameters: string[]
-        id: string | number
-    }): void => apiCall(props, 'runGame'),
-    runGameLink: (props: {
-        path: string
-        imageName?: string
-        id: string | number
-    }): void => apiCall(props, 'runGameLink'),
+    startGame: (id: string | null): void => apiCall(id, 'startGame'),
     checkGameStatus: (id: string | number): void => apiCall(id, 'checkGameStatus'),
     getImage: (data) => apiCall(data, 'getImage'),
     steamgriddbSearch: (props: { params: string }): Promise<any[]> => apiCall(props, 'steamgriddbSearch'),

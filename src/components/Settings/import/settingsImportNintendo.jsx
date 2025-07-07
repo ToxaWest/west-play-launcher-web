@@ -35,6 +35,7 @@ const SettingsImportNintendo = () => {
                                 description: 'Configuration updated'
                             })
                             setLoading(false);
+                            window.location.reload()
                         })
                     }}>Install</button>}
                     <div>
@@ -58,6 +59,7 @@ const SettingsImportNintendo = () => {
                                             description: 'Configuration updated'
                                         })
                                         setLoading(false);
+                                        window.location.reload()
                                     })
                                 }}>Update</button>}
                         </div>

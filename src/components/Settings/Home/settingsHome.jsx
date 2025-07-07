@@ -117,20 +117,6 @@ const SettingsHome = () => {
                 Reset hidden free games
             </button>
             <Input
-                label={'Use colored background (game view)'}
-                type="select"
-                name="coloredGames"
-                options={[{
-                    label: 'Yes',
-                    value: 1
-                }, {
-                    label: 'No',
-                    value: 0
-                }]}
-                value={settings.coloredGames}
-                onChange={onChange}
-            />
-            <Input
                 label={'Alternative achievements (game view)'}
                 type="select"
                 name="alternativeAchievementsView"

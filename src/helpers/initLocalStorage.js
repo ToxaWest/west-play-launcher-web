@@ -2,7 +2,6 @@ export default function initLocalStorage() {
     const storage = {
         config: {
             settings: {
-                coloredGames: true,
                 gamesInRow: 6,
                 currentLang: 'english',
                 showFreeWidget: true,

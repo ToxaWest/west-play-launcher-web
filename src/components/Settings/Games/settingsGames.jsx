@@ -20,6 +20,7 @@ const SettingsGames = () => {
                     })
                     setActiveIndex(null)
                     setToStorage('games', games)
+                    window.location.reload()
                 }}
                 submit={(d) => {
                     setGames(g => {
@@ -28,6 +29,7 @@ const SettingsGames = () => {
                     })
                     setActiveIndex(null)
                     setToStorage('games', games)
+                    window.location.reload()
                 }}
             />
 

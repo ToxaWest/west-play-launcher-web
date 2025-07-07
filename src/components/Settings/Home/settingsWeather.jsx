@@ -33,6 +33,7 @@ const SettingsWeather = () => {
                                        setTemp([]);
                                        setSettings(w)
                                        setToStorage('weather', w)
+                                       window.location.reload()
                                    }}>
                                        <span>{w.name} ({w.sys.country})</span>
                                    </li>)

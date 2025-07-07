@@ -13,7 +13,7 @@ const GameActions = ({game}) => {
     const navigate = useNavigate();
     const location = useLocation();
     const {setFooterActions, removeFooterActions} = useFooterActions();
-    const {start, status, exePath} = useStartGame(game)
+    const {start, status} = useStartGame(game)
 
     useEffect(() => {
         setFooterActions({
@@ -38,6 +38,7 @@ const GameActions = ({game}) => {
         'closed': {button: 'play', modifier: ''},
         'starting': {button: 'Starting...', modifier: ''},
         'running': {button: 'Running', modifier: styles.running},
+        'error': {button: 'Can\'t start', modifier: styles.error}
     }
 
     const {
@@ -105,12 +106,9 @@ const GameActions = ({game}) => {
         <div className={styles.content}>
             <button
                 tabIndex={1}
-                onClick={() => {
-                    start()
-                }}
+                onClick={start}
                 className={styles.playButton + ' ' + (gameState[status].modifier)}
                 disabled={status !== 'closed'}
-                style={{opacity: exePath ? 1 : 0.7}}
             >
                 {gameState[status].button}
             </button>

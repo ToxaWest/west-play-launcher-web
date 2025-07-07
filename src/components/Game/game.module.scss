@@ -39,21 +39,23 @@
     margin: 0;
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
     --progress-height: 3px;
+    position: relative;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: calc(100% - var(--progress));
+      height: var(--progress-height);
+      opacity: 0.8;
+      background-color: #00b100;
+      border-bottom:  1px solid var(--theme-color);
+      z-index: 1;
+    }
     &.earned {
       background-color: var(--theme-color);
-      position: relative;
-      &:after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: calc(100% - var(--progress));
-        height: var(--progress-height);
-        opacity: 0.8;
-        background-color: #00b100;
-        border-bottom:  1px solid var(--theme-color);
-        z-index: 1;
-      }
+
       strong {
         color: var(--earned-color);
       }
@@ -246,6 +248,15 @@
     &:focus, &:hover {
       cursor: default;
       background-color: rgba(0, 103, 187, 0.5) !important;
+    }
+  }
+
+  &.error {
+    background-color: rgba(187, 0, 33, 0.5);
+
+    &:focus, &:hover {
+      cursor: default;
+      background-color: rgba(187, 0, 33, 0.5)!important;
     }
   }
 

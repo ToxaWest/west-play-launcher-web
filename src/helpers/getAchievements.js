@@ -2,7 +2,7 @@ import electronConnector from "./electronConnector";
 import {getFromStorage, setToStorage} from "./getFromStorage";
 
 const getAchievements = (id, callback) => {
-    const game = getFromStorage('games').find(({id: gid}) => gid == id);
+    const game = getFromStorage('games').find(({id: gid}) => gid.toString() === id);
     const achievements = getFromStorage('achievements');
     const stats = getFromStorage('stats') || {};
     const progress = getFromStorage('progress') || {};

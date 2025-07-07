@@ -27,24 +27,24 @@
     margin: 0;
     border-radius: var(--border-radius);
     border: 2px solid var(--theme-color);
+    position: relative;
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: var(--progress);
+      opacity: 0.8;
+      background-color: var(--button-bg-color);
+      z-index: 1;
+    }
 
     &.earned {
       background-color: rgba(0, 177, 0, 0.1);
       border-color: rgba(0, 177, 0, 1);
-      position: relative;
       div,img{
         z-index: 2;
-      }
-      &:after {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        width: var(--progress);
-        opacity: 0.8;
-        background-color: var(--button-bg-color);
-        z-index: 1;
       }
     }
 

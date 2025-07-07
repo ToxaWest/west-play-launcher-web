@@ -7,9 +7,9 @@ import getAchievements from "../../helpers/getAchievements";
 
 const Achievements = () => {
     const {id} = useParams();
-    const game = getFromStorage('games').find(({id: gid}) => gid == id);
-    const [achievements, setAchievements] = useState(getFromStorage('achievements')[id]);
-    const progress = (getFromStorage('progress') || {})[id] || {};
+    const game = getFromStorage('games').find(({id: gid}) => gid.toString() === id);
+    const [achievements, setAchievements] = useState(getFromStorage('achievements')[id] || {});
+    const externalProgress = (getFromStorage('progress') || {})[id] || {};
     const stats = getFromStorage('stats')[id] || {};
     const {alternativeAchievementsView: alternative} = getFromStorage('config').settings;
 
@@ -17,65 +17,13 @@ const Achievements = () => {
         getAchievements(id, setAchievements)
     }, []);
 
-    if (!game.achievements) return (
-        <h2 align="center">Achievements not allowed</h2>
-    );
-
-    const renderTemp = (arr) => arr.map((achievement) => (
-        <li key={achievement.name}>
-            <img src={achievement.icongray} alt={achievement.name}/>
-            <div>
-                <strong>{achievement.displayName}</strong>
-                <span>{achievement.description}</span>
-                {progress[achievement.name] && <i>Progress: {progress[achievement.name]}</i>}
-            </div>
-        </li>
-    ))
-
-
-    const renderWithEarned = (arr, ach) => {
-        const earnedList = Object.keys(ach);
-        const getObj = (n) => arr.find(({name}) => name.toString() === n) || {}
-        const sort = ([_, {earned_time}], [_2, {earned_time: earned_timePrev}]) => new Date(earned_timePrev) - new Date(earned_time)
-        const notEarnedFilter = ({name}) => !earnedList.includes(name.toString());
-        return (
-            <>
-                {Object.entries(ach).sort(sort).map(([n, {earned_time, progress, xp}]) => {
-                    const {icon, displayName, description, name, type} = getObj(n);
-                    if (!name) {
-                        return null
-                    }
-                    return (
-                        <li key={n}
-                            style={{'--progress': `${100 - (progress * 100)}%`}}
-                            className={(alternative ? achStyles.earned : styles.earned) + (type ? ' ' + styles['ach_' + type] : '')}>
-                            <img src={icon} alt={n}/>
-                            <div>
-                                <strong>{displayName}</strong>
-                                <span>{description}</span>
-                                {earned_time ?
-                                    <i>{new Date(earned_time * 1000).toLocaleDateString()}</i> : null}
-                                {(progress && progress !== 1) ?
-                                    <i>{Math.floor(progress * 100)}%</i> : null}
-                                {xp ? <small>{xp} XP</small> : null}
-                            </div>
-                        </li>
-                    )
-                })}
-                {renderTemp(arr.filter(notEarnedFilter))}
-            </>
-        )
-    }
-
     const renderStats = () => {
         if (!game.stats || !stats) return null
         const renderStats = ([key, value]) => {
             const statInterface = game.stats.find(({name}) => name === key)
             if (!statInterface || !statInterface.displayName) return null;
             return <li key={key}>
-                <div>
-                    <strong>{statInterface.displayName}: {value}</strong>
-                </div>
+                <div><strong>{statInterface.displayName}: {value}</strong></div>
             </li>
         }
 
@@ -86,12 +34,89 @@ const Achievements = () => {
         )
     }
 
+    const getItemClassName = (name, type) => {
+        const stylesArray = [];
+        if (achievements.hasOwnProperty(name) && achievements[name].earned) {
+            if (alternative) stylesArray.push(achStyles.earned);
+            else stylesArray.push(styles.earned);
+        }
+        if (type) stylesArray.push(styles['ach_' + type]);
+        return stylesArray.join(' ')
+    }
+
+    const addEarnedInfo = ({name, type, icongray, icon}) => {
+        const className = getItemClassName(name, type);
+        if (!achievements.hasOwnProperty(name)) return {
+            progress: 0,
+            className,
+            image: icongray
+        }
+
+        return {
+            ...achievements[name],
+            progress: achievements[name].progress || 0,
+            image: icon,
+            className
+        }
+    }
+
+    const renderAchievementItems = () => {
+        const orderMap = new Map();
+        Object.entries(achievements)
+            .sort(([_, {earned_time}], [_2, {earned_time: earned_timePrev}]) => {
+                if (!earned_time) return 1;
+                if (!earned_timePrev) return -1;
+                return new Date(earned_timePrev) - new Date(earned_time)
+            })
+            .forEach(([item], index) => {
+                orderMap.set(item, index)
+            })
+
+        Object.entries(externalProgress).forEach(([name]) => {
+            if (!orderMap.has(name)) {
+                orderMap.set(name, orderMap.size + 1);
+            }
+        })
+
+        const sort = (a, b) => {
+            const orderA = orderMap.get(a.name);
+            const orderB = orderMap.get(b.name);
+            if (typeof orderA === 'undefined') return 1;
+            if (typeof orderB === 'undefined') return -1;
+            return orderA - orderB;
+        }
+
+        return (<ul className={alternative ? achStyles.achList : styles.achList}>
+            {game.achievements
+                .sort(sort)
+                .map(item => ({...item, ...addEarnedInfo(item)}))
+                .map(({name, image, displayName, description, className, progress, xp, earned_time}) => (
+                    <li key={name}
+                        className={className}
+                        style={{'--progress': `${100 - (progress * 100)}%`}}
+                    >
+                        <img src={image} alt={name}/>
+                        <div>
+                            <strong>{displayName}</strong>
+                            <span>{description}</span>
+                            {earned_time ?
+                                <i>{new Date(earned_time * 1000).toLocaleDateString()}</i> : null}
+                            {(progress && progress !== 1) ?
+                                <i>{Math.floor(progress * 100)}%</i> : null}
+                            {externalProgress[name] && <i>Progress: {externalProgress[name]}</i>}
+
+                            {xp ? <small>{xp} XP</small> : null}
+                        </div>
+                    </li>
+                ))}
+        </ul>)
+
+    }
+
     return (
         <div className={styles.achWrapper}>
             {renderStats()}
-            <ul className={alternative ? achStyles.achList : styles.achList}>
-                {achievements ? renderWithEarned(game.achievements, achievements) : renderTemp(game.achievements)}
-            </ul>
+            {renderAchievementItems()}
         </div>
     )
 }
