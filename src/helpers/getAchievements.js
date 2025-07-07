@@ -23,9 +23,12 @@ const getAchievements = (id, callback) => {
         });
     } else {
         electronConnector.getUserAchievements({
-            data: {achPath: game.achPath, productId: game.productId, unofficial: game.unofficial, steamId: game.steamId},
+            achPath: game.achPath,
+            productId: game.productId,
+            unofficial: game.unofficial,
+            steamId: game.steamId,
             source: game.source,
-        }).then(({achievements: r_ach, stats: r_stats, progress: r_progress})  => {
+        }).then(({achievements: r_ach, stats: r_stats, progress: r_progress}) => {
             setToStorage('stats', {...stats, [game.id]: r_stats});
             setToStorage('progress', {...progress, [game.id]: r_progress});
             if (!r_ach) {

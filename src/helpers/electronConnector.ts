@@ -8,7 +8,11 @@ import type {
 } from "../types/electron.types";
 
 const apiCall = (props, func: string) => {
-    console.log(`%cAction: ${func}`, 'color: green')
+    if (typeof props === 'function') {
+        console.log(`%cListening: ${func}`, 'color: teal')
+    } else {
+        console.log(`%cAction: ${func}`, 'color: lime')
+    }
     // @ts-ignore
     return window.api[func](props)
 }
@@ -28,8 +32,7 @@ const electronConnector = {
     getConnectedMonitors: () => apiCall(null, 'getConnectedMonitors'),
     setMainDisplay: (id: string): void => apiCall(id, 'setMainDisplay'),
     getInstalledEGS: () => apiCall(null, 'getInstalledEGS'),
-    proxyRequest: (url, options) => apiCall({url, options}, 'proxyRequest'),
-    imageProxy: (data) => apiCall(data, 'imageProxy'),
+    imageProxy: (url: string): Promise<string> => apiCall(url, 'imageProxy'),
     getSteamAssets: ({steamgriddb, id}) => apiCall({steamgriddb, id}, 'getSteamAssets'),
     clearUnusedCache: (idArray) => apiCall(idArray, 'clearUnusedCache'),
     systemAction: (action: string): void => apiCall(action, 'systemAction'),
@@ -44,6 +47,7 @@ const electronConnector = {
         imageName?: string
         id: string | number
     }): void => apiCall(props, 'runGameLink'),
+    checkGameStatus: (id: string | number): void => apiCall(id, 'checkGameStatus'),
     getImage: (data) => apiCall(data, 'getImage'),
     steamgriddbSearch: (props: { params: string }): Promise<any[]> => apiCall(props, 'steamgriddbSearch'),
     onVisibilityChange: (callBack: (visible: boolean) => void): void => apiCall(callBack, 'onVisibilityChange'),
@@ -58,9 +62,8 @@ const electronConnector = {
     getFreeGames: (): Promise<any[]> => apiCall(null, 'getFreeGames'),
     saveImage: (data) => apiCall(data, 'saveImage'),
     openLink: (url: string): void => apiCall(url, 'openLink'),
-    setBeData: (data) => apiCall(data, 'setBeData'),
-    getPlayTime: (games) => apiCall(games, 'getPlayTime'),
-    getUserAchievements: ({data, source}) => apiCall({data, source}, 'getUserAchievements'),
+    getPlayTime: () => apiCall(null, 'getPlayTime'),
+    getUserAchievements: (game) => apiCall(game, 'getUserAchievements'),
     getAchievementsPath: ({path, appid}) => apiCall({path, appid}, 'getAchievementsPath'),
     getFolders: (path: string) => apiCall(path, 'getFolders'),
     howLongToBeat: (query: string) => apiCall(query, 'howLongToBeat'),

@@ -60,13 +60,13 @@ const useStartGame = (game) => {
     }
 
     useEffect(() => {
+        electronConnector.checkGameStatus(game.id)
         electronConnector.gameStatus(({status: _status, playTime}) => {
             if (playTime > 0) {
                 setPlayTime(playTime)
             }
             setStatus(_status)
         })
-
         return () => {
             window.api.removeAllListeners('gameStatus')
         }

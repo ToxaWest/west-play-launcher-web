@@ -13,13 +13,6 @@ const Root = () => {
     const {videoBg} = getFromStorage('config').settings;
 
     useEffect(() => {
-        const {settings: {currentLang, theme, steamProfile}} = getFromStorage('config');
-        electronConnector.setBeData({
-            lang: currentLang,
-            country: 'UA',
-            theme,
-            steamProfile
-        })
         init('#contentWrapper')
         modalIsActive((active) => {
             init(active ? '#modal' : '#contentWrapper')
@@ -28,7 +21,7 @@ const Root = () => {
             document.documentElement.style.cursor = '';
             document.documentElement.style.pointerEvents = '';
         })
-        electronConnector.getPlayTime(getFromStorage('games') || []).then(d => {
+        electronConnector.getPlayTime().then(d => {
             const playTime = getFromStorage('playTime');
             const lastPlayed = getFromStorage('lastPlayed');
             Object.entries(d).forEach(([key, value]) => {

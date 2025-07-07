@@ -6,7 +6,6 @@ const News = () => {
     const {id} = useParams();
     const game = getFromStorage('games').find(({id: gid}) => gid.toString() === id);
     return <NewsRender id={game.steamId}/>
-
 }
 
 export default News;
