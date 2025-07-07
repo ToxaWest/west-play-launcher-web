@@ -43,7 +43,8 @@ const electronConnector = {
     onVisibilityChange: (callBack: (visible: boolean) => void): void => apiCall(callBack, 'onVisibilityChange'),
     gameSearch: (query: string) => apiCall(query, 'gameSearch'),
     gameStatus: (callBack: ({status, playTime}: {
-        status: 'closed' | 'running',
+        gameId: string | number,
+        status: 'closed' | 'running' | 'error' | 'starting',
         playTime: number
     }) => void): void => apiCall(callBack, 'gameStatus'),
     getSteamId: (data) => apiCall(data, 'getSteamId'),
