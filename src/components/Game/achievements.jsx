@@ -44,21 +44,42 @@ const Achievements = () => {
         return stylesArray.join(' ')
     }
 
-    const addEarnedInfo = ({name, type, icongray, icon}) => {
+    const addEarnedInfo = ({name, type, icongray, icon, hiddenDescription, description, hidden}) => {
         const className = getItemClassName(name, type);
         if (!achievements.hasOwnProperty(name)) return {
             progress: 0,
             className,
-            image: icongray
+            image: icongray,
+            body: hidden ? hiddenDescription : description
         }
 
         return {
             ...achievements[name],
             progress: achievements[name].progress || 0,
-            image: icon,
-            className
+            image: achievements[name].earned ? icon : icongray,
+            className,
+            body: description
         }
     }
+
+    const renderItem = ({name, image, displayName, className, progress, xp, earned_time, body, rarity}) => (
+        <li key={name}
+            className={className}
+            style={{'--progress': `${100 - (progress * 100)}%`}}
+        >
+            <img src={image} alt={name}/>
+            <div>
+                <strong>{displayName}</strong>
+                <span>{body}</span>
+                {Boolean(earned_time) && <i>{new Date(earned_time * 1000).toLocaleDateString()}</i>}
+                {Boolean(progress && progress !== 1) && <i>{Math.floor(progress * 100)}%</i>}
+                {externalProgress[name] && <i>Progress: {externalProgress[name]}</i>}
+                <div className={styles.additional}>
+                    {typeof xp === "number" && <small>{xp} XP</small>}
+                    {typeof rarity === "number" && <small>Rarity: {rarity}%</small>}
+                </div>
+            </div>
+        </li>)
 
     const renderAchievementItems = () => {
         const orderMap = new Map();
@@ -86,30 +107,11 @@ const Achievements = () => {
             return orderA - orderB;
         }
 
-        return (<ul className={alternative ? achStyles.achList : styles.achList}>
-            {game.achievements
-                .sort(sort)
-                .map(item => ({...item, ...addEarnedInfo(item)}))
-                .map(({name, image, displayName, description, className, progress, xp, earned_time}) => (
-                    <li key={name}
-                        className={className}
-                        style={{'--progress': `${100 - (progress * 100)}%`}}
-                    >
-                        <img src={image} alt={name}/>
-                        <div>
-                            <strong>{displayName}</strong>
-                            <span>{description}</span>
-                            {earned_time ?
-                                <i>{new Date(earned_time * 1000).toLocaleDateString()}</i> : null}
-                            {(progress && progress !== 1) ?
-                                <i>{Math.floor(progress * 100)}%</i> : null}
-                            {externalProgress[name] && <i>Progress: {externalProgress[name]}</i>}
-
-                            {xp ? <small>{xp} XP</small> : null}
-                        </div>
-                    </li>
-                ))}
-        </ul>)
+        return (
+            <ul className={alternative ? achStyles.achList : styles.achList}>
+                {game.achievements.sort(sort).map(item => ({...item, ...addEarnedInfo(item)})).map(renderItem)}
+            </ul>
+        )
 
     }
 
