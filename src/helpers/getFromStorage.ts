@@ -1,0 +1,15 @@
+import type {LocalStorageKeys, LocalStorageType} from "../types/localStorage.type";
+
+function getFromStorage< K extends LocalStorageKeys>(key: K): LocalStorageType[K] {
+    return JSON.parse(localStorage.getItem(key))
+}
+
+function setToStorage< K extends LocalStorageKeys>(key: K, value: LocalStorageType[K]): void {
+    localStorage.setItem(key, JSON.stringify(value))
+}
+
+
+export {
+    setToStorage,
+    getFromStorage
+}

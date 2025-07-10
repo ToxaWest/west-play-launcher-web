@@ -1,26 +1,32 @@
+import {HLTBType} from "./game.types";
+
 export type movieSearch = {
     href: string
     description: string
     title: string
 }
 
-export type getPageData = {
-    categories: {
-        title: string
-        data: {
-            id: string
-            options: {
-                label: string
-                value: string
-            }[]
+export type MoviePageCategory = {
+    title: string
+    data: {
+        id: string
+        options: {
+            label: string
+            value: string
         }[]
     }[]
+}
+
+export type MoviesListItem = {
+    image: string
+    href: string
+    title: string
+}
+
+export type getPageData = {
+    categories: MoviePageCategory[]
     heading: string,
-    list: {
-        image: string
-        href: string
-        title: string
-    }[],
+    list: MoviesListItem[],
     pagination: {
         next?: string
         prev?: string
@@ -42,43 +48,59 @@ export type getAjaxVideoInput = {
 
 export type Streams = Record<'360p' | '720p' | '1080p' | '1080p Ultra', string[]>
 
-export type Episodes = Record<string,
-    {
-        current: boolean
-        episode: string
-        href: string
-        id: string
-        season: string
-        text: string
-    }>
+export type EpisodeItem = {
+    current: boolean
+    episode: string
+    href: string
+    id: string
+    season: string
+    text: string
+}
 
+export type Episodes = Record<number, EpisodeItem[]>
 
 export type getAjaxVideo = {
     episodes: Episodes
     streams: Streams
 }
 
+export type movieType = {
+    description: string
+    image: string
+    originalTitle: string
+    table?: {
+        title: string
+        html: string
+        value: string
+    }[]
+    title: string
+}
+
+export type movieTranslationItem = {
+    id: string
+    html: string
+    title: string
+}
+
 export type getSerialData = {
     trailer?: string
     type: 'initCDNMoviesEvents' | 'initCDNSeriesEvents'
     streams: Streams
-    movie: {
-        description: string
-        image: string
-        originalTitle: string
-        table?: {
-            title: string
-            html: string
-        }[]
-        title: string
-    }
+    movie?: movieType
     translation_id: string
     trl_favs: string
     post_id: string
-    translations: string
+    translations: movieTranslationItem[]
     episodes: Episodes
     season_id: string
     episode_id: string
+}
+
+export type ConnectedMonitorType = {
+    id: string,
+    name: string,
+    active: boolean,
+    primary: boolean
 }
 
 export type getSteamUserId = {
@@ -90,34 +112,61 @@ export type getSteamUserId = {
 }
 
 export type getDataByGameIdInput = {
-    source: 'steam' | 'egs' | 'gog'
+    source: 'steam' | 'egs' | 'gog' | 'ryujinx'
     id: string | number
     unofficial: boolean
     productId?: string
     dlc: string[] | number[]
 }
 
-export type getDataByGameId = {
-    achPath?: string
-    dlcList: {
-        short_description: string
-        header_image: string
-        name: string
-        id: string
-        type: string
-    }[]
-    achievements?: {
-        hidden: 1 | 0
-        displayName: string
-        description: string
-        icon: string
-        type?: string
-        icongray: string
-        name: string
-    }[]
-    stats?: {
-        name: string
-        displayName: string
-    }[]
+export type FileManagerFolderType = {
+    name: string
+    isFolder: boolean
+    path: string
+}
 
+export type steamgriddbTypes = 'grid' | 'hero' | 'logo' | 'icon'
+
+export type getImageInput = {
+    animated: boolean
+    limit: number
+    order: string
+    page: number
+    epilepsy: boolean
+    game_id: number[]
+    static: boolean
+    asset_type: steamgriddbTypes
+    dimensions?: string[]
+}
+
+export type getImageAssets = {
+    id: string
+    url: string
+    thumb: string
+    author: {
+        name: string
+    }
+}
+
+export type getSteamAssetsOutput = {
+    [key in `img_${steamgriddbTypes}`]: string
+}
+
+export type HLTBSearchResponse = HLTBType & {
+    id: number
+    name: string
+    releaseYear: number
+    type: string
+}
+
+export type SteamSearchResponse = {
+    appid: number
+    name: string
+    logo: string
+}
+
+export type steamGridDbSearchResponse = {
+    id: number
+    name: string
+    release_date: number
 }

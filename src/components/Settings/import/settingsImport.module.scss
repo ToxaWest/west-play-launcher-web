@@ -3,37 +3,71 @@
     display: grid;
     position: relative;
     gap: var(--gap-half);
+    max-width: 100%;
+    width: 100%;
     grid-template-columns: repeat(3, 1fr);
+    background-color: var(--theme-color-transparent);
 
     li {
       background: var(--theme-secondary);
       border-radius: var(--border-radius);
       display: flex;
       align-items: start;
+      min-width: 0;
 
-      &>div {
-        grid-area: div;
-        padding-right: var(--gap-half);
-        width: 100%;
-      }
       .content {
         width: 100%;
         gap: var(--gap-half);
-        display: grid;
-        padding: var(--padding);
-        grid-template-areas:
-              'h2 span'
-              'div div'
-      }
-      h2 {
-        grid-area: h2;
-        margin: var(--gap) 0;
-      }
-      span, button {
-        grid-area: span;
+        display: flex;
+        flex-direction: column;
+        padding: var(--gap-half);
+        position: relative;
+        height: 100%;
+        overflow: hidden;
+        max-width: 100%;
+
+        button {
+          margin-top: auto;
+          margin-left: auto;
+          margin-bottom: 0;
+        }
+
+        div {
+          display: flex;
+          gap: var(--gap-half);
+          align-items: center;
+          width: 100%;
+          &[role="button"] {
+            cursor: pointer;
+          }
+        }
+
+        i {
+          color: var(--theme-text-color-seconary);
+          text-overflow: ellipsis;
+          display: inline-block;
+          white-space: nowrap;
+          overflow: hidden;
+          max-width: 100%;
+          padding-right: var(--gap-half);
+        }
       }
 
-      span {
+      h2 {
+        grid-area: h2;
+        margin: 0;
+        padding-right: 20px;
+        text-overflow: ellipsis;
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        max-width: 100%;
+      }
+
+      .installedIcon {
+        position: absolute;
+        right: -5px;
+        top: -15px;
         display: inline-block;
         transform: rotate(45deg);
         height: 25px;
@@ -46,8 +80,7 @@
       }
 
       img {
-        grid-area: img;
-        width: 9vw;
+        width: 5vw;
       }
 
     }

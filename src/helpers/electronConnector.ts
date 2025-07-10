@@ -1,64 +1,93 @@
-import type {
-    getAjaxVideo,
-    getAjaxVideoInput, getDataByGameId, getDataByGameIdInput,
-    getPageData,
-    getSerialData,
-    getSteamUserId,
-    movieSearch
+import {
+    ConnectedMonitorType,
+    FileManagerFolderType,
+    getAjaxVideo, getAjaxVideoInput, getDataByGameIdInput,
+    getImageAssets,
+    getImageInput, getPageData,
+    getSerialData, getSteamAssetsOutput,
+    getSteamUserId, HLTBSearchResponse,
+    movieSearch, steamGridDbSearchResponse,
+    SteamSearchResponse
 } from "../types/electron.types";
+import type {EarnedAchievementsType, Game, ProgressType, StatsType} from "../types/game.types";
+import type {crackedGameType, freeGameType} from "../types/widget.types";
 
-const apiCall = (props, func: string) => {
+const apiCall = (props: any, func: string) => {
     if (typeof props === 'function') {
         console.log(`%cListening: ${func}`, 'color: teal')
     } else {
         console.log(`%cAction: ${func}`, 'color: lime')
     }
-    // @ts-ignore
     return window.api[func](props)
 }
 
 const electronConnector = {
-    openKeyboard: (): void => apiCall(null, 'openKeyboard'),
-    movieSearch: (query: string): Promise<movieSearch[]> => apiCall(query, 'movieSearch'),
-    getPageData: (url: string): Promise<getPageData> => apiCall(url, 'getPageData'),
-    getAjaxVideo: (props: getAjaxVideoInput): Promise<getAjaxVideo> => apiCall(props, 'getAjaxVideo'),
-    getSerialData: (url: string): Promise<getSerialData> => apiCall(url, 'getSerialData'),
-    getSteamUserId: (): Promise<getSteamUserId[]> => apiCall(null, 'getSteamUserId'),
-    getDataByGameId: (props: getDataByGameIdInput): Promise<getDataByGameId> => apiCall(props, 'getDataByGameId'),
-    getGameByFolder: (path: string) => apiCall(path, 'getGameByFolder'),
-    getRyujinxGameData: (props) => apiCall(props, 'getRyujinxGameData'),
-    getInstalledSteam: () => apiCall(null, 'getInstalledSteam'),
-    getInstalledRyujinx: () => apiCall(null, 'getInstalledRyujinx'),
-    getConnectedMonitors: () => apiCall(null, 'getConnectedMonitors'),
-    setMainDisplay: (id: string): void => apiCall(id, 'setMainDisplay'),
-    getInstalledEGS: () => apiCall(null, 'getInstalledEGS'),
-    imageProxy: (url: string): Promise<string> => apiCall(url, 'imageProxy'),
-    getSteamAssets: ({steamgriddb, id}) => apiCall({steamgriddb, id}, 'getSteamAssets'),
-    clearUnusedCache: (idArray) => apiCall(idArray, 'clearUnusedCache'),
-    systemAction: (action: string): void => apiCall(action, 'systemAction'),
-    startGame: (id: string | null): void => apiCall(id, 'startGame'),
+    CheckVersion: (url: string): Promise<string | null> => apiCall(url, 'CheckVersion'),
     checkGameStatus: (id: string | number): void => apiCall(id, 'checkGameStatus'),
-    getImage: (data) => apiCall(data, 'getImage'),
-    steamgriddbSearch: (props: { params: string }): Promise<any[]> => apiCall(props, 'steamgriddbSearch'),
-    onVisibilityChange: (callBack: (visible: boolean) => void): void => apiCall(callBack, 'onVisibilityChange'),
-    gameSearch: (query: string) => apiCall(query, 'gameSearch'),
+    clearUnusedCache: (idArray: (string | number)[]): Promise<{
+        removed: number
+    }> => apiCall(idArray, 'clearUnusedCache'),
+    crackWatchRequest: (): Promise<{ games: crackedGameType[] }> => apiCall(null, 'crackWatchRequest'),
+    gameSearch: (query: string): Promise<SteamSearchResponse[]> => apiCall(query, 'gameSearch'),
     gameStatus: (callBack: ({status, playTime}: {
         gameId: string | number,
         status: 'closed' | 'running' | 'error' | 'starting',
         playTime: number
     }) => void): void => apiCall(callBack, 'gameStatus'),
-    getSteamId: (data) => apiCall(data, 'getSteamId'),
-    receiveSteamId: (id: string | null): void => apiCall(id, 'receiveSteamId'),
-    crackWatchRequest: (): Promise<{ games: any[] }> => apiCall(null, 'crackWatchRequest'),
-    getFreeGames: (): Promise<any[]> => apiCall(null, 'getFreeGames'),
-    saveImage: (data) => apiCall(data, 'saveImage'),
-    openLink: (url: string): void => apiCall(url, 'openLink'),
-    getPlayTime: () => apiCall(null, 'getPlayTime'),
-    getUserAchievements: (game) => apiCall(game, 'getUserAchievements'),
-    getAchievementsPath: ({path, appid}) => apiCall({path, appid}, 'getAchievementsPath'),
-    getFolders: (path: string) => apiCall(path, 'getFolders'),
-    howLongToBeat: (query: string) => apiCall(query, 'howLongToBeat'),
+    getAchievementsPath: ({appid}: {
+        appid: number
+    }): Promise<string | null> => apiCall({appid}, 'getAchievementsPath'),
+    getAjaxVideo: (props: getAjaxVideoInput): Promise<getAjaxVideo> => apiCall(props, 'getAjaxVideo'),
+    getConnectedMonitors: (): Promise<ConnectedMonitorType[]> => apiCall(null, 'getConnectedMonitors'),
+    getDataByGameId: (props: getDataByGameIdInput): Promise<Game> => apiCall(props, 'getDataByGameId'),
     getDisks: (): Promise<string[]> => apiCall(null, 'getDisks'),
+    getFolders: (path: string): Promise<FileManagerFolderType[]> => apiCall(path, 'getFolders'),
+    getFreeGames: (): Promise<freeGameType[]> => apiCall(null, 'getFreeGames'),
+    getGameByFolder: (path: string) => apiCall(path, 'getGameByFolder'),
+    getImage: (data: { body: getImageInput }): Promise<{
+        data: { assets: getImageAssets[] }
+    }> => apiCall(data, 'getImage'),
+    getInstalledGames: (): Promise<Game[]> => apiCall(null, 'getInstalledGames'),
+    getPageData: (url: string): Promise<getPageData> => apiCall(url, 'getPageData'),
+    getPlayTime: (): Promise<{
+        [key: string | number]: { playTime: number, lastPlayed: number }
+    }> => apiCall(null, 'getPlayTime'),
+    getSerialData: (url: string): Promise<getSerialData> => apiCall(url, 'getSerialData'),
+    getSteamAssets: ({steamgriddb, id}: {
+        steamgriddb: string,
+        id: string | number
+    }): Promise<getSteamAssetsOutput> => apiCall({id, steamgriddb}, 'getSteamAssets'),
+    getSteamId: (listener: ({searchParams}) => void): void => apiCall(listener, 'getSteamId'),
+    getSteamUserId: (): Promise<getSteamUserId[]> => apiCall(null, 'getSteamUserId'),
+    getUserAchievements: (game: {
+        achPath: string;
+        productId: string;
+        unofficial: boolean;
+        steamId: number;
+        source: "steam" | "egs" | "ryujinx" | "gog"
+    }): Promise<{
+        achievements: EarnedAchievementsType | null
+        stats: StatsType | null
+        progress: ProgressType | null
+    }> => apiCall(game, 'getUserAchievements'),
+    howLongToBeat: (query: string): Promise<HLTBSearchResponse[]> => apiCall(query, 'howLongToBeat'),
+    imageProxy: (url: string): Promise<BlobPart[]> => apiCall(url, 'imageProxy'),
+    movieSearch: (query: string): Promise<movieSearch[]> => apiCall(query, 'movieSearch'),
+    onVisibilityChange: (callBack: (visible: boolean) => void): void => apiCall(callBack, 'onVisibilityChange'),
+    openKeyboard: (): void => apiCall(null, 'openKeyboard'),
+    openLink: (url: string): void => apiCall(url, 'openLink'),
+    receiveSteamId: (id: number): void => apiCall(id, 'receiveSteamId'),
+    saveImage: (data: {
+        url: string,
+        type: string,
+        id: string | number,
+    }): Promise<string> => apiCall(data, 'saveImage'),
+    setMainDisplay: (id: string): Promise<void> => apiCall(id, 'setMainDisplay'),
+    startGame: (id: string | number): void => apiCall(id, 'startGame'),
+    steamgriddbSearch: (props: { params: string }): Promise<{
+        data: steamGridDbSearchResponse[]
+    }> => apiCall(props, 'steamgriddbSearch'),
+    systemAction: (action: string): void => apiCall(action, 'systemAction'),
     weatherById: (id: number): Promise<any> => apiCall(id, 'weatherById'),
     weatherSearch: (query: string): Promise<{
         name: string
@@ -66,8 +95,7 @@ const electronConnector = {
         sys: {
             country: string
         }
-    }[]> => apiCall(query, 'weatherSearch'),
-    CheckVersion: (url: string): Promise<string | null> => apiCall(url, 'CheckVersion')
+    }[]> => apiCall(query, 'weatherSearch')
 };
 
 export default electronConnector;

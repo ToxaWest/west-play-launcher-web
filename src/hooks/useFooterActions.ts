@@ -1,45 +1,20 @@
-import {useContext} from "react";
-import {AppContext} from "../helpers/provider";
+import {use} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
+
+import {AppContext} from "../helpers/provider";
 import type {gamePadButtonName} from "../types/gamePad.types";
-
-declare global {
-    interface Window {
-        __back?: {
-            url: string
-            id: string | number
-        };
-    }
-
-    interface DocumentEventMap {
-        gamePadClick: CustomEvent<{
-            button: gamePadButtonName;
-            id: number;
-        }>;
-    }
-}
-
-type footerActionsType = {
-    [key in gamePadButtonName]?: {
-        button: gamePadButtonName;
-        title?: string;
-        onClick: () => void;
-    };
-};
+import type {footerActionsType} from "../types/provider.types";
 
 const useFooterActions = () => {
-    const {footerActions, setFooterActions}: {
-        footerActions: footerActionsType,
-        setFooterActions: (actions: (r: footerActionsType) => footerActionsType) => void,
-    } = useContext(AppContext);
+    const {footerActions, setFooterActions} = use(AppContext);
     const navigate = useNavigate();
     const location = useLocation();
     const back = {
         '': '/',
         'game': '/',
         'library': '/',
-        'settings': '/',
-        'media': '/'
+        'media': '/',
+        'settings': '/'
     }
 
     const backButton = () => {
@@ -51,28 +26,25 @@ const useFooterActions = () => {
         }
     }
     const defaultActions: footerActionsType = {
-        b: {
-            button: 'b',
-            title: 'Back',
-            onClick: backButton
-        },
         a: {
             button: 'a',
-            title: 'Select',
             onClick: () => {
                 const activeElement = document.activeElement as HTMLElement;
                 if (activeElement) {
                     activeElement.click();
                 }
-            }
+            },
+            title: 'Select'
+        },
+        b: {
+            button: 'b',
+            onClick: backButton,
+            title: 'Back'
         },
     }
 
     return {
         footerActions,
-        setFooterActions: (actions: footerActionsType) => {
-            setFooterActions(r => ({...defaultActions, ...r, ...actions}));
-        },
         removeFooterActions: (actions: gamePadButtonName[]) => {
             setFooterActions(a => {
                 actions.forEach(action => {
@@ -80,6 +52,9 @@ const useFooterActions = () => {
                 })
                 return {...defaultActions, ...a}
             });
+        },
+        setFooterActions: (actions: footerActionsType) => {
+            setFooterActions(r => ({...defaultActions, ...r, ...actions}));
         }
     }
 }

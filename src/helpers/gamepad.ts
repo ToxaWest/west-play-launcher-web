@@ -1,19 +1,20 @@
+import type {gamePadButtonName} from "../types/gamePad.types";
+
 import electronConnector from "./electronConnector";
 import {modalIsActive} from "./modalIsActive";
-import type {gamePadButtonName} from "../types/gamePad.types";
 
 const keyMapping: gamePadButtonName[] = ['a', 'b', 'x', 'y', 'lb', 'rb', 'lt', 'rt', 'options', 'select', 'l3', 'r3', 'top', 'bottom', 'left', 'right', 'home', 'top', 'bottom', 'left', 'right', 'leftScrollY', 'rightScrollY']
 
 const sound: { [key in gamePadButtonName]?: string } = {
-    'top': 'move',
+    'a': 'select',
+    'b': 'back',
     'bottom': 'move',
     'left': 'move',
     'right': 'move',
-    'a': 'select',
-    'y': 'select',
-    'b': 'back',
+    'select': 'switchup',
+    'top': 'move',
     'x': 'back',
-    'select': 'switchup'
+    'y': 'select'
 }
 
 const scrollBooster = 15;
@@ -36,8 +37,8 @@ class GamepadApi {
         document.dispatchEvent(new CustomEvent('gamePadClick', {
             detail: {
                 button,
-                id: keyMapping.indexOf(button),
-                gamePadId: this.gamepad
+                gamePadId: this.gamepad,
+                id: keyMapping.indexOf(button)
             }
         }));
     }
