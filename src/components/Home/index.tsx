@@ -5,6 +5,7 @@ import {getFromStorage} from "../../helpers/getFromStorage";
 import useFooterActions from "../../hooks/useFooterActions";
 import type {EarnedAchievementsType, Game} from "../../types/game.types";
 import RenderHLTB from "../Game/renderHLTB";
+import MoviesWidget from "../Media/movies.widget";
 
 import CrackedWidget from "./cracked.widget";
 import FreeWidget from "./free.widget";
@@ -112,6 +113,7 @@ const Home = () => {
                 <h2>Cracked Games</h2>
                 <CrackedWidget/>
             </> : null}
+            <MoviesWidget/>
         </div>
     )
 }

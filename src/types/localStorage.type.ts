@@ -13,6 +13,7 @@ export type LocalStorageType = {
             currentLang: string,
             showFreeWidget: 0 | 1,
             showCrackedWidget: 0 | 1,
+            showMoviesWidget: 0 | 1,
             steamProfile: getSteamUserId
         }
     },

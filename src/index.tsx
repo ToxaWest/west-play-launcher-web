@@ -25,6 +25,7 @@ import initLocalStorage from "./helpers/initLocalStorage";
 import Provider from "./helpers/provider";
 
 const Media = lazy(() => import('./components/Media'));
+const MoviePageRouter = lazy(() => import("./components/Media/MoviePageRouter"));
 
 const router = createBrowserRouter([
     {
@@ -34,6 +35,9 @@ const router = createBrowserRouter([
         }, {
             element: <Media/>,
             path: '/media'
+        }, {
+            element: <MoviePageRouter/>,
+            path: '/movie'
         }, {
             element: <Menu/>,
             path: '/menu'

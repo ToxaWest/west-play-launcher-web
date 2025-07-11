@@ -1,3 +1,5 @@
+@use "../../mixin";
+
 .wrapperMovie {
   max-width: 90vw;
   margin: 50px auto;
@@ -163,6 +165,38 @@
         background-color: var(--theme-text-color);
         color: var(--theme-color);
       }
+    }
+  }
+}
+
+.widget {
+  gap: var(--gap);
+  display: grid;
+  grid-template-rows: repeat(var(--lines), 1fr);
+  justify-content: start;
+  grid-auto-flow: column;
+  overflow-x: auto;
+  list-style: none;
+  width: 100vw;
+  position: relative;
+  padding: var(--padding);
+  min-height: 80px;
+  @include mixin.glass;
+  li {
+    min-width: 0;
+    width: 12vw;
+    img {
+      aspect-ratio: 83 / 125;
+      min-width: 0;
+      width: 100%;
+    }
+    border-radius: var(--border-radius);
+    position: relative;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    perspective: 1000px;
+    &:active, &:focus {
+      transform: rotateX(7deg) translateY(-2px) scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
     }
   }
 }

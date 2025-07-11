@@ -11,7 +11,14 @@ export default function initLocalStorage() {
                 ryujinx: '',
                 showCrackedWidget: 1,
                 showFreeWidget: 1,
-                steamProfile: {},
+                showMoviesWidget: 1,
+                steamProfile: {
+                    AccountName: "",
+                    PersonaName: "",
+                    accountId: "",
+                    avatarImage: "",
+                    id: ""
+                },
                 theme: 'system'
             }
         },
@@ -23,7 +30,9 @@ export default function initLocalStorage() {
         progress: {},
         stats: {},
         weather: {
-            sys: {}
+            sys: {
+                country: ""
+            }
         }
     }
 

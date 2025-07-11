@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 
 import electronConnector from "../../helpers/electronConnector";
 import useFooterActions from "../../hooks/useFooterActions";
-import {EpisodeItem, Episodes, movieTranslationItem, movieType,Streams} from "../../types/electron.types";
+import {EpisodeItem, Episodes, movieTranslationItem, movieType, Streams} from "../../types/electron.types";
 import {MovieStorageHistory} from "../../types/movieStorage.types";
 import Input from "../Input";
 import Loader from "../Loader";
@@ -267,7 +267,7 @@ const MoviePage = ({url, setUrl, goTo}: {
     return (
         <div className={styles.wrapperMovie}>
             <div className={styles.description}>
-                <img src={data.movie.image} alt={data.movie.title}/>
+                {data.movie.image ? <img src={data.movie.image} alt={data.movie.title}/> : null}
                 <div className={styles.descriptionContent}>
                     <h1>{data.movie.title}</h1>
                     <h3>{data.movie.originalTitle}</h3>
