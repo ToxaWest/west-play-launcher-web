@@ -241,7 +241,6 @@ const MoviePage = ({url, setUrl, goTo}: {
             const id = url.pathname.split('/').at(-1);
             return (
                 <iframe
-                    sandbox=""
                     loading="lazy"
                     title={'trailer'}
                     src={`https://www.youtube.com/embed/${id}?iv_load_policy=3&autoplay=1&loop=1&rel=0&mute=1&showinfo=0`}

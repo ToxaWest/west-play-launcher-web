@@ -83,10 +83,13 @@ const FreeWidget = () => {
     const style: StyleInterface = {'--lines': '1'}
 
     return (
-        <ul className={styles.freeWrapper} style={style}>
-            {games.filter(({id}) => !getFromStorage('hiddenFree').includes(id)).map(renderGame)}
-            <Loader loading={loading}/>
-        </ul>
+        <React.Fragment>
+            <h2>Free Games</h2>
+            <ul className={styles.freeWrapper} style={style}>
+                {games.filter(({id}) => !getFromStorage('hiddenFree').includes(id)).map(renderGame)}
+                <Loader loading={loading}/>
+            </ul>
+        </React.Fragment>
     )
 }
 

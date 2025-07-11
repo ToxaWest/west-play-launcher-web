@@ -116,7 +116,6 @@ const VideoComponent = ({selected, options, soundStatus}: {
             return <div onClick={hideFooter} style={providerWrapper} role="button" tabIndex={0}>
                 <iframe width={window.innerWidth} height={window.innerWidth / (16 / 9)}
                         title={'youtube'}
-                        sandbox=""
                         src={`https://www.youtube.com/embed/${selected.videoId}?autoplay=true&loop=1&rel=0&mute=${soundStatus ? 0 : 1}`}
                 />
             </div>
@@ -125,7 +124,6 @@ const VideoComponent = ({selected, options, soundStatus}: {
             return <div onClick={hideFooter} style={providerWrapper} role="button" tabIndex={0}>
                 <iframe width={window.innerWidth} height={window.innerWidth / (16 / 9)}
                         title={'wistia'}
-                        sandbox=""
                         src={`https://fast.wistia.net/embed/iframe/${selected.videoId}`}
                 />
             </div>

@@ -1,7 +1,6 @@
 import React from "react";
 import {createSearchParams,useNavigate} from "react-router-dom";
 
-import {getFromStorage} from "../../helpers/getFromStorage";
 import {MovieStorageHistory} from "../../types/movieStorage.types";
 
 import movieStorage from "./movieStorage";
@@ -9,9 +8,6 @@ import movieStorage from "./movieStorage";
 import styles from './media.module.scss';
 const MoviesWidget = () => {
     const navigate = useNavigate();
-
-    if(getFromStorage('config').settings.showMoviesWidget === 0) return null;
-
 
     const renderItem = (item: MovieStorageHistory) => (
         <li key={item.href} tabIndex={1} role="button"

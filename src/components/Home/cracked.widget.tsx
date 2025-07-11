@@ -71,7 +71,6 @@ const CrackedWidget = () => {
         return (
             <iframe
                 loading="lazy"
-                sandbox=""
                 title={game.title}
                 src={`https://www.youtube.com/embed/${id}?autoplay=1&loop=1&rel=0&mute=1&showinfo=0`}
             />
@@ -104,14 +103,17 @@ const CrackedWidget = () => {
     }
 
     const style: StyleInterface = {
-        '--lines': '1'
+        '--lines': '3'
     }
 
     return (
-        <ul className={styles.freeWrapper} style={style}>
-            {games.map(renderGame)}
-            <Loader loading={loading}/>
-        </ul>
+        <React.Fragment>
+            <h2>Cracked Games</h2>
+            <ul className={styles.freeWrapper} style={style}>
+                {games.map(renderGame)}
+                <Loader loading={loading}/>
+            </ul>
+        </React.Fragment>
     )
 
 }

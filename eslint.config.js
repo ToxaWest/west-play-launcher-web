@@ -52,6 +52,7 @@ export default defineConfig([
             ...pluginJsxA11y.configs.recommended.rules,
             // Add or override specific rules here
             "@eslint-react/dom/no-dangerously-set-innerhtml": "off", // Example: Warn about missing dependencies in React hooks
+            "@eslint-react/dom/no-missing-iframe-sandbox":"off",
             "@eslint-react/hooks-extra/no-direct-set-state-in-use-effect": "off", // Disable default no-unused-vars
             "@typescript-eslint/no-unused-vars": ["warn", {argsIgnorePattern: "^_"}], // Use TS version
             "jsx-a11y/click-events-have-key-events": "off",

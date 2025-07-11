@@ -36,6 +36,7 @@ const Home = () => {
         videoBg,
         showFreeWidget,
         showCrackedWidget,
+        showMoviesWidget
     } = getFromStorage('config').settings;
     const getUrl = (url?: string) => {
         if (!url) return ''
@@ -105,15 +106,9 @@ const Home = () => {
                     {renderAchievements()}
                 </div>
             </div>
-            {showFreeWidget ? <>
-                <h2>Free Games</h2>
-                <FreeWidget/>
-            </> : null}
-            {showCrackedWidget ? <>
-                <h2>Cracked Games</h2>
-                <CrackedWidget/>
-            </> : null}
-            <MoviesWidget/>
+            {showFreeWidget === 1 && <FreeWidget/>}
+            {showCrackedWidget === 1 && <CrackedWidget/>}
+            {showMoviesWidget === 1 && <MoviesWidget/>}
         </div>
     )
 }
