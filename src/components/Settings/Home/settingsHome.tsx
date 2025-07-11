@@ -111,6 +111,20 @@ const SettingsHome = () => {
                 value={settings.showFreeWidget}
                 onChange={onChange}
             />
+            <Input
+                label={'Show Movies widget'}
+                type="select"
+                name="showMoviesWidget"
+                options={[{
+                    label: 'Yes',
+                    value: 1
+                }, {
+                    label: 'No',
+                    value: 0
+                }]}
+                value={settings.showMoviesWidget}
+                onChange={onChange}
+            />
             <button tabIndex={1} type="button" onClick={() => {
                 setToStorage('hiddenFree', [])
                 notifications({
