@@ -104,7 +104,7 @@ const Input = ({
             }
 
             const renderOption = (option: OptionType) => (
-                <li key={option.value.toString()} role="button" tabIndex={2} onClick={() => {
+                <li key={option.value?.toString()} role="button" tabIndex={2} onClick={() => {
                     onChange({name, value: option.value})
                 }}>
                     {option.html ? <span dangerouslySetInnerHTML={{__html: option.html}}/> : option.label}
