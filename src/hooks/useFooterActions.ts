@@ -1,5 +1,5 @@
 import {use} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 import {AppContext} from "../helpers/provider";
 import type {gamePadButtonName} from "../types/gamePad.types";
@@ -8,12 +8,12 @@ import type {footerActionsType} from "../types/provider.types";
 const useFooterActions = () => {
     const {footerActions, setFooterActions} = use(AppContext);
     const navigate = useNavigate();
-    const location = useLocation();
     const back = {
         '': '/',
         'game': '/',
         'library': '/',
         'media': '/',
+        'movie':'/',
         'settings': '/'
     }
 
@@ -22,7 +22,7 @@ const useFooterActions = () => {
             navigate(-1);
         } else {
             if (window.__back) navigate(window.__back.url)
-            else navigate(back[location.pathname.split('/').at(1)])
+            else navigate(back[window.location.pathname.split('/').at(1)])
         }
     }
     const defaultActions: footerActionsType = {
