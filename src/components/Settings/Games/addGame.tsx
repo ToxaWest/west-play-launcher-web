@@ -172,13 +172,14 @@ const AddGame = ({data, submit, remove}: {
                 return (
                     <>
                         {render.path()}
+                        {render.imageName()}
                         {render.steamFields()}
                     </>
                 )
             }
             return (
                 <>
-
+                    {render.imageName()}
                 </>
             )
         }
