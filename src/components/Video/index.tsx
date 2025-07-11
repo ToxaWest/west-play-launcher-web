@@ -10,7 +10,7 @@ const VideoComponent = ({selected, options, soundStatus}: {
     options: React.DetailedHTMLProps<React.VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement>
 }) => {
     const [loading, setLoading] = React.useState(false);
-    const videoRef = React.useRef(null);
+    const videoRef = React.useRef<HTMLVideoElement>(null);
     const [videoData, setVideoData] = React.useState<{
         src: { src: string, type: string }[],
         poster?: string
@@ -18,7 +18,7 @@ const VideoComponent = ({selected, options, soundStatus}: {
     const timerRef = React.useRef(null);
 
     const hideFooter = () => {
-        document.querySelector('footer').style.opacity = '1';
+        document.querySelector('footer').style.removeProperty('opacity');
         timerRef.current = setTimeout(() => {
             document.querySelector('footer').style.opacity = '0';
         }, 4000)
@@ -33,14 +33,14 @@ const VideoComponent = ({selected, options, soundStatus}: {
 
     React.useEffect(() => {
         return () => {
-            clearInterval(timerRef.current);
+            clearTimeout(timerRef.current);
             setVideoData({src: []});
-            document.querySelector('footer').style.opacity = '1';
+            document.querySelector('footer').style.removeProperty('opacity');
         }
     }, [])
 
     React.useEffect(() => {
-        (videoRef.current as HTMLVideoElement)?.load();
+        videoRef.current?.load();
     }, [videoData])
 
     const getData = (data: GameVideoType) => {

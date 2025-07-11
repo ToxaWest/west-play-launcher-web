@@ -60,9 +60,13 @@ const RenderMedia = ({game}: { game: Game }) => {
         const selected = media[i];
         if (Object.hasOwn(selected, 'path_full')) {
             return <img src={(selected as { path_full: string }).path_full} onError={e => {
-                if ((e.target as HTMLImageElement).src !== ((selected as { path_full: string }).path_full)) return;
-                electronConnector.imageProxy((e.target as HTMLImageElement).src).then(bytes => {
-                    (e.target as HTMLImageElement).src = URL.createObjectURL(new Blob(bytes))
+                const imgTarget = e.target as HTMLImageElement;
+                imgTarget.style.display = 'none';
+                if (imgTarget.src !== ((selected as { path_full: string }).path_full)) return;
+
+                electronConnector.imageProxy(imgTarget.src).then(bytes => {
+                    imgTarget.style.display = 'block';
+                    imgTarget.src = URL.createObjectURL(new Blob(bytes))
                 })
             }} alt={'img'}/>
         }

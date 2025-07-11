@@ -38,7 +38,7 @@ const Input = ({
     children?: React.ReactNode,
     type?: 'text' | 'number' | 'select' | 'path',
     onChange?: (data: { name: string, value?: string | number }) => void,
-    options?: (string| number | OptionType)[],
+    options?: (string | number | OptionType)[],
 }) => {
 
     const [active, setActive] = React.useState<boolean>(false);
@@ -60,8 +60,10 @@ const Input = ({
                        ref={_ref}
                        tabIndex={1}
                        onClick={e => {
-                           if (document.activeElement === e.target) {
-                               electronConnector.openKeyboard()
+                           if ('pointerType' in e.nativeEvent) {
+                               if (document.activeElement === e.target && e.nativeEvent.pointerType !== "mouse") {
+                                   electronConnector.openKeyboard()
+                               }
                            }
                        }}
                        disabled={disabled}
@@ -126,8 +128,10 @@ const Input = ({
                        ref={_ref}
                        tabIndex={1}
                        onClick={e => {
-                           if (document.activeElement === e.target) {
-                               electronConnector.openKeyboard()
+                           if ('pointerType' in e.nativeEvent) {
+                               if (document.activeElement === e.target && e.nativeEvent.pointerType !== "mouse") {
+                                   electronConnector.openKeyboard()
+                               }
                            }
                        }}
                        {...(disabled ? {disabled, value} : {defaultValue: value})}

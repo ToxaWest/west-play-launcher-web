@@ -9,7 +9,7 @@ import styles from "../settings.module.scss";
 
 const AddImage = ({id, type, onChange, value, game_id}: {
     type: 'grid' | 'hero' | 'logo' | 'icon',
-    onChange: (e: {name: string, value: any}) => void,
+    onChange: (e: { name: string, value: any }) => void,
     value: string,
     game_id: string,
     id: string | number,
@@ -31,7 +31,7 @@ const AddImage = ({id, type, onChange, value, game_id}: {
         setImages([]);
     }, [id])
 
-    const imgConfig: Record<steamgriddbTypes, {body: getImageInput}> = {
+    const imgConfig: Record<steamgriddbTypes, { body: getImageInput }> = {
         'grid': {body: {...defaultConfig, asset_type: "grid", dimensions: ["600x900"]}},
         'hero': {body: {...defaultConfig, asset_type: "hero"}},
         'icon': {body: {...defaultConfig, asset_type: "icon"}},
@@ -58,7 +58,9 @@ const AddImage = ({id, type, onChange, value, game_id}: {
         <div className={styles.addImage}>
             <div className={styles.addImageField}>
                 <button type="button" tabIndex={1} onClick={getImages}>Select {type} image</button>
-                {value ? <span>{value}</span> : null}
+                {value ? <span tabIndex={0} role="link" onClick={() => {
+                    window.open(value, '_blank')
+                }}>{value}</span> : null}
                 {images.length ? <button type="button" tabIndex={1} onClick={() => setImages([])}>Close</button> : null}
             </div>
             <ul style={{position: 'relative'}}>

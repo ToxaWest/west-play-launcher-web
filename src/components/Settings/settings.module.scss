@@ -43,7 +43,7 @@
 }
 
 .addGameWrapper {
-  &>div {
+  & > div {
     display: flex;
     flex-direction: column;
     gap: var(--gap-half);
@@ -125,6 +125,7 @@
     grid-template-columns: repeat(8, 1fr);
     gap: var(--gap-half);
     width: 100%;
+
     li {
       background-color: var(--theme-color);
       max-width: 100%;
@@ -135,20 +136,24 @@
       gap: var(--gap-half);
       min-width: 0;
       overflow: hidden;
+
       &:hover, &:active, &:focus {
         background-color: var(--theme-color-transparent);
         border-color: var(--theme-text-color);
       }
+
       &.active {
         background-color: var(--theme-text-color);
         border-color: var(--theme-color);
         color: var(--theme-color);
       }
+
       img {
         height: 2.4vw;
         width: 2.4vw;
         background-color: var(--theme-color-transparent);
       }
+
       span {
         font-size: .5vw;
         text-overflow: ellipsis;
@@ -192,10 +197,12 @@
     align-items: center;
     justify-content: space-between;
 
-    img {
-      width: auto;
-      max-height: 150px;
+    span {
       cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 
