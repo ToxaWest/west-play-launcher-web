@@ -10,7 +10,7 @@ class MovieStorage {
         else setToStorage('history', this.history);
     }
 
-    addToHistory({url, image, title}) {
+    addToHistory({url, image, title} : {url: string, image?: string, title?: string}) {
         const pathname = url.startsWith('http') ? new URL(url).pathname : url;
         const index = this.history.findIndex(({href: u}) => u === pathname);
         if (index !== -1) {

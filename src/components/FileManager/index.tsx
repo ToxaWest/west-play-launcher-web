@@ -10,13 +10,9 @@ import styles from "./FileManager.module.scss";
 import SvgFile from '../../SVG/file.svg?react'
 import SvgFolder from '../../SVG/folder-open.svg?react'
 
-const submitDefault = (path: string) => {
-    console.log(path)
-}
-
 const FileManager = ({
                          file = true,
-                         submit = submitDefault,
+                         submit,
                          initial = ''
                      }: {
     file?: boolean,

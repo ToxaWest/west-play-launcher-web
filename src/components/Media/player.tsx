@@ -64,13 +64,8 @@ const Player = ({
         initPlayer()
     }, [episodes, quality])
 
-    console.log(episodes)
-
     const sortStreams = (streams: string[]): { mp4: string[], m3u8: string[] } => {
-        const res = {
-            m3u8: [],
-            mp4: []
-        };
+        const res = {m3u8: [], mp4: []};
         streams.forEach(s => {
             const type = s.split('.').at(-1) as 'mp4' | 'm3u8';
             if (!Object.hasOwn(res, type)) res[type] = [];

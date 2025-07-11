@@ -83,8 +83,7 @@ const NewsRender = ({id}) => {
             <li key={item.gid} className={styles.item}>
                 <h3>{item.title}</h3>
                 <div className={styles.date}>
-                    <address>By {item.author}</address>
-                    on <time dateTime={date} title={date}>{date}</time>
+                    <address>By {item.author}</address> on <time dateTime={date} title={date}>{date}</time>
                 </div>
                 <div dangerouslySetInnerHTML={{__html: editorParser(item.contents)}}/>
             </li>

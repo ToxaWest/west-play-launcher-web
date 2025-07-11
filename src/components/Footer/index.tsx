@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import useAppControls from "../../hooks/useAppControls";
 import useFooterActions from "../../hooks/useFooterActions";
 import type {gamePadButtonName} from "../../types/gamePad.types";
-import type {footerActionsType,footerActionType} from "../../types/provider.types";
+import type {footerActionsType, footerActionType} from "../../types/provider.types";
 
 import styles from './footer.module.scss';
 
@@ -14,11 +14,8 @@ const Footer = () => {
     const {setMap} = useAppControls()
 
     const menuButton = () => {
-        if (window.location.pathname === '/menu') {
-            navigate(-1);
-        } else {
-            navigate('/menu')
-        }
+        if (window.location.pathname === '/menu') navigate(-1);
+        else navigate('/menu')
     }
 
     const imgMapping: { [key in gamePadButtonName]?: string } = {
@@ -58,9 +55,28 @@ const Footer = () => {
         </div>
     )
 
+    const orderMap: Map<gamePadButtonName, number> = new Map([
+        ['a', 9],
+        ['b', 10],
+        ['bottom', 2],
+        ['lb', 3],
+        ['lt', 5],
+        ['rb', 4],
+        ['rt', 6],
+        ['select', 1],
+        ['top', 8],
+        ['x', 7],
+        ['y', 8]
+    ]);
+
+
+    const sortButtons = (a: footerActionType, b: footerActionType) => {
+        return orderMap.get(a.button) - orderMap.get(b.button);
+    }
+
     return (
         <footer className={styles.wrapper}>
-            {Object.values(actions).filter(a => a.title).reverse().map(renderFooterActions)}
+            {Object.values(actions).filter(a => a.title).sort(sortButtons).map(renderFooterActions)}
         </footer>
     )
 }

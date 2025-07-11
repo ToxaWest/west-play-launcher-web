@@ -20,7 +20,7 @@ export type notificationsType = {
     img: string,
     description?: string,
     name: string,
-    status: string
+    status: 'error' | 'saving' | 'success' | 'warning'
 }
 
 export type AppContextType = {
