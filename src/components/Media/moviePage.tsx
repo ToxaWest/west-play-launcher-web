@@ -164,10 +164,6 @@ const MoviePage = ({url, setUrl, goTo}: {
 
         // eslint-disable-next-line @eslint-react/web-api/no-leaked-event-listener
         document.getElementById('movieTable').addEventListener('click', clickListener)
-
-        return () => {
-            document.getElementById('movieTable').removeEventListener('click', clickListener)
-        }
     }, [])
 
     useEffect(() => {
