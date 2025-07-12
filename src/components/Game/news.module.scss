@@ -53,6 +53,7 @@
     &>li {
       border-radius: var(--border-radius);
       padding: var(--padding);
+      min-width: 0;
       position: relative;
       @include mixin.glass;
       &:before {
