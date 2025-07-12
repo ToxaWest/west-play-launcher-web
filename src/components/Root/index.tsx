@@ -1,11 +1,11 @@
 import React from "react";
+import useAppControls from "@hook/useAppControls";
 import type {ReactElement} from "react";
 import {Outlet} from "react-router-dom";
 
 import electronConnector from "../../helpers/electronConnector";
 import {getFromStorage, setToStorage} from "../../helpers/getFromStorage";
 import {modalIsActive} from "../../helpers/modalIsActive";
-import useAppControls from "../../hooks/useAppControls";
 import Clock from "../Clock";
 import Footer from "../Footer";
 

@@ -1,8 +1,8 @@
 import React from "react";
+import type {ConnectedMonitorType} from "@type/electron.types";
 import {Link} from "react-router-dom";
 
 import electronConnector from "../../helpers/electronConnector";
-import type {ConnectedMonitorType} from "../../types/electron.types";
 
 import styles from './menu.module.scss';
 

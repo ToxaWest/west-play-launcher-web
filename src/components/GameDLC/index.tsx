@@ -1,10 +1,10 @@
 import {useState} from "react";
 import React from "react";
+import type {DlcType} from "@type/game.types";
 import {useParams} from "react-router-dom";
 
 import electronConnector from "../../helpers/electronConnector";
 import {getFromStorage} from "../../helpers/getFromStorage";
-import type {DlcType} from "../../types/game.types";
 import Modal from "../Modal";
 
 import styles from './GameDLC.module.scss';

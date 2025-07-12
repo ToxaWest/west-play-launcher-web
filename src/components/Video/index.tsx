@@ -1,7 +1,7 @@
 import React from "react";
+import type {GameVideoType} from "@type/game.types";
 
 import electronConnector from "../../helpers/electronConnector";
-import type {GameVideoType} from "../../types/game.types";
 import Loader from "../Loader";
 
 const VideoComponent = ({selected, options, soundStatus}: {

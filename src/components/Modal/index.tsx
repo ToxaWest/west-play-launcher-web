@@ -1,7 +1,6 @@
 import React from "react";
+import useFooterActions from "@hook/useFooterActions";
 import {createPortal} from "react-dom";
-
-import useFooterActions from "../../hooks/useFooterActions";
 
 const defaultStyle: React.CSSProperties = {
     alignItems: 'center',

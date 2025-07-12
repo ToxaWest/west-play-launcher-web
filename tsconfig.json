@@ -7,6 +7,10 @@
     "noImplicitAny": false,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"]
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "paths": {
+      "@hook/*": ["./src/hooks/*"],
+      "@type/*": ["./src/types/*"]
+    }
   }
 }

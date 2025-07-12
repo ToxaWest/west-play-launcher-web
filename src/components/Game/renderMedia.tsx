@@ -1,8 +1,8 @@
 import React from "react";
+import useFooterActions from "@hook/useFooterActions";
+import {Game, GameVideoType} from "@type/game.types";
 
 import electronConnector from "../../helpers/electronConnector";
-import useFooterActions from "../../hooks/useFooterActions";
-import {Game, GameVideoType} from "../../types/game.types";
 import Video from "../Video";
 
 import styles from "./game.module.scss";

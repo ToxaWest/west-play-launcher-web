@@ -1,7 +1,7 @@
 import React from "react";
+import {Game} from "@type/game.types";
 
 import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
-import {Game} from "../../../types/game.types";
 
 import AddGame from "./addGame";
 

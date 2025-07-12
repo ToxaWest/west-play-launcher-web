@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 /// <reference types="vite-plugin-svgr/client" />
-import type {gamePadButtonName} from "./gamePad.types";
+import type {gamePadButtonName} from "@type/gamePad.types";
 
 declare global {
     interface Window {

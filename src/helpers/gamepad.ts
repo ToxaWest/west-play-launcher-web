@@ -1,4 +1,4 @@
-import type {gamePadButtonName} from "../types/gamePad.types";
+import type {gamePadButtonName} from "@type/gamePad.types";
 
 import electronConnector from "./electronConnector";
 import {modalIsActive} from "./modalIsActive";

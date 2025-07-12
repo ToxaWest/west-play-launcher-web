@@ -1,8 +1,8 @@
 import React, {startTransition, useActionState} from "react";
+import useFooterActions from "@hook/useFooterActions";
+import type {FileManagerFolderType} from "@type/electron.types";
 
 import electronConnector from "../../helpers/electronConnector";
-import useFooterActions from "../../hooks/useFooterActions";
-import type {FileManagerFolderType} from "../../types/electron.types";
 import Loader from "../Loader";
 
 import styles from "./FileManager.module.scss";

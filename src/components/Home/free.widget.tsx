@@ -1,16 +1,13 @@
 import React from "react";
+import type {freeGameType, widgetWrapperStyleInterface} from "@type/widget.types";
 
 import electronConnector from "../../helpers/electronConnector";
 import {getFromStorage, setToStorage} from "../../helpers/getFromStorage";
 import {locales} from "../../helpers/locales";
-import type {freeGameType} from "../../types/widget.types";
 import Loader from "../Loader";
 
 import styles from "./widgets.module.scss";
 
-interface StyleInterface extends React.CSSProperties {
-    '--lines': string
-}
 
 const FreeWidget = () => {
     const [active, setActive] = React.useState(0);
@@ -80,7 +77,7 @@ const FreeWidget = () => {
         )
     }
 
-    const style: StyleInterface = {'--lines': '1'}
+    const style: widgetWrapperStyleInterface = {'--lines': '1'}
 
     return (
         <React.Fragment>

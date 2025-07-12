@@ -1,3 +1,5 @@
+import type {CSSProperties} from "react";
+
 export type freeGameType = {
     id: number
     name: string
@@ -12,6 +14,7 @@ export type freeGameType = {
 
 export type crackedGameType = {
     id: number
+    user_score: number
     steam_prod_id: number
     short_image: string
     is_AAA: boolean
@@ -21,4 +24,8 @@ export type crackedGameType = {
     torrent_link: string
     teaser_link?: string
     crack_date: Date
+}
+
+export interface widgetWrapperStyleInterface extends CSSProperties {
+    '--lines': string
 }

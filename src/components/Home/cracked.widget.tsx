@@ -1,14 +1,10 @@
 import React from "react";
+import type {crackedGameType, widgetWrapperStyleInterface} from "@type/widget.types";
 
 import electronConnector from "../../helpers/electronConnector";
-import {crackedGameType} from "../../types/widget.types";
 import Loader from "../Loader";
 
 import styles from "./widgets.module.scss";
-
-interface StyleInterface extends React.CSSProperties {
-    '--lines': string
-}
 
 const CrackedWidget = () => {
     const [active, setActive] = React.useState(0);
@@ -29,6 +25,9 @@ const CrackedWidget = () => {
         }, {
             label: 'Is AAA',
             value: currentGame.is_AAA ? 'Yes' : 'No'
+        },{
+            label: 'Score',
+            value: currentGame.user_score
         }, ...(currentGame.steam_prod_id ? [{
             label: 'Store Link',
             value: currentGame.steam_prod_id ?
@@ -102,7 +101,7 @@ const CrackedWidget = () => {
         )
     }
 
-    const style: StyleInterface = {
+    const style: widgetWrapperStyleInterface = {
         '--lines': '3'
     }
 

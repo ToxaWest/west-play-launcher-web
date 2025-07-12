@@ -1,7 +1,7 @@
 import React from "react";
+import type {getPageData} from "@type/electron.types";
 
 import electronConnector from "../../helpers/electronConnector";
-import type {getPageData} from "../../types/electron.types";
 
 import CatalogPage from "./catalogPage";
 import MoviePage from "./moviePage";

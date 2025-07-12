@@ -1,10 +1,9 @@
 import React from "react";
+import useAppControls from "@hook/useAppControls";
+import useFooterActions from "@hook/useFooterActions";
+import type {gamePadButtonName} from "@type/gamePad.types";
+import type {footerActionsType, footerActionType} from "@type/provider.types";
 import {useNavigate} from "react-router-dom";
-
-import useAppControls from "../../hooks/useAppControls";
-import useFooterActions from "../../hooks/useFooterActions";
-import type {gamePadButtonName} from "../../types/gamePad.types";
-import type {footerActionsType, footerActionType} from "../../types/provider.types";
 
 import styles from './footer.module.scss';
 

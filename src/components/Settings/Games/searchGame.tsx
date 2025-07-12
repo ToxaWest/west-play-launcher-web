@@ -1,7 +1,7 @@
 import React from "react";
+import type {steamGridDbSearchResponse} from "@type/electron.types";
 
 import electronConnector from "../../../helpers/electronConnector";
-import type {steamGridDbSearchResponse} from "../../../types/electron.types";
 import Input from "../../Input";
 import Modal from "../../Modal";
 

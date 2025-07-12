@@ -1,9 +1,9 @@
 import React from "react";
+import useNotification from "@hook/useNotification";
+import type {Game} from "@type/game.types";
 
 import electronConnector from "../../../helpers/electronConnector";
 import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
-import useNotification from "../../../hooks/useNotification";
-import type {Game} from "../../../types/game.types";
 import Loader from "../../Loader";
 import SearchSteamGame from "../Games/searchSteamGame";
 

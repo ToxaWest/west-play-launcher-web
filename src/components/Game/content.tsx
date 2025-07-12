@@ -1,10 +1,10 @@
 import React from "react";
+import {secondsToHms} from "@hook/usePlayTime";
+import type {EarnedAchievementsType} from "@type/game.types";
 import {useParams} from "react-router-dom";
 
 import electronConnector from "../../helpers/electronConnector";
 import {getFromStorage} from "../../helpers/getFromStorage";
-import {secondsToHms} from "../../hooks/usePlayTime";
-import type {EarnedAchievementsType} from "../../types/game.types";
 
 import RenderContent from "./renderContent";
 

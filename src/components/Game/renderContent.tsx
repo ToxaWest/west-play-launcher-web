@@ -1,6 +1,5 @@
 import React from "react";
-
-import type {Game} from "../../types/game.types";
+import type {Game} from "@type/game.types";
 
 import RenderHLTB from "./renderHLTB";
 

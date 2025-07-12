@@ -1,7 +1,7 @@
 import React from "react";
+import type {getSteamUserId} from "@type/electron.types";
 
 import electronConnector from "../../../helpers/electronConnector";
-import type {getSteamUserId} from "../../../types/electron.types";
 import Loader from "../../Loader";
 
 import styles from '../settings.module.scss';

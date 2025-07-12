@@ -1,9 +1,9 @@
 import React from "react";
+import type {achievementInterfaceType,EarnedAchievementsType} from "@type/game.types";
 import {useParams} from "react-router-dom";
 
 import getAchievements from "../../helpers/getAchievements";
 import {getFromStorage} from "../../helpers/getFromStorage";
-import type {achievementInterfaceType,EarnedAchievementsType} from "../../types/game.types";
 
 import achStyles from './achievements.module.scss'
 import styles from './game.module.scss';

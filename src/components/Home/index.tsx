@@ -1,9 +1,9 @@
 import React from "react";
+import useFooterActions from "@hook/useFooterActions";
+import type {EarnedAchievementsType, Game} from "@type/game.types";
 import type {ReactElement} from "react";
 
 import {getFromStorage} from "../../helpers/getFromStorage";
-import useFooterActions from "../../hooks/useFooterActions";
-import type {EarnedAchievementsType, Game} from "../../types/game.types";
 import RenderHLTB from "../Game/renderHLTB";
 import MoviesWidget from "../Media/movies.widget";
 

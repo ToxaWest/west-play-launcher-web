@@ -1,7 +1,6 @@
 import React from "react";
-
-import {secondsToHms} from "../../hooks/usePlayTime";
-import type {Game} from "../../types/game.types";
+import {secondsToHms} from "@hook/usePlayTime";
+import type {Game} from "@type/game.types";
 
 import styles from './hltb.module.scss';
 

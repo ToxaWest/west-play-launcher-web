@@ -1,10 +1,10 @@
 import React from "react";
+import useFooterActions from "@hook/useFooterActions";
+import {getPageData,MoviesListItem} from "@type/electron.types";
+import type {MovieStorageHistory} from "@type/movieStorage.types";
+import type {footerActionsType} from "@type/provider.types";
 
 import electronConnector from "../../helpers/electronConnector";
-import useFooterActions from "../../hooks/useFooterActions";
-import {getPageData,MoviesListItem} from "../../types/electron.types";
-import type {MovieStorageHistory} from "../../types/movieStorage.types";
-import type {footerActionsType} from "../../types/provider.types";
 import Input from "../Input";
 
 import CategoryFinder from "./categoryFinder";

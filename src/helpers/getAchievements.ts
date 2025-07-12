@@ -1,4 +1,4 @@
-import type {EarnedAchievementsType} from "../types/game.types";
+import type {EarnedAchievementsType} from "@type/game.types";
 
 import electronConnector from "./electronConnector";
 import {getFromStorage, setToStorage} from "./getFromStorage";

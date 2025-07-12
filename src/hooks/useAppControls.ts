@@ -1,6 +1,5 @@
 import {useEffect, useRef} from "react";
-
-import type {appControlsMap} from "../types/provider.types";
+import type {appControlsMap} from "@type/provider.types";
 
 const NAVIGATION_KEYS = {
     bottom: {rowPosition: (a: number): number => a + 1},

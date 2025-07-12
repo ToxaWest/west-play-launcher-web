@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
+import useFooterActions from "@hook/useFooterActions";
+import {EpisodeItem, Episodes, movieTranslationItem, movieType, Streams} from "@type/electron.types";
+import {MovieStorageHistory} from "@type/movieStorage.types";
 
 import electronConnector from "../../helpers/electronConnector";
-import useFooterActions from "../../hooks/useFooterActions";
-import {EpisodeItem, Episodes, movieTranslationItem, movieType, Streams} from "../../types/electron.types";
-import {MovieStorageHistory} from "../../types/movieStorage.types";
 import Input from "../Input";
 import Loader from "../Loader";
 

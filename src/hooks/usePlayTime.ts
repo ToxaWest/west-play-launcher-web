@@ -1,7 +1,7 @@
-import {getFromStorage, setToStorage} from "../helpers/getFromStorage";
-import type {Game} from "../types/game.types";
+import useNotification from "@hook/useNotification";
+import type {Game} from "@type/game.types";
 
-import useNotification from "./useNotification";
+import {getFromStorage, setToStorage} from "../helpers/getFromStorage";
 
 const usePlayTime = ({id, img_icon: img, name}: Game) => {
     const notification = useNotification();

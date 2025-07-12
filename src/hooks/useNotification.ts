@@ -1,7 +1,7 @@
 import {use} from "react";
+import type {notificationsType} from "@type/provider.types";
 
 import {AppContext} from "../helpers/provider";
-import type {notificationsType} from "../types/provider.types";
 
 const useNotification = () => {
     const {setNotifications} = use(AppContext);

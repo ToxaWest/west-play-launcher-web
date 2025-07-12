@@ -1,4 +1,4 @@
-import type {LocalStorageType} from "../types/localStorage.type";
+import type {LocalStorageType} from "@type/localStorage.type";
 
 export default function initLocalStorage() {
     const storage: LocalStorageType = {

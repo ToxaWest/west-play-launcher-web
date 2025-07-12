@@ -1,6 +1,5 @@
-import {Dispatch, SetStateAction} from "react";
-
-import type {gamePadButtonName} from "./gamePad.types";
+import type {gamePadButtonName} from "@type/gamePad.types";
+import type {Dispatch, SetStateAction} from "react";
 
 export type footerActionType = {
     button: gamePadButtonName;

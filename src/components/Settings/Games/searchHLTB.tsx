@@ -1,8 +1,8 @@
 import React from "react";
+import type {HLTBSearchResponse} from "@type/electron.types";
+import type {HLTBType} from "@type/game.types";
 
 import electronConnector from "../../../helpers/electronConnector";
-import type {HLTBSearchResponse} from "../../../types/electron.types";
-import type {HLTBType} from "../../../types/game.types";
 import Input from "../../Input";
 import Modal from "../../Modal";
 

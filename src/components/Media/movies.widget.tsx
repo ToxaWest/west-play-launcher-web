@@ -1,7 +1,6 @@
 import React from "react";
+import {MovieStorageHistory} from "@type/movieStorage.types";
 import {createSearchParams,useNavigate} from "react-router-dom";
-
-import {MovieStorageHistory} from "../../types/movieStorage.types";
 
 import movieStorage from "./movieStorage";
 
@@ -25,7 +24,7 @@ const MoviesWidget = () => {
     return <React.Fragment>
         <h2>Movies</h2>
         <ul className={styles.widget}>
-            {movieStorage.history.map(renderItem)}
+            {movieStorage.history.reverse().map(renderItem)}
         </ul>
     </React.Fragment>;
 }

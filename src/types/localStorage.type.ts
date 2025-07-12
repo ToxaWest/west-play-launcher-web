@@ -1,6 +1,6 @@
-import type {getSteamUserId} from './electron.types';
-import type {achievementsType,Game, LastPlayed, PlayTime, ProgressType, StatsType} from "./game.types";
-import type {MovieStorageHistory} from "./movieStorage.types";
+import type {getSteamUserId} from '@type/electron.types';
+import type {achievementsType,Game, LastPlayed, PlayTime, ProgressType, StatsType} from "@type/game.types";
+import type {MovieStorageHistory} from "@type/movieStorage.types";
 
 export type LocalStorageType = {
     config: {

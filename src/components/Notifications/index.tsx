@@ -1,6 +1,5 @@
 import React from "react";
-
-import type {notificationsType} from "../../types/provider.types";
+import type {notificationsType} from "@type/provider.types";
 
 import styles from "./notifications.module.scss";
 

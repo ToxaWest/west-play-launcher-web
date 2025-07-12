@@ -1,8 +1,8 @@
 import React, {useEffect} from "react";
+import type {EpisodeItem, Episodes, Streams} from "@type/electron.types";
+import type {MovieStorageHistory} from "@type/movieStorage.types";
 import Hls from "hls.js";
 
-import type {EpisodeItem, Episodes, Streams} from "../../types/electron.types";
-import type {MovieStorageHistory} from "../../types/movieStorage.types";
 import Loader from "../Loader";
 
 import movieStorage from "./movieStorage";

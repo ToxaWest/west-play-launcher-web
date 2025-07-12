@@ -1,9 +1,9 @@
 import React from "react";
+import useNotification from "@hook/useNotification";
 
 import electronConnector from "../../../helpers/electronConnector";
 import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
 import {locales} from "../../../helpers/locales";
-import useNotification from "../../../hooks/useNotification";
 import Input from "../../Input";
 
 import SettingsSteamProfile from "./settingsSteamProfile";

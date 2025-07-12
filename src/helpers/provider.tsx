@@ -1,8 +1,8 @@
 import React from "react";
+import type {AppContextType} from "@type/provider.types";
 
 import Notifications from "../components/Notifications";
 import GamepadApi from "../helpers/gamepad";
-import type {AppContextType} from "../types/provider.types";
 
 export const AppContext = React.createContext<AppContextType>({
     footerActions: {},

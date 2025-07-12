@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
+import type {Game} from "@type/game.types";
 
 import electronConnector from "../helpers/electronConnector";
 import {getFromStorage, setToStorage} from "../helpers/getFromStorage";
-import type {Game} from "../types/game.types";
 
 import useNotification from "./useNotification";
 import usePlayTime from "./usePlayTime";

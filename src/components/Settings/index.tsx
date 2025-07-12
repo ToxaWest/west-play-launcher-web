@@ -1,7 +1,6 @@
 import React from "react";
+import useFooterActions from "@hook/useFooterActions";
 import {Link, Outlet, useLocation, useNavigate} from "react-router-dom";
-
-import useFooterActions from "../../hooks/useFooterActions";
 
 import styles from "./settings.module.scss";
 

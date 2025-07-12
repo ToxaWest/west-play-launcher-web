@@ -1,7 +1,7 @@
 import React from "react";
+import {getImageAssets, getImageInput, steamgriddbTypes} from "@type/electron.types";
 
 import electronConnector from "../../../helpers/electronConnector";
-import {getImageAssets, getImageInput, steamgriddbTypes} from "../../../types/electron.types";
 import Loader from "../../Loader";
 
 import styles from "../settings.module.scss";

@@ -1,14 +1,11 @@
 import React from "react";
+import type {Game} from "@type/game.types";
+import type {widgetWrapperStyleInterface} from "@type/widget.types";
 import {useNavigate} from "react-router-dom";
 
 import {getFromStorage} from "../../helpers/getFromStorage";
-import type {Game} from "../../types/game.types";
 
-import styles from "./widgets.module.scss";
-
-interface StyleInterface extends React.CSSProperties {
-    '--lines': string
-}
+import styles from "./widgets.module.scss"
 
 const PlayedWidget = ({setGame}) => {
     const navigate = useNavigate();
@@ -56,7 +53,7 @@ const PlayedWidget = ({setGame}) => {
         )
     }
 
-    const style: StyleInterface = {
+    const style: widgetWrapperStyleInterface = {
         '--lines': '1'
     }
 

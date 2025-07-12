@@ -1,4 +1,4 @@
-import {HLTBType} from "./game.types";
+import {HLTBType} from "@type/game.types";
 
 export type movieSearch = {
     href: string

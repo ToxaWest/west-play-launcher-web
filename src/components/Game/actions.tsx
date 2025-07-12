@@ -1,9 +1,8 @@
 import React from "react";
+import useFooterActions from "@hook/useFooterActions";
+import useStartGame from "@hook/useStartGame";
+import type {Game} from "@type/game.types";
 import {useLocation, useNavigate} from "react-router-dom";
-
-import useFooterActions from "../../hooks/useFooterActions";
-import useStartGame from "../../hooks/useStartGame";
-import type {Game} from "../../types/game.types";
 
 import styles from "./game.module.scss";
 

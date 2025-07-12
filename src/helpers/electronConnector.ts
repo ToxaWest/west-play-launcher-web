@@ -8,9 +8,9 @@ import {
     getSteamUserId, HLTBSearchResponse,
     movieSearch, steamGridDbSearchResponse,
     SteamSearchResponse
-} from "../types/electron.types";
-import type {EarnedAchievementsType, Game, ProgressType, StatsType} from "../types/game.types";
-import type {crackedGameType, freeGameType} from "../types/widget.types";
+} from "@type/electron.types";
+import type {EarnedAchievementsType, Game, ProgressType, StatsType} from "@type/game.types";
+import type {crackedGameType, freeGameType} from "@type/widget.types";
 
 const apiCall = (props: any, func: string) => {
     if (typeof props === 'function') {

@@ -1,4 +1,4 @@
-import type {LocalStorageKeys, LocalStorageType} from "../types/localStorage.type";
+import type {LocalStorageKeys, LocalStorageType} from "@type/localStorage.type";
 
 function getFromStorage< K extends LocalStorageKeys>(key: K): LocalStorageType[K] {
     return JSON.parse(localStorage.getItem(key))

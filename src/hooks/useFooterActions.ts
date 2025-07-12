@@ -1,9 +1,9 @@
 import {use} from "react";
+import type {gamePadButtonName} from "@type/gamePad.types";
+import type {footerActionsType} from "@type/provider.types";
 import {useNavigate} from "react-router-dom";
 
 import {AppContext} from "../helpers/provider";
-import type {gamePadButtonName} from "../types/gamePad.types";
-import type {footerActionsType} from "../types/provider.types";
 
 const useFooterActions = () => {
     const {footerActions, setFooterActions} = use(AppContext);

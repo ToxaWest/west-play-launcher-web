@@ -1,5 +1,6 @@
+import type {MovieStorageHistory} from "@type/movieStorage.types";
+
 import {getFromStorage, setToStorage} from "../../helpers/getFromStorage";
-import type {MovieStorageHistory} from "../../types/movieStorage.types";
 
 class MovieStorage {
     history: MovieStorageHistory[] = [];

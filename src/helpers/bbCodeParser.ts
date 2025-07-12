@@ -40,8 +40,7 @@ const bbCodeParser = (bbString: string) => {
     const html = document.createElement('div');
     html.innerHTML = content;
     html.querySelectorAll('ul, ol').forEach(ul => {
-        const temp = ul.innerHTML;
-        const res = temp.split(new RegExp(`\\[\\*]`)).map(a => {
+        const res = ul.innerHTML.split(new RegExp(`\\[\\*]`)).map(a => {
             if (a) return `<li>${a.replace(/\[\/\*]/gm, '')}</li>`
             return null;
         }).filter(a => a)

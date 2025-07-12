@@ -1,6 +1,6 @@
 import React from "react";
+import type {Game} from "@type/game.types";
 
-import type {Game} from "../../../types/game.types";
 import Input from "../../Input";
 
 import styles from "../settings.module.scss";
