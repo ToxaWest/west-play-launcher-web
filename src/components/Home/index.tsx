@@ -79,16 +79,13 @@ const Home = () => {
     }
 
     const renderWrapper = (children: ReactElement) => {
-        if (videoBg) {
-            return (
-                <div className={styles.videoBg}>
-                    {children}
-                </div>
-            )
+        const props = {
+            className: videoBg ? styles.videoBg : styles.wrapper,
+            style: videoBg ? {} : {backgroundImage: `url('${getUrl(game.img_hero)}')`},
         }
 
         return (
-            <div className={styles.wrapper} style={{backgroundImage: `url('${getUrl(game.img_hero)}')`}}>
+            <div {...props}>
                 {children}
             </div>
         )

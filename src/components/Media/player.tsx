@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import type {EpisodeItem, Episodes, Streams} from "@type/electron.types";
 import type {MovieStorageHistory} from "@type/movieStorage.types";
 import Hls from "hls.js";
@@ -30,7 +30,7 @@ const Player = ({
     quality: keyof Streams,
     setQuality: (quality: keyof Streams) => void
 }) => {
-    const playerRef = React.useRef(null);
+    const playerRef = React.useRef<HTMLVideoElement>(null);
 
     const getStartPosition = () => {
         const s = movieStorage.getHistory(url) as MovieStorageHistory;
@@ -44,8 +44,10 @@ const Player = ({
         return 0
     }
 
-    useEffect(() => {
-        playerRef.current.currentTime = getStartPosition();
+    React.useEffect(() => {
+        if (playerRef.current) {
+            playerRef.current.currentTime = getStartPosition();
+        }
     }, [episode_id, season_id, translation_id])
 
     const hlsRef = React.useRef(new Hls({
@@ -56,11 +58,11 @@ const Player = ({
     }));
     const [loading, setLoading] = React.useState(true);
 
-    useEffect(() => {
+    React.useEffect(() => {
         hlsRef.current.attachMedia(playerRef.current);
     }, []);
 
-    useEffect(() => {
+    React.useEffect(() => {
         initPlayer()
     }, [episodes, quality])
 
