@@ -4,6 +4,7 @@ import type {EarnedAchievementsType, Game} from "@type/game.types";
 import type {ReactElement} from "react";
 
 import {getFromStorage} from "../../helpers/getFromStorage";
+import i18n from "../../helpers/translate";
 import RenderHLTB from "../Game/renderHLTB";
 import MoviesWidget from "../Media/movies.widget";
 
@@ -65,13 +66,13 @@ const Home = () => {
             const ach = getFromStorage('achievements')[game.id] || {}
 
             return <div className={styles.achievements}>
-                <span>Achievements: </span>
+                <span>{i18n.t('Achievements')}: </span>
                 {getAchCount(ach)} of {Object.keys(game.achievements).length}
             </div>
         }
         if (game.id === 'library') {
             return <div className={styles.achievements}>
-                <span>Achievements: </span>
+                <span>{i18n.t('Achievements')}: </span>
                 {Object.values(getFromStorage('achievements') || {}).reduce((acc, a) => acc + getAchCount(a), 0)}
             </div>
         }

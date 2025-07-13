@@ -2,6 +2,7 @@ import React from "react";
 import type {SteamSearchResponse} from "@type/electron.types";
 
 import electronConnector from "../../../helpers/electronConnector";
+import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 import Modal from "../../Modal";
 
@@ -45,7 +46,7 @@ const SearchSteamGame = ({defaultValue, active, setActive}: {
                 padding: 'var(--gap-half)',
                 width: '600px'
             }}>
-                <Input label='Search'
+                <Input label={i18n.t('Search')}
                        name='search'
                        value={search}
                        onChange={({value}) => {

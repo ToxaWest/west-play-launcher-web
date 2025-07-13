@@ -1,6 +1,8 @@
 import React from "react";
 import type {Game} from "@type/game.types";
 
+import i18n from "../../helpers/translate";
+
 import RenderHLTB from "./renderHLTB";
 
 import styles from "./game.module.scss";
@@ -16,19 +18,19 @@ const RenderContent = ({game, fields = []}: { game: Game, fields?: { label: stri
     }
 
     const infoData = [...fields, {
-        label: 'Metacritic',
+        label: i18n.t('Metacritic'),
         value: game.metacritic?.score
     }, {
-        label: 'Release date',
+        label: i18n.t('Release date'),
         value: game.release_date?.date
     }, {
-        label: 'Players',
+        label: i18n.t('Players'),
         value: game.players
     }, {
-        label: 'PEGI rating',
+        label: i18n.t('PEGI rating'),
         value: game.required_age
     }, {
-        label: 'Developers',
+        label: i18n.t('Developers'),
         value: renderDevelopers(game.developers)
     }]
 

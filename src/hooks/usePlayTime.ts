@@ -2,6 +2,7 @@ import useNotification from "@hook/useNotification";
 import type {Game} from "@type/game.types";
 
 import {getFromStorage, setToStorage} from "../helpers/getFromStorage";
+import i18n from "../helpers/translate";
 
 const usePlayTime = ({id, img_icon: img, name}: Game) => {
     const notification = useNotification();
@@ -9,7 +10,7 @@ const usePlayTime = ({id, img_icon: img, name}: Game) => {
         const current = getFromStorage('playTime');
         setToStorage('playTime', {...current, [id]: (current[id] || 0) + time});
         notification({
-            description: 'You played ' + secondsToHms(time),
+            description: i18n.t('You played ') + secondsToHms(time),
             img,
             name,
             status: 'warning'

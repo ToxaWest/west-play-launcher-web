@@ -3,6 +3,7 @@ import type {ConnectedMonitorType} from "@type/electron.types";
 import {Link} from "react-router-dom";
 
 import electronConnector from "../../helpers/electronConnector";
+import i18n from "../../helpers/translate";
 
 import styles from './menu.module.scss';
 
@@ -27,7 +28,7 @@ const Menu = () => {
                         electronConnector.getConnectedMonitors().then(setConnectedMonitors)
                     })
                 }}>
-                    {primary ? 'Main' : 'Select'}: {name}
+                    {primary ? i18n.t('Main') : i18n.t('Select')}: {name}
                 </Link>
             </li>
         )
@@ -38,23 +39,23 @@ const Menu = () => {
             <ul>
                 <li>
                     <Link to="/" tabIndex={1}>
-                        Home
+                        {i18n.t('Home')}
                     </Link>
                 </li>
                 <li>
                     <Link to="/library" tabIndex={1}>
-                        Library
+                        {i18n.t('Library')}
                     </Link>
                 </li>
                 <li style={{marginBottom: 'auto'}}>
                     <Link to="/media" tabIndex={1}>
-                        Media
+                        {i18n.t('Media')}
                     </Link>
                 </li>
                 {connectedMonitors.map(renderMonitors)}
                 <li>
                     <Link to="/settings" tabIndex={1}>
-                        <SvgSettings/> Settings
+                        <SvgSettings/> {i18n.t('Settings')}
                     </Link>
                 </li>
                 <li>
@@ -62,7 +63,7 @@ const Menu = () => {
                         e.preventDefault();
                         electronConnector.systemAction('Stop-Computer')
                     }}>
-                        <SvgShutDown/> Power OFF
+                        <SvgShutDown/> {i18n.t('Power OFF')}
                     </Link>
                 </li>
                 <li>
@@ -70,7 +71,7 @@ const Menu = () => {
                         e.preventDefault();
                         electronConnector.systemAction('Restart-Computer')
                     }}>
-                        <SvgRestart/> Restart
+                        <SvgRestart/> {i18n.t('Restart')}
                     </Link>
                 </li>
             </ul>

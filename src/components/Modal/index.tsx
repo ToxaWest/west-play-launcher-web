@@ -2,6 +2,8 @@ import React from "react";
 import useFooterActions from "@hook/useFooterActions";
 import {createPortal} from "react-dom";
 
+import i18n from "../../helpers/translate";
+
 const defaultStyle: React.CSSProperties = {
     alignItems: 'center',
     bottom: 0,
@@ -28,7 +30,7 @@ const Modal = ({children, onClose, style = {}}: {
                 onClick: () => {
                     onClose(true)
                 },
-                title: 'Close'
+                title: i18n.t('Close')
             }
         })
         return () => {

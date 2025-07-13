@@ -1,6 +1,7 @@
 import React from "react";
 import type {Game} from "@type/game.types";
 
+import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 
 import styles from "../settings.module.scss";
@@ -13,19 +14,19 @@ const SteamFields = ({game, onChange}: {
 
     return (
         <>
-            <Input label='Exe file path'
+            <Input label={i18n.t('Exe file path')}
                    value={game.exePath}
                    onChange={onChange}
                    type="path"
                    initial={game.path}
                    onlyFile={true}
                    name='exePath'/>
-            <Input label={'Exe file path'}
+            <Input label={i18n.t('Exe file path')}
                    name="exePath"
                    value={game.exePath}
                    onChange={onChange}
             />
-            {game.source === 'steam' ? <Input label='Achievements file path'
+            {game.source === 'steam' ? <Input label={i18n.t('Achievements file path')}
                                               value={game.achPath}
                                               onChange={onChange}
                                               type="path"
@@ -39,10 +40,10 @@ const SteamFields = ({game, onChange}: {
                             name: 'exeArgs',
                             value: {...args, [(parseInt(Object.keys(args).at(-1)) || 0) + 1]: ''}
                         })
-                    }}>Add starting argument
+                    }}>{i18n.t('Add starting argument')}
                 </button>
                 {Object.entries(args).map(([id, value], index) => (
-                    <Input label={'Argument ' + (index + 1)}
+                    <Input label={i18n.t('Argument {{index}}', {index: index + 1})}
                            value={value}
                            key={id}
                            onChange={({value, name}) => {
@@ -60,7 +61,7 @@ const SteamFields = ({game, onChange}: {
                                     name: 'exeArgs',
                                     value: {...args}
                                 })
-                            }}>Remove argument
+                            }}>{i18n.t('Remove argument')}
                         </button>
                     </Input>
                 ))}

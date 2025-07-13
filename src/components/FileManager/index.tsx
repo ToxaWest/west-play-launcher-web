@@ -3,6 +3,7 @@ import useFooterActions from "@hook/useFooterActions";
 import type {FileManagerFolderType} from "@type/electron.types";
 
 import electronConnector from "../../helpers/electronConnector";
+import i18n from "../../helpers/translate";
 import Loader from "../Loader";
 
 import styles from "./FileManager.module.scss";
@@ -42,14 +43,14 @@ const FileManager = ({
                         }
                     }
                 },
-                title: 'Back'
+                title: i18n.t('Back')
             },
             x: {
                 button: 'x',
                 onClick: () => {
                     submit(null)
                 },
-                title: 'Close',
+                title: i18n.t('Close'),
             }
         })
         if (file) {
@@ -59,7 +60,7 @@ const FileManager = ({
                     onClick: () => {
                         submit(currentFolder.current)
                     },
-                    title: 'Select'
+                    title: i18n.t('Select')
                 }
             })
         }

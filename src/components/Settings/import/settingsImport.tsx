@@ -4,6 +4,7 @@ import type {Game} from "@type/game.types";
 
 import electronConnector from "../../../helpers/electronConnector";
 import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
+import i18n from "../../../helpers/translate";
 import Loader from "../../Loader";
 import SearchSteamGame from "../Games/searchSteamGame";
 
@@ -46,9 +47,9 @@ const SettingsImportSteam = () => {
                     electronConnector.getDataByGameId(item).then(r => {
                         setToStorage('games', [{...r, ...item}, ...games]);
                         notifications({
-                            description: 'Configuration updated',
+                            description: i18n.t('Configuration updated'),
                             img: '/assets/controller/save.svg',
-                            name: 'Saved successfully',
+                            name: i18n.t('Saved successfully'),
                             status: 'saving'
                         })
                         if (item.source === 'egs') {
@@ -58,7 +59,7 @@ const SettingsImportSteam = () => {
                         window.location.reload()
                     })
                 }}>
-                    {installed ? 'Update (only local data)' : 'Install'}
+                    {installed ? i18n.t('Update (only local data)') : i18n.t('Install')}
                 </button>
                 {installed ? <span className={styles.installedIcon}/> : null}
             </>
@@ -70,14 +71,14 @@ const SettingsImportSteam = () => {
             {item.img_grid ? <img src={item.img_grid} alt={item.name}/> : null}
             <div className={styles.content}>
                 <h2>{item.name}</h2>
-                <div><strong>Source:</strong> <i title={item.source}>{item.source}</i></div>
+                <div><strong>{i18n.t('Source')}:</strong> <i title={item.source}>{item.source}</i></div>
                 <div role="button" tabIndex={0} onClick={() => {
                     electronConnector.openLink(item.path)
                 }}>
-                    <strong>Folder:</strong>
+                    <strong>{i18n.t('Folder')}:</strong>
                     <i title={item.path}>{item.path}</i>
                 </div>
-                <div><strong>ID:</strong> <i title={item.id.toString()}>{item.id}</i></div>
+                <div><strong>{i18n.t('ID')}:</strong> <i title={item.id.toString()}>{item.id}</i></div>
                 {renderActionButton(item)}
             </div>
         </li>

@@ -3,6 +3,7 @@ import useNotification from "@hook/useNotification";
 import type {Game} from "@type/game.types";
 
 import electronConnector from "../../../helpers/electronConnector";
+import i18n from "../../../helpers/translate";
 
 import AddImage from "./addImage";
 
@@ -20,18 +21,18 @@ const Images = ({game, onChange, setLoading, setGame}: {
             return <button tabIndex={1} type="button" onClick={() => {
                 setLoading(true);
                 notification({
-                    description: 'Please wait for end',
+                    description: i18n.t('Please wait for end'),
                     img: game.img_icon || '/assets/controller/save.svg',
-                    name: 'Getting images from steam',
+                    name: i18n.t('Getting images from steam'),
                     status: 'warning'
                 }, 3000)
                 electronConnector.getSteamAssets({id, steamgriddb}).then(data => {
                     setGame(g => ({...g, ...data}))
                     setLoading(false);
                     notification({
-                        description: 'Do not forgot save changes',
+                        description: i18n.t('Do not forgot save changes'),
                         img: game.img_icon || '/assets/controller/save.svg',
-                        name: 'Images updated',
+                        name: i18n.t('Images updated'),
                         status: 'success'
                     }, 3000)
                 })

@@ -1,6 +1,7 @@
 import React from "react";
 import type {Game} from "@type/game.types";
 
+import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 
 import styles from "../settings.module.scss";
@@ -20,13 +21,13 @@ const RyujinxFields = ({game, onChange}: {
     }
 
     const fields = [{
-        label: 'Full Screen',
+        label: i18n.t('Full Screen'),
         name: 'fullscreen',
         options: ['--fullscreen'],
         type: 'select',
         value: game.exeArgs.fullscreen,
     }, {
-        label: 'Docked Mode',
+        label: i18n.t('Docked Mode'),
         name: 'docked',
         options: ['--docked-mode', '--handheld-mode'],
         type: 'select',

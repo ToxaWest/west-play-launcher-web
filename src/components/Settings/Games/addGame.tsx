@@ -4,6 +4,7 @@ import type {Game} from "@type/game.types";
 
 import electronConnector from "../../../helpers/electronConnector";
 import {getFromStorage} from "../../../helpers/getFromStorage";
+import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 import Loader from "../../Loader";
 
@@ -38,9 +39,9 @@ const AddGame = ({data, submit, remove}: {
     const update = async () => {
         setLoading(true)
         notification({
-            description: 'Please wait for end',
+            description: i18n.t('Please wait for end'),
             img: game.img_icon || '/assets/controller/save.svg',
-            name: 'Updating game data',
+            name: i18n.t('Updating game data'),
             status: 'warning'
         }, 3000)
         if (game.source === 'gog' || game.source === 'egs') {
@@ -64,19 +65,19 @@ const AddGame = ({data, submit, remove}: {
         if (!data) {
             setLoading(false)
             notification({
-                description: 'Folder does not have required game files',
+                description: i18n.t('Folder does not have required game files'),
                 img: game.img_icon || '/assets/controller/save.svg',
-                name: 'Game not found',
-                status: 'warning'
+                name: i18n.t('Game not found'),
+                status: 'error'
             }, 3000);
             return;
         }
         if (getFromStorage('games').some(({id}) => id === data.id)) {
             setLoading(false)
             notification({
-                description: `Game with id ${data.id} already exists`,
+                description: i18n.t('Game with id {{id}} already exists', {id: data.id}),
                 img: game.img_icon || '/assets/controller/save.svg',
-                name: 'Game already exists',
+                name: i18n.t('Game already exists'),
                 status: 'warning'
             }, 3000);
             return;
@@ -98,11 +99,11 @@ const AddGame = ({data, submit, remove}: {
     }
 
     const render = {
-        download: () => <Input label='Download link' value={game.downloadLink} onChange={onChange}
+        download: () => <Input label={i18n.t('Download link')} value={game.downloadLink} onChange={onChange}
                                name='downloadLink'/>,
         howLongToBeat: () => <SearchHLTB defaultValue={game.name} update={onChange}/>,
         imageName: () => <div style={{display: 'flex', gap: 'var(--gap)'}}>
-            <Input label='Game Image'
+            <Input label={i18n.t('Game Image')}
                    value={game.imageName}
                    onChange={({value, name}) => {
                        if (value) {
@@ -116,11 +117,11 @@ const AddGame = ({data, submit, remove}: {
             </Input>
             <button type="button" onClick={() => {
                 onChange({name: 'imageName', value: ''})
-            }}>Clear
+            }}>{i18n.t('Clear')}
             </button>
         </div>,
         images: () => <Images game={game} onChange={onChange} setGame={setGame} setLoading={setLoading}/>,
-        path: () => <Input label='Path'
+        path: () => <Input label={i18n.t('Path')}
                            value={game.path}
                            onChange={({value, name}) => {
                                if (value) {
@@ -131,12 +132,12 @@ const AddGame = ({data, submit, remove}: {
                            type="path"
                            onlyFile={false}
                            name='path'/>,
-        remove: () => <button tabIndex={1} type="button" onClick={remove}>Remove game</button>,
+        remove: () => <button tabIndex={1} type="button" onClick={remove}>{i18n.t('Remove game')}</button>,
         ryujinxFields: () => <RyujinxFields game={game} onChange={onChange}/>,
         steamFields: () => <SteamFields game={game} onChange={onChange}/>,
         steamGridDB: () => <SearchGame defaultValue={game.name} update={onChange}/>,
-        update: () => <button tabIndex={1} type="button" onClick={update}>Update game</button>,
-        version: () => <Input label='Version' value={game.buildVersion} onChange={onChange} name='buildVersion'/>
+        update: () => <button tabIndex={1} type="button" onClick={update}>{i18n.t('Update game')}</button>,
+        version: () => <Input label={i18n.t('Version')} value={game.buildVersion} onChange={onChange} name='buildVersion'/>
     }
 
     const renderByType = () => {
@@ -200,14 +201,14 @@ const AddGame = ({data, submit, remove}: {
                         onClick={() => {
                             submit(game);
                             notification({
-                                description: 'Games configuration updated',
+                                description: i18n.t('Games configuration updated'),
                                 img: '/assets/controller/save.svg',
-                                name: 'Saved successfully',
+                                name: i18n.t('Saved successfully'),
                                 status: 'saving'
                             })
                         }}
                 >
-                    submit
+                    {i18n.t('Submit')}
                 </button>
             </>
         )

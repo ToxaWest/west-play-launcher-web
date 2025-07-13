@@ -3,6 +3,7 @@ import React from "react";
 import bbCodeParser from "../../helpers/bbCodeParser";
 import {getFromStorage} from "../../helpers/getFromStorage";
 import newsCarousel from "../../helpers/newsCarousel";
+import i18n from "../../helpers/translate";
 import Loader from "../Loader";
 
 import styles from "./news.module.scss";
@@ -57,7 +58,7 @@ const NewsRender = ({id}) => {
             </ul>
             {showMore && <button tabIndex={1} type="submit" onClick={() => {
                 React.startTransition(() => fetchData(1))
-            }}>Load More
+            }}>{i18n.t('Load More')}
             </button>}
         </div>
     )

@@ -2,6 +2,8 @@ import React from "react";
 import useFooterActions from "@hook/useFooterActions";
 import {Link, Outlet, useLocation, useNavigate} from "react-router-dom";
 
+import i18n from "../../helpers/translate";
+
 import styles from "./settings.module.scss";
 
 const Settings = () => {
@@ -28,9 +30,9 @@ const Settings = () => {
     const location = useLocation();
 
     const links = {
-        '/settings': 'Home',
-        '/settings/games': 'Games',
-        '/settings/import': 'Import'
+        '/settings': i18n.t('Home'),
+        '/settings/games': i18n.t('Games'),
+        '/settings/import': i18n.t('Import')
     }
     const toggleViewMode = (direction: 'previous' | 'next') => {
         const _links = Object.keys(links);

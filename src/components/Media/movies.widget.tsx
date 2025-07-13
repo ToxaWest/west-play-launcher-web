@@ -2,6 +2,8 @@ import React from "react";
 import {MovieStorageHistory} from "@type/movieStorage.types";
 import {createSearchParams,useNavigate} from "react-router-dom";
 
+import i18n from "../../helpers/translate";
+
 import movieStorage from "./movieStorage";
 
 import styles from './media.module.scss';
@@ -22,7 +24,7 @@ const MoviesWidget = () => {
     )
 
     return <React.Fragment>
-        <h2>Movies</h2>
+        <h2>{i18n.t('Movies')}</h2>
         <ul className={styles.widget}>
             {movieStorage.history.reverse().map(renderItem)}
         </ul>

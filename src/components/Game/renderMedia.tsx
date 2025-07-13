@@ -3,6 +3,7 @@ import useFooterActions from "@hook/useFooterActions";
 import {Game, GameVideoType} from "@type/game.types";
 
 import electronConnector from "../../helpers/electronConnector";
+import i18n from "../../helpers/translate";
 import Video from "../Video";
 
 import styles from "./game.module.scss";
@@ -28,26 +29,26 @@ const RenderMedia = ({game}: { game: Game }) => {
                 onClick: () => {
                     setCurrent(next)
                 },
-                title: 'Next'
+                title: i18n.t('Next')
             }, lt: {
                 button: 'lt',
                 onClick: () => {
                     setSoundStatus(false)
                 },
-                title: 'Sound OFF'
+                title: i18n.t('Sound OFF')
             }, rt: {
                 button: 'rt',
                 onClick: () => {
                     document.querySelector(':root').scrollIntoView({behavior: 'smooth', block: 'end'})
                     setSoundStatus(true)
                 },
-                title: 'Sound ON'
+                title: i18n.t('Sound ON')
             }, top: {
                 button: 'top',
                 onClick: () => {
                     setCurrent(prev)
                 },
-                title: 'Prev'
+                title: i18n.t('Previous')
             }
         })
         return () => {
@@ -79,7 +80,7 @@ const RenderMedia = ({game}: { game: Game }) => {
     }
 
     if (!media.length) {
-        return (<h2 style={{textAlign: "center"}}>Media not found</h2>)
+        return (<h2 style={{textAlign: "center"}}>{i18n.t('Media not found')}</h2>)
     }
 
     return (

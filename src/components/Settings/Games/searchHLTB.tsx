@@ -3,6 +3,7 @@ import type {HLTBSearchResponse} from "@type/electron.types";
 import type {HLTBType} from "@type/game.types";
 
 import electronConnector from "../../../helpers/electronConnector";
+import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 import Modal from "../../Modal";
 
@@ -38,7 +39,7 @@ const SearchHLTB = ({update, defaultValue}: {
 
     return (
         <React.Fragment>
-            <button tabIndex={1} type="button" onClick={() => setActive(true)}>Update HLTB</button>
+            <button tabIndex={1} type="button" onClick={() => setActive(true)}>{i18n.t('Update HLTB')}</button>
             {active ?
                 <Modal onClose={close} style={{zIndex: 30}}>
                     <div style={{
@@ -47,7 +48,7 @@ const SearchHLTB = ({update, defaultValue}: {
                         padding: 'var(--gap-half)',
                         width: '600px'
                     }}>
-                        <Input label='Search'
+                        <Input label={i18n.t('Search')}
                                value={search}
                                onChange={({value}) => {
                                    setSearch(value as string)

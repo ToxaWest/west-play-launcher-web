@@ -5,6 +5,7 @@ import type {MovieStorageHistory} from "@type/movieStorage.types";
 import type {footerActionsType} from "@type/provider.types";
 
 import electronConnector from "../../helpers/electronConnector";
+import i18n from "../../helpers/translate";
 import Input from "../Input";
 
 import CategoryFinder from "./categoryFinder";
@@ -28,14 +29,14 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
                 onClick: () => {
                     setTab(0)
                 },
-                title: 'Catalog'
+                title: i18n.t('Catalog')
             },
             rb: {
                 button: 'rb',
                 onClick: () => {
                     setTab(1)
                 },
-                title: 'History'
+                title: i18n.t('History')
             }
         })
         return () => {
@@ -51,13 +52,13 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
                         type="button"
                         onClick={() => goTo(pageData.pagination.prev)}
                         disabled={!pageData.pagination.prev}
-                >Previous
+                >{i18n.t('Previous')}
                 </button>
                 <button tabIndex={pageData.pagination.next ? 1 : -1}
                         type="button"
                         onClick={() => goTo(pageData.pagination.next)}
                         disabled={!pageData.pagination.next}
-                >Next
+                >{i18n.t('Next')}
                 </button>
             </div>
         )
@@ -86,7 +87,7 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
     const renderSearch = () => {
         return (
             <Input
-                label={'Search'}
+                label={i18n.t('Search')}
                 onChange={({value}) => {
                     if (value && (value as string).length > 2) electronConnector.movieSearch(value as string).then(setTemp)
                 }}
@@ -122,7 +123,7 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
 
                             setFooterActions(action(!inHistory))
                         },
-                        title: inHistory ? 'Remove from history' : 'Add to history'
+                        title: inHistory ? i18n.t('Remove from history') : i18n.t('Add to history')
                     }
                 })
                 setFooterActions(action(
@@ -144,7 +145,7 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
         heading: pageData.heading,
         items: pageData.list,
     }, {
-        heading: 'History',
+        heading: i18n.t('History'),
         items: movieStorage.history,
     }]
 

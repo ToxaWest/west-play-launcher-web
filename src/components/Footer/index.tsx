@@ -5,6 +5,8 @@ import type {gamePadButtonName} from "@type/gamePad.types";
 import type {footerActionsType, footerActionType} from "@type/provider.types";
 import {useNavigate} from "react-router-dom";
 
+import i18n from "../../helpers/translate";
+
 import styles from './footer.module.scss';
 
 const Footer = () => {
@@ -43,7 +45,7 @@ const Footer = () => {
         select: {
             button: 'select',
             onClick: menuButton,
-            title: 'Menu'
+            title: i18n.t('Menu')
         }
     }
 

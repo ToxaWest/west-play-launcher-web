@@ -2,6 +2,7 @@ import React from "react";
 import type {crackedGameType, widgetWrapperStyleInterface} from "@type/widget.types";
 
 import electronConnector from "../../helpers/electronConnector";
+import i18n from "../../helpers/translate";
 import Loader from "../Loader";
 
 import styles from "./widgets.module.scss";
@@ -20,34 +21,34 @@ const CrackedWidget = () => {
 
     const getFields = (currentGame: crackedGameType) => {
         return [{
-            label: 'Name',
+            label: i18n.t('Name'),
             value: currentGame.title,
         }, {
-            label: 'Is AAA',
-            value: currentGame.is_AAA ? 'Yes' : 'No'
-        },{
-            label: 'Score',
+            label: i18n.t('Is AAA'),
+            value: currentGame.is_AAA ? i18n.t('Yes') : i18n.t('No')
+        }, {
+            label: i18n.t('Score'),
             value: currentGame.user_score
         }, ...(currentGame.steam_prod_id ? [{
-            label: 'Store Link',
+            label: i18n.t('Store Link'),
             value: currentGame.steam_prod_id ?
                 <div style={{cursor: 'pointer', display: 'inline'}} role="link" tabIndex={0} onClick={() => {
                     electronConnector.openLink(`https://store.steampowered.com/app/${currentGame.steam_prod_id}`)
-                }}>Steam Link</div> : null
+                }}>{i18n.t('Steam Link')}</div> : null
         }] : []), {
-            label: 'Status',
+            label: i18n.t('Status'),
             value: currentGame.readable_status
         }, {
-            label: 'Hacked Groups',
+            label: i18n.t('Hacked Groups'),
             value: currentGame.hacked_groups
         }, ...(currentGame.torrent_link ? [{
-            label: 'Torrent (not recommended)',
+            label: i18n.t('Torrent (not recommended)'),
             value: currentGame.torrent_link ?
                 <div style={{cursor: 'pointer', display: 'inline'}} role="link" tabIndex={0} onClick={() => {
                     electronConnector.openLink(currentGame.torrent_link)
-                }}>Link</div> : null
+                }}>{i18n.t('Link')}</div> : null
         }] : []), {
-            label: 'Cracked',
+            label: i18n.t('Cracked'),
             value: new Date(currentGame.crack_date).toLocaleDateString()
         }]
     }
@@ -107,7 +108,7 @@ const CrackedWidget = () => {
 
     return (
         <React.Fragment>
-            <h2>Cracked Games</h2>
+            <h2>{i18n.t('Cracked Games')}</h2>
             <ul className={styles.freeWrapper} style={style}>
                 {games.map(renderGame)}
                 <Loader loading={loading}/>

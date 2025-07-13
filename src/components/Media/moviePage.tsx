@@ -4,6 +4,7 @@ import {EpisodeItem, Episodes, movieTranslationItem, movieType, Streams} from "@
 import {MovieStorageHistory} from "@type/movieStorage.types";
 
 import electronConnector from "../../helpers/electronConnector";
+import i18n from "../../helpers/translate";
 import Input from "../Input";
 import Loader from "../Loader";
 
@@ -40,7 +41,7 @@ const MoviePage = ({url, setUrl, goTo}: {
                         (document.activeElement as HTMLElement)?.click();
                     }
                 },
-                title: 'Select'
+                title: i18n.t('Select')
             },
             b: {
                 button: 'b',
@@ -52,17 +53,17 @@ const MoviePage = ({url, setUrl, goTo}: {
                         })
                     } else setUrl(null);
                 },
-                title: 'Back'
+                title: i18n.t('Back')
             },
             lt: {
                 button: 'lt',
                 onClick: () => forward(-15),
-                title: 'Forward -'
+                title: i18n.t('Forward')+ ' -'
             },
             rt: {
                 button: 'rt',
                 onClick: () => forward(15),
-                title: 'Forward +'
+                title: i18n.t('Forward')+ ' +'
             },
             x: {
                 button: 'x',
@@ -72,7 +73,7 @@ const MoviePage = ({url, setUrl, goTo}: {
                         player.paused ? player.play() : player.pause()
                     }
                 },
-                title: 'Play/Pause'
+                title: i18n.t('Play/Pause')
             },
             y: {
                 button: 'y',
@@ -88,7 +89,7 @@ const MoviePage = ({url, setUrl, goTo}: {
                         });
                     }
                 },
-                title: 'FullScreen'
+                title: i18n.t('FullScreen')
             }
         })
         return () => {
@@ -234,7 +235,7 @@ const MoviePage = ({url, setUrl, goTo}: {
     const renderTrailer = () => {
         if (!data.trailer) return null
         if (!showTrailer) {
-            return <button tabIndex={1} type="button" onClick={() => setShowTrailer(true)}>Show trailer</button>
+            return <button tabIndex={1} type="button" onClick={() => setShowTrailer(true)}>{i18n.t('Show trailer')}</button>
         }
         const url = new URL(data.trailer);
         if (url.hostname.includes('youtube')) {
@@ -275,7 +276,7 @@ const MoviePage = ({url, setUrl, goTo}: {
             </div>
             <div className={styles.optionsWrapper}>
                 {data.translations.length ?
-                    <Input label={'Translation'}
+                    <Input label={i18n.t('Translation')}
                            type="select"
                            value={data.translation_id}
                            options={data.translations.map(t => ({
@@ -288,7 +289,7 @@ const MoviePage = ({url, setUrl, goTo}: {
                            }}
                     /> : null}
                 {Object.keys(data.episodes).length ?
-                    <Input label={'Season'} type="select"
+                    <Input label={i18n.t('Season')} type="select"
                            options={Object.keys(data.episodes).map(key => ({
                                label: key,
                                value: parseInt(key)
@@ -300,7 +301,7 @@ const MoviePage = ({url, setUrl, goTo}: {
                                })
                            }}/> : null}
                 {(data.episodes[data.season_id] || []).length ?
-                    <Input label={'Episode'} type="select"
+                    <Input label={i18n.t('Episode')} type="select"
                            options={(data.episodes[data.season_id] || []).map((item: EpisodeItem) => ({
                                label: item.text,
                                value: item.season + '_' + item.episode
@@ -314,7 +315,7 @@ const MoviePage = ({url, setUrl, goTo}: {
                            }}/>
                     : null}
                 {Object.keys(data.streams || {}).length ?
-                    <Input label={'Quality'} type="select"
+                    <Input label={i18n.t('Quality')} type="select"
                            options={Object.keys(data.streams).map(key => ({
                                label: key,
                                value: key

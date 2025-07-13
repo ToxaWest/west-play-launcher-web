@@ -4,6 +4,7 @@ import type {footerActionsType} from "@type/provider.types";
 import {useNavigate} from "react-router-dom";
 
 import {AppContext} from "../helpers/provider";
+import i18n from "../helpers/translate";
 
 const useFooterActions = () => {
     const {footerActions, setFooterActions} = use(AppContext);
@@ -34,12 +35,12 @@ const useFooterActions = () => {
                     activeElement.click();
                 }
             },
-            title: 'Select'
+            title: i18n.t('Select')
         },
         b: {
             button: 'b',
             onClick: backButton,
-            title: 'Back'
+            title: i18n.t('Back')
         },
     }
 

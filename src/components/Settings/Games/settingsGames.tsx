@@ -2,6 +2,7 @@ import React from "react";
 import {Game} from "@type/game.types";
 
 import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
+import i18n from "../../../helpers/translate";
 
 import AddGame from "./addGame";
 
@@ -43,7 +44,7 @@ const SettingsGames = () => {
 
     return (
         <div className={styles.block} id="settings-games">
-            <h1>Games</h1>
+            <h1>{i18n.t('Games')}</h1>
             <ul className={styles.iconsWrapper}>
                 {games.map((game, index) => (
                     <li key={game.id} role="button" onClick={() => {
@@ -79,7 +80,7 @@ const SettingsGames = () => {
                     }, ...d]
                 })
                 setActiveIndex(0)
-            }}>Add Game
+            }}>{i18n.t('Add Game')}
             </button>
             {renderForm()}
         </div>

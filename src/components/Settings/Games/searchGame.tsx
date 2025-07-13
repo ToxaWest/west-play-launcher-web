@@ -2,6 +2,7 @@ import React from "react";
 import type {steamGridDbSearchResponse} from "@type/electron.types";
 
 import electronConnector from "../../../helpers/electronConnector";
+import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 import Modal from "../../Modal";
 
@@ -42,7 +43,7 @@ const SearchGame = ({update, defaultValue}: {
 
     return (
         <>
-            <button tabIndex={1} type="button" onClick={() => setActive(true)}>Update SteamGridDB</button>
+            <button tabIndex={1} type="button" onClick={() => setActive(true)}>{i18n.t('Update SteamGridDB')}</button>
             {active ?
                 <Modal onClose={close} style={{zIndex: 30}}>
                     <div style={{
@@ -51,7 +52,7 @@ const SearchGame = ({update, defaultValue}: {
                         padding: 'var(--gap-half)',
                         width: '600px'
                     }}>
-                        <Input label='Search'
+                        <Input label={i18n.t('Search')}
                                value={search}
                                onChange={({value}) => {
                                    setSearch(value as string)

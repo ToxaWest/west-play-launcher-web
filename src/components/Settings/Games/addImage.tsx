@@ -2,6 +2,7 @@ import React from "react";
 import {getImageAssets, getImageInput, steamgriddbTypes} from "@type/electron.types";
 
 import electronConnector from "../../../helpers/electronConnector";
+import i18n from "../../../helpers/translate";
 import Loader from "../../Loader";
 
 import styles from "../settings.module.scss";
@@ -57,11 +58,11 @@ const AddImage = ({id, type, onChange, value, game_id}: {
     return (
         <div className={styles.addImage}>
             <div className={styles.addImageField}>
-                <button type="button" tabIndex={1} onClick={getImages}>Select {type} image</button>
+                <button type="button" tabIndex={1} onClick={getImages}>{i18n.t('Select {{type}} image', {type})}</button>
                 {value ? <span tabIndex={0} role="link" onClick={() => {
                     window.open(value, '_blank')
                 }}>{value}</span> : null}
-                {images.length ? <button type="button" tabIndex={1} onClick={() => setImages([])}>Close</button> : null}
+                {images.length ? <button type="button" tabIndex={1} onClick={() => setImages([])}>{i18n.t('Close')}</button> : null}
             </div>
             <ul style={{position: 'relative'}}>
                 <Loader loading={loading}/>

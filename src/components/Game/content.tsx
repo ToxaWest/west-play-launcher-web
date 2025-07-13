@@ -5,6 +5,7 @@ import {useParams} from "react-router-dom";
 
 import electronConnector from "../../helpers/electronConnector";
 import {getFromStorage} from "../../helpers/getFromStorage";
+import i18n from "../../helpers/translate";
 
 import RenderContent from "./renderContent";
 
@@ -27,7 +28,7 @@ const GameContent = () => {
         if (link) {
             return (<div style={{cursor: 'pointer', display: 'inline'}} role="link" tabIndex={0} onClick={() => {
                 electronConnector.openLink(link)
-            }}>Link</div>)
+            }}>{i18n.t('Link')}</div>)
         }
         return null
     }
@@ -36,9 +37,9 @@ const GameContent = () => {
         if (link) {
             return (<div style={{cursor: 'pointer', display: 'inline'}} role="button" tabIndex={1} onClick={(e) => {
                     electronConnector.CheckVersion(link).then(r => {
-                        (e.target as HTMLDivElement).innerHTML = 'Version - ' + r;
+                        (e.target as HTMLDivElement).innerHTML = `${i18n.t('Version')} - ${r}`;
                     })
-                }}>Check</div>
+                }}>{i18n.t('Check')}</div>
             )
         }
         return null
@@ -47,37 +48,37 @@ const GameContent = () => {
     const getAchCount = (a: EarnedAchievementsType) => Object.values(a).filter(({earned}) => earned).length
 
     return <RenderContent game={game} fields={[{
-        label: 'Achievements',
+        label: i18n.t('Achievements'),
         value: (game.achievements && ach) ? `${getAchCount(ach)} of ${Object.keys(game.achievements).length}` : null
     }, {
-        label: 'Last played',
+        label: i18n.t('Last played'),
         value: lastPlayed ? new Date(lastPlayed).toLocaleDateString() : null
     }, {
-        label: 'Play time',
+        label: i18n.t('Play time'),
         value: playTime ? secondsToHms(playTime) : null
     }, {
-        label: 'Size',
+        label: i18n.t('Size'),
         value: game.size
     }, {
-        label: 'Store',
+        label: i18n.t('Store'),
         value: sources[game.source]
     }, {
-        label: 'Store link',
+        label: i18n.t('Store Link'),
         value: renderLink(game.storeUrl)
     }, {
-        label: 'App id',
+        label: i18n.t('App id'),
         value: game.source === 'steam' ? game.steamId : null
     }, {
-        label: 'Licensed',
+        label: i18n.t('Licensed'),
         value: !game.unofficial ? 'Yes' : 'No'
     }, {
-        label: 'Download link',
+        label: i18n.t('Download link'),
         value: renderLink(game.downloadLink)
     }, {
-        label: 'Check Version',
+        label: i18n.t('Check Version'),
         value: checkVersion(game.downloadLink)
     }, {
-        label: 'Version',
+        label: i18n.t('Version'),
         value: game.buildVersion
     }]}/>
 

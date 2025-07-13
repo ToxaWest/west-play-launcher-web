@@ -4,6 +4,7 @@ import useNotification from "@hook/useNotification";
 import electronConnector from "../../../helpers/electronConnector";
 import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
 import {locales} from "../../../helpers/locales";
+import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 
 import SettingsSteamProfile from "./settingsSteamProfile";
@@ -22,21 +23,21 @@ const SettingsHome = () => {
 
     return (
         <div className={styles.block} id="settingsHome">
-            <h1>Settings</h1>
-            <Input label={'Monitor'}
+            <h1>{i18n.t('Settings')}</h1>
+            <Input label={i18n.t('Monitor')}
                    type="select"
                    name="changeDisplayMode"
                    options={[{
-                       label: 'PC Screen',
+                       label: i18n.t('PC Screen'),
                        value: 1
                    }, {
-                       label: 'Duplicate',
+                       label: i18n.t('Duplicate'),
                        value: 2
                    }, {
-                       label: 'Extend',
+                       label: i18n.t('Extend'),
                        value: 3
                    }, {
-                       label: 'Second Screen',
+                       label: i18n.t('Second Screen'),
                        value: 4
                    }]}
                    onChange={({value}) => {
@@ -45,38 +46,38 @@ const SettingsHome = () => {
                        }
                    }}
             />
-            <Input label={'Theme'}
+            <Input label={i18n.t('Theme')}
                    type="select"
                    name="theme"
                    options={[{
-                       label: 'System',
+                       label: i18n.t('System'),
                        value: 'system'
                    }, {
-                       label: 'Light',
+                       label: i18n.t('Light'),
                        value: 'light'
                    }, {
-                       label: 'Dark',
+                       label: i18n.t('Dark'),
                        value: 'dark'
                    }]}
                    value={settings.theme || 'system'}
                    onChange={onChange}
             />
             <Input
-                label={'Language'}
+                label={i18n.t('Language')}
                 name="currentLang"
                 type="select"
                 value={settings.currentLang}
                 options={locales.map(({label, value}) => ({label, value}))}
                 onChange={onChange}
             />
-            <Input label={'Library games in row'}
+            <Input label={i18n.t('Library games in row')}
                    type="select"
                    name="gamesInRow"
                    options={Array.from({length: 6}).map((_, index) => (index + 4))}
                    value={settings.gamesInRow}
                    onChange={onChange}
             />
-            <Input label={'Live wallpaper url'}
+            <Input label={i18n.t('Live wallpaper')}
                    name="videoBg"
                    value={settings.videoBg}
                    type="path"
@@ -84,42 +85,42 @@ const SettingsHome = () => {
                    onChange={onChange}
             />
             <Input
-                label={'Show cracked widget'}
+                label={i18n.t('Show cracked widget')}
                 type="select"
                 name="showCrackedWidget"
                 options={[{
-                    label: 'Yes',
+                    label: i18n.t('Yes'),
                     value: 1
                 }, {
-                    label: 'No',
+                    label: i18n.t('No'),
                     value: 0
                 }]}
                 value={settings.showCrackedWidget}
                 onChange={onChange}
             />
             <Input
-                label={'Show free widget'}
+                label={i18n.t('Show free widget')}
                 type="select"
                 name="showFreeWidget"
                 options={[{
-                    label: 'Yes',
+                    label: i18n.t('Yes'),
                     value: 1
                 }, {
-                    label: 'No',
+                    label: i18n.t('No'),
                     value: 0
                 }]}
                 value={settings.showFreeWidget}
                 onChange={onChange}
             />
             <Input
-                label={'Show Movies widget'}
+                label={i18n.t('Show Movies widget')}
                 type="select"
                 name="showMoviesWidget"
                 options={[{
-                    label: 'Yes',
+                    label: i18n.t('Yes'),
                     value: 1
                 }, {
-                    label: 'No',
+                    label: i18n.t('No'),
                     value: 0
                 }]}
                 value={settings.showMoviesWidget}
@@ -128,23 +129,23 @@ const SettingsHome = () => {
             <button tabIndex={1} type="button" onClick={() => {
                 setToStorage('hiddenFree', [])
                 notifications({
-                    description: 'Hidden free games updated',
+                    description: i18n.t('Hidden free games updated'),
                     img: '/assets/controller/save.svg',
-                    name: 'Reset successfully',
+                    name: i18n.t('Reset successfully'),
                     status: 'saving'
                 })
             }}>
                 Reset hidden free games
             </button>
             <Input
-                label={'Alternative achievements (game view)'}
+                label={i18n.t('Alternative achievements (game view)')}
                 type="select"
                 name="alternativeAchievementsView"
                 options={[{
-                    label: 'Yes',
+                    label: i18n.t('Yes'),
                     value: 1
                 }, {
-                    label: 'No',
+                    label: i18n.t('No'),
                     value: 0
                 }]}
                 value={settings.alternativeAchievementsView}
@@ -164,16 +165,16 @@ const SettingsHome = () => {
                 setToStorage('lastPlayed', lastPlayed)
                 electronConnector.clearUnusedCache(gamesInList).then(({removed}) => {
                     notifications({
-                        description: `Removed ${removed} assets`,
+                        description: i18n.t(`Removed {{removed}} assets`, {removed}),
                         img: '/assets/controller/save.svg',
-                        name: 'Assets removed',
+                        name: i18n.t('Assets removed'),
                         status: 'success'
                     })
                 })
             }}>
-                Remove unused cache
+                {i18n.t('Remove unused cache')}
             </button>
-            <Input label='Ryujinx exe path'
+            <Input label={i18n.t('Ryujinx exe path')}
                    value={settings.ryujinx}
                    onChange={onChange}
                    type="path"
@@ -185,16 +186,16 @@ const SettingsHome = () => {
             <button tabIndex={1} type="button" onClick={() => {
                 setToStorage('config', {settings})
                 notifications({
-                    description: 'Configuration updated',
+                    description: i18n.t('Configuration updated'),
                     img: '/assets/controller/save.svg',
-                    name: 'Saved successfully',
+                    name: i18n.t('Saved successfully'),
                     status: 'saving'
                 })
                 setTimeout(() => {
                     window.location.reload();
                 }, 3000)
             }}>
-                Save
+                {i18n.t('Save')}
             </button>
         </div>
     )

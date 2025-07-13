@@ -4,6 +4,8 @@ import useStartGame from "@hook/useStartGame";
 import type {Game} from "@type/game.types";
 import {useLocation, useNavigate} from "react-router-dom";
 
+import i18n from "../../helpers/translate";
+
 import styles from "./game.module.scss";
 
 import SvgAchievements from '../../SVG/achievement.svg?react'
@@ -38,10 +40,10 @@ const GameActions = ({game}: {game: Game}) => {
     const getActive = (e: string) => e === location.pathname;
 
     const gameState = {
-        'closed': {button: 'play', modifier: ''},
-        'error': {button: 'Can\'t start', modifier: styles.error},
-        'running': {button: 'Running', modifier: styles.running},
-        'starting': {button: 'Starting...', modifier: ''}
+        'closed': {button: i18n.t('play'), modifier: ''},
+        'error': {button: i18n.t('Can\'t start'), modifier: styles.error},
+        'running': {button: i18n.t('Running'), modifier: styles.running},
+        'starting': {button: i18n.t('Starting...'), modifier: ''}
     }
 
     const {

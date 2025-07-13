@@ -2,6 +2,7 @@ import React from "react";
 
 import electronConnector from "../../../helpers/electronConnector";
 import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
+import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 
 import styles from "../settings.module.scss";
@@ -21,7 +22,7 @@ const SettingsWeather = () => {
 
     return (
         <div>
-            <Input label="City"
+            <Input label={i18n.t("City")}
                    onChange={({value}) => {
                        setTemp([]);
                        setSearch(value as string);

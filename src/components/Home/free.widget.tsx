@@ -4,6 +4,7 @@ import type {freeGameType, widgetWrapperStyleInterface} from "@type/widget.types
 import electronConnector from "../../helpers/electronConnector";
 import {getFromStorage, setToStorage} from "../../helpers/getFromStorage";
 import {locales} from "../../helpers/locales";
+import i18n from "../../helpers/translate";
 import Loader from "../Loader";
 
 import styles from "./widgets.module.scss";
@@ -24,28 +25,28 @@ const FreeWidget = () => {
 
     const getFields = (currentGame: freeGameType) => {
         return [{
-            label: 'Name',
+            label: i18n.t('Name'),
             value: currentGame.name,
         }, {
-            label: 'Store Link',
+            label: i18n.t('Store Link'),
             value: <span style={{cursor: 'pointer'}} role="link" tabIndex={0} onClick={() => {
                 if (currentGame.link) electronConnector.openLink(currentGame.link)
             }}>{currentGame.shopName}</span>
         }, {
-            label: 'Price',
+            label: i18n.t('Price'),
             value: currentGame.price
         }, {
-            label: 'Free from',
+            label: i18n.t('Free from'),
             value: renderTime(currentGame.startTime)
         }, {
-            label: 'Free to',
+            label: i18n.t('Free to'),
             value: renderTime(currentGame.endTime)
         }, {
-            label: 'Hide this game',
+            label: i18n.t('Hide this game'),
             value: <span style={{cursor: 'pointer'}} role="button" tabIndex={0} onClick={() => {
                 setToStorage('hiddenFree', [...getFromStorage('hiddenFree'), currentGame.id]);
                 React.startTransition(action)
-            }}>Hide</span>
+            }}>{i18n.t('Hide')}</span>
         }]
     }
 
@@ -81,7 +82,7 @@ const FreeWidget = () => {
 
     return (
         <React.Fragment>
-            <h2>Free Games</h2>
+            <h2>{i18n.t('Free Games')}</h2>
             <ul className={styles.freeWrapper} style={style}>
                 {games.filter(({id}) => !getFromStorage('hiddenFree').includes(id)).map(renderGame)}
                 <Loader loading={loading}/>

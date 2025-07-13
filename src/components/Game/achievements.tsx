@@ -4,6 +4,7 @@ import {useParams} from "react-router-dom";
 
 import getAchievements from "../../helpers/getAchievements";
 import {getFromStorage} from "../../helpers/getFromStorage";
+import i18n from "../../helpers/translate";
 
 import achStyles from './achievements.module.scss'
 import styles from './game.module.scss';
@@ -109,7 +110,7 @@ const Achievements = () => {
                 <span>{body}</span>
                 {Boolean(earned_time) && <i>{new Date(earned_time * 1000).toLocaleDateString()}</i>}
                 {Boolean(progress && progress !== 1) && <i>{Math.floor(progress * 100)}%</i>}
-                {externalProgress[name] && <i>Progress: {externalProgress[name]}</i>}
+                {externalProgress[name] && <i>{i18n.t('Progress')}: {externalProgress[name]}</i>}
                 <div className={styles.additional}>
                     {typeof xp === "number" && <small>{xp} XP</small>}
                     {typeof rarity === "number" && <small>Rarity: {rarity}%</small>}

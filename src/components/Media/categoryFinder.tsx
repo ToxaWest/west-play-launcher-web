@@ -1,5 +1,6 @@
 import React from "react";
 
+import i18n from "../../helpers/translate";
 import Input from "../Input";
 
 const CategoryFinder = ({data, goTo}: {
@@ -37,7 +38,7 @@ const CategoryFinder = ({data, goTo}: {
                 onClick={() => {
                     const url = `${current["select-category"]}${current["select-year"] === '0' ? '' : current["select-year"]}`
                     goTo(url)
-                }}>Submit
+                }}>{i18n.t('Submit')}
             </button>
         </div>
     )

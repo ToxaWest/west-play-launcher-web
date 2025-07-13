@@ -3,6 +3,7 @@ import type {Game} from "@type/game.types";
 
 import electronConnector from "../helpers/electronConnector";
 import {getFromStorage, setToStorage} from "../helpers/getFromStorage";
+import i18n from "../helpers/translate";
 
 import useNotification from "./useNotification";
 import usePlayTime from "./usePlayTime";
@@ -23,7 +24,7 @@ const useStartGame = (game: Game) => {
                 notification({
                     description: game.name,
                     img: game.img_icon,
-                    name: 'Can\'t start',
+                    name: i18n.t('Can\'t start'),
                     status: 'error',
                 })
             }
@@ -32,7 +33,7 @@ const useStartGame = (game: Game) => {
                 notification({
                     description: game.name,
                     img: game.img_icon,
-                    name: 'Starting...',
+                    name: i18n.t('Starting...'),
                     status: 'success',
                 })
             }
