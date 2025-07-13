@@ -185,6 +185,7 @@
   li {
     min-width: 0;
     width: 12vw;
+    cursor: pointer;
     img {
       aspect-ratio: 83 / 125;
       min-width: 0;
@@ -194,7 +195,7 @@
     position: relative;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     perspective: 1000px;
-    &:active, &:focus {
+    &:active, &:focus, &:hover {
       transform: rotateX(7deg) translateY(-2px) scale(1.05);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
     }

@@ -31,7 +31,7 @@ const Player = ({
     setQuality: (quality: keyof Streams) => void
 }) => {
     const playerRef = React.useRef<HTMLVideoElement>(null);
-
+    const timeRef = React.useRef<HTMLDivElement>(null);
     const getStartPosition = () => {
         const s = movieStorage.getHistory(url) as MovieStorageHistory;
         if (s.translation_id === translation_id) {
@@ -56,10 +56,13 @@ const Player = ({
         "maxBufferSize": 33554432000,
         "maxMaxBufferLength": 600
     }));
-    const [loading, setLoading] = React.useState(true);
+    const [loading, setLoading] = React.useState(false);
 
     React.useEffect(() => {
         hlsRef.current.attachMedia(playerRef.current);
+        return () => {
+            hlsRef.current.destroy();
+        }
     }, []);
 
     React.useEffect(() => {
@@ -110,6 +113,27 @@ const Player = ({
 
     if (!streams) return;
 
+    const timeFix = (totalSeconds: number) => {
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = Math.floor(totalSeconds % 60);
+
+        // Pad with leading zeros if necessary
+        const formattedHours = String(hours).padStart(2, '0');
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(seconds).padStart(2, '0');
+
+        return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+    }
+
+    const updateTime = (target: HTMLVideoElement) => {
+        const curr = timeFix(target.currentTime || 0);
+        const duration = timeFix(target.duration || 0);
+        if (timeRef.current) {
+            timeRef.current.innerText = `${curr} / ${duration}`;
+        }
+    }
+
     return (
         <div style={{position: 'relative'}}>
             <video
@@ -127,12 +151,17 @@ const Player = ({
                     const progressBar = document.getElementById('progressBar') as HTMLInputElement;
                     progressBar.value = (e.target as HTMLVideoElement).currentTime.toString();
                     progressBar.max = (e.target as HTMLVideoElement).duration.toString();
+                    updateTime(e.target as HTMLVideoElement);
                 }}
                 onPlay={() => {
                     playerRef.current.autoplay = false;
                     document.getElementById('playButton').style.display = 'none';
                 }}
+                onCanPlay={()=> {
+                    setLoading(false);
+                }}
                 onTimeUpdate={(e) => {
+                    updateTime(e.target as HTMLVideoElement);
                     const progressBar = document.getElementById('progressBar') as HTMLInputElement;
                     progressBar.value = (e.target as HTMLVideoElement).currentTime.toString();
                     if ((e.target as HTMLVideoElement).currentTime) {
@@ -177,8 +206,10 @@ const Player = ({
             }}/>
             <input type="range" id={'progressBar'} disabled={loading} className={styles.progress} step={1}
                    onChange={(e) => {
+                       setLoading(true)
                        playerRef.current.currentTime = parseInt(e.target.value);
                    }}/>
+            <div ref={timeRef} style={{textAlign: "right"}}/>
             <Loader loading={loading}/>
         </div>
 

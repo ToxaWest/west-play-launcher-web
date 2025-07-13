@@ -42,7 +42,9 @@ const Root = () => {
         if (videoBg) {
             return (
                 <div className={styles.videoBg}>
-                    <video src={videoBg} autoPlay={true} muted={true} loop={true} className={styles.video}/>
+                    <video src={videoBg} autoPlay={true} muted={true} loop={true} className={styles.video} onLoadedData={(e) => {
+                        (e.target as HTMLVideoElement).style.aspectRatio = `${window.innerWidth / window.innerHeight}`
+                    }}/>
                     {children}
                 </div>
             )
