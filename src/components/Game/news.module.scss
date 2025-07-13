@@ -23,9 +23,15 @@
   .item {
     ul,ol {
       margin: var(--gap) 0;
-      &>div:empty {
-        display: none;
-      }
+    }
+    img {
+      max-width: 100%;
+      display: block;
+      margin: var(--gap) auto;
+    }
+    th, td {
+      padding: var(--gap-half);
+      border: 1px solid var(--theme-text-color-seconary);
     }
     h3 {
       margin: var(--gap-half) 0;

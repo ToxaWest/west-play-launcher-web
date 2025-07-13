@@ -14,6 +14,7 @@ const bbCodeParser = (bbString: string) => {
         .replaceAll(/\[h5](.*?)\[\/h5]/gm, `<h5>$1</h5>`)
         .replaceAll(/\[hr]\[\/hr]/gm, `<hr/>`)
         .replaceAll(/\[table](.*?)\[\/table]/gm, `<table>$1</table>`)
+        .replaceAll(/\[table(.*?)](.*?)\[\/table]/gm, `<table>$2</table>`)
         .replaceAll(/\[tr](.*?)\[\/tr]/gm, `<tr>$1</tr>`)
         .replaceAll(/\[th](.*?)\[\/th]/gm, `<th>$1</th>`)
         .replaceAll(/\[td](.*?)\[\/td]/gm, `<td>$1</td>`)
