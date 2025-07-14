@@ -53,7 +53,7 @@ const FileManager = ({
                 title: i18n.t('Close'),
             }
         })
-        if (file) {
+        if (!file) {
             setFooterActions({
                 y: {
                     button: 'y',

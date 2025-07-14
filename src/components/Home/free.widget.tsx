@@ -79,12 +79,14 @@ const FreeWidget = () => {
     }
 
     const style: widgetWrapperStyleInterface = {'--lines': '1'}
+    const list = games.filter(({id}) => !getFromStorage('hiddenFree').includes(id))
+    if(list.length === 0) return null;
 
     return (
         <React.Fragment>
             <h2>{i18n.t('Free Games')}</h2>
             <ul className={styles.freeWrapper} style={style}>
-                {games.filter(({id}) => !getFromStorage('hiddenFree').includes(id)).map(renderGame)}
+                {list.map(renderGame)}
                 <Loader loading={loading}/>
             </ul>
         </React.Fragment>
