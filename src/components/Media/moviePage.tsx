@@ -20,6 +20,7 @@ const MoviePage = ({url, setUrl, goTo}: {
 }) => {
     const {setFooterActions, removeFooterActions} = useFooterActions()
     const [showTrailer, setShowTrailer] = useState(false)
+    const [isFavorites, setIsFavorites] = useState<boolean>(movieStorage.isFavorites(url))
     const forward = (t: number) => {
         const player = document.querySelector('#hlsPlayer') as HTMLVideoElement;
         if (player) {
@@ -58,12 +59,12 @@ const MoviePage = ({url, setUrl, goTo}: {
             lt: {
                 button: 'lt',
                 onClick: () => forward(-15),
-                title: i18n.t('Forward')+ ' -'
+                title: i18n.t('Forward') + ' -'
             },
             rt: {
                 button: 'rt',
                 onClick: () => forward(15),
-                title: i18n.t('Forward')+ ' +'
+                title: i18n.t('Forward') + ' +'
             },
             x: {
                 button: 'x',
@@ -235,7 +236,8 @@ const MoviePage = ({url, setUrl, goTo}: {
     const renderTrailer = () => {
         if (!data.trailer) return null
         if (!showTrailer) {
-            return <button tabIndex={1} type="button" onClick={() => setShowTrailer(true)}>{i18n.t('Show trailer')}</button>
+            return <button tabIndex={1} type="button"
+                           onClick={() => setShowTrailer(true)}>{i18n.t('Show trailer')}</button>
         }
         const url = new URL(data.trailer);
         if (url.hostname.includes('youtube')) {
@@ -261,6 +263,19 @@ const MoviePage = ({url, setUrl, goTo}: {
                 </tr>
             )}
             </tbody>
+        )
+    }
+
+    const renderFavorites = () => {
+        return (
+            <button tabIndex={1} type="button" onClick={() => {
+                if (isFavorites) movieStorage.removeFromFavorites(url)
+                else movieStorage.addToFavorites({image: data.movie.image, title: data.movie.title, url})
+                setIsFavorites(movieStorage.isFavorites(url))
+            }}>{isFavorites ?
+                i18n.t('Remove from favorites') :
+                i18n.t('Add to favorites')}
+            </button>
         )
     }
 
@@ -334,7 +349,8 @@ const MoviePage = ({url, setUrl, goTo}: {
                         setQuality={setQuality}
                 />
             </div>
-            <div style={{backgroundColor: 'var(--theme-color-transparent)'}}>
+            <div style={{display: 'flex', flexDirection: 'column', gap: 'var(--gap-half)'}}>
+                {renderFavorites()}
                 {renderTrailer()}
                 <table id={'movieTable'}>
                     {renderTable()}

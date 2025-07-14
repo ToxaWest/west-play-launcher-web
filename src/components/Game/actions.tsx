@@ -41,7 +41,7 @@ const GameActions = ({game}: {game: Game}) => {
 
     const gameState = {
         'closed': {button: i18n.t('play'), modifier: ''},
-        'error': {button: i18n.t('Can\'t start'), modifier: styles.error},
+        'error': {button: i18n.t('Can`t start'), modifier: styles.error},
         'running': {button: i18n.t('Running'), modifier: styles.running},
         'starting': {button: i18n.t('Starting...'), modifier: ''}
     }

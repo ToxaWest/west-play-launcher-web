@@ -1,6 +1,6 @@
 import React from "react";
 import useFooterActions from "@hook/useFooterActions";
-import {getPageData,MoviesListItem} from "@type/electron.types";
+import {getPageData, MoviesListItem} from "@type/electron.types";
 import type {MovieStorageHistory} from "@type/movieStorage.types";
 import type {footerActionsType} from "@type/provider.types";
 
@@ -22,21 +22,32 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
     const [tab, setTab] = React.useState(0);
     const {setFooterActions, removeFooterActions} = useFooterActions()
     const [activeCategory, setActiveCategory] = React.useState<number>(null)
+
+    const toggleViewMode = (direction: 'previous' | 'next') => {
+        if (direction === 'previous') {
+            if (tab === 0) setTab(2)
+            else setTab(tab - 1)
+        }
+
+        if (direction === 'next') {
+            if (tab === 2) setTab(0)
+            else setTab(tab + 1)
+        }
+    }
+
     React.useEffect(() => {
         setFooterActions({
             lb: {
                 button: 'lb',
                 onClick: () => {
-                    setTab(0)
-                },
-                title: i18n.t('Catalog')
+                    toggleViewMode('previous')
+                }
             },
             rb: {
                 button: 'rb',
                 onClick: () => {
-                    setTab(1)
-                },
-                title: i18n.t('History')
+                    toggleViewMode('next')
+                }
             }
         })
         return () => {
@@ -45,7 +56,7 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
     }, [])
 
     const renderPagination = () => {
-        if (tab === 1) return null
+        if (tab !== 0) return null
         return (
             <div className={styles.pagination}>
                 <button tabIndex={pageData.pagination.prev ? 1 : -1}
@@ -145,9 +156,36 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
         heading: pageData.heading,
         items: pageData.list,
     }, {
+        heading: i18n.t('Favorites'),
+        items: movieStorage.favorites,
+    }, {
         heading: i18n.t('History'),
         items: movieStorage.history,
     }]
+
+    const renderNavigation = () => {
+        return (
+            <div className={styles.navigation} id="navigation">
+                <img src={'/assets/controller/left-bumper.svg'} alt={'prev'} tabIndex={0} role="button" onClick={() => {
+                    toggleViewMode('previous')
+                }}/>
+                {tabs.map(({heading}, index) => (
+                    <span key={heading}
+                          role="button"
+                          tabIndex={0}
+                          onClick={() => {
+                              setTab(index)
+                          }}
+                          className={tab === index ? styles.navActive : ''}>{heading}</span>
+                ))}
+                <img src={'/assets/controller/right-bumper.svg'} alt={'next'}
+                     tabIndex={0} role="button"
+                     onClick={() => {
+                         toggleViewMode('next')
+                     }}/>
+            </div>
+        )
+    }
 
     return (
         <div className={styles.wrapperCatalog}>
@@ -155,6 +193,7 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
                 {renderCategories()}
                 {renderSearch()}
             </div>
+            {renderNavigation()}
             <h2>{tabs[tab].heading}</h2>
             {renderPagination()}
             <ul className={styles.catalogList}>

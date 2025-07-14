@@ -1,5 +1,30 @@
 @use "../../mixin";
+.navigation {
+  max-width: 80vw;
+  margin: var(--gap) auto;
+  display: flex;
+  gap: var(--gap-half);
+  align-items: center;
+  justify-content: center;
 
+  span {
+    padding: var(--padding);
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+
+    &.navActive {
+      border-bottom-color: var(--theme-text-color);
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  img {
+    margin: var(--gap);
+  }
+}
 .wrapperMovie {
   max-width: 90vw;
   margin: 50px auto;

@@ -8,3 +8,8 @@ export type MovieStorageHistory = {
     translation_id?: string
 }
 
+export type MovieStorageFavorites = {
+    title: string
+    image: string
+    href: string
+}

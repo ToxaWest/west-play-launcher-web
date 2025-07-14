@@ -1,6 +1,7 @@
 import React from "react";
 
 import electronConnector from "../../helpers/electronConnector";
+import i18n from "../../helpers/translate";
 import FileManager from "../FileManager";
 import Modal from "../Modal";
 
@@ -76,7 +77,7 @@ const Input = ({
             return (
                 <div className={styles.path}>
                     <input type={"hidden"} ref={_ref} value={value} name={name} style={{display: 'none'}}/>
-                    <button tabIndex={1} type="button" onClick={() => setActive(true)}>Get path</button>
+                    <button tabIndex={1} type="button" onClick={() => setActive(true)}>{i18n.t('Get path')}</button>
                     <span>{value}</span>
                     {active ? <Modal onClose={() => setActive(false)}>
                         <FileManager
@@ -91,7 +92,7 @@ const Input = ({
             )
         },
         select: () => {
-            const data: OptionType[] = [{html: null, label: 'empty', value: null}]
+            const data: OptionType[] = []
             options.forEach((option: string | number | OptionType) => {
                 if (typeof option === 'object') data.push(option)
                 else data.push({label: option, value: option})
@@ -99,10 +100,10 @@ const Input = ({
             const getValue = () => {
                 if (typeof value === "number" || typeof value === "string") {
                     const cur = data.find(a => a.value === value);
-                    if (!cur) return 'select value'
+                    if (!cur) return i18n.t('select value')
                     return cur.html ? <span dangerouslySetInnerHTML={{__html: cur.html}}/> : cur.label
                 }
-                return 'select value'
+                return i18n.t('select value')
             }
 
             const renderOption = (option: OptionType) => (

@@ -1,6 +1,6 @@
 import type {getSteamUserId} from '@type/electron.types';
 import type {achievementsType,Game, LastPlayed, PlayTime, ProgressType, StatsType} from "@type/game.types";
-import type {MovieStorageHistory} from "@type/movieStorage.types";
+import type {MovieStorageFavorites, MovieStorageHistory} from "@type/movieStorage.types";
 
 export type LocalStorageType = {
     config: {
@@ -24,6 +24,7 @@ export type LocalStorageType = {
             country: string
         }
     },
+    movieFavorites: MovieStorageFavorites[],
     history: MovieStorageHistory[]
     hiddenFree: (string | number)[],
     games: Game[],

@@ -24,7 +24,7 @@ const useStartGame = (game: Game) => {
                 notification({
                     description: game.name,
                     img: game.img_icon,
-                    name: i18n.t('Can\'t start'),
+                    name: i18n.t('Can`t start'),
                     status: 'error',
                 })
             }
