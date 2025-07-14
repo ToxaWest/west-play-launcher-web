@@ -23,10 +23,12 @@ const MoviesWidget = () => {
         </li>
     )
 
+    if(movieStorage.favorites.length === 0) return null
+
     return <React.Fragment>
         <h2>{i18n.t('Movies')}</h2>
         <ul className={styles.widget}>
-            {movieStorage.history.reverse().map(renderItem)}
+            {movieStorage.favorites.reverse().map(renderItem)}
         </ul>
     </React.Fragment>;
 }
