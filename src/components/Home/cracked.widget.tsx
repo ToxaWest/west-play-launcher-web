@@ -29,28 +29,22 @@ const CrackedWidget = () => {
         }, {
             label: i18n.t('Score'),
             value: currentGame.user_score
-        }, ...(currentGame.steam_prod_id ? [{
+        }, {
             label: i18n.t('Store Link'),
             value: currentGame.steam_prod_id ?
                 <div style={{cursor: 'pointer', display: 'inline'}} role="link" tabIndex={0} onClick={() => {
                     electronConnector.openLink(`https://store.steampowered.com/app/${currentGame.steam_prod_id}`)
                 }}>{i18n.t('Steam Link')}</div> : null
-        }] : []), {
+        }, {
             label: i18n.t('Status'),
             value: currentGame.readable_status
         }, {
-            label: i18n.t('Hacked Groups'),
-            value: currentGame.hacked_groups
-        }, ...(currentGame.torrent_link ? [{
             label: i18n.t('Torrent (not recommended)'),
             value: currentGame.torrent_link ?
                 <div style={{cursor: 'pointer', display: 'inline'}} role="link" tabIndex={0} onClick={() => {
                     electronConnector.openLink(currentGame.torrent_link)
                 }}>{i18n.t('Link')}</div> : null
-        }] : []), {
-            label: i18n.t('Cracked'),
-            value: new Date(currentGame.crack_date).toLocaleDateString()
-        }]
+        }].filter(({value}) => value)
     }
 
     const renderDescription = (game) => {

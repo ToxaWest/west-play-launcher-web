@@ -1,5 +1,5 @@
 import React from "react";
-import type {achievementInterfaceType,EarnedAchievementsType} from "@type/game.types";
+import type {achievementInterfaceType, EarnedAchievementsType} from "@type/game.types";
 import {useParams} from "react-router-dom";
 
 import getAchievements from "../../helpers/getAchievements";
@@ -83,7 +83,7 @@ const Achievements = () => {
         }
     }
 
-    const getStyle = (progress: number): React.CSSProperties & {'--progress': string} => ({
+    const getStyle = (progress: number): React.CSSProperties & { '--progress': string } => ({
         '--progress': `${100 - (progress * 100)}%`
     })
 
@@ -113,7 +113,7 @@ const Achievements = () => {
                 {externalProgress[name] && <i>{i18n.t('Progress')}: {externalProgress[name]}</i>}
                 <div className={styles.additional}>
                     {typeof xp === "number" && <small>{xp} XP</small>}
-                    {typeof rarity === "number" && <small>Rarity: {rarity}%</small>}
+                    {typeof rarity === "number" && <small>{i18n.t('Rarity')}: {rarity}%</small>}
                 </div>
             </div>
         </li>)
@@ -136,7 +136,7 @@ const Achievements = () => {
             }
         })
 
-        const sort = (a, b) => {
+        const sort = (a: achievementInterfaceType, b: achievementInterfaceType) => {
             const orderA = orderMap.get(a.name);
             const orderB = orderMap.get(b.name);
             if (typeof orderA === 'undefined') return 1;
