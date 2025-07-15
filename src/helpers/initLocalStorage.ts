@@ -19,7 +19,8 @@ export default function initLocalStorage() {
                     avatarImage: "",
                     id: ""
                 },
-                theme: 'system'
+                theme: 'system',
+                uaAlarmId: null
             }
         },
         games: [],

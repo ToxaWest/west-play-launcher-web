@@ -14,7 +14,8 @@ export type LocalStorageType = {
             showFreeWidget: 0 | 1,
             showCrackedWidget: 0 | 1,
             showMoviesWidget: 0 | 1,
-            steamProfile: getSteamUserId
+            steamProfile: getSteamUserId,
+            uaAlarmId: string | null
         }
     },
     weather: {

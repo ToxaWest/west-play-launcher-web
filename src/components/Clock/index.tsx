@@ -1,5 +1,6 @@
 import React from "react";
 
+import Alarm from "./alarm";
 import Weather from "./weather";
 
 
@@ -38,6 +39,7 @@ const Clock = () => {
 
     return (
         <div style={styles}>
+            <Alarm/>
             <Weather/>
             <div ref={ref}/>
         </div>

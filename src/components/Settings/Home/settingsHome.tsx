@@ -7,6 +7,7 @@ import {locales} from "../../../helpers/locales";
 import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 
+import SettingsAlarm from "./settingsAlarm";
 import SettingsSteamProfile from "./settingsSteamProfile";
 import SettingsWeather from "./settingsWeather";
 
@@ -183,6 +184,7 @@ const SettingsHome = () => {
             </Input>
             <SettingsSteamProfile onChange={onChange} steamProfile={settings.steamProfile}/>
             <SettingsWeather/>
+            <SettingsAlarm value={settings.uaAlarmId} onChange={onChange}/>
             <button tabIndex={1} type="button" onClick={() => {
                 setToStorage('config', {settings})
                 notifications({

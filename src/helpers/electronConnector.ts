@@ -38,6 +38,8 @@ const electronConnector = {
         appid: number
     }): Promise<string | null> => apiCall({appid}, 'getAchievementsPath'),
     getAjaxVideo: (props: getAjaxVideoInput): Promise<getAjaxVideo> => apiCall(props, 'getAjaxVideo'),
+    getAlarm:() => apiCall(null, 'getAlarm'),
+    getAlarmRegionList: (): Promise<{value: string, label: string}[]> => apiCall(null, 'getAlarmRegionList'),
     getConnectedMonitors: (): Promise<ConnectedMonitorType[]> => apiCall(null, 'getConnectedMonitors'),
     getDataByGameId: (props: getDataByGameIdInput): Promise<Game> => apiCall(props, 'getDataByGameId'),
     getDisks: (): Promise<string[]> => apiCall(null, 'getDisks'),
