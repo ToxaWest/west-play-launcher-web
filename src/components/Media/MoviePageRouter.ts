@@ -10,7 +10,7 @@ const MoviePageRouter = () => {
     const [searchParams] = useSearchParams()
     const url = searchParams.get('url')
     const backFallback = () => {
-        navigate('/')
+        navigate(-1)
     }
 
     if (!url) {

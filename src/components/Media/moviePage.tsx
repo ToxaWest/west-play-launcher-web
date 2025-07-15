@@ -179,7 +179,7 @@ const MoviePage = ({url, setUrl, goTo}: {
 
         // eslint-disable-next-line @eslint-react/web-api/no-leaked-event-listener
         document.getElementById('movieTable').addEventListener('click', clickListener)
-    }, [])
+    }, [url])
 
     useEffect(() => {
         const h = movieStorage.getHistory(url) as MovieStorageHistory;
@@ -272,7 +272,11 @@ const MoviePage = ({url, setUrl, goTo}: {
             <tbody>
             {data.movie.table.map(item => <tr key={item.title}>
                     <td>{item.title}</td>
-                    <td dangerouslySetInnerHTML={{__html: item.value}}/>
+                    <td dangerouslySetInnerHTML={{
+                        __html: item.value
+                            .replaceAll('tabindex="1"', '')
+                            .replaceAll('button', 'span')
+                    }}/>
                 </tr>
             )}
             </tbody>
@@ -300,12 +304,14 @@ const MoviePage = ({url, setUrl, goTo}: {
                 <li key={item.title}>
                     <h3>{item.title}</h3>
                     <table style={{width: '100%'}}>
+                        <tbody>
                         {item.data.map(a => <tr key={a.id}>
                             <td>{a.episode}</td>
                             <td dangerouslySetInnerHTML={{__html: a.title}}/>
                             <td>{a.date}</td>
                             <td dangerouslySetInnerHTML={{__html: a.exist}}/>
                         </tr>)}
+                        </tbody>
                     </table>
                 </li>
             ))}
@@ -315,26 +321,31 @@ const MoviePage = ({url, setUrl, goTo}: {
     const renderPartContent = () => {
         if (!data.partContent) return null
 
-        return (<table>
-            {data.partContent.map(item => (
-                <tr key={item.title}
-                    tabIndex={1}
-                    role="button"
-                    onClick={() => {
-                        if (item.url) {
-                            navigate({
-                                pathname: '/movie',
-                                search: `?${createSearchParams({url: item.url})}`,
-                            })
-                        }
-                    }}
-                >
-                    <td>{item.id}</td>
-                    <td>{item.title}</td>
-                    <td>{item.year}</td>
-                    <td>{item.rating}</td>
-                </tr>))}
-        </table>)
+        return (
+            <table>
+                <tbody>
+                {data.partContent.map(item => (
+                    <tr key={item.title}
+                        tabIndex={item.url ? 1 : 0}
+                        role="button"
+                        style={{color: item.url ? 'inherit' : 'var(--theme-text-color-seconary)', cursor: 'pointer'}}
+                        onClick={() => {
+                            if (item.url) {
+                                navigate({
+                                    pathname: '/movie',
+                                    search: `?${createSearchParams({url: item.url})}`,
+                                })
+                            }
+                        }}
+                    >
+                        <td>{item.id}</td>
+                        <td>{item.title}</td>
+                        <td>{item.year}</td>
+                        <td>{item.rating}</td>
+                    </tr>))}
+                </tbody>
+            </table>
+        )
     }
 
     return (
@@ -345,6 +356,9 @@ const MoviePage = ({url, setUrl, goTo}: {
                     <h1>{data.movie.title}</h1>
                     <h3>{data.movie.originalTitle}</h3>
                     <p>{data.movie.description}</p>
+                    <table id={'movieTable'}>
+                        {renderTable()}
+                    </table>
                 </div>
             </div>
             <div className={styles.optionsWrapper}>
@@ -410,9 +424,6 @@ const MoviePage = ({url, setUrl, goTo}: {
             <div style={{display: 'flex', flexDirection: 'column', gap: 'var(--gap-half)'}}>
                 {renderFavorites()}
                 {renderTrailer()}
-                <table id={'movieTable'}>
-                    {renderTable()}
-                </table>
                 {renderPartContent()}
             </div>
             {renderSchedule()}

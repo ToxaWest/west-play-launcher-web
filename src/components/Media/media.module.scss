@@ -34,6 +34,23 @@
   padding: var(--padding);
   background-color: var(--theme-color-transparent);
 
+  table {
+    background-color: var(--theme-color-transparent);
+    td {
+      border: 1px solid var(--theme-color);
+      padding: var(--gap-half);
+    }
+
+    tr[tabindex]{
+      &:hover, &:focus, &:active {
+        background-color: var(--theme-text-color);
+        td {
+          color: var(--theme-color);
+        }
+      }
+    }
+  }
+
   .player {
     background-color: black;
     position: relative;
@@ -84,6 +101,17 @@
       gap: var(--gap);
       padding: var(--padding);
       background-color: var(--theme-color-transparent);
+
+      table {
+        span[data-url] {
+          color: var(--theme-text-color-seconary);
+          cursor: pointer;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+
     }
   }
 
