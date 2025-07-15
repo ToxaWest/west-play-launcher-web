@@ -2,7 +2,6 @@ import React from "react";
 import useFooterActions from "@hook/useFooterActions";
 import {getPageData, MoviesListItem} from "@type/electron.types";
 import type {MovieStorageHistory} from "@type/movieStorage.types";
-import type {footerActionsType} from "@type/provider.types";
 
 import electronConnector from "../../helpers/electronConnector";
 import i18n from "../../helpers/translate";
@@ -120,35 +119,12 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
     const renderMovieItem = (item: MoviesListItem | MovieStorageHistory) => (
         <li key={item.href} tabIndex={1}
             role="button"
-            onFocus={() => {
-                const action = (inHistory: boolean): footerActionsType => ({
-                    y: {
-                        button: 'y',
-                        onClick: () => {
-                            if (inHistory) movieStorage.removeHistory(item.href)
-                            else movieStorage.addToHistory({
-                                image: item.image,
-                                title: item.title,
-                                url: item.href
-                            })
-
-                            setFooterActions(action(!inHistory))
-                        },
-                        title: inHistory ? i18n.t('Remove from history') : i18n.t('Add to history')
-                    }
-                })
-                setFooterActions(action(
-                    Boolean((movieStorage.getHistory(item.href) as MovieStorageHistory).href)
-                ))
-            }}
-            onBlur={() => {
-                removeFooterActions(['y'])
-            }}
             onClick={() => {
                 selectMovie(item.href)
             }}>
             <img src={item.image} alt={item.title}/>
             <span>{item.title}</span>
+            <small>{item.subtitle}</small>
         </li>
     )
 
@@ -162,6 +138,19 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
         heading: i18n.t('History'),
         items: movieStorage.history,
     }]
+
+    const renderCollections = () => {
+        return (
+            <ul className={styles.collectionsList}>{pageData.links.map(item => (
+                <li key={item.href}>
+                    <button tabIndex={1} type="button" onClick={() => {
+                        goTo(item.href)
+                        setTab(0)
+                    }}>{item.title}</button>
+                </li>))
+            }</ul>
+        )
+    }
 
     const renderNavigation = () => {
         return (
@@ -192,6 +181,7 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
             <div style={{alignItems: 'start', display: 'grid', gap: 'var(--gap)', gridTemplateColumns: '2fr 3fr'}}>
                 {renderCategories()}
                 {renderSearch()}
+                {renderCollections()}
             </div>
             {renderNavigation()}
             <h2>{tabs[tab].heading}</h2>

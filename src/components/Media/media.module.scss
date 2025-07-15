@@ -100,6 +100,18 @@
   padding: var(--padding);
   background-color: var(--theme-color-transparent);
 
+  .collectionsList {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-half);
+    button {
+      margin: 0;
+    }
+  }
+
   .catalogList {
     margin: 0;
     padding: 0;
@@ -135,6 +147,10 @@
         transition: all .3s ease-in;
       }
 
+      small {
+        padding: 0 var(--gap-half);
+        color: var(--theme-text-color-seconary);
+      }
       span {
         padding: var(--gap-half);
       }

@@ -20,12 +20,19 @@ export type MoviePageCategory = {
 export type MoviesListItem = {
     image: string
     href: string
+    subtitle: string
+    title: string
+}
+
+export type moviesCollection = {
+    href: string
     title: string
 }
 
 export type getPageData = {
     categories: MoviePageCategory[]
     heading: string,
+    links: moviesCollection[],
     list: MoviesListItem[],
     pagination: {
         next?: string
@@ -82,8 +89,31 @@ export type movieTranslationItem = {
     title: string
 }
 
+export type moviePartContentType = {
+    id: number
+    year: string
+    title: string
+    url?: string
+    rating: string
+}
+
+export type movieScheduleItemType = {
+    date: string
+    episode: string
+    exist: string
+    id: string
+    title: string
+}
+
+export type movieScheduleType = {
+    title: string
+    data: movieScheduleItemType[]
+}
+
 export type getSerialData = {
     trailer?: string
+    schedule: movieScheduleType[]
+    partContent: moviePartContentType[]
     type: 'initCDNMoviesEvents' | 'initCDNSeriesEvents'
     streams: Streams
     movie?: movieType

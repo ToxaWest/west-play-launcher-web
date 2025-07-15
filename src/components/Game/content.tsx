@@ -70,7 +70,7 @@ const GameContent = () => {
         value: game.source === 'steam' ? game.steamId : null
     }, {
         label: i18n.t('Licensed'),
-        value: !game.unofficial ? 'Yes' : 'No'
+        value: !game.unofficial ? i18n.t('Yes') : i18n.t('No')
     }, {
         label: i18n.t('Download link'),
         value: renderLink(game.downloadLink)

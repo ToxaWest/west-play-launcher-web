@@ -16,14 +16,15 @@ class MovieStorage {
         else setToStorage('movieFavorites', this.favorites);
     }
 
-    addToFavorites({url, image, title} : {url: string, image: string, title: string}) {
+    addToFavorites({url, image, title, subtitle}: { url: string, image: string, title: string, subtitle: string }) {
         const pathname = url.startsWith('http') ? new URL(url).pathname : url;
         const index = this.favorites.findIndex(({href: u}) => u === pathname);
         if (index !== -1) {
             this.favorites[index].title = title;
+            this.favorites[index].subtitle = subtitle;
             this.favorites[index].image = image;
         } else {
-            this.favorites.push({href: pathname, image, title})
+            this.favorites.push({href: pathname, image, subtitle, title})
         }
         setToStorage('movieFavorites', this.favorites);
     }
@@ -42,14 +43,15 @@ class MovieStorage {
         }
     }
 
-    addToHistory({url, image, title} : {url: string, image?: string, title?: string}) {
+    addToHistory({url, image, title, subtitle}: { url: string, image?: string, title?: string, subtitle?: string }) {
         const pathname = url.startsWith('http') ? new URL(url).pathname : url;
         const index = this.history.findIndex(({href: u}) => u === pathname);
         if (index !== -1) {
             if (title) this.history[index].title = title;
             if (image) this.history[index].image = image;
+            if (subtitle) this.history[index].subtitle = subtitle
         } else {
-            this.history.push({href: pathname, image, title})
+            this.history.push({href: pathname, image, subtitle, title})
         }
         setToStorage('history', this.history);
     }
@@ -73,7 +75,7 @@ class MovieStorage {
         }
     }
 
-    update({season_id, episode_id, translation_id, url, currentTime}:{
+    update({season_id, episode_id, translation_id, url, currentTime}: {
         season_id?: number, episode_id?: number, translation_id?: string, url: string, currentTime?: number
     }) {
         const pathname = url.startsWith('http') ? new URL(url).pathname : url;

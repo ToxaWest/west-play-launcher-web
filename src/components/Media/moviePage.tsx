@@ -1,7 +1,15 @@
 import React, {useEffect, useState} from "react";
 import useFooterActions from "@hook/useFooterActions";
-import {EpisodeItem, Episodes, movieTranslationItem, movieType, Streams} from "@type/electron.types";
+import {
+    EpisodeItem,
+    Episodes,
+    moviePartContentType, movieScheduleType,
+    movieTranslationItem,
+    movieType,
+    Streams
+} from "@type/electron.types";
 import {MovieStorageHistory} from "@type/movieStorage.types";
+import {createSearchParams, useNavigate} from "react-router-dom";
 
 import electronConnector from "../../helpers/electronConnector";
 import i18n from "../../helpers/translate";
@@ -21,6 +29,7 @@ const MoviePage = ({url, setUrl, goTo}: {
     const {setFooterActions, removeFooterActions} = useFooterActions()
     const [showTrailer, setShowTrailer] = useState(false)
     const [isFavorites, setIsFavorites] = useState<boolean>(movieStorage.isFavorites(url))
+    const navigate = useNavigate();
     const forward = (t: number) => {
         const player = document.querySelector('#hlsPlayer') as HTMLVideoElement;
         if (player) {
@@ -106,6 +115,8 @@ const MoviePage = ({url, setUrl, goTo}: {
         translation_id?: string
         streams?: Streams | {}
         episodes?: Episodes | {}
+        schedule?: movieScheduleType[]
+        partContent?: moviePartContentType[]
         trl_favs?: string
         post_id?: string
         season_id?: number
@@ -151,7 +162,9 @@ const MoviePage = ({url, setUrl, goTo}: {
                 episode_id: parseInt(r.episode_id),
                 episodes: r.episodes,
                 movie: r.movie,
+                partContent: r.partContent,
                 post_id: r.post_id,
+                schedule: r.schedule,
                 season_id: parseInt(r.season_id),
                 step: 'init',
                 streams: r.streams,
@@ -270,13 +283,58 @@ const MoviePage = ({url, setUrl, goTo}: {
         return (
             <button tabIndex={1} type="button" onClick={() => {
                 if (isFavorites) movieStorage.removeFromFavorites(url)
-                else movieStorage.addToFavorites({image: data.movie.image, title: data.movie.title, url})
+                else movieStorage.addToFavorites({image: data.movie.image, subtitle: '', title: data.movie.title, url})
                 setIsFavorites(movieStorage.isFavorites(url))
             }}>{isFavorites ?
                 i18n.t('Remove from favorites') :
                 i18n.t('Add to favorites')}
             </button>
         )
+    }
+
+    const renderSchedule = () => {
+        if (!data.schedule) return null
+
+        return (<ul>
+            {data.schedule.map(item => (
+                <li key={item.title}>
+                    <h3>{item.title}</h3>
+                    <table style={{width: '100%'}}>
+                        {item.data.map(a => <tr key={a.id}>
+                            <td>{a.episode}</td>
+                            <td dangerouslySetInnerHTML={{__html: a.title}}/>
+                            <td>{a.date}</td>
+                            <td dangerouslySetInnerHTML={{__html: a.exist}}/>
+                        </tr>)}
+                    </table>
+                </li>
+            ))}
+        </ul>)
+    }
+
+    const renderPartContent = () => {
+        if (!data.partContent) return null
+
+        return (<table>
+            {data.partContent.map(item => (
+                <tr key={item.title}
+                    tabIndex={1}
+                    role="button"
+                    onClick={() => {
+                        if (item.url) {
+                            navigate({
+                                pathname: 'movie',
+                                search: `?${createSearchParams({url: item.url})}`,
+                            })
+                        }
+                    }}
+                >
+                    <td>{item.id}</td>
+                    <td>{item.title}</td>
+                    <td>{item.year}</td>
+                    <td>{item.rating}</td>
+                </tr>))}
+        </table>)
     }
 
     return (
@@ -355,7 +413,9 @@ const MoviePage = ({url, setUrl, goTo}: {
                 <table id={'movieTable'}>
                     {renderTable()}
                 </table>
+                {renderPartContent()}
             </div>
+            {renderSchedule()}
             <Loader loading={loading}/>
         </div>
     )
