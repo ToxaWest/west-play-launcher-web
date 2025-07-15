@@ -81,6 +81,8 @@ const Weather = () => {
         }
     }, [w.id]);
 
+    if(!w.id) return null
+
     return (
         <div style={style}>
             {icons[current.weather[0].icon]}

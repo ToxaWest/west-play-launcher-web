@@ -29,9 +29,7 @@ const SearchGame = ({update, defaultValue}: {
     React.useEffect(() => {
         if (search.length > 2) {
             electronConnector.steamgriddbSearch({
-                params: new URLSearchParams({
-                    term: search
-                }).toString(),
+                params: new URLSearchParams({term: search}).toString(),
             }).then(({data}) => {
                 setTemp(data)
             })

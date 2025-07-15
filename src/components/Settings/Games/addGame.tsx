@@ -48,14 +48,12 @@ const AddGame = ({data, submit, remove}: {
             electronConnector.getSteamId(({searchParams}) => {
                 setSearch(searchParams)
                 setActive(true)
+                window.api.removeAllListeners('getSteamId')
             })
         }
 
         const additional = await electronConnector.getDataByGameId(game)
         setGame((g) => ({...g, ...additional}))
-        if (game.source === 'gog' || game.source === 'egs') {
-            window.api.removeAllListeners('getSteamId')
-        }
         setLoading(false)
     }
 
@@ -87,14 +85,12 @@ const AddGame = ({data, submit, remove}: {
             electronConnector.getSteamId(({searchParams}) => {
                 setSearch(searchParams)
                 setActive(true)
+                window.api.removeAllListeners('getSteamId')
             })
         }
 
         const additional = await electronConnector.getDataByGameId(data)
         setGame((g) => ({...g, ...data, ...additional}))
-        if (data.source === 'gog' || data.source === 'egs') {
-            window.api.removeAllListeners('getSteamId')
-        }
         setLoading(false)
     }
 
@@ -106,9 +102,7 @@ const AddGame = ({data, submit, remove}: {
             <Input label={i18n.t('Game Image')}
                    value={game.imageName}
                    onChange={({value, name}) => {
-                       if (value) {
-                           onChange({name, value: (value as string).split('/').at(-1)})
-                       }
+                       if (value) onChange({name, value: (value as string).split('/').at(-1)})
                    }}
                    type="path"
                    onlyFile={true}
@@ -117,7 +111,8 @@ const AddGame = ({data, submit, remove}: {
             </Input>
             <button type="button" onClick={() => {
                 onChange({name: 'imageName', value: ''})
-            }}>{i18n.t('Clear')}
+            }}>
+                {i18n.t('Clear')}
             </button>
         </div>,
         images: () => <Images game={game} onChange={onChange} setGame={setGame} setLoading={setLoading}/>,
@@ -161,11 +156,6 @@ const AddGame = ({data, submit, remove}: {
                     </>
                 )
             }
-            return (
-                <>
-                    {render.imageName()}
-                </>
-            )
         }
 
         if (game.source === 'egs') {

@@ -2,6 +2,7 @@ import React from "react";
 import type {getSteamUserId} from "@type/electron.types";
 
 import electronConnector from "../../../helpers/electronConnector";
+import i18n from "../../../helpers/translate";
 import Loader from "../../Loader";
 
 import styles from '../settings.module.scss';
@@ -20,7 +21,7 @@ const SettingsSteamProfile = ({onChange, steamProfile} : {
         return (
             <div className={styles.profileWrapper}>
                 <Loader loading={loading}/>
-                <h3>Steam profiles</h3>
+                <h3>{i18n.t('Steam profiles')}</h3>
                 <ul>
                     {profiles.map((profile) => (
                         <li key={profile.id} role="button" tabIndex={1}

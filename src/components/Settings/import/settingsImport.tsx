@@ -42,6 +42,7 @@ const SettingsImportSteam = () => {
                         electronConnector.getSteamId(({searchParams}) => {
                             setSearch(searchParams)
                             setActive(true)
+                            window.api.removeAllListeners('getSteamId')
                         })
                     }
                     electronConnector.getDataByGameId(item).then(r => {
@@ -52,9 +53,6 @@ const SettingsImportSteam = () => {
                             name: i18n.t('Saved successfully'),
                             status: 'saving'
                         })
-                        if (item.source === 'egs') {
-                            window.api.removeAllListeners('getSteamId')
-                        }
                         setLoading(false);
                         window.location.reload()
                     })
