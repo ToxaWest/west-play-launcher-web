@@ -14,7 +14,7 @@ const MoviesWidget = () => {
         <li key={item.href} tabIndex={1} role="button"
             onClick={() => {
                 navigate({
-                    pathname: 'movie',
+                    pathname: '/movie',
                     search: `?${createSearchParams({url: item.href})}`,
                 })
             }}

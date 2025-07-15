@@ -323,7 +323,7 @@ const MoviePage = ({url, setUrl, goTo}: {
                     onClick={() => {
                         if (item.url) {
                             navigate({
-                                pathname: 'movie',
+                                pathname: '/movie',
                                 search: `?${createSearchParams({url: item.url})}`,
                             })
                         }
