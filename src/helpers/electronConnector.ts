@@ -72,6 +72,7 @@ const electronConnector = {
         stats: StatsType | null
         progress: ProgressType | null
     }> => apiCall(game, 'getUserAchievements'),
+    getWindowsBG:(): Promise<string> => apiCall(null, 'getWindowsBG'),
     howLongToBeat: (query: string): Promise<HLTBSearchResponse[]> => apiCall(query, 'howLongToBeat'),
     imageProxy: (url: string): Promise<BlobPart[]> => apiCall(url, 'imageProxy'),
     movieSearch: (query: string): Promise<movieSearch[]> => apiCall(query, 'movieSearch'),

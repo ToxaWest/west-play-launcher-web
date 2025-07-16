@@ -78,13 +78,20 @@ const SettingsHome = () => {
                    value={settings.gamesInRow}
                    onChange={onChange}
             />
-            <Input label={i18n.t('Live wallpaper')}
-                   name="videoBg"
-                   value={settings.videoBg}
-                   type="path"
-                   onlyFile={true}
-                   onChange={onChange}
-            />
+            <div style={{display: 'flex', gap: 'var(--gap)'}}>
+                <Input label={i18n.t('Live wallpaper')}
+                       name="videoBg"
+                       value={settings.videoBg}
+                       type="path"
+                       onlyFile={true}
+                       onChange={onChange}
+                />
+                <button type="button" onClick={() => {
+                    onChange({name: 'videoBg', value: ''})
+                }}>
+                    {i18n.t('Clear')}
+                </button>
+            </div>
             <Input
                 label={i18n.t('Show cracked widget')}
                 type="select"

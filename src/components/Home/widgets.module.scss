@@ -86,6 +86,55 @@
   }
 }
 
+.game {
+  margin: 0;
+  text-indent: 0;
+  padding: var(--padding);
+  display: flex;
+  align-items: self-start;
+  gap: var(--gap);
+
+  img {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    width: 17vw;
+    @include mixin.glass;
+  }
+
+  h1 {
+    font-size: 1.5vw;
+    margin: var(--gap-half) 0;
+  }
+
+  .info {
+    padding: var(--padding);
+    max-width: 33vw;
+    width: 100%;
+    @include mixin.glass;
+    li {
+      margin-bottom: var(--gap-half);
+      gap: var(--gap-half);
+      display: flex;
+      align-items: center;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+  }
+}
+
+.achievements{
+  padding: var(--padding);
+  background: var(--theme-color-transparent);
+  border-radius: var(--border-radius);
+  display: block;
+  margin-left: auto;
+  text-align: right;
+}
+
 .lastPlayed {
   display: inline-flex;
   align-content: center;

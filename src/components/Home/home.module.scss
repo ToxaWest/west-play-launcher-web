@@ -2,8 +2,7 @@
 
 .innerWrapper {
   padding-top: 40px;
-  background-repeat: no-repeat;
-  background-image: linear-gradient(var(--theme-color), var(--theme-color) 10vw , transparent 13vw, transparent 31vw, var(--theme-color) 37vw, var(--theme-color));
+  z-index: 2;
   h2 {
     padding: var(--padding);
     position: relative;
@@ -11,31 +10,8 @@
   }
 }
 
-.videoBg {
-  position: relative;
-  video {
-    max-width: 100vw;
-    width: 100%;
-    height: auto;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 0;
-  }
-  .innerWrapper {
-    z-index: 2;
-    background: transparent;
-  }
-}
 
-.achievements{
-  padding: var(--padding);
-  background: var(--theme-color-transparent);
-  border-radius: var(--border-radius);
-  display: block;
-  margin-left: auto;
-  text-align: right;
-}
+
 
 .wrapper {
   width: 100vw;
@@ -44,44 +20,4 @@
   background-repeat: no-repeat;
   background-position-y: 10vw;
 
-}
-
-.game {
-  margin: 0;
-  text-indent: 0;
-  padding: var(--padding);
-  display: flex;
-  align-items: self-start;
-  gap: var(--gap);
-
-  img {
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    width: 17vw;
-    @include mixin.glass;
-  }
-
-  h1 {
-    font-size: 1.5vw;
-    margin: var(--gap-half) 0;
-  }
-
-  .info {
-    padding: var(--padding);
-    max-width: 33vw;
-    width: 100%;
-    @include mixin.glass;
-    li {
-      margin-bottom: var(--gap-half);
-      gap: var(--gap-half);
-      display: flex;
-      align-items: center;
-    }
-
-    ul {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-  }
 }

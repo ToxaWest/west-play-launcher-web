@@ -1,6 +1,5 @@
 import React from "react";
 import useAppControls from "@hook/useAppControls";
-import type {ReactElement} from "react";
 import {Outlet} from "react-router-dom";
 
 import electronConnector from "../../helpers/electronConnector";
@@ -11,9 +10,33 @@ import Footer from "../Footer";
 
 import styles from './root.module.scss';
 
+const Background = (
+    {onLoad, videoBg, bgImage, ...props}: React.HTMLProps<any> & { videoBg: string, bgImage: string }
+): React.ReactHTMLElement<any> => {
+
+    return React.createElement(
+        (videoBg ? 'video' : 'img'),
+        {
+            ...props,
+            ...(videoBg ? {
+                autoPlay: true,
+                loop: true,
+                muted: true,
+                onLoadedData: onLoad,
+                src: videoBg,
+            } : {
+                alt: 'background',
+                onLoad,
+                src: bgImage
+            })
+        }
+    )
+}
+
 const Root = () => {
     const {init} = useAppControls()
     const {videoBg} = getFromStorage('config').settings;
+    const [bgImage, setBgImage] = React.useState<string | null>(null);
 
     React.useEffect(() => {
         init('#contentWrapper')
@@ -36,30 +59,23 @@ const Root = () => {
             setToStorage('lastPlayed', lastPlayed);
 
         })
+        electronConnector.getWindowsBG().then(setBgImage)
     }, [])
 
-    const renderWrapper = (children: ReactElement) => {
-        if (videoBg) {
-            return (
-                <div className={styles.videoBg}>
-                    <video src={videoBg} autoPlay={true} muted={true} loop={true} className={styles.video} onLoadedData={(e) => {
-                        (e.target as HTMLVideoElement).style.aspectRatio = `${window.innerWidth / window.innerHeight}`
-                    }}/>
-                    {children}
-                </div>
-            )
-        }
-
-        return children
+    const onLoad = (e: React.SyntheticEvent<HTMLVideoElement | HTMLImageElement>) => {
+        (e.target as HTMLElement).style.aspectRatio = `${window.innerWidth / window.innerHeight}`
     }
 
-    return renderWrapper(
-        <div className={styles.wrapper}>
-            <Clock/>
-            <div className={styles.content} id="contentWrapper">
-                <Outlet/>
+    return (
+        <div className={styles.videoBg}>
+            <Background className={styles.video} videoBg={videoBg} bgImage={bgImage} onLoad={onLoad}/>
+            <div className={styles.wrapper}>
+                <Clock/>
+                <div className={styles.content} id="contentWrapper">
+                    <Outlet/>
+                </div>
+                <Footer/>
             </div>
-            <Footer/>
         </div>
     )
 }
