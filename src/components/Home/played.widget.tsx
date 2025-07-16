@@ -11,16 +11,15 @@ const PlayedWidget = ({setGame}) => {
     const navigate = useNavigate();
     const games = getFromStorage('games');
     const lastPlayed = getFromStorage('lastPlayed');
-    const configuredArray = () => {
+    const configuredArray = React.useMemo(() => {
         const res = Object.entries(lastPlayed)
             .sort(([, ap], [, bp]) => ap < bp ? 1 : -1)
             .reduce((acc, [curr]) => {
                 const game = games.find(({id}) => id == curr);
                 return game ? [...acc, game] : acc
             }, [])
-        if (res.length > 8) {
-            res.length = 8;
-        }
+        if (res.length > 8) res.length = 8;
+
         return [...res, {
             id: 'library',
             img_grid: '/assets/library-icon-1181955-512.png',
@@ -29,7 +28,7 @@ const PlayedWidget = ({setGame}) => {
             short_description: 'Installed games library',
             title: 'Library'
         }];
-    }
+    }, [])
 
     const renderGame = (game: Game) => {
         return (
@@ -59,7 +58,7 @@ const PlayedWidget = ({setGame}) => {
 
     return (
         <ul className={styles.lastPlayed} style={style}>
-            {configuredArray().map(renderGame)}
+            {configuredArray.map(renderGame)}
         </ul>
     )
 

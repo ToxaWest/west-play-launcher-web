@@ -52,7 +52,7 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
         return () => {
             removeFooterActions(['rb', 'lb'])
         }
-    }, [])
+    }, [tab])
 
     const renderPagination = () => {
         if (tab !== 0) return null

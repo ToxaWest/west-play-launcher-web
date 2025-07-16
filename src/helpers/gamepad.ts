@@ -21,7 +21,7 @@ const scrollBooster = 15;
 
 class GamepadApi {
     visible = true;
-    gamepad;
+    gamepad: number | null = null;
     activeWrapper = ':root';
     stickPress = {};
 
@@ -34,12 +34,12 @@ class GamepadApi {
         document.documentElement.style.pointerEvents = "none";
         if (!this.visible) return;
         if (sound[button]) new Audio('/assets/sound/ui/' + sound[button] + '.mp3').play();
+        navigator.getGamepads()[this.gamepad].vibrationActuator.playEffect("dual-rumble", {
+            duration: 100, startDelay: 0, strongMagnitude: 0, weakMagnitude: 0.4
+        });
+
         document.dispatchEvent(new CustomEvent('gamePadClick', {
-            detail: {
-                button,
-                gamePadId: this.gamepad,
-                id: keyMapping.indexOf(button)
-            }
+            detail: {button, gamePadId: this.gamepad, id: keyMapping.indexOf(button)}
         }));
     }
 
