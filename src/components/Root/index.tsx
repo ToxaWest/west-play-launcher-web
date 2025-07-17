@@ -13,6 +13,7 @@ import styles from './root.module.scss';
 const Background = (
     {onLoad, videoBg, bgImage, ...props}: React.HTMLProps<any> & { videoBg: string, bgImage: string }
 ): React.ReactHTMLElement<any> => {
+    if(!videoBg && !bgImage) return null;
 
     return React.createElement(
         (videoBg ? 'video' : 'img'),
