@@ -28,24 +28,39 @@ const GameContent = () => {
         if (link) {
             return (<div style={{cursor: 'pointer', display: 'inline'}} role="link" tabIndex={0} onClick={() => {
                 electronConnector.openLink(link)
-            }}>{i18n.t('Link')}</div>)
+            }}>{sources[game.source]}</div>)
         }
-        return null
+        return sources[game.source]
     }
 
     const checkVersion = (link?: string) => {
         if (link) {
             return (<div style={{cursor: 'pointer', display: 'inline'}} role="button" tabIndex={1} onClick={(e) => {
                     electronConnector.CheckVersion(link).then(r => {
-                        (e.target as HTMLDivElement).innerHTML = `${i18n.t('Version')} - ${r}`;
+                        if (r.trim().toLowerCase() === game.buildVersion.trim().toLowerCase()) {
+                            (e.target as HTMLDivElement).innerHTML = `${r} - ${i18n.t('Version up to date')}`;
+                            return;
+                        }
+                        (e.target as HTMLDivElement).innerHTML = `${i18n.t('New version')} - ${r}, ${i18n.t('Current version')} - ${game.buildVersion}`;
                     })
-                }}>{i18n.t('Check')}</div>
+                }}>{game.buildVersion}</div>
             )
         }
         return null
     }
 
     const getAchCount = (a: EarnedAchievementsType) => Object.values(a).filter(({earned}) => earned).length
+
+    const renderId = () => (
+        <div
+            style={{cursor: 'pointer', display: 'inline'}} role="link" tabIndex={0}
+            onClick={() => {
+                electronConnector.openLink(game.path)
+            }}
+        >
+            {game.id}
+        </div>
+    )
 
     return <RenderContent game={game} fields={[{
         label: i18n.t('Achievements'),
@@ -61,13 +76,10 @@ const GameContent = () => {
         value: game.size
     }, {
         label: i18n.t('Store'),
-        value: sources[game.source]
-    }, {
-        label: i18n.t('Store Link'),
         value: renderLink(game.storeUrl)
     }, {
         label: i18n.t('App id'),
-        value: game.source === 'steam' ? game.steamId : null
+        value: renderId(),
     }, {
         label: i18n.t('Licensed'),
         value: !game.unofficial ? i18n.t('Yes') : i18n.t('No')
@@ -75,11 +87,8 @@ const GameContent = () => {
         label: i18n.t('Download link'),
         value: renderLink(game.downloadLink)
     }, {
-        label: i18n.t('Check Version'),
-        value: checkVersion(game.downloadLink)
-    }, {
         label: i18n.t('Version'),
-        value: game.buildVersion
+        value: checkVersion(game.downloadLink)
     }]}/>
 
 }
