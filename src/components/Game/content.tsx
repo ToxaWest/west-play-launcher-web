@@ -46,7 +46,7 @@ const GameContent = () => {
                 }}>{game.buildVersion}</div>
             )
         }
-        return null
+        return game.buildVersion
     }
 
     const getAchCount = (a: EarnedAchievementsType) => Object.values(a).filter(({earned}) => earned).length
