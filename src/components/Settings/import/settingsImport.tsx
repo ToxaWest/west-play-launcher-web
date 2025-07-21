@@ -64,9 +64,16 @@ const SettingsImportSteam = () => {
         )
     }
 
+    const renderImage = (item: Game) => {
+        if (item.img_grid) return <img src={item.img_grid} alt={item.name}/>
+        const installed = games.find(({id}) => id === item.id)
+        if (installed) return <img src={installed.img_grid} alt={item.name}/>
+        return null;
+    }
+
     const renderItem = (item: Game) => (
         <li key={item.id}>
-            {item.img_grid ? <img src={item.img_grid} alt={item.name}/> : null}
+            {renderImage(item)}
             <div className={styles.content}>
                 <h2>{item.name}</h2>
                 <div><strong>{i18n.t('Source')}:</strong> <i title={item.source}>{item.source}</i></div>

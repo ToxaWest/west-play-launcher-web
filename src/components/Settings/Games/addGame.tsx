@@ -132,7 +132,18 @@ const AddGame = ({data, submit, remove}: {
         steamFields: () => <SteamFields game={game} onChange={onChange}/>,
         steamGridDB: () => <SearchGame defaultValue={game.name} update={onChange}/>,
         update: () => <button tabIndex={1} type="button" onClick={update}>{i18n.t('Update game')}</button>,
-        version: () => <Input label={i18n.t('Version')} value={game.buildVersion} onChange={onChange} name='buildVersion'/>
+        updateLocalData: () => {
+            if ((game.source === 'steam' || game.source === 'egs') && game.unofficial && game.path) {
+                return <button tabIndex={1} type="button" onClick={() => {
+                    electronConnector.getGameByFolder(game.path).then((r: Game) => {
+                        setGame(g => ({...g, ...r}))
+                    })
+                }}>{i18n.t('Update local data')}</button>
+            }
+            return null
+        },
+        version: () => <Input label={i18n.t('Version')} value={game.buildVersion} onChange={onChange}
+                              name='buildVersion'/>
     }
 
     const renderByType = () => {
@@ -211,6 +222,7 @@ const AddGame = ({data, submit, remove}: {
                 <div style={{display: 'flex', gap: 'var(--gap)', padding: 'var(--padding)'}}>
                     {render.remove()}
                     {(game.source !== 'ryujinx' && game.id) ? render.update() : null}
+                    {render.updateLocalData()}
                     {game.name && render.howLongToBeat()}
                     {game.name && render.steamGridDB()}
                 </div>
