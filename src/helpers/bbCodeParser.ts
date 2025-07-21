@@ -20,10 +20,19 @@ const bbCodeParser = (bbString: string) => {
         .replaceAll(/\[td](.*?)\[\/td]/gm, `<td>$1</td>`)
         .replaceAll(/\[i](.*?)\[\/i]/gm, `<i>$1</i>`)
         .replaceAll(/\[u](.*?)\[\/u]/gm, `<u>$1</u>`)
-        .replaceAll(/\[previewyoutube=(.*?);full]\[\/previewyoutube]/gm, `<iframe allowfullscreen="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/$1?autoplay=0&amp;showinfo=0&amp;autohide=1&amp;fs=1&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;iv_load_policy=3&amp;controls=1&amp;enablejsapi=1&amp;widgetid=1"></iframe>`)
-        .replaceAll(/\[previewyoutube="(.*?);full"]\[\/previewyoutube]/gm, `<iframe allowfullscreen="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/$1?autoplay=0&amp;showinfo=0&amp;autohide=1&amp;fs=1&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;iv_load_policy=3&amp;controls=1&amp;enablejsapi=1&amp;widgetid=1"></iframe>`)
+        .replaceAll(
+            /\[previewyoutube=(.*?);full]\[\/previewyoutube]/gm,
+            `<iframe allowfullscreen="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/$1?autoplay=0&amp;showinfo=0&amp;autohide=1&amp;fs=1&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;iv_load_policy=3&amp;controls=1&amp;enablejsapi=1&amp;widgetid=1"></iframe>`
+        )
+        .replaceAll(
+            /\[previewyoutube="(.*?);full"]\[\/previewyoutube]/gm,
+            `<iframe allowfullscreen="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/$1?autoplay=0&amp;showinfo=0&amp;autohide=1&amp;fs=1&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;iv_load_policy=3&amp;controls=1&amp;enablejsapi=1&amp;widgetid=1"></iframe>`
+        )
         .replaceAll(/\[quote](.*?)\[\/quote]/gm, `<quote>$1</quote>`)
-        .replaceAll(/\[video mp4=(.*?) webm=(.*?) poster=(.*?) autoplay=(.*?) controls=(.*?)]\[\/video]/gm, `<video src="$2" loop=true autoplay=true muted=true style="max-width: 100%;" poster="$3"/>`)
+        .replaceAll(
+            /\[video mp4=(.*?) webm=(.*?) poster=(.*?) autoplay=(.*?) controls=(.*?)]\[\/video]/gm,
+            `<video loop=true autoplay=true muted=true style="max-width: 100%;" poster="$3"><source src="$1" type="video/mp4"/><source src="$2" type="video/webm"/></video>`
+        )
         .replaceAll(/\[img](.*?)\[\/img]/gm, `<img src="$1" alt="" style="max-width: 100%;"/>`)
         .replaceAll(/\[img src="(.*?)"]\[\/img]/gm, `<img src="$1" alt="" style="max-width: 100%;"/>`)
         .replaceAll(/width="(.*?)"/gm, 'style="max-width: 100%;"')
@@ -43,7 +52,7 @@ const bbCodeParser = (bbString: string) => {
     html.innerHTML = content;
     html.querySelectorAll('ul, ol').forEach(ul => {
         const isBBCode = new RegExp(`\\[\\*]`).test(ul.innerHTML);
-        if(!isBBCode) return;
+        if (!isBBCode) return;
         const res = ul.innerHTML.split(new RegExp(`\\[\\*]`)).map(a => {
             if (a) return `<li>${a.replace(/\[\/\*]/gm, '')}</li>`
             return null;
