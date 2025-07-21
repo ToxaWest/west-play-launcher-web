@@ -24,13 +24,13 @@ const GameContent = () => {
         'steam': 'Steam'
     }
 
-    const renderLink = (link?: string) => {
+    const renderLink = (link?: string, title?: string | number) => {
         if (link) {
             return (<div style={{cursor: 'pointer', display: 'inline'}} role="link" tabIndex={0} onClick={() => {
                 electronConnector.openLink(link)
-            }}>{sources[game.source]}</div>)
+            }}>{title}</div>)
         }
-        return sources[game.source]
+        return null
     }
 
     const checkVersion = (link?: string) => {
@@ -51,17 +51,6 @@ const GameContent = () => {
 
     const getAchCount = (a: EarnedAchievementsType) => Object.values(a).filter(({earned}) => earned).length
 
-    const renderId = () => (
-        <div
-            style={{cursor: 'pointer', display: 'inline'}} role="link" tabIndex={0}
-            onClick={() => {
-                electronConnector.openLink(game.path)
-            }}
-        >
-            {game.id}
-        </div>
-    )
-
     return <RenderContent game={game} fields={[{
         label: i18n.t('Achievements'),
         value: (game.achievements && ach) ? `${getAchCount(ach)} of ${Object.keys(game.achievements).length}` : null
@@ -76,16 +65,16 @@ const GameContent = () => {
         value: game.size
     }, {
         label: i18n.t('Store'),
-        value: renderLink(game.storeUrl)
+        value: renderLink(game.storeUrl, sources[game.source])
     }, {
         label: i18n.t('App id'),
-        value: renderId(),
+        value: renderLink(game.path, game.id),
     }, {
         label: i18n.t('Licensed'),
         value: !game.unofficial ? i18n.t('Yes') : i18n.t('No')
     }, {
         label: i18n.t('Download link'),
-        value: renderLink(game.downloadLink)
+        value: renderLink(game.downloadLink, i18n.t('Download'))
     }, {
         label: i18n.t('Version'),
         value: checkVersion(game.downloadLink)
