@@ -89,3 +89,12 @@ button:hover, button:focus {
   cursor: pointer;
   background-color: var(--button-bg-color-hover);
 }
+
+.spoiler {
+  background-color: var(--theme-color);
+  color:  var(--theme-color);
+  transition: color 0.4s ease-in;
+  &:hover, &:active, &:focus {
+    color: var(--theme-text-color);
+  }
+}

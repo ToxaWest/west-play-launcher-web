@@ -33,6 +33,7 @@ const bbCodeParser = (bbString: string) => {
         .replaceAll(/\{STEAM_CLAN_IMAGE}/gm, 'https://clan.fastly.steamstatic.com/images')
         .replaceAll(/\[carousel autoadvance="true"](.*?)\[\/carousel]/gm, '<div data-slider="true">$1</div>')
         .replaceAll(/\[carousel](.*?)\[\/carousel]/gm, '<div data-slider="true">$1</div>')
+        .replaceAll(/\[spoiler](.*?)\[\/spoiler]/gm, '<span class="spoiler" tabindex="1">$1</span>')
         .replaceAll(/\[list]/gm, '<ul>')
         .replaceAll(/\[\/list]/gm, '</ul>')
         .replaceAll(/\[olist]/gm, '<ol>')
@@ -41,6 +42,8 @@ const bbCodeParser = (bbString: string) => {
     const html = document.createElement('div');
     html.innerHTML = content;
     html.querySelectorAll('ul, ol').forEach(ul => {
+        const isBBCode = new RegExp(`\\[\\*]`).test(ul.innerHTML);
+        if(!isBBCode) return;
         const res = ul.innerHTML.split(new RegExp(`\\[\\*]`)).map(a => {
             if (a) return `<li>${a.replace(/\[\/\*]/gm, '')}</li>`
             return null;
