@@ -12,10 +12,10 @@ import SvgSettings from "../../SVG/settings.svg?react";
 import SvgShutDown from "../../SVG/shut-down.svg?react";
 
 const Menu = () => {
-    const [connectedMonitors, setConnectedMonitors] = React.useState<ConnectedMonitorType[]>([]);
+    const [connectedMonitors, setConnectedMonitors] = React.useActionState<ConnectedMonitorType[]>(electronConnector.getConnectedMonitors,[]);
 
     React.useEffect(() => {
-        electronConnector.getConnectedMonitors().then(setConnectedMonitors)
+        React.startTransition(setConnectedMonitors)
     }, [])
 
     const renderMonitors = ({id, name, active, primary}: ConnectedMonitorType) => {
@@ -25,7 +25,7 @@ const Menu = () => {
                 <Link to="/" tabIndex={1} onClick={(e) => {
                     e.preventDefault();
                     electronConnector.setMainDisplay(id).then(() => {
-                        electronConnector.getConnectedMonitors().then(setConnectedMonitors)
+                        React.startTransition(setConnectedMonitors)
                     })
                 }}>
                     {primary ? i18n.t('Main') : i18n.t('Select')}: {name}
