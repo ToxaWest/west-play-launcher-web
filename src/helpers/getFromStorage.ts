@@ -1,7 +1,6 @@
 import type {LocalStorageKeys, LocalStorageType} from "@type/localStorage.type";
 
 function getFromStorage< K extends LocalStorageKeys>(key: K): LocalStorageType[K] {
-    if(!localStorage.getItem(key)) return {}
     return JSON.parse(localStorage.getItem(key))
 }
 
