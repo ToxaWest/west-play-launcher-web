@@ -34,6 +34,7 @@ const electronConnector = {
         status: 'closed' | 'running' | 'error' | 'starting',
         playTime: number
     }) => void): void => apiCall(callBack, 'gameStatus'),
+    generateSteamSettings: (path: string): Promise<{error: boolean, message: string}> => apiCall(path, 'generateSteamSettings'),
     getAchievementsPath: ({appid}: {
         appid: number
     }): Promise<string | null> => apiCall({appid}, 'getAchievementsPath'),

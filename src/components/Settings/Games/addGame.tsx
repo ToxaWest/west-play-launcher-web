@@ -97,6 +97,23 @@ const AddGame = ({data, submit, remove}: {
     const render = {
         download: () => <Input label={i18n.t('Download link')} value={game.downloadLink} onChange={onChange}
                                name='downloadLink'/>,
+        generateSteamSettings: () => {
+            if (!game.path) return null;
+            if (!game.unofficial) return null;
+            if (game.source !== 'steam') return null;
+            return <button tabIndex={1} type="button" onClick={() => {
+                setLoading(true)
+                electronConnector.generateSteamSettings(game.path).then(r => {
+                    setLoading(false)
+                    notification({
+                        description: r.message,
+                        img: '/assets/controller/save.svg',
+                        name: i18n.t('Generate steam settings'),
+                        status: r.error ? 'error' : 'success'
+                    }, 2000)
+                })
+            }}>{i18n.t('Generate steam settings')}</button>
+        },
         howLongToBeat: () => <SearchHLTB defaultValue={game.name} update={onChange}/>,
         imageName: () => <div style={{display: 'flex', gap: 'var(--gap)'}}>
             <Input label={i18n.t('Game Image')}
@@ -225,6 +242,7 @@ const AddGame = ({data, submit, remove}: {
                     {render.updateLocalData()}
                     {game.name && render.howLongToBeat()}
                     {game.name && render.steamGridDB()}
+                    {render.generateSteamSettings()}
                 </div>
                 {renderContent()}
                 <SearchSteamGame defaultValue={search} active={active} setActive={setActive}/>
