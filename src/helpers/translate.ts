@@ -1,7 +1,7 @@
 import {getFromStorage} from "./getFromStorage";
 
 class Translate {
-    language = getFromStorage('config').settings.currentLang;
+    language = getFromStorage('config')?.settings?.currentLang || 'english';
     dictionary = {}
 
     init = async (): Promise<void> => {
