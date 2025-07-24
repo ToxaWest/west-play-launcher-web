@@ -38,7 +38,7 @@
     "Free to": "Безкоштовно до",
     "Full Screen": "Повний екран",
     "FullScreen": "Повноекранний режим",
-    "Game Image": "Зображення гри",
+    "Game Image": "Образ гри",
     "Game already exists": "Гра вже існує",
     "Game not found": "Гру не знайдено",
     "Game with id {{id}} already exists": "Гра з id {{id}} вже існує",
@@ -152,5 +152,6 @@
     "Username": "",
     "Password": "",
     "Reset Login": "",
-    "Download": ""
+    "Download": "",
+    "Generate steam settings": ""
 }
