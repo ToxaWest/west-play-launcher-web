@@ -61,14 +61,13 @@ const Achievements = () => {
                                type,
                                icongray,
                                icon,
-                               hiddenDescription,
                                description,
                                hidden
                            }: achievementInterfaceType): ExtendedAchievementType => {
         const className = getItemClassName(name, type);
         if (!Object.hasOwn(achievements, name)) return {
             ...achievements[name],
-            body: hidden ? hiddenDescription : description,
+            body: hidden ? i18n.t('Hidden achievement') : description,
             className,
             image: icongray,
             progress: 0
@@ -96,6 +95,7 @@ const Achievements = () => {
             progress,
             xp,
             earned_time,
+            description,
             body,
             rarity
         }: ExtendedAchievementType & achievementInterfaceType,
@@ -107,7 +107,7 @@ const Achievements = () => {
             <img src={image} alt={name}/>
             <div>
                 <strong>{displayName}</strong>
-                <span>{body}</span>
+                <span title={description}>{body}</span>
                 {Boolean(earned_time) && <i>{new Date(earned_time * 1000).toLocaleDateString()}</i>}
                 {Boolean(progress && progress !== 1) && <i>{Math.floor(progress * 100)}%</i>}
                 {externalProgress[name] && <i>{i18n.t('Progress')}: {externalProgress[name]}</i>}
@@ -131,10 +131,13 @@ const Achievements = () => {
             })
 
         Object.entries(externalProgress).forEach(([name]) => {
-            if (!orderMap.has(name)) {
-                orderMap.set(name, orderMap.size + 1);
-            }
+            if (!orderMap.has(name)) orderMap.set(name, orderMap.size + 1);
         })
+
+        game.achievements.sort((a, b) => a.rarity > b.rarity ? -1 : 1)
+            .forEach(({name}) => {
+                if (!orderMap.has(name)) orderMap.set(name, orderMap.size + 1);
+            })
 
         const sort = (a: achievementInterfaceType, b: achievementInterfaceType) => {
             const orderA = orderMap.get(a.name);

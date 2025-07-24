@@ -143,7 +143,7 @@ const SettingsHome = () => {
                     status: 'saving'
                 })
             }}>
-                Reset hidden free games
+                {i18n.t('Reset hidden free games')}
             </button>
             <Input
                 label={i18n.t('Alternative achievements (game view)')}
@@ -160,15 +160,15 @@ const SettingsHome = () => {
                 onChange={onChange}
             />
             <button tabIndex={1} type="button" onClick={() => {
-                const gamesInList = Object.keys(getFromStorage('games'));
+                const gamesInList = getFromStorage('games').map(({id}) => id.toString());
                 const playTime = getFromStorage('playTime');
                 Object.keys(playTime).forEach((key) => {
-                    if (gamesInList.indexOf(key) === -1) delete playTime[key];
+                    if (gamesInList.indexOf(key.toString()) === -1) delete playTime[key];
                 })
                 setToStorage('playTime', playTime)
                 const lastPlayed = getFromStorage('lastPlayed');
                 Object.keys(lastPlayed).forEach((key) => {
-                    if (gamesInList.indexOf(key) === -1) delete lastPlayed[key];
+                    if (gamesInList.indexOf(key.toString()) === -1) delete lastPlayed[key];
                 })
                 setToStorage('lastPlayed', lastPlayed)
                 electronConnector.clearUnusedCache(gamesInList).then(({removed}) => {
