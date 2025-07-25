@@ -134,6 +134,20 @@ const SettingsHome = () => {
                 value={settings.showMoviesWidget}
                 onChange={onChange}
             />
+            <Input
+                label={i18n.t('Use system notification')}
+                type="select"
+                name="useSystemNotification"
+                options={[{
+                    label: i18n.t('Yes'),
+                    value: 1
+                }, {
+                    label: i18n.t('No'),
+                    value: 0
+                }]}
+                value={settings.useSystemNotification}
+                onChange={onChange}
+            />
             <button tabIndex={1} type="button" onClick={() => {
                 setToStorage('hiddenFree', [])
                 notifications({

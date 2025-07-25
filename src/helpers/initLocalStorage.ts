@@ -19,7 +19,8 @@ export default function initLocalStorage() {
                     id: ""
                 },
                 theme: 'system',
-                uaAlarmId: null
+                uaAlarmId: null,
+                useSystemNotification: 0
             }
         },
         games: [],
