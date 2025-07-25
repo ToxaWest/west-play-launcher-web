@@ -15,6 +15,18 @@
     align-items: center;
     flex-direction: column;
     gap: var(--gap-half);
+    position: relative;
+    &:after {
+      border-radius: var(--border-radius);
+      content: '';
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: var(--progress);
+      background-color: var(--bgColor);
+      z-index: -1;
+    }
     strong {
       font-size: 0.7vw;
     }

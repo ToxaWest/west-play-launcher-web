@@ -13,6 +13,7 @@
   padding: var(--padding);
   min-height: 80px;
   @include mixin.glass;
+
   iframe {
     position: absolute;
     left: 0;
@@ -25,7 +26,7 @@
     border: none;
   }
 
-  &>li {
+  & > li {
     white-space: nowrap;
     aspect-ratio: 92 / 43;
     width: 22vw;
@@ -33,10 +34,12 @@
     position: relative;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     perspective: 1000px;
+
     &:active, &:focus, &:hover {
       transform: rotateX(7deg) translateY(-2px) scale(1.05);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-      iframe{
+
+      iframe {
         display: block;
       }
     }
@@ -46,6 +49,7 @@
       height: 100%;
       width: 100%;
     }
+
     ul {
       position: absolute;
       top: 0;
@@ -60,23 +64,28 @@
       display: flex;
       flex-direction: column;
       gap: var(--gap-half);
+
       li {
         list-style: none;
         margin: 0;
         display: flex;
         border-bottom: 1px solid var(--theme-secondary);
+
         strong {
           margin-right: var(--gap-half);
         }
+
         i {
           margin-left: auto;
           text-align: right;
         }
       }
     }
+
     &.active {
       background-color: var(--theme-text-color-seconary);
       z-index: 2;
+
       ul {
         z-index: 1;
         opacity: .9;
@@ -98,7 +107,11 @@
     border-radius: var(--border-radius);
     overflow: hidden;
     width: 17vw;
-    @include mixin.glass;
+    &[src$='/assets/library-icon-1181955-512.png'] {
+      @media (prefers-color-scheme: dark) {
+        filter: invert(1);
+      }
+    }
   }
 
   h1 {
@@ -111,6 +124,7 @@
     max-width: 33vw;
     width: 100%;
     @include mixin.glass;
+
     li {
       margin-bottom: var(--gap-half);
       gap: var(--gap-half);
@@ -126,7 +140,7 @@
   }
 }
 
-.achievements{
+.achievements {
   padding: var(--padding);
   background: var(--theme-color-transparent);
   border-radius: var(--border-radius);
@@ -144,9 +158,10 @@
   max-width: 100vw;
   height: 8vw;
   position: relative;
-  margin:0;
+  margin: 0;
   padding: var(--padding);
-  &>li {
+
+  & > li {
     white-space: nowrap;
     width: 6vw;
     height: 6vw;
@@ -159,16 +174,24 @@
     padding: 5px;
     cursor: pointer;
     @include mixin.glass;
-    &.active, &:active , &:focus {
+
+    &.active, &:active, &:focus {
       width: 7vw;
       height: 7vw;
       min-width: 7vw;
       @include mixin.glassActive;
     }
+
     img {
       max-width: 100%;
       width: 100%;
       max-height: 100%;
+
+      &[src$='/assets/library-icon-1181955-512.png'] {
+        @media (prefers-color-scheme: dark) {
+          filter: invert(1);
+        }
+      }
     }
   }
 }

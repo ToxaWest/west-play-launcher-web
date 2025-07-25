@@ -25,9 +25,7 @@ const Provider = ({children}) => {
             const gp = new GamepadApi(gamepad)
             gp.connect();
             window.addEventListener('gamepaddisconnected', (e) => {
-                if (e.gamepad.index === gamepad.index) {
-                    gp.disconnect()
-                }
+                if (e.gamepad.index === gamepad.index) gp.disconnect()
             })
         })
         i18n.init().then(() => {
