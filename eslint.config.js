@@ -11,18 +11,13 @@ import pluginSimpleSort from "eslint-plugin-simple-import-sort"
 import pluginSortKeys from "eslint-plugin-sort-keys";
 import globals from "globals";
 import tseslint from "typescript-eslint";
-const GLOBALS_BROWSER_FIX = Object.assign({}, globals.browser, {
-    AudioWorkletGlobalScope: globals.browser['AudioWorkletGlobalScope ']
-});
 
-delete GLOBALS_BROWSER_FIX['AudioWorkletGlobalScope '];
 export default defineConfig([
     {
         files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
         languageOptions: {
             globals: {
-                ...GLOBALS_BROWSER_FIX,
-                ...globals.node,
+                ...globals.browser
             },
             parser: tseslint.parser,
             parserOptions: {
