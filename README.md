@@ -22,7 +22,8 @@ ___
 - Cracked games: + (only if crack team created achievements.ini/json file with tracking user achievements)
 - Ryujinx: -
 ___
-
+### Screenshot of Game when achievement earned
+- Add XBOX GameBar shortcut for screenshots (`ctrl+shift+P`) 
 
 ### Required thrid party utils
 #### PowerShell
