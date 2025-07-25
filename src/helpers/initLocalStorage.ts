@@ -5,7 +5,6 @@ export default function initLocalStorage() {
         achievements: {},
         config: {
             settings: {
-                alternativeAchievementsView: 0,
                 currentLang: 'english',
                 gamesInRow: 6,
                 ryujinx: '',

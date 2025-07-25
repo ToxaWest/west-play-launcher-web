@@ -7,8 +7,7 @@ import RenderHLTB from "./renderHLTB";
 
 import styles from "./game.module.scss";
 
-// eslint-disable-next-line @eslint-react/no-unstable-default-props
-const RenderContent = ({game, fields = []}: { game: Game, fields?: { label: string, value: any }[] }) => {
+const RenderContent = ({game, fields}: { game: Game, fields?: { label: string, value: any }[] }) => {
 
     const renderDevelopers = (devs: string[]) => {
         if (!devs) {

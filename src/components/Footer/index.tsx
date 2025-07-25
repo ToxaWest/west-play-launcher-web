@@ -71,9 +71,7 @@ const Footer = () => {
     ]);
 
 
-    const sortButtons = (a: footerActionType, b: footerActionType) => {
-        return orderMap.get(a.button) - orderMap.get(b.button);
-    }
+    const sortButtons = (a: footerActionType, b: footerActionType) => orderMap.get(a.button) - orderMap.get(b.button)
 
     return (
         <footer className={styles.wrapper}>

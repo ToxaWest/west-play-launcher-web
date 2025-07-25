@@ -14,7 +14,7 @@ import SvgDLC from '../../SVG/dlc.svg?react'
 import SvgMedia from '../../SVG/media.svg?react'
 import SvgNews from '../../SVG/news.svg?react'
 
-const GameActions = ({game}: {game: Game}) => {
+const GameActions = ({game}: { game: Game }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const {setFooterActions, removeFooterActions} = useFooterActions();
@@ -63,7 +63,7 @@ const GameActions = ({game}: {game: Game}) => {
         active: Boolean(game.steamId),
         img: SvgNews,
         url: `/game/${game.id}/news`
-    },{
+    }, {
         active: Boolean(game.dlcList) && Boolean(game.dlcList.length),
         img: SvgDLC,
         url: `/game/${game.id}/dlc`
@@ -76,19 +76,13 @@ const GameActions = ({game}: {game: Game}) => {
     const toggleViewMode = (direction: 'previous' | 'next') => {
         const index = buttons.findIndex(({url}) => url === window.location.pathname);
         if (direction === 'previous') {
-            if (index === 0) {
-                navigate(buttons.at(-1).url)
-            } else {
-                navigate(buttons.at(index - 1).url)
-            }
+            if (index === 0) navigate(buttons.at(-1).url)
+            else navigate(buttons.at(index - 1).url)
         }
 
         if (direction === 'next') {
-            if (index === buttons.length - 1) {
-                navigate(buttons.at(0).url)
-            } else {
-                navigate(buttons.at(index + 1).url)
-            }
+            if (index === buttons.length - 1) navigate(buttons.at(0).url)
+            else navigate(buttons.at(index + 1).url)
         }
     }
 

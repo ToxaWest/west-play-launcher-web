@@ -6,7 +6,6 @@ export type LocalStorageType = {
     config: {
         settings: {
             theme: 'system' | 'light' | 'dark'
-            alternativeAchievementsView: 0 | 1,
             ryujinx: string,
             videoBg?: string
             gamesInRow: number,

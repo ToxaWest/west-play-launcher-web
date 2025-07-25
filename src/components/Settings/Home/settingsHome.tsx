@@ -145,20 +145,6 @@ const SettingsHome = () => {
             }}>
                 {i18n.t('Reset hidden free games')}
             </button>
-            <Input
-                label={i18n.t('Alternative achievements (game view)')}
-                type="select"
-                name="alternativeAchievementsView"
-                options={[{
-                    label: i18n.t('Yes'),
-                    value: 1
-                }, {
-                    label: i18n.t('No'),
-                    value: 0
-                }]}
-                value={settings.alternativeAchievementsView}
-                onChange={onChange}
-            />
             <button tabIndex={1} type="button" onClick={() => {
                 const gamesInList = getFromStorage('games').map(({id}) => id.toString());
                 const playTime = getFromStorage('playTime');
@@ -173,7 +159,7 @@ const SettingsHome = () => {
                 setToStorage('lastPlayed', lastPlayed)
                 electronConnector.clearUnusedCache(gamesInList).then(({removed}) => {
                     notifications({
-                        description: i18n.t(`Removed {{removed}} assets`, {removed}),
+                        description: i18n.t('Removed {{removed}} assets', {removed}),
                         img: '/assets/controller/save.svg',
                         name: i18n.t('Assets removed'),
                         status: 'success'

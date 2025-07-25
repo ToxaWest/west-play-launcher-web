@@ -6,7 +6,6 @@ import getAchievements from "../../helpers/getAchievements";
 import {getFromStorage} from "../../helpers/getFromStorage";
 import i18n from "../../helpers/translate";
 
-import achStyles from './achievements.module.scss'
 import styles from './game.module.scss';
 
 type ExtendedAchievementType = EarnedAchievementsType[0] & {
@@ -23,7 +22,6 @@ const Achievements = () => {
     const [achievements, setAchievements] = React.useState(initialAchievements);
     const externalProgress = (getFromStorage('progress') || {})[id] || {};
     const stats = getFromStorage('stats')[id] || {};
-    const {alternativeAchievementsView: alternative} = getFromStorage('config').settings;
 
     React.useEffect(() => {
         getAchievements(id, setAchievements)
@@ -32,6 +30,7 @@ const Achievements = () => {
     const renderStats = () => {
         if (!game.stats || !stats) return null
         const renderStats = ([key, value]) => {
+            if (!value) return null;
             const statInterface = game.stats.find(({name}) => name === key)
             if (!statInterface || !statInterface.displayName) return null;
             return <li key={key}>
@@ -48,10 +47,7 @@ const Achievements = () => {
 
     const getItemClassName = (name: string, type: string) => {
         const stylesArray = [];
-        if (Object.hasOwn(achievements, name) && achievements[name].earned) {
-            if (alternative) stylesArray.push(achStyles.earned);
-            else stylesArray.push(styles.earned);
-        }
+        if (Object.hasOwn(achievements, name) && achievements[name].earned) stylesArray.push(styles.earned);
         if (type) stylesArray.push(styles['ach_' + type]);
         return stylesArray.join(' ')
     }
@@ -148,7 +144,7 @@ const Achievements = () => {
         }
 
         return (
-            <ul className={alternative ? achStyles.achList : styles.achList}>
+            <ul className={styles.achList}>
                 {game.achievements.sort(sort).map(item => ({...item, ...addEarnedInfo(item)})).map(renderItem)}
             </ul>
         )

@@ -55,6 +55,14 @@ const FileManager = ({
         })
         if (!file) {
             setFooterActions({
+                a: {
+                    button: 'a',
+                    onClick: () => {
+                        const activeElement = document.activeElement as HTMLElement;
+                        if (activeElement) activeElement.click();
+                    },
+                    title: i18n.t('Open')
+                },
                 y: {
                     button: 'y',
                     onClick: () => {
@@ -68,7 +76,7 @@ const FileManager = ({
         if (initial) getChild(initial)
 
         return () => {
-            removeFooterActions(['b', 'x', 'y']);
+            removeFooterActions(['b', 'x', 'y', 'a']);
         }
     }, []);
 
