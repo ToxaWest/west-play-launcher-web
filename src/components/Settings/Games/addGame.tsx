@@ -105,6 +105,9 @@ const AddGame = ({data, submit, remove}: {
                 setLoading(true)
                 electronConnector.generateSteamSettings(game.path).then(r => {
                     setLoading(false)
+                    if (r.data) {
+                        onChange({name: 'achPath', value: r.data.achFile})
+                    }
                     notification({
                         description: r.message,
                         img: '/assets/controller/save.svg',

@@ -34,13 +34,17 @@ const electronConnector = {
         status: 'closed' | 'running' | 'error' | 'starting',
         playTime: number
     }) => void): void => apiCall(callBack, 'gameStatus'),
-    generateSteamSettings: (path: string): Promise<{error: boolean, message: string}> => apiCall(path, 'generateSteamSettings'),
+    generateSteamSettings: (path: string): Promise<{
+        error: boolean,
+        message: string,
+        data?: { achFile: string }
+    }> => apiCall(path, 'generateSteamSettings'),
     getAchievementsPath: ({appid}: {
         appid: number
     }): Promise<string | null> => apiCall({appid}, 'getAchievementsPath'),
     getAjaxVideo: (props: getAjaxVideoInput): Promise<getAjaxVideo> => apiCall(props, 'getAjaxVideo'),
-    getAlarm:() => apiCall(null, 'getAlarm'),
-    getAlarmRegionList: (): Promise<{value: string, label: string}[]> => apiCall(null, 'getAlarmRegionList'),
+    getAlarm: () => apiCall(null, 'getAlarm'),
+    getAlarmRegionList: (): Promise<{ value: string, label: string }[]> => apiCall(null, 'getAlarmRegionList'),
     getConnectedMonitors: (): Promise<ConnectedMonitorType[]> => apiCall(null, 'getConnectedMonitors'),
     getDataByGameId: (props: getDataByGameIdInput): Promise<Game> => apiCall(props, 'getDataByGameId'),
     getDisks: (): Promise<string[]> => apiCall(null, 'getDisks'),
@@ -73,7 +77,7 @@ const electronConnector = {
         stats: StatsType | null
         progress: ProgressType | null
     }> => apiCall(game, 'getUserAchievements'),
-    getWindowsBG:(): Promise<string> => apiCall(null, 'getWindowsBG'),
+    getWindowsBG: (): Promise<string> => apiCall(null, 'getWindowsBG'),
     howLongToBeat: (query: string): Promise<HLTBSearchResponse[]> => apiCall(query, 'howLongToBeat'),
     imageProxy: (url: string): Promise<BlobPart[]> => apiCall(url, 'imageProxy'),
     movieSearch: (query: string): Promise<movieSearch[]> => apiCall(query, 'movieSearch'),
