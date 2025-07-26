@@ -43,13 +43,19 @@ const Input = ({
 }) => {
 
     const [active, setActive] = React.useState<boolean>(false);
+    const [initialValue, setInitialValue] = React.useState<string | number>(value)
 
     const change = (e: { target: { name: string, value: string | number } }) => {
+        setInitialValue(e.target.value)
         onChange({
             name: e.target.name,
             value: e.target.value
         })
     }
+
+    React.useEffect(() => {
+        setInitialValue(value)
+    }, [value])
 
     const renderInput = {
         number: () => {
@@ -68,7 +74,7 @@ const Input = ({
                            }
                        }}
                        disabled={disabled}
-                       defaultValue={value}
+                       value={value}
                        onChange={change}
                 />
             )
@@ -76,9 +82,13 @@ const Input = ({
         path: () => {
             return (
                 <div className={styles.path}>
-                    <input type={"hidden"} ref={_ref} value={value} name={name} style={{display: 'none'}}/>
                     <button tabIndex={1} type="button" onClick={() => setActive(true)}>{i18n.t('Get path')}</button>
-                    <span>{value}</span>
+                    <input type={"text"} ref={_ref} name={name} tabIndex={0}
+                           value={initialValue}
+                           onChange={({target: {value: pathValue}}) => {
+                               setInitialValue(pathValue)
+                           }}
+                           onBlur={change}/>
                     {active ? <Modal onClose={() => setActive(false)}>
                         <FileManager
                             submit={(value) => {
@@ -135,7 +145,7 @@ const Input = ({
                                }
                            }
                        }}
-                       {...(disabled ? {disabled, value} : {defaultValue: value})}
+                       {...(disabled ? {disabled, value} : {value: initialValue})}
                        onChange={change}
                 />
             )

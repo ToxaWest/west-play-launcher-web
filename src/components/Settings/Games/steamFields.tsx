@@ -21,17 +21,6 @@ const SteamFields = ({game, onChange}: {
                    initial={game.path}
                    onlyFile={true}
                    name='exePath'/>
-            <Input label={i18n.t('Exe file path')}
-                   name="exePath"
-                   value={game.exePath}
-                   onChange={onChange}
-            />
-            {game.source === 'steam' ? <Input label={i18n.t('Achievements file path')}
-                                              value={game.achPath}
-                                              onChange={onChange}
-                                              type="path"
-                                              onlyFile={true}
-                                              name='achPath'/> : null}
             <div className={styles.argsWrapper}>
                 <button
                     type="button"
@@ -66,6 +55,12 @@ const SteamFields = ({game, onChange}: {
                     </Input>
                 ))}
             </div>
+            {game.source === 'steam' ? <Input label={i18n.t('Achievements file path')}
+                                              value={game.achPath}
+                                              onChange={onChange}
+                                              type="path"
+                                              onlyFile={true}
+                                              name='achPath'/> : null}
         </>
     )
 }

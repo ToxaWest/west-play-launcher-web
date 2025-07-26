@@ -214,8 +214,8 @@ const AddGame = ({data, submit, remove}: {
             <>
                 {!game.path && render.path()}
                 {renderByType()}
-                {render.images()}
                 {game.unofficial && render.download()}
+                {render.images()}
                 <button tabIndex={1}
                         type="button"
                         disabled={loading}
