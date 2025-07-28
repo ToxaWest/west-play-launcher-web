@@ -17,25 +17,13 @@ const RenderHLTB = ({game}: { game: Game }) => {
         const percent = (playTime / (value * 1000)) * 100;
         const progress = percent > 100 ? 100 : percent;
 
-        const getColor = () => {
-            if (progress >= 90) return '#009e00'
-            if (progress >= 70) return '#008200'
-            if (progress >= 50) return '#006600'
-            if (progress >= 30) return '#004a00'
-            if (progress >= 10) return '#002e00'
-            return '#000000'
+        const style: React.CSSProperties & { '--progress': string, '--bgColor': string } = {
+            '--bgColor': `rgba(0, 255, 0, ${progress / 100})`,
+            '--progress': `${progress}%`
         }
 
-        const getStyle = (progress: number, color: string): React.CSSProperties & {
-            '--progress': string,
-            '--bgColor': string
-        } => ({
-            '--bgColor': color,
-            '--progress': `${progress}%`
-        })
-
         return (
-            <span style={getStyle(progress, getColor())}>
+            <span style={style}>
                 {secondsToHms(value * 1000)}<strong>{label}</strong>
             </span>
         )

@@ -36,7 +36,7 @@ const Images = ({game, onChange, setLoading, setGame}: {
                         status: 'success'
                     }, 3000)
                 })
-            }}>Get steam Assets</button>
+            }}>{i18n.t('Get steam Assets')}</button>
         }
 
         return null;
