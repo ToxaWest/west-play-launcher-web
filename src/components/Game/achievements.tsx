@@ -26,7 +26,11 @@ const Achievements = () => {
     const externalProgress = (getFromStorage('progress') || {})[id] || {};
     const stats = getFromStorage('stats')[id] || {};
     const [images, setImages] = React.useState<{ name: string, path: string }[]>([])
-    const [activeScreenshot, setActiveScreenshot] = React.useState<{ name: string, path: string, displayName: string } | null>(null)
+    const [activeScreenshot, setActiveScreenshot] = React.useState<{
+        name: string,
+        path: string,
+        displayName: string
+    } | null>(null)
 
     React.useEffect(() => {
         electronConnector.getAchievementScreenshots(game.name).then(setImages)
@@ -87,8 +91,9 @@ const Achievements = () => {
         }
     }
 
-    const getStyle = (progress: number): React.CSSProperties & { '--progress': string } => ({
-        '--progress': `${100 - (progress * 100)}%`
+    const getStyle = (progress: number, rarity: number): React.CSSProperties & { '--progress': string, '--rarity': string } => ({
+        '--progress': `${100 - (progress * 100)}%`,
+        '--rarity': `${rarity}%`
     })
 
     const renderItem = (
@@ -108,7 +113,7 @@ const Achievements = () => {
     ) => (
         <li key={name}
             className={className}
-            style={getStyle(progress)}
+            style={getStyle(progress, rarity)}
         >
             <img src={image} alt={name}/>
             <div>
@@ -130,12 +135,10 @@ const Achievements = () => {
                 </span> : null}
                 <strong>{displayName}</strong>
                 <span title={description}>{body}</span>
-                {Boolean(earned_time) && <i>{new Date(earned_time * 1000).toLocaleDateString()}</i>}
-                {Boolean(progress && progress !== 1) && <i>{Math.floor(progress * 100)}%</i>}
-                {externalProgress[name] && <i>{i18n.t('Progress')}: {externalProgress[name]}</i>}
                 <div className={styles.additional}>
                     {typeof xp === "number" && <small>{xp} XP</small>}
-                    {typeof rarity === "number" && <small>{i18n.t('Rarity')}: {rarity}%</small>}
+                    {externalProgress[name] && <small>{i18n.t('Progress')}: {externalProgress[name]}</small>}
+                    {Boolean(earned_time) && <small>{new Date(earned_time * 1000).toLocaleDateString()} - {new Date(earned_time * 1000).toLocaleTimeString()}</small>}
                 </div>
             </div>
         </li>)
