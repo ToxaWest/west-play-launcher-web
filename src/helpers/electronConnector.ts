@@ -39,6 +39,7 @@ const electronConnector = {
         message: string,
         data?: { achFile: string }
     }> => apiCall(path, 'generateSteamSettings'),
+    getAchievementScreenshots: (gameName: string): Promise<{path: string, name: string}[]> => apiCall(gameName, 'getAchievementScreenshots'),
     getAchievementsPath: ({appid}: {
         appid: number
     }): Promise<string | null> => apiCall({appid}, 'getAchievementsPath'),

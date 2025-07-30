@@ -8,6 +8,29 @@
   margin-bottom: -50px;
 }
 
+.screenshotIcon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 2px;
+  outline: none;
+  &:focus, &:hover, &:active {
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    background-color: var(--theme-text-color-seconary);
+    svg {
+      filter: invert(1);
+    }
+  }
+
+  height: 28px;
+  overflow: hidden;
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
 .achWrapper {
   position: relative;
   z-index: 2;
@@ -29,6 +52,7 @@
   &:empty {
     display: none;
   }
+
   border-radius: var(--border-radius);
   width: 90vw;
   margin: var(--gap) auto;
@@ -39,6 +63,7 @@
   //background-color: var(--theme-secondary);
 
   @include mixin.glass;
+
   ul {
     list-style: none;
     margin: 0;
@@ -62,9 +87,10 @@
       height: var(--progress-height);
       opacity: 0.8;
       background-color: #00b100;
-      border-bottom:  1px solid var(--theme-color);
+      border-bottom: 1px solid var(--theme-color);
       z-index: 1;
     }
+
     &.earned {
       background-color: var(--theme-color);
 
@@ -226,7 +252,8 @@
       padding: var(--gap-half);
       text-transform: none;
       letter-spacing: 0;
-      &:empty{
+
+      &:empty {
         display: none;
       }
     }
@@ -268,7 +295,7 @@
 
     &:focus, &:hover {
       cursor: default;
-      background-color: rgba(187, 0, 33, 0.5)!important;
+      background-color: rgba(187, 0, 33, 0.5) !important;
     }
   }
 
@@ -326,6 +353,7 @@
 .activeIcon {
   background-color: var(--theme-secondary);
   border: 1px solid var(--theme-text-color-seconary);
+
   svg {
     fill: var(--theme-text-color);
   }
