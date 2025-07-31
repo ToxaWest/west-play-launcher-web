@@ -91,6 +91,7 @@ const electronConnector = {
         type: string,
         id: string | number,
     }): Promise<string> => apiCall(data, 'saveImage'),
+    setAppModel:({id, icon, name}): Promise<void> => apiCall({icon, id, name}, 'setAppModel'),
     setMainDisplay: (id: string): Promise<void> => apiCall(id, 'setMainDisplay'),
     startGame: (id: string | number): void => apiCall(id, 'startGame'),
     steamgriddbSearch: (props: { params: string }): Promise<{

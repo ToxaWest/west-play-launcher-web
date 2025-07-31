@@ -1,6 +1,7 @@
 import React from "react";
 import {Game} from "@type/game.types";
 
+import electronConnector from "../../../helpers/electronConnector";
 import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
 import i18n from "../../../helpers/translate";
 
@@ -29,6 +30,13 @@ const SettingsGames = () => {
                     window.location.reload()
                 }}
                 submit={(d: Game) => {
+                    if (d.source === 'steam' && d.unofficial && d.img_icon) {
+                        electronConnector.setAppModel({
+                            icon: d.img_icon.replace('file:\\', ''),
+                            id: d.id,
+                            name: d.name
+                        })
+                    }
                     setGames(g => {
                         g[activeIndex] = d
                         return [...g]
@@ -49,7 +57,7 @@ const SettingsGames = () => {
                 {games.map((game, index) => (
                     <li key={game.id} role="button" onClick={() => {
                         setActiveIndex((i) => {
-                            if(i === index) return null
+                            if (i === index) return null
                             return index
                         })
                     }} className={activeIndex === index ? styles.active : ''} tabIndex={1}>
@@ -66,7 +74,7 @@ const SettingsGames = () => {
                         exeArgs: {},
                         exePath: '',
                         id: 'tempGameId',
-                        img_grid:'',
+                        img_grid: '',
                         img_hero: '',
                         img_icon: '',
                         img_logo: '',
