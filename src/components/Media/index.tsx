@@ -2,6 +2,7 @@ import React from "react";
 import type {getPageData} from "@type/electron.types";
 
 import electronConnector from "../../helpers/electronConnector";
+import Loader from "../Loader";
 
 import CatalogPage from "./catalogPage";
 import MoviePage from "./moviePage";
@@ -20,7 +21,7 @@ const Media = () => {
 
     if (url) return <MoviePage url={url} setUrl={setUrl} goTo={updatePageUrl}/>
     if (pageData) return <CatalogPage pageData={pageData} selectMovie={setUrl} goTo={updatePageUrl}/>
-    return null
+    return <Loader loading={true}/>
 }
 
 export default Media
