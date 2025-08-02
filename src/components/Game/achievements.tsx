@@ -11,6 +11,7 @@ import Modal from "../Modal";
 import styles from './game.module.scss';
 
 type ExtendedAchievementType = EarnedAchievementsType[0] & {
+    externalProgressValue: number,
     progress: number
     className: string
     image: string
@@ -68,13 +69,24 @@ const Achievements = () => {
                                icongray,
                                icon,
                                description,
-                               hidden
+                               hidden,
+                               displayName
                            }: achievementInterfaceType): ExtendedAchievementType => {
         const className = getItemClassName(name, type);
+        let externalProgressValue = 0;
+        if (externalProgress[name] && externalProgress[name] !== 1) externalProgressValue = externalProgress[name];
+
+        try {
+            const {name: statKey} = game.stats.find(({displayName: statName}) => statName === displayName);
+            externalProgressValue = Number(stats[statKey]) || 0;
+        } catch (e) {
+            console.log(e)
+        }
         if (!Object.hasOwn(achievements, name)) return {
             ...achievements[name],
             body: hidden ? i18n.t('Hidden achievement') : description,
             className,
+            externalProgressValue,
             image: icongray,
             progress: 0
         }
@@ -85,13 +97,17 @@ const Achievements = () => {
             ...achievements[name],
             body: description,
             className,
+            externalProgressValue,
             image: achievements[name].earned ? icon : icongray,
             progress: achievements[name].progress || 0,
             screenshot
         }
     }
 
-    const getStyle = (progress: number, rarity: number): React.CSSProperties & { '--progress': string, '--rarity': string } => ({
+    const getStyle = (progress: number, rarity: number): React.CSSProperties & {
+        '--progress': string,
+        '--rarity': string
+    } => ({
         '--progress': `${100 - (progress * 100)}%`,
         '--rarity': `${rarity}%`
     })
@@ -108,7 +124,8 @@ const Achievements = () => {
             description,
             screenshot,
             body,
-            rarity
+            rarity,
+            externalProgressValue
         }: ExtendedAchievementType & achievementInterfaceType,
     ) => (
         <li key={name}
@@ -137,8 +154,9 @@ const Achievements = () => {
                 <span title={description}>{body}</span>
                 <div className={styles.additional}>
                     {typeof xp === "number" && <small>{xp} XP</small>}
-                    {externalProgress[name] && <small>{i18n.t('Progress')}: {externalProgress[name]}</small>}
-                    {Boolean(earned_time) && <small>{new Date(earned_time * 1000).toLocaleDateString()} - {new Date(earned_time * 1000).toLocaleTimeString()}</small>}
+                    {externalProgressValue !== 0 && <small>{i18n.t('Progress')}: {externalProgressValue}</small>}
+                    {Boolean(earned_time) &&
+                        <small>{new Date(earned_time * 1000).toLocaleDateString()} - {new Date(earned_time * 1000).toLocaleTimeString()}</small>}
                 </div>
             </div>
         </li>)

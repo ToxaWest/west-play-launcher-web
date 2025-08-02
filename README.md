@@ -22,8 +22,8 @@ ___
 - Cracked games: + (only if crack team created achievements.ini/json file with tracking user achievements)
 - Ryujinx: -
 ___
-### Screenshot of Game when achievement earned
-- Add XBOX GameBar shortcut for screenshots (`ctrl+shift+P`) 
+### List of games tested with GoldbergSteamEmulator
+- [src/helpers/GoldbergSteamEmulator.ts](https://github.com/ToxaWest/west-play-launcher-web/blob/master/src/helpers/GoldbergSteamEmulator.ts)
 
 ### Required thrid party utils
 #### PowerShell
