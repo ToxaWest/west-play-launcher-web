@@ -105,7 +105,7 @@ const GameActions = ({game}: { game: Game }) => {
 
     return (
         <div className={styles.content}>
-            <button
+            {!game.archive && <button
                 type="button"
                 tabIndex={1}
                 onClick={start}
@@ -113,7 +113,7 @@ const GameActions = ({game}: { game: Game }) => {
                 disabled={status !== 'closed'}
             >
                 {gameState[status].button}
-            </button>
+            </button>}
             <div className={styles.navigation}>
                 {buttons.map(renderButton)}
             </div>

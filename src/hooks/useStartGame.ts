@@ -15,6 +15,7 @@ const useStartGame = (game: Game) => {
     const lastPlayed = getFromStorage('lastPlayed');
 
     useEffect(() => {
+        if(game.archive) return;
         electronConnector.checkGameStatus(game.id)
         electronConnector.gameStatus(({status: _status, playTime}) => {
             if (playTime > 0) {

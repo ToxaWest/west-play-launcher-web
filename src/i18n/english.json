@@ -132,7 +132,6 @@
     "Remove from favorites": "",
     "Add to favorites": "",
     "Steam profiles": "",
-    "Rarity": "",
     "Version up to date": "",
     "New version": "",
     "Current version": "",
@@ -150,5 +149,8 @@
     "Removed {{removed}} assets": "",
     "Open": "",
     "Use system notification": "",
-    "Get steam Assets": ""
+    "Get steam Assets": "",
+    "Remove from archive": "",
+    "Add to archive": "",
+    "Archive": ""
 }

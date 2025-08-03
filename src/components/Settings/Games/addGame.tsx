@@ -95,6 +95,9 @@ const AddGame = ({data, submit, remove}: {
     }
 
     const render = {
+        archive:() => <button tabIndex={1} type="button" onClick={() => {
+            onChange({name: 'archive', value: !game.archive})
+        }}>{game.archive ? i18n.t('Remove from archive') : i18n.t('Add to archive')}</button>,
         download: () => <Input label={i18n.t('Download link')} value={game.downloadLink} onChange={onChange}
                                name='downloadLink'/>,
         generateSteamSettings: () => {
@@ -245,6 +248,7 @@ const AddGame = ({data, submit, remove}: {
                     {render.updateLocalData()}
                     {game.name && render.howLongToBeat()}
                     {game.name && render.steamGridDB()}
+                    {render.archive()}
                     {render.generateSteamSettings()}
                 </div>
                 {renderContent()}

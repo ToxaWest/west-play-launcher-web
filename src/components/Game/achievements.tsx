@@ -35,7 +35,9 @@ const Achievements = () => {
 
     React.useEffect(() => {
         electronConnector.getAchievementScreenshots(game.name).then(setImages)
-        getAchievements(id, setAchievements)
+        if(!game.archive){
+            getAchievements(id, setAchievements)
+        }
     }, []);
 
     const renderStats = () => {

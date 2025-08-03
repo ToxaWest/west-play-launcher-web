@@ -132,7 +132,6 @@
     "Remove from favorites": "Удалить из избранного",
     "Add to favorites": "Добавить в избранное",
     "Steam profiles": "Профили Steam",
-    "Rarity": "Редкость",
     "Version up to date": "Версия актуальна",
     "New version": "Новая версия",
     "Current version": "Текущая версия",
@@ -148,7 +147,10 @@
     "Reset hidden free games": "Сбросить скрытые бесплатные игры",
     "Hidden achievement": "Скрытое достижение",
     "Removed {{removed}} assets": "Удалено {{removed}} ресурсов",
-    "Open": "",
-    "Use system notification": "",
-    "Get steam Assets": ""
+    "Open": "Открыть",
+    "Use system notification": "Использовать системные уведомления",
+    "Get steam Assets": "Получить ресурсы Steam",
+    "Remove from archive": "Удалить из архива",
+    "Add to archive": "Добавить в архив",
+    "Archive": "Архив"
 }

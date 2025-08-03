@@ -59,6 +59,7 @@ export type GameVideoType = {
 }
 
 export type Game = {
+    archive?: boolean
     steamgriddb?: string
     path: string,
     title: string,

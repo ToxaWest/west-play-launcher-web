@@ -132,7 +132,6 @@
     "Remove from favorites": "Видалити з улюблених",
     "Add to favorites": "Додати до улюблених",
     "Steam profiles": "Профілі Steam",
-    "Rarity": "Рідкість",
     "Version up to date": "Версія актуальна",
     "New version": "Нова версія",
     "Current version": "Поточна версія",
@@ -150,5 +149,8 @@
     "Removed {{removed}} assets": "Видалено {{removed}} ресурсів",
     "Open": "Відкрити",
     "Use system notification": "Використовувати системні сповіщення",
-    "Get steam Assets": ""
+    "Get steam Assets": "Отримати ресурси Steam",
+    "Remove from archive": "Вилучити з архіву",
+    "Add to archive": "Додати до архіву",
+    "Archive": "Архів"
 }

@@ -3,6 +3,33 @@
 
 }
 
+.navigation {
+  max-width: 90vw;
+  margin: var(--gap) auto;
+  display: flex;
+  gap: var(--gap-half);
+  align-items: center;
+  justify-content: center;
+
+  span {
+    padding: var(--padding);
+    border-bottom: 1px solid transparent;
+
+    &.navActive {
+      border-bottom-color: var(--theme-text-color);
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  img {
+    cursor: pointer;
+    margin: var(--gap);
+  }
+}
+
 .list {
   width: 90vw;
   padding: var(--gap);
