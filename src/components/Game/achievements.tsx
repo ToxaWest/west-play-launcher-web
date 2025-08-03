@@ -46,6 +46,7 @@ const Achievements = () => {
             if (!value) return null;
             const statInterface = game.stats.find(({name}) => name === key)
             if (!statInterface || !statInterface.displayName) return null;
+            if(game.achievements.some(({displayName}) => displayName === statInterface.displayName)) return null;
             return <li key={key}>
                 <div><strong>{statInterface.displayName}: {value}</strong></div>
             </li>
