@@ -4,6 +4,7 @@ import type {Game} from "@type/game.types";
 
 import electronConnector from "../../../helpers/electronConnector";
 import {getFromStorage} from "../../../helpers/getFromStorage";
+import {working} from "../../../helpers/GoldbergSteamEmulator";
 import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 import Loader from "../../Loader";
@@ -95,7 +96,7 @@ const AddGame = ({data, submit, remove}: {
     }
 
     const render = {
-        archive:() => <button tabIndex={1} type="button" onClick={() => {
+        archive: () => <button tabIndex={1} type="button" onClick={() => {
             onChange({name: 'archive', value: !game.archive})
         }}>{game.archive ? i18n.t('Remove from archive') : i18n.t('Add to archive')}</button>,
         download: () => <Input label={i18n.t('Download link')} value={game.downloadLink} onChange={onChange}
@@ -106,7 +107,10 @@ const AddGame = ({data, submit, remove}: {
             if (game.source !== 'steam') return null;
             return <button tabIndex={1} type="button" onClick={() => {
                 setLoading(true)
-                electronConnector.generateSteamSettings(game.path).then(r => {
+                electronConnector.generateSteamSettings({
+                    copyDll: working.includes(game.id as number),
+                    gamePath: game.path,
+                }).then(r => {
                     setLoading(false)
                     if (r.data) {
                         onChange({name: 'achPath', value: r.data.achFile})
@@ -118,7 +122,7 @@ const AddGame = ({data, submit, remove}: {
                         status: r.error ? 'error' : 'success'
                     }, 2000)
                 })
-            }}>{i18n.t('Generate steam settings')}</button>
+            }}>{i18n.t('Generate steam settings')} {working.includes(game.id as number) && '(include dll)'}</button>
         },
         howLongToBeat: () => <SearchHLTB defaultValue={game.name} update={onChange}/>,
         imageName: () => <div style={{display: 'flex', gap: 'var(--gap)'}}>

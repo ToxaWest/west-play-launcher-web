@@ -34,12 +34,15 @@ const electronConnector = {
         status: 'closed' | 'running' | 'error' | 'starting',
         playTime: number
     }) => void): void => apiCall(callBack, 'gameStatus'),
-    generateSteamSettings: (path: string): Promise<{
+    generateSteamSettings: (data: { gamePath: string, copyDll: boolean }): Promise<{
         error: boolean,
         message: string,
         data?: { achFile: string }
-    }> => apiCall(path, 'generateSteamSettings'),
-    getAchievementScreenshots: (gameName: string): Promise<{path: string, name: string}[]> => apiCall(gameName, 'getAchievementScreenshots'),
+    }> => apiCall(data, 'generateSteamSettings'),
+    getAchievementScreenshots: (gameName: string): Promise<{
+        path: string,
+        name: string
+    }[]> => apiCall(gameName, 'getAchievementScreenshots'),
     getAchievementsPath: ({appid}: {
         appid: number
     }): Promise<string | null> => apiCall({appid}, 'getAchievementsPath'),
@@ -91,7 +94,7 @@ const electronConnector = {
         type: string,
         id: string | number,
     }): Promise<string> => apiCall(data, 'saveImage'),
-    setAppModel:({id, icon, name}): Promise<void> => apiCall({icon, id, name}, 'setAppModel'),
+    setAppModel: ({id, icon, name}): Promise<void> => apiCall({icon, id, name}, 'setAppModel'),
     setMainDisplay: (id: string): Promise<void> => apiCall(id, 'setMainDisplay'),
     startGame: (id: string | number): void => apiCall(id, 'startGame'),
     steamgriddbSearch: (props: { params: string }): Promise<{

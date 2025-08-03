@@ -3,7 +3,6 @@ export type achievementInterfaceType = {
     displayName: string
     defaultvalue: number
     description: string
-    hiddenDescription?: string
     hidden: 1 | 0
     icon: string
     icongray: string
