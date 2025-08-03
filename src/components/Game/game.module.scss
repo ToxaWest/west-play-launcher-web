@@ -354,6 +354,7 @@
   padding: 5px;
   background-color: var(--theme-color-transparent);
   border-radius: var(--border-radius);
+  cursor: pointer;
   border: 1px solid transparent;
   //backdrop-filter: blur(5px);
   &:focus, &:hover {
