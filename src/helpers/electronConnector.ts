@@ -23,6 +23,7 @@ const apiCall = (props: any, func: string) => {
 
 const electronConnector = {
     CheckVersion: (url: string): Promise<string | null> => apiCall(url, 'CheckVersion'),
+    beProxy: ({url, options, type}: {url: string, options: RequestInit, type: string}): Promise<any> => apiCall({options, type, url}, 'beProxy'),
     checkGameStatus: (id: string | number): void => apiCall(id, 'checkGameStatus'),
     clearUnusedCache: (idArray: (string | number)[]): Promise<{
         removed: number
