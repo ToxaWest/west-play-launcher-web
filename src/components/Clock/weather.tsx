@@ -104,7 +104,7 @@ const Weather = () => {
 
     return (
         <div style={style}>
-            <svg width="50px" height="50px" viewBox="24 24 100 100">
+            <svg width="40px" height="40px" viewBox="24 24 100 100">
                 {icons[current.weather[0].icon]}
             </svg>
             {current.main.temp.toFixed(0)}°C
