@@ -48,6 +48,9 @@ const PlayedWidget = () => {
                     window.__back = {id: game.id, url: '/'}
                     navigate('/game/' + game.id)
                 }}
+                onMouseEnter={() => {
+                    setGame(index)
+                }}
                 onFocus={() => {
                     setGame(index)
                 }}>
