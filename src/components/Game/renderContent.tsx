@@ -48,7 +48,10 @@ const RenderContent = ({game, fields}: { game: Game, fields?: { label: string, v
     return (
         <div className={styles.content}>
             <div className={styles.description}>
-                <h1>{game.name}</h1>
+                <span className={styles.title}>
+                    <img src={game.img_icon} alt={'icon'}/>
+                    <h1>{game.name}</h1>
+                </span>
                 {game.short_description && <div dangerouslySetInnerHTML={{__html: game.short_description}}/>}
                 {renderAboutContent(game.about_the_game)}
             </div>
