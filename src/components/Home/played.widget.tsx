@@ -64,7 +64,7 @@ const PlayedWidget = () => {
 
     const renderAchievements = () => {
         const getAchievementsString = () => {
-            if (game.id === 'library') Object.values(getFromStorage('achievements') || {}).reduce((acc, a) => acc + getAchCount(a), 0)
+            if (game.id === 'library') return Object.values(getFromStorage('achievements') || {}).reduce((acc, a) => acc + getAchCount(a), 0)
             if (game.achievements) {
                 const ach = getFromStorage('achievements')[game.id] || {}
                 return `${getAchCount(ach)} of ${Object.keys(game.achievements).length}`
