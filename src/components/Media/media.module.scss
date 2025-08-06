@@ -145,7 +145,6 @@
     padding: 0;
     list-style: none;
     display: grid;
-    gap: var(--gap-half);
     grid-template-columns: repeat(9, 1fr);
 
     li {

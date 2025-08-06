@@ -1,6 +1,7 @@
 import React from "react";
 
 import bbCodeParser from "../../helpers/bbCodeParser";
+import electronConnector from "../../helpers/electronConnector";
 import {getFromStorage} from "../../helpers/getFromStorage";
 import newsCarousel from "../../helpers/newsCarousel";
 import i18n from "../../helpers/translate";
@@ -23,8 +24,10 @@ const NewsRender = ({id}) => {
         data: NewsItemType[]
         page: number
     }>, number>(async ({page: p}, page = 0) => {
-        const {appnews: {newsitems}} = await fetch(`https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=${id}&count=${(p + page) * 6}&l=${currentLang}&format=json`)
-            .then(res => res.json()) as { appnews: { newsitems: NewsItemType[] } }
+        const {appnews: {newsitems}} = await electronConnector.beProxy<{ appnews: { newsitems: NewsItemType[] } }>({
+            type: 'json',
+            url: `https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=${id}&count=${(p + page) * 6}&l=${currentLang}&format=json`
+        })
         return {data: newsitems, page: page + p, showMore: ((p + page) * 6) === newsitems.length};
     }, {data: [], page: 1, showMore: true})
 

@@ -1,23 +1,4 @@
 @use "../../mixin";
-.videoBg {
-  position: relative;
-  video {
-    max-width: 100vw;
-    width: 100%;
-    height: auto;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 0;
-  }
-  .wrapper {
-    z-index: 2;
-    position: relative;
-    height: calc(100vh - 50px);
-    background: transparent;
-  }
-}
-
 .wrapper {
   height: 100%;
   padding: var(--gap-half);
@@ -45,6 +26,11 @@
         a {
           padding-left: var(--gap-half);
         }
+        &:focus, &:active, &:hover {
+          a {
+            padding-left: var(--gap);
+          }
+        }
       }
     }
   }
@@ -53,7 +39,7 @@
     display: flex;
     align-items: center;
     padding: var(--padding);
-    background-color: var(--button-bg-color);
+    background-color: var(--accent-color);
     border-radius: var(--border-radius);
     color: var(--theme-text-color-seconary);
     font-size: 3.5vh;
@@ -65,14 +51,12 @@
 
     transition: all 0.2s ease-in;
     padding-right: calc(var(--gap) * 2);
-    @include mixin.glass;
-    &:focus, &:active {
+    &:focus, &:active, &:hover {
       border: none;
       color: var(--theme-text-color);
       padding-left: calc(var(--gap) * 2);
       padding-right: calc(var(--gap));
       outline: none;
-      @include mixin.glassActive;
       svg {
         fill: var(--theme-text-color);
         stroke: var(--theme-text-color);

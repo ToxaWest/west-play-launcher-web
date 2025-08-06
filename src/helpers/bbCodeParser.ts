@@ -33,8 +33,8 @@ const bbCodeParser = (bbString: string) => {
             /\[video mp4=(.*?) webm=(.*?) poster=(.*?) autoplay=(.*?) controls=(.*?)]\[\/video]/gm,
             `<video loop=true autoplay=true muted=true style="max-width: 100%;" poster="$3"><source src="$1" type="video/mp4"/><source src="$2" type="video/webm"/></video>`
         )
-        .replaceAll(/\[img](.*?)\[\/img]/gm, `<img src="$1" alt="" style="max-width: 100%;"/>`)
-        .replaceAll(/\[img src="(.*?)"]\[\/img]/gm, `<img src="$1" alt="" style="max-width: 100%;"/>`)
+        .replaceAll(/\[img](.*?)\[\/img]/gm, `<img src="$1" alt="" style="max-width: 100%;" loading="lazy"/>`)
+        .replaceAll(/\[img src="(.*?)"]\[\/img]/gm, `<img src="$1" alt="" style="max-width: 100%;" loading="lazy"/>`)
         .replaceAll(/width="(.*?)"/gm, 'style="max-width: 100%;"')
         .replaceAll(/height="(.*?)"/gm, '')
         .replaceAll(/<img /gm, `<img onerror="this.style.display='none'" `)
