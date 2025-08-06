@@ -10,7 +10,7 @@
   align-items: center;
   gap: var(--gap);
   transition: opacity 0.3s ease-in;
-  z-index: 5;
+  z-index: 6;
   @include mixin.glass;
   & {
     position: fixed;

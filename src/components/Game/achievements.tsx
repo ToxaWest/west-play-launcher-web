@@ -78,10 +78,15 @@ const Achievements = () => {
         if (externalProgress[name] && externalProgress[name] !== 1) externalProgressValue = externalProgress[name];
 
         try {
-            const {name: statKey} = game.stats.find(({displayName: statName}) => statName === displayName);
-            externalProgressValue = Number(stats[statKey]) || 0;
+            if (game.stats && stats) {
+                const currentStat = game.stats.find(({displayName: statDisplayName, name: statName}) => {
+                    if (statName.replace('ach_s', '') === name) return true;
+                    return statDisplayName === displayName
+                });
+                if (currentStat) externalProgressValue = Number(stats[currentStat.name]) || Number(stats[currentStat.name.toUpperCase()]) || 0;
+            }
         } catch (e) {
-            console.log(e)
+            console.error(e)
         }
         if (!Object.hasOwn(achievements, name)) return {
             ...achievements[name],
@@ -133,7 +138,7 @@ const Achievements = () => {
             className={className}
             style={getStyle(progress, rarity)}
         >
-            <img src={image} alt={name}/>
+            <img src={image} alt={name} loading={"lazy"}/>
             <div>
                 {screenshot ? <span className={styles.screenshotIcon}
                                     tabIndex={1}

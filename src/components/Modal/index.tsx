@@ -10,10 +10,11 @@ const defaultStyle: React.CSSProperties = {
     display: 'flex',
     justifyContent: 'center',
     left: 0,
+    maxHeight: 'calc(100% - 50px)',
     position: 'fixed',
     right: 0,
     top: 0,
-    zIndex: 3
+    zIndex: 5
 }
 
 const Modal = ({children, onClose, style = {}}: {

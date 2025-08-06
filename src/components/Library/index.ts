@@ -65,23 +65,28 @@ const Library = () => {
         if (!games.some(a => a.archive)) return null
         return React.createElement('div', {
             className: styles.navigation,
+            key: "navigation",
         }, [
             React.createElement('img', {
+                key: "left",
                 onClick: changeTab,
                 src: '/assets/controller/left-bumper.svg',
                 tabIndex: 0
             }),
             React.createElement('span', {
                 className: state === 'library-list' ? styles.navActive : '',
+                key: 'games-button',
                 onClick: changeTab,
                 tabIndex: 0
             }, i18n.t('Games')),
             React.createElement('span', {
                 className: state != 'library-list' ? styles.navActive : '',
+                key: 'archive-button',
                 onClick: changeTab,
                 tabIndex: 0
             }, i18n.t('Archive')),
             React.createElement('img', {
+                key: "right",
                 onClick: changeTab,
                 src: '/assets/controller/right-bumper.svg',
                 tabIndex: 0
