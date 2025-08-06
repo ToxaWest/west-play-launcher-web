@@ -23,7 +23,11 @@ const apiCall = (props: any, func: string) => {
 
 const electronConnector = {
     CheckVersion: (url: string): Promise<string | null> => apiCall(url, 'CheckVersion'),
-    beProxy: ({url, options, type}: {url: string, options: RequestInit, type: string}): Promise<any> => apiCall({options, type, url}, 'beProxy'),
+    beProxy: ({url, options, type}: {
+        url: string,
+        options: RequestInit,
+        type: string
+    }): Promise<any> => apiCall({options, type, url}, 'beProxy'),
     checkGameStatus: (id: string | number): void => apiCall(id, 'checkGameStatus'),
     clearUnusedCache: (idArray: (string | number)[]): Promise<{
         removed: number
@@ -35,7 +39,11 @@ const electronConnector = {
         status: 'closed' | 'running' | 'error' | 'starting',
         playTime: number
     }) => void): void => apiCall(callBack, 'gameStatus'),
-    generateSteamSettings: (data: { gamePath: string, copyDll: boolean }): Promise<{
+    generateSteamSettings: (data: {
+        gamePath: string, copyDll: boolean, options?: {
+            disableDlc?: boolean,
+        }
+    }): Promise<{
         error: boolean,
         message: string,
         data?: { achFile: string }

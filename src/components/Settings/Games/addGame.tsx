@@ -4,7 +4,7 @@ import type {Game} from "@type/game.types";
 
 import electronConnector from "../../../helpers/electronConnector";
 import {getFromStorage} from "../../../helpers/getFromStorage";
-import {working} from "../../../helpers/GoldbergSteamEmulator";
+import {notWorking, working, workingWithIssues} from "../../../helpers/GoldbergSteamEmulator";
 import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 import Loader from "../../Loader";
@@ -105,11 +105,13 @@ const AddGame = ({data, submit, remove}: {
             if (!game.path) return null;
             if (!game.unofficial) return null;
             if (game.source !== 'steam') return null;
+            if (notWorking.includes(game.id as number)) return null;
             return <button tabIndex={1} type="button" onClick={() => {
                 setLoading(true)
                 electronConnector.generateSteamSettings({
                     copyDll: working.includes(game.id as number),
                     gamePath: game.path,
+                    options: workingWithIssues[game.id] || {},
                 }).then(r => {
                     setLoading(false)
                     if (r.data) {
