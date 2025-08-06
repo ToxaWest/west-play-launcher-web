@@ -54,7 +54,9 @@ const PlayedWidget = () => {
                 onFocus={() => {
                     setGame(index)
                 }}>
-                <img src={game.img_icon} alt={game.title} loading={"lazy"}/>
+                <img src={game.img_icon} alt={game.title} loading={"lazy"} onMouseEnter={(e) => {
+                    (e.target as HTMLElement).parentElement.focus()
+                }}/>
             </li>
         )
     }
