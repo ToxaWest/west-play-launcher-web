@@ -155,7 +155,7 @@
 .hero {
   max-width: 100%;
   width: 100vw;
-  mask-image: linear-gradient(to top, transparent, 25%, black);
+  mask-image: linear-gradient(black, black 75%, transparent);
 }
 
 .logo {
