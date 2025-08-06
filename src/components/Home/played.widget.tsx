@@ -48,8 +48,8 @@ const PlayedWidget = () => {
                     window.__back = {id: game.id, url: '/'}
                     navigate('/game/' + game.id)
                 }}
-                onMouseEnter={() => {
-                    setGame(index)
+                onMouseEnter={(e) => {
+                    (e.target as HTMLElement).focus()
                 }}
                 onFocus={() => {
                     setGame(index)
@@ -60,28 +60,25 @@ const PlayedWidget = () => {
     }
 
     const getAchCount = (a: EarnedAchievementsType) => Object.values(a)
-        .filter(({earned, progress}) => {
-            if (!earned) return false
-            if (progress) return progress === 1
-            return true
-        }).length
+        .filter(({earned}) => earned).length
 
     const renderAchievements = () => {
-        if (game.achievements) {
-            const ach = getFromStorage('achievements')[game.id] || {}
+        const getAchievementsString = () => {
+            if (game.id === 'library') Object.values(getFromStorage('achievements') || {}).reduce((acc, a) => acc + getAchCount(a), 0)
+            if (game.achievements) {
+                const ach = getFromStorage('achievements')[game.id] || {}
+                return `${getAchCount(ach)} of ${Object.keys(game.achievements).length}`
+            }
+            return null;
+        }
 
-            return <div className={styles.achievements}>
-                <span>{i18n.t('Achievements')}: </span>
-                {getAchCount(ach)} of {Object.keys(game.achievements).length}
-            </div>
-        }
-        if (game.id === 'library') {
-            return <div className={styles.achievements}>
-                <span>{i18n.t('Achievements')}: </span>
-                {Object.values(getFromStorage('achievements') || {}).reduce((acc, a) => acc + getAchCount(a), 0)}
-            </div>
-        }
-        return null
+        const achString = getAchievementsString();
+        if (!achString) return null;
+
+        return <div className={styles.achievements}>
+            <span>{i18n.t('Achievements')}: </span>
+            {achString}
+        </div>
     }
 
     return (

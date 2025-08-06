@@ -171,6 +171,22 @@ const SettingsHome = () => {
                     if (gamesInList.indexOf(key.toString()) === -1) delete lastPlayed[key];
                 })
                 setToStorage('lastPlayed', lastPlayed)
+                const achievements = getFromStorage('achievements');
+                Object.keys(achievements).forEach((key) => {
+                    if (gamesInList.indexOf(key.toString()) === -1) delete achievements[key];
+                })
+                setToStorage('achievements', achievements)
+                const stats = getFromStorage('stats');
+                Object.keys(stats).forEach((key) => {
+                    if (gamesInList.indexOf(key.toString()) === -1) delete stats[key];
+                })
+                setToStorage('stats', stats)
+                const progress = getFromStorage('progress');
+                Object.keys(progress).forEach((key) => {
+                    if (gamesInList.indexOf(key.toString()) === -1) delete progress[key];
+                })
+                setToStorage('progress', progress)
+
                 electronConnector.clearUnusedCache(gamesInList).then(({removed}) => {
                     notifications({
                         description: i18n.t('Removed {{removed}} assets', {removed}),
