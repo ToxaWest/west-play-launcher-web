@@ -72,8 +72,20 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
                         type="button"
                         onClick={() => goTo(pageData.pagination.next)}
                         disabled={!pageData.pagination.next}
+                        style={{marginRight: 'auto'}}
                 >{i18n.t('Next')}
                 </button>
+                {pageData.filters.map(({title, url, active}) =>
+                    <button
+                        tabIndex={!active ? 1 : -1}
+                        key={title}
+                        type="button"
+                        className={active ? styles.activeFilter : ''}
+                        onClick={() => goTo(url)}
+                    >
+                        {title}
+                    </button>
+                )}
             </div>
         )
     }

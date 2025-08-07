@@ -191,6 +191,10 @@
   .pagination {
     display: flex;
     gap: var(--gap-half);
+    .activeFilter {
+      background-color: var(--theme-text-color);
+      color: var(--theme-color);
+    }
   }
 
   .categories {

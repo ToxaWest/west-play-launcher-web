@@ -30,6 +30,7 @@ export type moviesCollection = {
 }
 
 export type getPageData = {
+    filters: { title: string, url: string, active: boolean }[]
     categories: MoviePageCategory[]
     heading: string,
     links: moviesCollection[],
