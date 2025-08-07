@@ -10,6 +10,7 @@ import {
     SteamSearchResponse
 } from "@type/electron.types";
 import type {EarnedAchievementsType, Game, ProgressType, StatsType} from "@type/game.types";
+import {MovieStorageHistory} from "@type/movieStorage.types";
 import type {crackedGameType, freeGameType} from "@type/widget.types";
 
 const apiCall = (props: any, func: string) => {
@@ -68,6 +69,7 @@ const electronConnector = {
         data: { assets: getImageAssets[] }
     }> => apiCall(data, 'getImage'),
     getInstalledGames: (): Promise<Game[]> => apiCall(null, 'getInstalledGames'),
+    getMoviesHistory: (): Promise<MovieStorageHistory[]> => apiCall(null, 'getMoviesHistory'),
     getPageData: (url: string): Promise<getPageData> => apiCall(url, 'getPageData'),
     getPlayTime: (): Promise<{
         [key: string | number]: { playTime: number, lastPlayed: number }

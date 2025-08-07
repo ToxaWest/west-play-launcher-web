@@ -3,10 +3,6 @@ export type MovieStorageHistory = {
     image: string
     href: string
     subtitle: string
-    currentTime?: number
-    season_id?: number
-    episode_id?: number
-    translation_id?: string
 }
 
 export type MovieStorageFavorites = {

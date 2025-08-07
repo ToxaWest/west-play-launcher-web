@@ -14,7 +14,7 @@ const CrackedWidget = () => {
 
     const getImage = (g: crackedGameType) => {
         if (g.steam_prod_id) {
-            return `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.steam_prod_id}/header.jpg`
+            return `https://cdn.steamstatic.com/steam/apps/${g.steam_prod_id}/header.jpg`
         }
         return g.short_image
     }

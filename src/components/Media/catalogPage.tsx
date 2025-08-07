@@ -4,6 +4,7 @@ import {getPageData, MoviesListItem} from "@type/electron.types";
 import type {MovieStorageHistory} from "@type/movieStorage.types";
 
 import electronConnector from "../../helpers/electronConnector";
+import {getFromStorage} from "../../helpers/getFromStorage";
 import i18n from "../../helpers/translate";
 import Input from "../Input";
 
@@ -21,6 +22,7 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
     const [tab, setTab] = React.useState(0);
     const {setFooterActions, removeFooterActions} = useFooterActions()
     const [activeCategory, setActiveCategory] = React.useState<number>(null)
+    const [history, setHistory] = React.useState<MovieStorageHistory[]>(movieStorage.history)
 
     const toggleViewMode = (direction: 'previous' | 'next') => {
         if (direction === 'previous') {
@@ -49,6 +51,9 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
                 }
             }
         })
+        if(getFromStorage('movies').authorized){
+            electronConnector.getMoviesHistory().then(setHistory)
+        }
         return () => {
             removeFooterActions(['rb', 'lb'])
         }
@@ -136,7 +141,7 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
         items: movieStorage.favorites,
     }, {
         heading: i18n.t('History'),
-        items: movieStorage.history,
+        items: history,
     }]
 
     const renderCollections = () => {
