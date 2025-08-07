@@ -64,7 +64,8 @@ const Root = () => {
     }, [])
 
     const onLoad = (e: React.SyntheticEvent<HTMLVideoElement | HTMLImageElement>) => {
-        (e.target as HTMLElement).style.aspectRatio = `${window.innerWidth / window.innerHeight}`
+        (e.target as HTMLElement).style.aspectRatio = `${window.innerWidth / window.innerHeight}`;
+        (e.target as HTMLElement).style.transform = 'scale(1)';
     }
 
     return (

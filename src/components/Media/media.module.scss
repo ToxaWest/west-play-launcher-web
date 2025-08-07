@@ -142,14 +142,15 @@
 
   .catalogList {
     margin: 0;
-    padding: 0;
+    padding: var(--gap) var(--gap-half);
     list-style: none;
     display: grid;
+    gap: var(--gap-half);
     grid-template-columns: repeat(9, 1fr);
 
     li {
-      background-color: var(--theme-color);
       border-radius: var(--border-radius);
+      background-color: var(--theme-color-transparent);
       border: 1px solid var(--theme-color-transparent);
       display: flex;
       flex-direction: column;
@@ -159,19 +160,22 @@
       cursor: pointer;
 
       &:hover, &:active, &:focus {
-        background-color: var(--theme-color-transparent);
+        position: relative;
+        z-index: 2;
+        transform: scale(1.1);
         border-color: var(--theme-text-color-seconary);
+        background-color: var(--theme-color);
         img {
-          padding: 0;
+          filter: brightness(1);
         }
       }
 
       img {
+        transition: all .3s ease;
         min-width: 0;
         width: 100%;
         aspect-ratio: 83 / 125;
-        padding: var(--gap-half);
-        transition: all .3s ease-in;
+        filter: brightness(0.8);
       }
 
       small {
@@ -247,7 +251,7 @@
   list-style: none;
   width: 100vw;
   position: relative;
-  padding: var(--padding);
+  padding: 1.5vw var(--gap);
   min-height: 80px;
   @include mixin.glass;
   li {
@@ -261,10 +265,12 @@
     }
     border-radius: var(--border-radius);
     position: relative;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     perspective: 1000px;
     &:active, &:focus, &:hover {
-      transform: rotateX(7deg) translateY(-2px) scale(1.05);
+      position: relative;
+      z-index: 2;
+      transform: translateX(calc(1.8vw - var(--gap))) scale(1.15);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
     }
   }

@@ -11,19 +11,23 @@
   @include mixin.glass;
   ul {
     margin: 0;
-    padding: 0;
+    padding: var(--padding);
     list-style: none;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    gap: var(--gap-half);
     width: 100%;
     li {
-      padding: var(--gap-half);
       display: flex;
       align-items: center;
-      transition: padding .3s ease;
+      transition: all 0.2s ease-in-out;
       cursor: pointer;
+      border-radius: var(--border-radius);
+      border: 2px solid var(--theme-color-transparent);
       &:focus, &:hover {
         padding: 0;
+        transform: scale(1.12);
+        border-color: var(--theme-text-color-seconary);
       }
       img {
         border-radius: var(--border-radius);

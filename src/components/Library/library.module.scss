@@ -36,22 +36,20 @@
   padding: var(--gap);
   margin: var(--gap-half) auto;
   list-style: none;
-  gap: 0;
+  gap: var(--gap-half);
   border-radius: var(--border-radius);
   display: grid;
   grid-template-columns: repeat(var(--games-in-row), 1fr);
 
   @include mixin.glass;
   li {
-    display: flex;
-    align-items: center;
-    padding: var(--gap-half);
-    height: calc(((90vw - 30px) / var(--games-in-row)) * 1.5);
-    transition: padding 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
     cursor: pointer;
     &:focus, &:hover {
-      padding: 0;
       outline: none;
+      position: relative;
+      z-index: 2;
+      transform: scale(1.12);
       img {
         border-color: var(--theme-text-color-seconary);
       }

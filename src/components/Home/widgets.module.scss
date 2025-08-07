@@ -10,7 +10,7 @@
   list-style: none;
   width: 100vw;
   position: relative;
-  padding: var(--padding);
+  padding: 1.1vw var(--gap);
   min-height: 80px;
   @include mixin.glass;
 
@@ -32,11 +32,13 @@
     width: 22vw;
     border-radius: var(--border-radius);
     position: relative;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     perspective: 1000px;
 
     &:active, &:focus, &:hover {
-      transform: rotateX(7deg) translateY(-2px) scale(1.05);
+      position: relative;
+      z-index: 2;
+      transform: translateX(calc(1.8vw - var(--gap))) scale(1.15);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 
       iframe {
@@ -176,9 +178,9 @@
     @include mixin.glass;
 
     &.active, &:active, &:focus {
-      width: 7vw;
-      height: 7vw;
-      min-width: 7vw;
+      position: relative;
+      z-index: 2;
+      transform: scale(1.18);
       @include mixin.glassActive;
     }
 
