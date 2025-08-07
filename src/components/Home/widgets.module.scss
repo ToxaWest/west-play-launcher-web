@@ -161,7 +161,7 @@
   height: 8vw;
   position: relative;
   margin: 0;
-  padding: var(--padding);
+  padding: var(--gap);
 
   & > li {
     white-space: nowrap;
@@ -180,7 +180,7 @@
     &.active, &:active, &:focus {
       position: relative;
       z-index: 2;
-      transform: scale(1.18);
+      transform: scale(1.15);
       @include mixin.glassActive;
     }
 
