@@ -21,6 +21,7 @@ import Settings from "./components/Settings";
 import SettingsGames from "./components/Settings/Games/settingsGames";
 import SettingsHome from "./components/Settings/Home/settingsHome";
 import SettingsImport from "./components/Settings/import/settingsImport";
+import SettingMedia from "./components/Settings/meida/settingMedia";
 import initLocalStorage from "./helpers/initLocalStorage";
 import Provider from "./helpers/provider";
 
@@ -54,6 +55,9 @@ const router = createBrowserRouter([
             }, {
                 element: <SettingsImport/>,
                 path: "/settings/import"
+            }, {
+                element: <SettingMedia/>,
+                path: "/settings/media"
             }],
             element: <Settings/>,
             path: "/settings"

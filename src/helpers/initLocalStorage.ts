@@ -28,6 +28,11 @@ export default function initLocalStorage() {
         history: [],
         lastPlayed: {},
         movieFavorites: [],
+        movies: {
+            authorized: false,
+            cookieString: null,
+            proxy: "https://rezka-ua.org/"
+        },
         playTime: {},
         progress: {},
         stats: {},

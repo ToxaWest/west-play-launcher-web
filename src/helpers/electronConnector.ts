@@ -93,6 +93,11 @@ const electronConnector = {
     getWindowsBG: (): Promise<string> => apiCall(null, 'getWindowsBG'),
     howLongToBeat: (query: string): Promise<HLTBSearchResponse[]> => apiCall(query, 'howLongToBeat'),
     imageProxy: (url: string): Promise<BlobPart[]> => apiCall(url, 'imageProxy'),
+    movieLogin: (login: {
+        login_name: string,
+        login_not_save: number,
+        login_password: string
+    }): Promise<string | null> => apiCall(login, 'movieLogin'),
     movieSearch: (query: string): Promise<movieSearch[]> => apiCall(query, 'movieSearch'),
     onVisibilityChange: (callBack: (visible: boolean) => void): void => apiCall(callBack, 'onVisibilityChange'),
     openKeyboard: (): void => apiCall(null, 'openKeyboard'),

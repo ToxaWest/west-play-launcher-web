@@ -25,6 +25,11 @@ export type LocalStorageType = {
             country: string
         }
     },
+    movies: {
+        authorized: boolean,
+        cookieString: string | null,
+        proxy: string
+    }
     movieFavorites: MovieStorageFavorites[],
     history: MovieStorageHistory[]
     hiddenFree: (string | number)[],

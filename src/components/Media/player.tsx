@@ -1,11 +1,8 @@
 import React from "react";
 import type {EpisodeItem, Episodes, Streams} from "@type/electron.types";
-import type {MovieStorageHistory} from "@type/movieStorage.types";
 import Hls from "hls.js";
 
 import Loader from "../Loader";
-
-import movieStorage from "./movieStorage";
 
 import styles from "./media.module.scss";
 
@@ -15,17 +12,17 @@ const Player = ({
                     season_id,
                     episode_id,
                     translation_id,
-                    url,
                     setEpisode,
                     quality,
+                    subtitle,
                     setQuality
                 }: {
+    subtitle?: string,
     streams: Streams,
     season_id: number,
     episode_id: number,
     episodes: Episodes,
     translation_id: string
-    url: string,
     setEpisode: (episode: EpisodeItem) => void,
     quality: keyof Streams,
     setQuality: (quality: keyof Streams) => void
@@ -33,14 +30,7 @@ const Player = ({
     const playerRef = React.useRef<HTMLVideoElement>(null);
     const timeRef = React.useRef<HTMLDivElement>(null);
     const getStartPosition = () => {
-        const s = movieStorage.getHistory(url) as MovieStorageHistory;
-        if (s.translation_id === translation_id) {
-            if (episode_id && season_id) {
-                if (episode_id === s.episode_id && season_id === s.season_id)
-                    return s.currentTime || 0
-            } else
-                return s.currentTime || 0
-        }
+
         return 0
     }
 
@@ -77,6 +67,16 @@ const Player = ({
             res[type].push(s)
         })
         return res
+    }
+
+    const subtitles = () => {
+        const sub = [];
+        if(!subtitle) return sub;
+        subtitle.split(',').forEach(s => {
+            const [lang, url] = s.split(']');
+            sub.push({lang: [lang.replace('[', '')], url})
+        })
+        return sub
     }
 
     const initPlayer = () => {
@@ -157,22 +157,13 @@ const Player = ({
                     playerRef.current.autoplay = false;
                     document.getElementById('playButton').style.display = 'none';
                 }}
-                onCanPlay={()=> {
+                onCanPlay={() => {
                     setLoading(false);
                 }}
                 onTimeUpdate={(e) => {
                     updateTime(e.target as HTMLVideoElement);
                     const progressBar = document.getElementById('progressBar') as HTMLInputElement;
                     progressBar.value = (e.target as HTMLVideoElement).currentTime.toString();
-                    if ((e.target as HTMLVideoElement).currentTime) {
-                        movieStorage.update({
-                            currentTime: (e.target as HTMLVideoElement).currentTime,
-                            episode_id: episode_id,
-                            season_id: season_id,
-                            translation_id: translation_id,
-                            url
-                        })
-                    }
                 }}
                 onPause={() => {
                     document.getElementById('playButton').style.display = 'block';
@@ -200,6 +191,15 @@ const Player = ({
                     if (document.fullscreenElement) document.exitFullscreen();
                 }}>
                 <track kind="captions"/>
+                {subtitles().map(({lang, url}) => {
+                    return <track
+                        key={lang}
+                        label={lang}
+                        kind="subtitles"
+                        srcLang="en"
+                        src={url}
+                    />
+                })}
             </video>
             <div className={styles.playButton} role="button" tabIndex={0} id={'playButton'} onClick={() => {
                 playerRef.current.play()

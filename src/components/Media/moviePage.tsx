@@ -8,7 +8,6 @@ import {
     movieType,
     Streams
 } from "@type/electron.types";
-import {MovieStorageHistory} from "@type/movieStorage.types";
 import {createSearchParams, useNavigate} from "react-router-dom";
 
 import electronConnector from "../../helpers/electronConnector";
@@ -109,7 +108,6 @@ const MoviePage = ({url, setUrl, goTo}: {
     const [data, setData] = useState<{
         trailer?: string,
         type?: 'initCDNMoviesEvents' | 'initCDNSeriesEvents',
-        step?: 'init' | 'episodes' | 'translations',
         movie?: movieType,
         translations: movieTranslationItem[],
         translation_id?: string
@@ -117,6 +115,8 @@ const MoviePage = ({url, setUrl, goTo}: {
         episodes?: Episodes | {}
         schedule?: movieScheduleType[]
         partContent?: moviePartContentType[]
+        subtitle?: string
+        thumbnails?: string,
         trl_favs?: string
         post_id?: string
         season_id?: number
@@ -166,8 +166,9 @@ const MoviePage = ({url, setUrl, goTo}: {
                 post_id: r.post_id,
                 schedule: r.schedule,
                 season_id: parseInt(r.season_id),
-                step: 'init',
                 streams: r.streams,
+                subtitle: r.subtitle,
+                thumbnails: r.thumbnails,
                 trailer: r.trailer,
                 translation_id: r.translation_id,
                 translations: r.translations,
@@ -180,22 +181,6 @@ const MoviePage = ({url, setUrl, goTo}: {
         // eslint-disable-next-line @eslint-react/web-api/no-leaked-event-listener
         document.getElementById('movieTable').addEventListener('click', clickListener)
     }, [url])
-
-    useEffect(() => {
-        const h = movieStorage.getHistory(url) as MovieStorageHistory;
-
-        if (data.step === 'init') {
-            if (h.season_id && h.episode_id && h.translation_id) {
-                if (h.season_id !== data.season_id || h.episode_id !== data.episode_id || h.translation_id === data.translation_id) {
-                    const r = data.episodes[h.season_id].find((e: EpisodeItem) => parseInt(e.episode) === h.episode_id);
-                    setEpisode(r, h.translation_id)
-                }
-            } else if (h.translation_id && (h.translation_id !== data.translation_id)) {
-                setTranslation(h.translation_id)
-            }
-        }
-
-    }, [data.step])
 
     const setTranslation = (translation_id: string) => {
         setLoading(true);
@@ -212,6 +197,8 @@ const MoviePage = ({url, setUrl, goTo}: {
                 ...d,
                 episodes: r.episodes,
                 streams: r.streams,
+                subtitle: r.subtitle,
+                thumbnails: r.thumbnails,
                 translation_id,
             }))
             setLoading(false);
@@ -239,6 +226,8 @@ const MoviePage = ({url, setUrl, goTo}: {
                     episodes: r.episodes,
                     season_id: parseInt(currentVideo.season),
                     streams: r.streams,
+                    subtitle: r.subtitle,
+                    thumbnails: r.thumbnails,
                     translation_id: translator_id
                 }
             })
@@ -415,6 +404,7 @@ const MoviePage = ({url, setUrl, goTo}: {
                         quality={quality}
                         translation_id={data.translation_id}
                         episodes={data.episodes}
+                        subtitle={data.subtitle}
                         url={url}
                         streams={data.streams as Streams}
                         setEpisode={setEpisode}

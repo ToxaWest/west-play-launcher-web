@@ -32,7 +32,8 @@ const Settings = () => {
     const links = {
         '/settings': i18n.t('Home'),
         '/settings/games': i18n.t('Games'),
-        '/settings/import': i18n.t('Import')
+        '/settings/import': i18n.t('Import'),
+        '/settings/media': i18n.t('Media'),
     }
     const toggleViewMode = (direction: 'previous' | 'next') => {
         const _links = Object.keys(links);
