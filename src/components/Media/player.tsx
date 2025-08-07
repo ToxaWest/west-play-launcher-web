@@ -2,7 +2,11 @@ import React from "react";
 import type {EpisodeItem, Episodes, Streams} from "@type/electron.types";
 import Hls from "hls.js";
 
+import electronConnector from "../../helpers/electronConnector";
+import {getFromStorage} from "../../helpers/getFromStorage";
 import Loader from "../Loader";
+
+import movieStorage from "./movieStorage";
 
 import styles from "./media.module.scss";
 
@@ -14,10 +18,12 @@ const Player = ({
                     translation_id,
                     setEpisode,
                     quality,
+                    id,
                     subtitle,
                     setQuality
                 }: {
     subtitle?: string,
+    id: string,
     streams: Streams,
     season_id: number,
     episode_id: number,
@@ -29,9 +35,11 @@ const Player = ({
 }) => {
     const playerRef = React.useRef<HTMLVideoElement>(null);
     const timeRef = React.useRef<HTMLDivElement>(null);
-    const getStartPosition = () => {
 
-        return 0
+    const timerKey = `${id}_${translation_id}_${season_id}_${episode_id}`
+
+    const getStartPosition = () => {
+        return movieStorage.getTime(timerKey)
     }
 
     React.useEffect(() => {
@@ -71,7 +79,7 @@ const Player = ({
 
     const subtitles = () => {
         const sub = [];
-        if(!subtitle) return sub;
+        if (!subtitle) return sub;
         subtitle.split(',').forEach(s => {
             const [lang, url] = s.split(']');
             sub.push({lang: [lang.replace('[', '')], url})
@@ -127,6 +135,7 @@ const Player = ({
     }
 
     const updateTime = (target: HTMLVideoElement) => {
+        movieStorage.setTime(timerKey, target.currentTime)
         const curr = timeFix(target.currentTime || 0);
         const duration = timeFix(target.duration || 0);
         if (timeRef.current) {
@@ -156,6 +165,12 @@ const Player = ({
                 onPlay={() => {
                     playerRef.current.autoplay = false;
                     document.getElementById('playButton').style.display = 'none';
+                    if (getFromStorage('movies').authorized) electronConnector.setSave({
+                        episode: episode_id,
+                        post_id: parseInt(id),
+                        season: season_id,
+                        translator_id: parseInt(translation_id)
+                    })
                 }}
                 onCanPlay={() => {
                     setLoading(false);

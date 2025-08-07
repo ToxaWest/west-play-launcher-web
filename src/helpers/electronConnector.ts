@@ -110,6 +110,12 @@ const electronConnector = {
     }): Promise<string> => apiCall(data, 'saveImage'),
     setAppModel: ({id, icon, name}): Promise<void> => apiCall({icon, id, name}, 'setAppModel'),
     setMainDisplay: (id: string): Promise<void> => apiCall(id, 'setMainDisplay'),
+    setSave: (data: {
+        post_id: number,
+        translator_id: number,
+        season: number,
+        episode: number,
+    }): Promise<void> => apiCall(data, 'setSave'),
     startGame: (id: string | number): void => apiCall(id, 'startGame'),
     steamgriddbSearch: (props: { params: string }): Promise<{
         data: steamGridDbSearchResponse[]

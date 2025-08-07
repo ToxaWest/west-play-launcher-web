@@ -69,6 +69,8 @@ export type Episodes = Record<number, EpisodeItem[]>
 export type getAjaxVideo = {
     episodes: Episodes
     streams: Streams
+    subtitle?: string,
+    thumbnails?: string,
 }
 
 export type movieType = {
@@ -111,7 +113,9 @@ export type movieScheduleType = {
 }
 
 export type getSerialData = {
-    trailer?: string
+    trailer?: string,
+    subtitle?: string,
+    thumbnails?: string,
     schedule: movieScheduleType[]
     partContent: moviePartContentType[]
     type: 'initCDNMoviesEvents' | 'initCDNSeriesEvents'

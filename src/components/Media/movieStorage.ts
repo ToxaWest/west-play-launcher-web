@@ -5,6 +5,7 @@ import {getFromStorage, setToStorage} from "../../helpers/getFromStorage";
 class MovieStorage {
     history: MovieStorageHistory[] = [];
     favorites: MovieStorageFavorites[] = [];
+    time: { [key: string]: number } = {}
 
     constructor() {
         const h = getFromStorage('history');
@@ -14,6 +15,21 @@ class MovieStorage {
         const f = getFromStorage('movieFavorites');
         if (f) this.favorites = f;
         else setToStorage('movieFavorites', this.favorites);
+
+        const t = getFromStorage('movieTime');
+        if (t) this.time = t;
+        else setToStorage('movieTime', this.time)
+    }
+
+    setTime(key: string, value: number) {
+        if (value > this.getTime(key) + 5) {
+            this.time[key] = value;
+            setToStorage('movieTime', this.time);
+        }
+    }
+
+    getTime(key: string): number | 0 {
+        return this.time[key] || 0;
     }
 
     addToFavorites({url, image, title, subtitle}: { url: string, image: string, title: string, subtitle: string }) {

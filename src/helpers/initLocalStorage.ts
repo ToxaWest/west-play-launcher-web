@@ -28,6 +28,7 @@ export default function initLocalStorage() {
         history: [],
         lastPlayed: {},
         movieFavorites: [],
+        movieTime: {},
         movies: {
             authorized: false,
             cookieString: null,

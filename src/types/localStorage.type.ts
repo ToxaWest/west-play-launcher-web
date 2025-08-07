@@ -30,6 +30,7 @@ export type LocalStorageType = {
         cookieString: string | null,
         proxy: string
     }
+    movieTime: {[id: string]: number},
     movieFavorites: MovieStorageFavorites[],
     history: MovieStorageHistory[]
     hiddenFree: (string | number)[],
