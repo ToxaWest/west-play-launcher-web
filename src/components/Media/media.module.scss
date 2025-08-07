@@ -216,27 +216,28 @@
     }
   }
 
-  .search {
+
+}
+.search {
+  display: flex;
+  flex-wrap: wrap;
+  margin: var(--gap) 0;
+  padding: var(--padding);
+  list-style: none;
+  gap: var(--gap);
+
+  li {
+    width: 100%;
     display: flex;
-    flex-wrap: wrap;
-    margin: 0;
-    padding: var(--gap) 0;
-    list-style: none;
-    gap: var(--gap-half);
+    padding: var(--gap-half);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    background-color: var(--theme-color);
+    align-items: center;
 
-    li {
-      width: 100%;
-      display: flex;
-      padding: var(--gap-half);
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      background-color: var(--theme-color);
-      align-items: center;
-
-      &:hover, &:focus, &:active {
-        background-color: var(--theme-text-color);
-        color: var(--theme-color);
-      }
+    &:hover, &:focus, &:active {
+      background-color: var(--theme-text-color);
+      color: var(--theme-color);
     }
   }
 }

@@ -6,9 +6,9 @@ import type {MovieStorageHistory} from "@type/movieStorage.types";
 import electronConnector from "../../helpers/electronConnector";
 import {getFromStorage} from "../../helpers/getFromStorage";
 import i18n from "../../helpers/translate";
-import Input from "../Input";
 
 import CategoryFinder from "./categoryFinder";
+import MovieSearch from "./movieSearch";
 import movieStorage from "./movieStorage";
 
 import styles from './media.module.scss';
@@ -18,7 +18,6 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
     selectMovie: (url: string) => void
     goTo: (url: string) => void
 }) => {
-    const [temp, setTemp] = React.useState([]);
     const [tab, setTab] = React.useState(0);
     const {setFooterActions, removeFooterActions} = useFooterActions()
     const [activeCategory, setActiveCategory] = React.useState<number>(null)
@@ -51,7 +50,7 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
                 }
             }
         })
-        if(getFromStorage('movies').authorized){
+        if (getFromStorage('movies').authorized) {
             electronConnector.getMoviesHistory().then(setHistory)
         }
         return () => {
@@ -96,28 +95,6 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
                     </li>
                 ))}
             </ul>
-        )
-    }
-
-    const renderSearch = () => {
-        return (
-            <Input
-                label={i18n.t('Search')}
-                onChange={({value}) => {
-                    if (value && (value as string).length > 2) electronConnector.movieSearch(value as string).then(setTemp)
-                }}
-                children={(
-                    <ul className={styles.search}>
-                        {temp.map(({title, href, description}) => (
-                            <li key={href} role="button" tabIndex={1} onClick={() => {
-                                selectMovie(href)
-                            }}>
-                                <span>{title} {description}</span>
-                            </li>)
-                        )}
-                    </ul>
-                )}
-            />
         )
     }
 
@@ -183,10 +160,9 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
 
     return (
         <div className={styles.wrapperCatalog}>
-            <div style={{alignItems: 'start', display: 'grid', gap: 'var(--gap)', gridTemplateColumns: '2fr 3fr'}}>
+            <div style={{alignItems: 'start', display: 'grid', gap: 'var(--gap)', gridTemplateColumns: '2fr 1fr 2fr'}}>
                 {renderCategories()}
-                {renderSearch()}
-                {renderCollections()}
+                <MovieSearch selectMovie={selectMovie}/>
             </div>
             {renderNavigation()}
             <h2>{tabs[tab].heading}</h2>
@@ -195,6 +171,9 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
                 {tabs[tab].items.map(renderMovieItem)}
             </ul>
             {renderPagination()}
+            <div style={{alignItems: 'start', display: 'grid', gap: 'var(--gap)', gridTemplateColumns: '2fr 3fr'}}>
+                {renderCollections()}
+            </div>
         </div>
     )
 }

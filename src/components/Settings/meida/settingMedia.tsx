@@ -6,6 +6,8 @@ import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 import Loader from "../../Loader";
 
+import styles from "../settings.module.scss";
+
 const SettingMedia = () => {
     const initialSettings = getFromStorage('movies');
     const [settings, setSettings] = React.useState(initialSettings)
@@ -17,7 +19,8 @@ const SettingMedia = () => {
     })
 
     return (
-        <div>
+        <div className={styles.block}>
+            <h1>{i18n.t('Media')}</h1>
             <Input label={i18n.t('Proxy URL')}
                    type="select"
                    options={[{
@@ -26,6 +29,12 @@ const SettingMedia = () => {
                    }, {
                        label: 'rezka-ua.org',
                        value: 'https://rezka-ua.org/'
+                   }, {
+                       label: 'hdrezka.sh',
+                       value: 'https://hdrezka.sh/'
+                   }, {
+                       label: 'rezka-ua.in',
+                       value: 'https://rezka-ua.in/'
                    }]}
                    value={settings.proxy}
                    onChange={({value}) => {
@@ -45,7 +54,7 @@ const SettingMedia = () => {
                            setLogin({...login, login_password: value as string})
                        }}
                 />
-                <button type="button" onClick={() => {
+                <button type="button" tabIndex={1} onClick={() => {
                     setLoading(true)
                     electronConnector.movieLogin(login).then(cookieString => {
                         setLoading(false)
@@ -58,11 +67,11 @@ const SettingMedia = () => {
                         }
                     })
                 }}>{i18n.t('Login')}</button>
-            </div> : <button type="button" onClick={() => {
+            </div> : <button type="button" tabIndex={1} onClick={() => {
                 setSettings({...settings, authorized: false, cookieString: ''})
             }}>{i18n.t('Reset Login')}</button>}
 
-            <button type="button" onClick={() => {
+            <button type="button" tabIndex={1} onClick={() => {
                 setToStorage('movies', settings)
                 window.location.reload()
             }}>

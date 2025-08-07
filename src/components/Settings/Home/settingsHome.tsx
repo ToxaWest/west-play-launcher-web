@@ -42,9 +42,7 @@ const SettingsHome = () => {
                        value: 4
                    }]}
                    onChange={({value}) => {
-                       if (value) {
-                           electronConnector.systemAction(`DisplaySwitch ${value}`)
-                       }
+                       if (value) electronConnector.systemAction(`DisplaySwitch ${value}`)
                    }}
             />
             <Input label={i18n.t('Theme')}

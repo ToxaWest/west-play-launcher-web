@@ -1,6 +1,5 @@
 import React from "react";
 
-import electronConnector from "../../helpers/electronConnector";
 import i18n from "../../helpers/translate";
 import FileManager from "../FileManager";
 import Modal from "../Modal";
@@ -29,6 +28,7 @@ const Input = ({
                    onlyFile = false,
                    ...props
                }: {
+    onClick?: () => void,
     label?: string,
     value?: string | number,
     name?: string,
@@ -66,13 +66,6 @@ const Input = ({
                        name={name}
                        ref={_ref}
                        tabIndex={1}
-                       onClick={e => {
-                           if ('pointerType' in e.nativeEvent) {
-                               if (document.activeElement === e.target && e.nativeEvent.pointerType !== "mouse") {
-                                   electronConnector.openKeyboard()
-                               }
-                           }
-                       }}
                        disabled={disabled}
                        value={value}
                        onChange={change}
@@ -104,8 +97,11 @@ const Input = ({
         select: () => {
             const data: OptionType[] = []
             options.forEach((option: string | number | OptionType) => {
-                if (typeof option === 'object') data.push(option)
-                else data.push({label: option, value: option})
+                if (typeof option === 'object') {
+                    if (!data.some(a => a.value === option.value)) data.push(option)
+                } else {
+                    if (!data.some(a => a.value === option)) data.push({label: option, value: option})
+                }
             })
             const getValue = () => {
                 if (typeof value === "number" || typeof value === "string") {
@@ -117,7 +113,7 @@ const Input = ({
             }
 
             const renderOption = (option: OptionType) => (
-                <li key={option.value?.toString()} role="button" tabIndex={2} onClick={() => {
+                <li key={option.value?.toString()} role="button" className={option.value === value ? styles.current : ''} tabIndex={2} onClick={() => {
                     onChange({name, value: option.value})
                 }}>
                     {option.html ? <span dangerouslySetInnerHTML={{__html: option.html}}/> : option.label}
@@ -134,17 +130,11 @@ const Input = ({
         text: () => {
             return (
                 <input type="text"
+                       {...props}
                        placeholder={label}
                        name={name}
                        ref={_ref}
                        tabIndex={1}
-                       onClick={e => {
-                           if ('pointerType' in e.nativeEvent) {
-                               if (document.activeElement === e.target && e.nativeEvent.pointerType !== "mouse") {
-                                   electronConnector.openKeyboard()
-                               }
-                           }
-                       }}
                        {...(disabled ? {disabled, value} : {value: initialValue})}
                        onChange={change}
                 />

@@ -23,9 +23,13 @@ const useAppControls = () => {
         ref.current = document.querySelectorAll(activeWrapper.current + ' ' + s)
         const {matrix} = [...ref.current].reduce(({matrix, keys}, current, index) => {
             const {top} = current.getBoundingClientRect()
-            if (typeof keys[Math.round(top)] !== "number") keys[Math.round(top)] = Object.keys(keys).length;
-            if (!matrix[keys[Math.round(top)]]) matrix[keys[Math.round(top)]] = []
-            matrix[keys[Math.round(top)]].push(index)
+            let topRounded = Math.round(top)
+            Object.keys(keys).forEach((key) => {
+                if (Math.abs(topRounded - parseInt(key)) < 10) topRounded = parseInt(key)
+            })
+            if (typeof keys[topRounded] !== "number") keys[topRounded] = Object.keys(keys).length;
+            if (!matrix[keys[topRounded]]) matrix[keys[topRounded]] = []
+            matrix[keys[topRounded]].push(index)
             return {keys, matrix}
         }, {keys: {}, matrix: []})
         refRowsMatrix.current = matrix;

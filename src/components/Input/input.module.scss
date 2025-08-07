@@ -65,7 +65,7 @@
   }
   ul {
     position: absolute;
-    top: 30px;
+    top: 36px;
     left: 0;
     min-width: 100%;
     color: var(--theme-text-color);
@@ -73,6 +73,8 @@
     padding: var(--gap-half);
     z-index: 1;
     display: flex;
+    overflow-y: auto;
+    max-height: 400px;
     flex-direction: column;
     gap: var(--gap-half);
     list-style: none;
@@ -80,6 +82,10 @@
       font-size: 12px;
       cursor: pointer;
       padding: var(--padding);
+      &.current {
+        background-color: green;
+        color: white;
+      }
       &:hover, &:focus, &:active {
         background-color: var(--theme-text-color);
         color: var(--theme-color);
