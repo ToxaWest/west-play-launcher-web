@@ -118,7 +118,7 @@ const MoviePage = ({url, setUrl, goTo}: {
         subtitle?: string
         thumbnails?: string,
         trl_favs?: string
-        post_id?: string
+        post_id?: number
         season_id?: number
         episode_id?: number
     }>(
@@ -163,7 +163,7 @@ const MoviePage = ({url, setUrl, goTo}: {
                 episodes: r.episodes,
                 movie: r.movie,
                 partContent: r.partContent,
-                post_id: r.post_id,
+                post_id: parseInt(r.post_id),
                 schedule: r.schedule,
                 season_id: parseInt(r.season_id),
                 streams: r.streams,
@@ -188,7 +188,7 @@ const MoviePage = ({url, setUrl, goTo}: {
             data: {
                 action: data.type === "initCDNMoviesEvents" ? 'get_movie' : 'get_episodes',
                 favs: data.trl_favs,
-                id: parseInt(data.post_id),
+                id: data.post_id,
                 translator_id: parseInt(translation_id)
             },
             method: 'get_cdn_series'
@@ -319,12 +319,10 @@ const MoviePage = ({url, setUrl, goTo}: {
                         role="button"
                         style={{color: item.url ? 'inherit' : 'var(--theme-text-color-seconary)', cursor: 'pointer'}}
                         onClick={() => {
-                            if (item.url) {
-                                navigate({
-                                    pathname: '/movie',
-                                    search: `?${createSearchParams({url: item.url})}`,
-                                })
-                            }
+                            if (item.url) navigate({
+                                pathname: '/movie',
+                                search: `?${createSearchParams({url: item.url})}`,
+                            })
                         }}
                     >
                         <td>{item.id}</td>

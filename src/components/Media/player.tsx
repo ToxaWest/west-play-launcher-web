@@ -23,7 +23,7 @@ const Player = ({
                     setQuality
                 }: {
     subtitle?: string,
-    id: string,
+    id: number,
     streams: Streams,
     season_id: number,
     episode_id: number,
@@ -43,9 +43,7 @@ const Player = ({
     }
 
     React.useEffect(() => {
-        if (playerRef.current) {
-            playerRef.current.currentTime = getStartPosition();
-        }
+        if (playerRef.current) playerRef.current.currentTime = getStartPosition();
     }, [episode_id, season_id, translation_id])
 
     const hlsRef = React.useRef(new Hls({
@@ -91,9 +89,7 @@ const Player = ({
         if (!playerRef.current) return;
         if (!streams) return;
         if (!streams[quality]) {
-            if (Object.keys(streams).length > 0) {
-                setQuality((Object.keys(streams) as (keyof Streams)[]).at(-1));
-            }
+            if (Object.keys(streams).length > 0) setQuality((Object.keys(streams) as (keyof Streams)[]).at(-1));
             return;
         }
         setLoading(true)
@@ -138,9 +134,7 @@ const Player = ({
         movieStorage.setTime(timerKey, target.currentTime)
         const curr = timeFix(target.currentTime || 0);
         const duration = timeFix(target.duration || 0);
-        if (timeRef.current) {
-            timeRef.current.innerText = `${curr} / ${duration}`;
-        }
+        if (timeRef.current) timeRef.current.innerText = `${curr} / ${duration}`;
     }
 
     return (
@@ -167,7 +161,7 @@ const Player = ({
                     document.getElementById('playButton').style.display = 'none';
                     if (getFromStorage('movies').authorized) electronConnector.setSave({
                         episode: episode_id,
-                        post_id: parseInt(id),
+                        post_id: id,
                         season: season_id,
                         translator_id: parseInt(translation_id)
                     })
