@@ -1,7 +1,7 @@
 import type {CSSProperties} from "react";
 
 export type freeGameType = {
-    id: number
+    id: string
     name: string
     title: string
     short_image: string

@@ -11,12 +11,9 @@ import {
 } from "@type/electron.types";
 import type {EarnedAchievementsType, Game, ProgressType, StatsType} from "@type/game.types";
 import {MovieStorageHistory} from "@type/movieStorage.types";
-import type {crackedGameType, freeGameType} from "@type/widget.types";
 
 const electronNotWorking = {
-    crackWatchRequest: {games: []},
     getAlarm: [],
-    getFreeGames: [],
     getMoviesHistory: [],
     getPageData: null,
     getPlayTime: {},
@@ -55,7 +52,6 @@ const electronConnector = {
     clearUnusedCache: (idArray: (string | number)[]): Promise<{
         removed: number
     }> => apiCall(idArray, 'clearUnusedCache'),
-    crackWatchRequest: (): Promise<{ games: crackedGameType[] }> => apiCall(null, 'crackWatchRequest'),
     gameSearch: (query: string): Promise<SteamSearchResponse[]> => apiCall(query, 'gameSearch'),
     gameStatus: (callBack: ({status, playTime}: {
         gameId: string | number,
@@ -85,7 +81,6 @@ const electronConnector = {
     getDataByGameId: (props: getDataByGameIdInput): Promise<Game> => apiCall(props, 'getDataByGameId'),
     getDisks: (): Promise<string[]> => apiCall(null, 'getDisks'),
     getFolders: (path: string): Promise<FileManagerFolderType[]> => apiCall(path, 'getFolders'),
-    getFreeGames: (): Promise<freeGameType[]> => apiCall(null, 'getFreeGames'),
     getGameByFolder: (path: string) => apiCall(path, 'getGameByFolder'),
     getImage: (data: { body: getImageInput }): Promise<{
         data: { assets: getImageAssets[] }
@@ -124,7 +119,6 @@ const electronConnector = {
     }): Promise<string | null> => apiCall(login, 'movieLogin'),
     movieSearch: (query: string): Promise<movieSearch[]> => apiCall(query, 'movieSearch'),
     onVisibilityChange: (callBack: (visible: boolean) => void): void => apiCall(callBack, 'onVisibilityChange'),
-    openKeyboard: (): void => apiCall(null, 'openKeyboard'),
     openLink: (url: string): void => apiCall(url, 'openLink'),
     receiveSteamId: (id: number): void => apiCall(id, 'receiveSteamId'),
     saveImage: (data: {

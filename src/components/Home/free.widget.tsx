@@ -9,12 +9,45 @@ import Loader from "../Loader";
 
 import styles from "./widgets.module.scss";
 
+const resolveData = (text: string): freeGameType[] => {
+    if (!text) return null;
+    const parser = new DOMParser();
+    const document = parser.parseFromString(text, 'text/html');
+    const list = Array.from(document.querySelectorAll('.deals-content .list-items .game-item'))
+    return list.map((item: HTMLDivElement) => {
+        const image = (item.querySelector('.game-image img') as HTMLImageElement).srcset.split(',').at(-1).split(' ')[0];
+        const link = new URL((item.querySelector('.shop-link') as HTMLLinkElement).href);
+        link.host = 'gg.deals'
+        link.port = ''
+        link.protocol = 'https:'
+        return {
+            ...item.dataset,
+            endTime: (item.querySelector('.game-info-wrapper .game-tags .time-tag .expiry time') as HTMLElement)?.dataset?.timestamp,
+            id: item.dataset.containerGameId,
+            link: link.href,
+            name: item.querySelector('.game-info-wrapper .game-info-title').textContent,
+            price: item.querySelector('.game-info-wrapper .price-old')?.innerHTML,
+            short_image: image.split('_')[0] + '_616xr353.jpg',
+            startTime: (item.querySelector('.game-info-wrapper .game-tags .time-icon-tag time') as HTMLElement)?.dataset?.timestamp,
+        } as freeGameType
+    })
+}
+
 
 const FreeWidget = () => {
-    const [active, setActive] = React.useState(0);
+    const [active, setActive] = React.useState(null);
+    const cache = localStorage.getItem('list_free_games') ? JSON.parse(localStorage.getItem('list_free_games')) : []
+    const [games, action, loading] = React.useActionState(() => electronConnector.beProxy({
+        type: 'text',
+        url: 'https://gg.deals/deals/pc/?minDiscount=100&minRating=0'
+    }).then(resolveData), cache)
 
-    const [games, action, loading] = React.useActionState(electronConnector.getFreeGames, [])
-    React.useEffect(() => React.startTransition(action), [])
+    React.useEffect(() => {
+        React.startTransition(action)
+        return () => {
+            if (games) localStorage.setItem('list_free_games', JSON.stringify(games))
+        }
+    }, [])
 
     const renderTime = (time?: string) => {
         const {webapi} = locales.find(a => a.value === getFromStorage('config').settings.currentLang)
@@ -79,8 +112,9 @@ const FreeWidget = () => {
     }
 
     const style: widgetWrapperStyleInterface = {'--lines': '1'}
+    if(!games) return null
     const list = games.filter(({id}) => !getFromStorage('hiddenFree').includes(id))
-    if(list.length === 0) return null;
+    if (list.length === 0) return null;
 
     return (
         <React.Fragment>

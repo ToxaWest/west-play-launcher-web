@@ -8,9 +8,20 @@ import Loader from "../Loader";
 import styles from "./widgets.module.scss";
 
 const CrackedWidget = () => {
-    const [active, setActive] = React.useState(0);
-    const [{games}, action, loading] = React.useActionState(electronConnector.crackWatchRequest, {games: []})
-    React.useEffect(() => React.startTransition(action), [])
+    const [active, setActive] = React.useState(null);
+    const cache = localStorage.getItem('list_crack_games') ? JSON.parse(localStorage.getItem('list_crack_games')) : []
+    const [{list_crack_games: games}, action, loading] = React.useActionState(() => electronConnector.beProxy<{
+        list_crack_games: crackedGameType[]
+    }>({
+        type: 'json',
+        url: 'https://gamestatus.info/back/api/gameinfo/game/lastcrackedgames/'
+    }), {list_crack_games: cache})
+    React.useEffect(() => {
+        React.startTransition(action)
+        return () => {
+            if (games) localStorage.setItem('list_crack_games', JSON.stringify(games))
+        }
+    }, [])
 
     const getImage = (g: crackedGameType) => {
         if (g.steam_prod_id) {
@@ -99,6 +110,8 @@ const CrackedWidget = () => {
     const style: widgetWrapperStyleInterface = {
         '--lines': '3'
     }
+
+    if (!games) return null;
 
     return (
         <React.Fragment>
