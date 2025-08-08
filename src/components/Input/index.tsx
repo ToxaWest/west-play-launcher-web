@@ -95,14 +95,17 @@ const Input = ({
             )
         },
         select: () => {
-            const data: OptionType[] = []
-            options.forEach((option: string | number | OptionType) => {
+            if (!options || options.length === 0) return null
+            const data: OptionType[] = options.reduce((acc, option) => {
                 if (typeof option === 'object') {
-                    if (!data.some(a => a.value === option.value)) data.push(option)
+                    if (acc.some(a => a.value === option.value)) return acc;
+                    acc.push(option)
                 } else {
-                    if (!data.some(a => a.value === option)) data.push({label: option, value: option})
+                    if (acc.some(a => a.value === option)) return acc;
+                    acc.push({label: option, value: option})
                 }
-            })
+                return acc
+            }, [])
             const getValue = () => {
                 if (typeof value === "number" || typeof value === "string") {
                     const cur = data.find(a => a.value === value);
@@ -113,7 +116,8 @@ const Input = ({
             }
 
             const renderOption = (option: OptionType) => (
-                <li key={option.value?.toString()} role="button" className={option.value === value ? styles.current : ''} tabIndex={2} onClick={() => {
+                <li key={option.value?.toString()} role="button"
+                    className={option.value === value ? styles.current : ''} tabIndex={2} onClick={() => {
                     onChange({name, value: option.value})
                 }}>
                     {option.html ? <span dangerouslySetInnerHTML={{__html: option.html}}/> : option.label}

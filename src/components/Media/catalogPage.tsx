@@ -3,8 +3,6 @@ import useFooterActions from "@hook/useFooterActions";
 import {getPageData, MoviesListItem} from "@type/electron.types";
 import type {MovieStorageHistory} from "@type/movieStorage.types";
 
-import electronConnector from "../../helpers/electronConnector";
-import {getFromStorage} from "../../helpers/getFromStorage";
 import i18n from "../../helpers/translate";
 
 import CategoryFinder from "./categoryFinder";
@@ -13,15 +11,15 @@ import movieStorage from "./movieStorage";
 
 import styles from './media.module.scss';
 
-const CatalogPage = ({pageData, selectMovie, goTo}: {
+const CatalogPage = ({pageData, selectMovie, goTo, history}: {
     pageData: getPageData
     selectMovie: (url: string) => void
-    goTo: (url: string) => void
+    goTo: (url: string) => void,
+    history: MovieStorageHistory[]
 }) => {
     const [tab, setTab] = React.useState(0);
     const {setFooterActions, removeFooterActions} = useFooterActions()
     const [activeCategory, setActiveCategory] = React.useState<number>(null)
-    const [history, setHistory] = React.useState<MovieStorageHistory[]>(movieStorage.history)
 
     const toggleViewMode = (direction: 'previous' | 'next') => {
         if (direction === 'previous') {
@@ -50,9 +48,7 @@ const CatalogPage = ({pageData, selectMovie, goTo}: {
                 }
             }
         })
-        if (getFromStorage('movies').authorized) {
-            electronConnector.getMoviesHistory().then(setHistory)
-        }
+
         return () => {
             removeFooterActions(['rb', 'lb'])
         }

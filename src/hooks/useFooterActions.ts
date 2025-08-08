@@ -14,7 +14,6 @@ const useFooterActions = () => {
         'game': '/',
         'library': '/',
         'media': '/',
-        'movie':'/',
         'settings': '/'
     }
 
@@ -23,7 +22,11 @@ const useFooterActions = () => {
             navigate(-1);
         } else {
             if (window.__back) navigate(window.__back.url)
-            else navigate(back[window.location.pathname.split('/').at(1)])
+            else {
+                const link = back[window.location.pathname.split('/').at(1)];
+                if (link) navigate(link)
+                else navigate(-1)
+            }
         }
     }
     const defaultActions: footerActionsType = {
@@ -31,9 +34,7 @@ const useFooterActions = () => {
             button: 'a',
             onClick: () => {
                 const activeElement = document.activeElement as HTMLElement;
-                if (activeElement) {
-                    activeElement.click();
-                }
+                if (activeElement) activeElement.click();
             },
             title: i18n.t('Select')
         },

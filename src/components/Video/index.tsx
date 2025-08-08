@@ -132,7 +132,7 @@ const VideoComponent = ({selected, options, soundStatus}: {
 
     return (
         <div onClick={hideFooter} style={{position: 'relative'}} role="button" tabIndex={0}>
-            <Loader loading={loading} opacity={0.6}/>
+            <Loader loading={loading} style={{opacity: '0.6'}}/>
             <video ref={videoRef}  {...options} poster={videoData.poster} muted={!soundStatus}>
                 {videoData.src.map(s => <source key={s.type} {...s} />)}
                 <track kind={'captions'} label={'English'} srcLang={'en'} default={true}/>

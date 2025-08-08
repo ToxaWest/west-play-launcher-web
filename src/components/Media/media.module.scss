@@ -41,13 +41,17 @@
       padding: var(--gap-half);
     }
 
-    tr[tabindex]{
+    tr[tabindex="1"]{
+      cursor: pointer;
       &:hover, &:focus, &:active {
         background-color: var(--theme-text-color);
         td {
           color: var(--theme-color);
         }
       }
+    }
+    tr[tabindex="0"] {
+      color: var(--theme-text-color-seconary);
     }
   }
 
@@ -56,28 +60,6 @@
     position: relative;
     aspect-ratio: 16 / 9;
     width: 100%;
-  }
-  .progress {
-    margin: 0;
-    padding: 0;
-    height: var(--gap);
-    width: 100%;
-  }
-
-  .playButton {
-    width: 0;
-    height: 0;
-    border-top: 15px solid transparent;
-    border-left: 20px solid var(--theme-text-color);
-    border-bottom: 15px solid transparent;
-    position:absolute;
-    top: calc(50% - 30px);
-    left: calc(50% - 10px);
-    cursor: pointer;
-    transition: all .3s ease;
-    &:hover {
-      transform: scale(1.2);
-    }
   }
 
   .description {

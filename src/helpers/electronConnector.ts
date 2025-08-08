@@ -13,13 +13,35 @@ import type {EarnedAchievementsType, Game, ProgressType, StatsType} from "@type/
 import {MovieStorageHistory} from "@type/movieStorage.types";
 import type {crackedGameType, freeGameType} from "@type/widget.types";
 
+const electronNotWorking = {
+    crackWatchRequest: {games: []},
+    getAlarm: [],
+    getFreeGames: [],
+    getMoviesHistory: [],
+    getPageData: null,
+    getPlayTime: {},
+    getWindowsBG: null,
+    weatherById: {
+        main: {temp: 0},
+        weather: [{icon: null}]
+    },
+}
+
 const apiCall = (props: any, func: string) => {
     if (typeof props === 'function') {
         console.log(`%cListening: ${func}`, 'color: teal')
     } else {
         console.log(`%cAction: ${func}`, 'color: lime')
     }
-    return window.api[func](props)
+    try {
+        return window.api[func](props)
+    } catch (e) {
+        console.error(e)
+        return new Promise(() => {
+            if (!Object.hasOwn(electronNotWorking, func)) console.error(func)
+            return electronNotWorking[func]
+        })
+    }
 }
 
 const electronConnector = {
