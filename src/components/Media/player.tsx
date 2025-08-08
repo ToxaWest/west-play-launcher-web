@@ -4,7 +4,6 @@ import type {EpisodeItem, Episodes, Streams} from "@type/electron.types";
 
 import electronConnector from "../../helpers/electronConnector";
 import {getFromStorage} from "../../helpers/getFromStorage";
-import Loader from "../Loader";
 
 import styles from "./media.module.scss";
 
@@ -34,26 +33,16 @@ const Player = ({
     setQuality: (quality: keyof Streams) => void
 }) => {
     const playerRef = React.useRef<HTMLVideoElement>(null);
+    const wrapperRef = React.useRef<HTMLDivElement>(null);
     const timerKey = `${id}_${translation_id}_${season_id}_${episode_id}`
 
-    const {loading} = usePlayer({playerRef, quality, setQuality, streams, subtitle, thumbnails, timerKey});
-
-    const subtitles = () => {
-        const sub = [];
-        if (!subtitle) return sub;
-        return subtitle.split(',').map(s => s.match(/\[(.*)](.*)/))
-    }
+    usePlayer({playerRef, quality, setQuality, streams, subtitle, thumbnails, timerKey, wrapperRef});
 
     return (
-        <div style={{position: 'relative'}}>
+        <div style={{position: 'relative', zIndex: 0}} ref={wrapperRef}>
             <video
                 className={styles.player}
-                controls={true}
                 ref={playerRef}
-                onClick={e => {
-                    (e.target as HTMLVideoElement).paused ? (e.target as HTMLVideoElement).play() : (e.target as HTMLVideoElement).pause()
-                }}
-                autoPlay={false}
                 onPlay={() => {
                     playerRef.current.autoplay = false;
                     if (getFromStorage('movies').authorized) electronConnector.setSave({
@@ -84,19 +73,10 @@ const Player = ({
                         }
                     }
                     if (document.fullscreenElement) document.exitFullscreen();
-                }}>
-                <track kind="captions" />
-                {subtitles().map(([, label, src]) => {
-                    return <track
-                        srcLang={label}
-                        key={label}
-                        label={label}
-                        kind="captions"
-                        src={src}
-                    />
-                })}
+                }}
+            >
+                <track kind="captions"/>
             </video>
-            <Loader loading={loading} style={{zIndex: 0}}/>
         </div>
 
     )

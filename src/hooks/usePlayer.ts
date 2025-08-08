@@ -1,21 +1,19 @@
+import 'shaka-player/dist/controls.css'
+
 import React from "react";
 import useFooterActions from "@hook/useFooterActions";
 import {Streams} from "@type/electron.types";
-import Hls from "hls.js";
+// @ts-ignore
+import shaka from "shaka-player/dist/shaka-player.ui";
 
 import movieStorage from "../components/Media/movieStorage";
 import i18n from "../helpers/translate";
 
-const usePlayer = ({playerRef, timerKey, streams, quality, setQuality, thumbnails, subtitle}) => {
+const usePlayer = ({playerRef, timerKey, streams, quality, setQuality, thumbnails, subtitle, wrapperRef}) => {
     const {setFooterActions, removeFooterActions} = useFooterActions()
-    const [loading, setLoading] = React.useState(false);
+    const shakaRef = React.useRef(new shaka.Player())
+    const uiRef = React.useRef(null)
 
-    const hlsRef = React.useRef(new Hls({
-        manifestLoadingTimeOut: 2000,
-        "maxBufferLength": 180,
-        "maxBufferSize": 33554432000,
-        "maxMaxBufferLength": 600
-    }));
     const sortStreams = (streams: string[]): { mp4: string[], m3u8: string[] } => streams.reduce((acc, s) => {
         const type = s.split('.').at(-1) as 'mp4' | 'm3u8';
         if (Object.hasOwn(acc, type)) acc[type].push(s)
@@ -23,8 +21,18 @@ const usePlayer = ({playerRef, timerKey, streams, quality, setQuality, thumbnail
     }, {m3u8: [], mp4: []})
 
     React.useEffect(() => {
+        shakaRef.current.attach(playerRef.current);
+        const a = new shaka.ui.Overlay(
+            shakaRef.current,
+            wrapperRef.current,
+            playerRef.current,
+        );
+
+        a.configure({overflowMenuButtons: ["captions", "chapter", "playback_rate"]})
+        uiRef.current = a.getControls();
+
         document.addEventListener('fullscreenchange', () => {
-            if (document.fullscreenElement) {
+            if (uiRef.current.isFullScreenEnabled()) {
                 setFooterActions({
                     a: {
                         button: 'a',
@@ -33,30 +41,14 @@ const usePlayer = ({playerRef, timerKey, streams, quality, setQuality, thumbnail
                     },
                     b: {
                         button: 'b',
-                        onClick: () => document.exitFullscreen().then(() => {
+                        onClick: () => uiRef.current.toggleFullScreen().then(() => {
                             playerRef.current.pause()
                         }),
                         title: i18n.t('Back')
-                    },
-                    y: {
-                        button: 'y',
-                        onClick: () => document.exitFullscreen().then(() => {
-                            playerRef.current.pause();
-                        }),
-                        title: i18n.t('FullScreen')
                     }
                 })
             } else {
                 removeFooterActions(['a', 'b']);
-                setFooterActions({
-                    y: {
-                        button: 'y',
-                        onClick: () => playerRef.current.requestFullscreen().then(() => {
-                            playerRef.current.play();
-                        }),
-                        title: i18n.t('FullScreen')
-                    }
-                })
             }
         });
         setFooterActions({
@@ -77,40 +69,33 @@ const usePlayer = ({playerRef, timerKey, streams, quality, setQuality, thumbnail
             },
             y: {
                 button: 'y',
-                onClick: () => playerRef.current.requestFullscreen().then(() => {
-                    playerRef.current.play();
-                }),
+                onClick: () => uiRef.current.toggleFullScreen(),
                 title: i18n.t('FullScreen')
             }
         })
         return () => {
-            hlsRef.current.destroy();
             removeFooterActions(['lt', 'rt', 'x', 'y', 'b', 'a']);
         }
     }, [])
+    const subtitles = () => {
+        const sub = [];
+        if (!subtitle) return sub;
+        return subtitle.split(',').map((s: string) => s.match(/\[(.*)](.*)/))
+    }
 
-    React.useEffect(() => {
-        const player: HTMLVideoElement = playerRef.current;
-        if (!streams[quality]) {
-            if (Object.keys(streams).length > 0) setQuality((Object.keys(streams) as (keyof Streams)[]).at(-1));
-            return;
-        }
-
-        hlsRef.current.attachMedia(player);
-        setLoading(true);
-        const {m3u8} = sortStreams(streams[quality])
-        const h = [m3u8[0]];
-        hlsRef.current.loadSource(m3u8[0]);
-        hlsRef.current.on(Hls.Events.MANIFEST_PARSED, function () {
-            hlsRef.current.startLoad();
-        });
-        hlsRef.current.on(Hls.Events.ERROR, function (_event, data) {
-            if (data.fatal) {
-                if (h.includes(data.url)) {
+    const load = (url: string, h: string[], m3u8: string[]) => {
+        shakaRef.current.load(url)
+            .then(() => {
+                for (const sub of subtitles()) {
+                    shakaRef.current.addTextTrackAsync(sub[2], sub[1], 'subtitles', 'text/vtt', '', sub[1])
+                }
+                return shakaRef.current.addThumbnailsTrack(thumbnails, 'text/vtt');
+            }).catch(() => {
+                if (h.includes(url)) {
                     const m3uSource = m3u8.find(s => !h.includes(s))
                     if (m3uSource) {
                         h.push(m3uSource);
-                        hlsRef.current.loadSource(m3uSource);
+                        load(m3uSource, h, m3u8);
                     } else {
                         const qList = Object.keys(streams) as (keyof Streams)[];
                         const curr = qList.indexOf(quality);
@@ -119,23 +104,25 @@ const usePlayer = ({playerRef, timerKey, streams, quality, setQuality, thumbnail
                     }
                 }
             }
-        });
-        hlsRef.current.allSubtitleTracks.forEach(t => {
-            console.log(t)
-        })
-        player.currentTime = movieStorage.getTime(timerKey)
-        player.ontimeupdate = () => {
-            movieStorage.setTime(timerKey, player.currentTime)
+        )
+    }
+
+    React.useEffect(() => {
+        if (!streams[quality]) {
+            if (Object.keys(streams).length > 0) setQuality((Object.keys(streams) as (keyof Streams)[]).at(-1));
+            return;
         }
-        player.oncanplay = () => {
-            console.log('canplay')
-            setLoading(false);
+        const {m3u8} = sortStreams(streams[quality])
+        const h = [m3u8[0]];
+        load(m3u8[0], h, m3u8)
+        playerRef.current.currentTime = movieStorage.getTime(timerKey)
+        playerRef.current.ontimeupdate = () => {
+            movieStorage.setTime(timerKey, playerRef.current.currentTime)
         }
+
     }, [timerKey, quality])
 
-    return {
-        loading
-    }
+    return {}
 }
 
 export default usePlayer;
