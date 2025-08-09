@@ -8,8 +8,6 @@ import type {
     StatsType
 } from "@type/game.types";
 
-import Loader from "../Loader";
-
 import achStyles from '../Game/game.module.scss';
 import styles from './externalGameData.module.scss';
 
@@ -21,38 +19,55 @@ type ExtendedAchievementType = EarnedAchievementsType[0] & {
 }
 
 const ExternalGameData = () => {
-    const request = () => fetch('http://127.0.0.1:1488/achievements').then(res => res.json()).catch(() => ({
-        achievements: null,
-        game: null,
-        progress: null,
-        stats: null
-    }))
     const {init} = useAppControls()
-    const [{game, achievements, stats, progress}, action, loading] = React.useActionState<{
+    const [{game, achievements, stats, progress}, setState] = React.useState<{
         game: Game,
         stats: StatsType,
         progress: ProgressType,
         achievements: EarnedAchievementsType
-    }>(request, {
+    }>({
         achievements: null,
         game: null,
         progress: null,
-        stats: null
+        stats: null,
     })
 
     const externalProgress = progress || {}
 
+    const websoketInit = () => {
+        const webSocket = new WebSocket('ws://127.0.0.1:1488');
+        webSocket.onerror = () => {
+            setTimeout(() => {
+                webSocket.close()
+            }, 5000)
+        }
+        webSocket.onclose = () => {
+            setState({
+                achievements: null,
+                game: null,
+                progress: null,
+                stats: null,
+            })
+            websoketInit()
+        }
+        webSocket.onmessage = (event) => {
+            const data: {
+                game: Game,
+                stats: StatsType,
+                progress: ProgressType,
+                achievements: EarnedAchievementsType
+            } = JSON.parse(event.data)
+            setState(data)
+        }
+    }
+
+
     React.useEffect(() => {
         init('#root')
-        React.startTransition(action)
-        const interval = setInterval(() => {
-            console.log('update')
-            React.startTransition(action)
-        }, 1000 * 60 * 2)
-        return () => clearInterval(interval)
+        websoketInit()
     }, [])
 
-    const getImage = (e: SyntheticEvent<HTMLImageElement, Event> ) => {
+    const getImage = (e: SyntheticEvent<HTMLImageElement, Event>) => {
         const src = (e.target as HTMLImageElement).src;
         if (!src) return;
         if (src.includes('http')) return;
@@ -97,7 +112,7 @@ const ExternalGameData = () => {
             role="button"
             tabIndex={1}
         >
-            <img src={image} alt={name} loading={"lazy"} onError={getImage}/>
+            <img src={image} alt={name} onError={getImage}/>
             <div>
                 <strong>{displayName}</strong>
                 <span title={description}>{description}</span>
@@ -186,12 +201,19 @@ const ExternalGameData = () => {
 
     }
 
-    if (!game) return <h3>Game not detected</h3>;
+    if (!game) return <div className={styles.wrapper}>
+        <div className={styles.header}>
+            <img src={'https://west-play-launcher-web.vercel.app/192.png'} alt={'logo'}/>
+            <div className={styles.content}>
+                <h1>Game not detected</h1>
+            </div>
+        </div>
+    </div>
 
     return (
         <div className={styles.wrapper}>
             <div className={styles.header}>
-                <img src={game.img_icon} alt={'logo'} loading={'lazy'} onError={getImage}/>
+                <img src={game.img_icon} alt={'logo'} onError={getImage}/>
                 <div className={styles.content}>
                     <h1>{game.name}</h1>
                     {achievements ?
@@ -199,7 +221,6 @@ const ExternalGameData = () => {
                 </div>
             </div>
             {achievements ? renderAchievementItems() : null}
-            <Loader loading={loading}/>
         </div>
     );
 }
