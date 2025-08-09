@@ -5,13 +5,18 @@
     "target": "ESNext",
     "jsx": "react",
     "noImplicitAny": false,
+    "skipLibCheck": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "exclude": ["node_modules", "build", ".idea"],
     "paths": {
       "@hook/*": ["./src/hooks/*"],
       "@type/*": ["./src/types/*"]
     }
-  }
+  },
+  "exclude": ["node_modules", "build", ".idea"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ]
 }

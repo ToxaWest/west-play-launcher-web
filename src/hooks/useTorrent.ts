@@ -206,6 +206,8 @@ const useTorrent = ({
         headers: {Authorization: 'Basic ' + btoa(username + ':' + password)}
     }
 
+    console.log(token)
+
     const getToken = async () => {
         const html = await electronConnector.beProxy({
             options,
@@ -215,7 +217,7 @@ const useTorrent = ({
 
         if (!html) throw new Error('Error getting token');
         const doc = document.createElement('div');
-        doc.innerHTML = html;
+        doc.innerHTML = html as string;
         return doc.querySelector('#token').textContent;
     }
 
@@ -247,7 +249,7 @@ const useTorrent = ({
 
     const
         getTorrents = (token: string) => {
-            electronConnector.beProxy({
+            electronConnector.beProxy<{torrents: {}[]}>({
                 options,
                 type: 'json',
                 url: apiUrl + `?token=${token}&list=1`
