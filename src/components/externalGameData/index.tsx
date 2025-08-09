@@ -57,7 +57,11 @@ const ExternalGameData = () => {
                 progress: ProgressType,
                 achievements: EarnedAchievementsType
             } = JSON.parse(event.data)
-            setState(data)
+            if (!data.game) {
+                webSocket.close()
+            } else {
+                setState(data)
+            }
         }
     }
 
