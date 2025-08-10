@@ -18,6 +18,7 @@ const electronNotWorking = {
     getPageData: null,
     getPlayTime: {},
     getWindowsBG: null,
+    onVisibilityChange: () => true,
     weatherById: {
         main: {temp: 0},
         weather: [{icon: null}]

@@ -7,7 +7,6 @@ import {
     RouterProvider,
 } from "react-router-dom";
 
-import ExternalGameData from "./components/externalGameData";
 import Game from "./components/Game";
 import Achievements from "./components/Game/achievements";
 import GameContent from "./components/Game/content";
@@ -30,10 +29,6 @@ const Media = lazy(() => import('./components/Media'));
 const MoviePageRouter = lazy(() => import("./components/Media/MoviePageRouter"));
 
 const router = createBrowserRouter([
-    {
-        element: <ExternalGameData/>,
-        path: '/achievements',
-    },
     {
         children: [{
             element: <Home/>,
