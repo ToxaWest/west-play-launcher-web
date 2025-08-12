@@ -116,6 +116,9 @@ const usePlayer = ({playerRef, timerKey, streams, quality, setQuality, thumbnail
         const h = [m3u8[0]];
         load(m3u8[0], h, m3u8)
         playerRef.current.currentTime = movieStorage.getTime(timerKey)
+        playerRef.current.onplay = () => {
+            movieStorage.setTimeForce(timerKey, playerRef.current.currentTime)
+        }
         playerRef.current.ontimeupdate = () => {
             movieStorage.setTime(timerKey, playerRef.current.currentTime)
         }

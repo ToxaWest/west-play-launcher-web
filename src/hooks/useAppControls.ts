@@ -25,7 +25,7 @@ const useAppControls = () => {
             const {top} = current.getBoundingClientRect()
             let topRounded = Math.round(top)
             Object.keys(keys).forEach((key) => {
-                if (Math.abs(topRounded - parseInt(key)) < 10) topRounded = parseInt(key)
+                if (Math.abs(topRounded - parseInt(key)) < 15) topRounded = parseInt(key)
             })
             if (typeof keys[topRounded] !== "number") keys[topRounded] = Object.keys(keys).length;
             if (!matrix[keys[topRounded]]) matrix[keys[topRounded]] = []

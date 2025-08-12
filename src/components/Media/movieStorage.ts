@@ -27,6 +27,10 @@ class MovieStorage {
             setToStorage('movieTime', this.time);
         }
     }
+    setTimeForce(key: string, value: number) {
+        this.time[key] = value;
+        setToStorage('movieTime', this.time);
+    }
 
     getTime(key: string): number | 0 {
         return this.time[key] || 0;
