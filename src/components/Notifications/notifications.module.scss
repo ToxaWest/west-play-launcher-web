@@ -10,7 +10,7 @@
 .wrapper {
   position: fixed;
   bottom: 15vh;
-  width: 100%;
+  transform: translate(calc(50vw - (420px + var(--gap) * 2)/ 2));
   z-index: 20;
   display: flex;
   justify-content: center;
