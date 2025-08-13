@@ -28,14 +28,14 @@ const Media = () => {
 
     React.useEffect(() => {
         setLoading(true)
-        electronConnector.getPageData(url || '').then((d) => {
+        electronConnector.getPageData(decodeURIComponent(url) || '').then((d) => {
             setPageData(d);
             setLoading(false)
         })
     }, [url])
 
     const updatePageUrl = (pageUrl: string) => {
-        navigate(`/media?url=${pageUrl}`)
+        navigate(`/media?url=${encodeURIComponent(pageUrl)}`, {replace: true})
     }
 
     const setUrl = (url: string) => {
