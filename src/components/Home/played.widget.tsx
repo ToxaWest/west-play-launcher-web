@@ -18,6 +18,7 @@ const PlayedWidget = () => {
             .sort(([, ap], [, bp]) => ap < bp ? 1 : -1)
             .reduce((acc, [curr]) => {
                 const game = games.find(({id}) => id == curr);
+                if (game && game.archive) return acc;
                 return game ? [...acc, game] : acc
             }, [])
         if (res.length > 8) res.length = 8;
