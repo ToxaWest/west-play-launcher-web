@@ -250,7 +250,7 @@ const AddGame = ({data, submit, remove}: {
             <div style={{position: 'relative'}}>
                 <div style={{display: 'flex', gap: 'var(--gap)', padding: 'var(--padding)'}}>
                     {render.remove()}
-                    {(game.source !== 'ryujinx' && game.id) ? render.update() : null}
+                    {game.id ? render.update() : null}
                     {render.updateLocalData()}
                     {game.name && render.howLongToBeat()}
                     {game.name && render.steamGridDB()}

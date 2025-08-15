@@ -39,6 +39,9 @@ const RenderContent = ({game, fields}: { game: Game, fields?: { label: string, v
             if (game.source === 'egs') {
                 return content.replaceAll(/!\[(.*?)] \((.*?)\)/gm, `<img src="$2" alt="$1" onerror="this.style.display='none'"/>`)
             }
+            if (game.source === 'steam') {
+                return content.replaceAll(/height=(.*?)/gm, '')
+            }
             return content
         }
 
