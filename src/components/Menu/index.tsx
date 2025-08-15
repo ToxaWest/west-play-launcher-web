@@ -18,17 +18,17 @@ const Menu = () => {
         React.startTransition(setConnectedMonitors)
     }, [])
 
-    const renderMonitors = ({id, name, active, primary}: ConnectedMonitorType) => {
+    const renderMonitors = ({DisplayId, DisplayName, Active, Primary}: ConnectedMonitorType) => {
 
         return (
-            <li key={id} className={active ? styles.active : ''}>
+            <li key={DisplayId} className={Active ? styles.active : ''}>
                 <Link to="/" tabIndex={1} onClick={(e) => {
                     e.preventDefault();
-                    electronConnector.setMainDisplay(id).then(() => {
+                    electronConnector.setMainDisplay(DisplayId).then(() => {
                         React.startTransition(setConnectedMonitors)
                     })
                 }}>
-                    {primary ? i18n.t('Main') : i18n.t('Select')}: {name}
+                    {Primary ? i18n.t('Main') : i18n.t('Select')}: {DisplayName}
                 </Link>
             </li>
         )

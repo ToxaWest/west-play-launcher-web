@@ -132,10 +132,10 @@ export type getSerialData = {
 }
 
 export type ConnectedMonitorType = {
-    id: string,
-    name: string,
-    active: boolean,
-    primary: boolean
+    DisplayId: number,
+    DisplayName: string,
+    Active: boolean,
+    Primary: boolean
 }
 
 export type getSteamUserId = {

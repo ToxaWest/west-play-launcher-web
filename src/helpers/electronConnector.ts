@@ -128,7 +128,7 @@ const electronConnector = {
         id: string | number,
     }): Promise<string> => apiCall(data, 'saveImage'),
     setAppModel: ({id, icon, name}): Promise<void> => apiCall({icon, id, name}, 'setAppModel'),
-    setMainDisplay: (id: string): Promise<void> => apiCall(id, 'setMainDisplay'),
+    setMainDisplay: (id: number): Promise<void> => apiCall(id, 'setMainDisplay'),
     setSave: (data: {
         post_id: number,
         translator_id: number,
