@@ -169,15 +169,19 @@ const Achievements = () => {
 
     const renderAchievementItems = () => {
         const orderMap = new Map();
+        const setOrder = ([item]: [string, any]) => {
+            if (!orderMap.has(item)) orderMap.set(item, orderMap.size + 1)
+        }
         Object.entries(achievements)
-            .sort(([_, {earned_time}], [_2, {earned_time: earned_timePrev}]) => {
-                if (!earned_time) return 1;
-                if (!earned_timePrev) return -1;
-                return new Date(earned_timePrev).getTime() - new Date(earned_time).getTime()
-            })
-            .forEach(([item], index) => {
-                orderMap.set(item, index)
-            })
+            .filter(([, {earned, earned_time}]) => earned && earned_time)
+            .sort(([, {earned_time}], [, {earned_time: earned_timePrev}]) => new Date(earned_timePrev).getTime() - new Date(earned_time).getTime())
+            .forEach(setOrder)
+        Object.entries(achievements)
+            .filter(([, {earned, progress}]) => !earned && progress)
+            .sort(([, {progress}], [, {progress: progressPrev}]) => progress < progressPrev ? 1 : -1)
+            .forEach(setOrder)
+
+        Object.entries(externalProgress).forEach(setOrder)
 
         Object.entries(externalProgress).forEach(([name]) => {
             if (!orderMap.has(name)) orderMap.set(name, orderMap.size + 1);
@@ -185,7 +189,7 @@ const Achievements = () => {
 
         game.achievements.sort((a, b) => a.rarity > b.rarity ? -1 : 1)
             .forEach(({name}) => {
-                if (!orderMap.has(name)) orderMap.set(name, orderMap.size + 1);
+                setOrder([name, null])
             })
 
         const sort = (a: achievementInterfaceType, b: achievementInterfaceType) => {
