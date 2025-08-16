@@ -12,6 +12,7 @@ import styles from './game.module.scss';
 
 type ExtendedAchievementType = EarnedAchievementsType[0] & {
     externalProgressValue: number,
+    displayName: string,
     progress: number
     className: string
     image: string
@@ -70,6 +71,8 @@ const Achievements = () => {
                                icongray,
                                icon,
                                description,
+                               localizedDescription,
+                               localizedDisplayName,
                                hidden,
                                displayName
                            }: achievementInterfaceType): ExtendedAchievementType => {
@@ -90,8 +93,9 @@ const Achievements = () => {
         }
         if (!Object.hasOwn(achievements, name)) return {
             ...achievements[name],
-            body: hidden ? i18n.t('Hidden achievement') : description,
+            body: hidden ? i18n.t('Hidden achievement') : (localizedDescription || description),
             className,
+            displayName: localizedDisplayName || displayName,
             externalProgressValue,
             image: icongray,
             progress: 0
@@ -101,8 +105,9 @@ const Achievements = () => {
 
         return {
             ...achievements[name],
-            body: description,
+            body: (localizedDescription || description),
             className,
+            displayName: localizedDisplayName || displayName,
             externalProgressValue,
             image: achievements[name].earned ? icon : icongray,
             progress: achievements[name].progress || 0,
