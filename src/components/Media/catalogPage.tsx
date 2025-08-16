@@ -4,6 +4,7 @@ import {getPageData, MoviesListItem} from "@type/electron.types";
 import type {MovieStorageHistory} from "@type/movieStorage.types";
 
 import i18n from "../../helpers/translate";
+import Input from "../Input";
 
 import CategoryFinder from "./categoryFinder";
 import MovieSearch from "./movieSearch";
@@ -87,22 +88,29 @@ const CatalogPage = ({pageData, selectMovie, goTo, history}: {
     }
 
     const renderCategories = () => {
+        if (!pageData.categories) return <MovieSearch selectMovie={selectMovie}/>;
         return (
-            <ul className={styles.categories}>
-                {pageData.categories.map((category, index: number) => (
-                    <li key={category.title}>
-                        <details>
-                            <summary tabIndex={1} onClick={() => {
-                                setActiveCategory(a => a === index ? null : index)
-                            }}>{category.title}</summary>
-                            {activeCategory === index ? <CategoryFinder data={category.data} goTo={a => {
-                                goTo(a)
-                                setTab(0)
-                            }}/> : null}
-                        </details>
-                    </li>
-                ))}
-            </ul>
+            <div className={styles.categories}>
+                <MovieSearch selectMovie={selectMovie}/>
+                <Input type="select"
+                       options={pageData.categories.map(({title}, index) => ({
+                           label: title,
+                           value: index
+                       }))}
+                       value={activeCategory}
+                       onChange={({value}) => {
+                           setActiveCategory(value as number)
+                       }}/>
+                {activeCategory !== null ?
+                    <CategoryFinder
+                        data={pageData.categories[activeCategory].data}
+                        goTo={a => {
+                            goTo(a)
+                            setTab(0)
+                            setActiveCategory(null)
+                        }}/> : null
+                }
+            </div>
         )
     }
 
@@ -168,11 +176,11 @@ const CatalogPage = ({pageData, selectMovie, goTo, history}: {
 
     return (
         <div className={styles.wrapperCatalog}>
-            <div style={{alignItems: 'start', display: 'grid', gap: 'var(--gap)', gridTemplateColumns: '2fr 1fr 2fr'}}>
+            <div style={{alignItems: 'start', display: 'grid', gap: 'var(--gap)', gridTemplateColumns: '1fr 2fr'}}>
                 {renderCategories()}
-                <MovieSearch selectMovie={selectMovie}/>
+                {renderNavigation()}
+
             </div>
-            {renderNavigation()}
             <h2>{tabs[tab].heading}</h2>
             {renderPagination()}
             <ul className={styles.catalogList}>

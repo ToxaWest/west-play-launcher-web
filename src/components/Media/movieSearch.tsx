@@ -17,9 +17,6 @@ const MovieSearch = ({selectMovie}) => {
                 onChange={({value}) => {
                     if (value && (value as string).length > 2) electronConnector.movieSearch(value as string).then(setTemp)
                 }}
-                onClick={() => {
-                    console.log('click')
-                }}
                 children={(
                     <ul className={styles.search}>
                         {temp.map(({title, href, description}) => (
@@ -40,7 +37,10 @@ const MovieSearch = ({selectMovie}) => {
     return <>
         <button tabIndex={1} type="button" onClick={() => setActive(true)}>{i18n.t('Search')}</button>
         {active ?
-            <Modal onClose={close} style={{backgroundColor: 'var(--theme-color-transparent)', zIndex: 30,}}>
+            <Modal onClose={() => {
+                setActive(false)
+                setTemp([])
+            }} style={{backgroundColor: 'var(--theme-color-transparent)', zIndex: 30}}>
                 <div style={{
                     backgroundColor: 'var(--theme-color)',
                     borderRadius: 'var(--border-radius)',

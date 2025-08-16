@@ -183,25 +183,11 @@
     background-color: var(--theme-color-transparent);
     display: flex;
     flex-direction: column;
-    list-style: none;
-    padding: var(--padding);
     margin: 0;
-    summary {
-      cursor: pointer;
-      font-size: 18px;
-      line-height: 2;
-      padding: var(--gap-half);
-      border-bottom: 1px solid var(--theme-text-color-seconary);
-      &:hover, &:focus, &:active {
-        background-color: var(--theme-text-color);
-        color: var(--theme-color);
-      }
-    }
     button {
-      margin: 0;
+      margin: var(--gap);
     }
   }
-
 
 }
 .search {

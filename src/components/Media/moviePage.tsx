@@ -30,16 +30,28 @@ const MoviePage = ({url}: {
     const navigate = useNavigate();
 
     useEffect(() => {
-        document.getElementById('movieTable').addEventListener('click', e => {
+        const redirectTo = (target: HTMLElement) => {
+            const href = target.getAttribute('href')
+            if (target.getAttribute('target') === '_blank') return;
+            if (href) navigate(href)
+        }
+        const listener = (e: PointerEvent) => {
             e.preventDefault()
             e.stopPropagation()
             const target = e.target as HTMLElement;
             if (target.tagName === 'A') {
-                const href = target.getAttribute('href')
-                if (target.getAttribute('target') === '_blank') return;
-                if (href) navigate(href)
+                redirectTo(target);
+            } else if (target.parentElement.tagName === 'A') {
+                redirectTo(target.parentElement);
             }
-        })
+        }
+        // eslint-disable-next-line @eslint-react/web-api/no-leaked-event-listener
+        document.getElementById('movieTable').addEventListener('click', listener);
+        return () => {
+            if (document.getElementById('movieTable')) {
+                document.getElementById('movieTable').removeEventListener('click', listener);
+            }
+        }
     }, [])
 
     useEffect(() => {
