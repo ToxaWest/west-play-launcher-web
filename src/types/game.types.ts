@@ -1,6 +1,4 @@
 export type achievementInterfaceType = {
-    localizedDescription: string,
-    localizedDisplayName: string,
     name: string
     displayName: string
     defaultvalue: number
