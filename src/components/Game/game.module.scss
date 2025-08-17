@@ -187,6 +187,12 @@
   gap: 1vw;
   position: relative;
   z-index: 2;
+
+  button {
+    &:disabled {
+      opacity: 0.9;
+    }
+  }
 }
 
 .info {
@@ -229,10 +235,12 @@
     align-items: center;
     gap: var(--gap-half);
     margin-right: auto;
+
     h1 {
       margin: 0;
       padding: 0;
     }
+
     img {
       display: block;
       min-width: 40px;
