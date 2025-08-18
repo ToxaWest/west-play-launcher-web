@@ -9,13 +9,18 @@ import styles from "./widgets.module.scss";
 
 const CrackedWidget = () => {
     const [active, setActive] = React.useState(null);
-    const cache = localStorage.getItem('list_crack_games') ? JSON.parse(localStorage.getItem('list_crack_games')) : []
-    const [{list_crack_games: games}, action, loading] = React.useActionState(() => electronConnector.beProxy<{
+    const cache: crackedGameType[] = localStorage.getItem('list_crack_games') ? JSON.parse(localStorage.getItem('list_crack_games')) : []
+    const [{list_crack_games}, action, loading] = React.useActionState(() => electronConnector.beProxy<{
         list_crack_games: crackedGameType[]
     }>({
         type: 'json',
         url: 'https://gamestatus.info/back/api/gameinfo/game/lastcrackedgames/'
     }), {list_crack_games: cache})
+
+    list_crack_games.length = list_crack_games.length > 27 ? 27 : list_crack_games.length;
+    const games: crackedGameType[] = list_crack_games
+    console.log(games)
+
     React.useEffect(() => {
         React.startTransition(action)
         return () => {
