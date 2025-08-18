@@ -32,7 +32,6 @@ const useAppControls = () => {
             matrix[keys[topRounded]].push(index)
             return {keys, matrix}
         }, {keys: {}, matrix: []})
-        console.log(matrix)
         refRowsMatrix.current = matrix;
     }
 
