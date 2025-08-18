@@ -49,14 +49,15 @@
       outline: none;
       position: relative;
       z-index: 2;
-      transform: scale(1.12);
       img {
+        transform: scale(1.12);
         border-color: var(--theme-text-color-seconary);
       }
     }
   }
 
   img {
+    transition: all 0.2s ease-in-out;
     border-radius: var(--border-radius);
     border: 2px solid transparent;
     overflow: hidden;

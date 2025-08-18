@@ -24,14 +24,15 @@ const useAppControls = () => {
         const {matrix} = [...ref.current].reduce(({matrix, keys}, current, index) => {
             const {top} = current.getBoundingClientRect()
             let topRounded = Math.round(top)
-            Object.keys(keys).forEach((key) => {
-                if (Math.abs(topRounded - parseInt(key)) < 15) topRounded = parseInt(key)
-            })
+            // Object.keys(keys).forEach((key) => {
+            //     if (Math.abs(topRounded - parseInt(key)) < 15) topRounded = parseInt(key)
+            // })
             if (typeof keys[topRounded] !== "number") keys[topRounded] = Object.keys(keys).length;
             if (!matrix[keys[topRounded]]) matrix[keys[topRounded]] = []
             matrix[keys[topRounded]].push(index)
             return {keys, matrix}
         }, {keys: {}, matrix: []})
+        console.log(matrix)
         refRowsMatrix.current = matrix;
     }
 

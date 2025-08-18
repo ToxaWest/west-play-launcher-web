@@ -19,7 +19,6 @@ const CrackedWidget = () => {
 
     list_crack_games.length = list_crack_games.length > 27 ? 27 : list_crack_games.length;
     const games: crackedGameType[] = list_crack_games
-    console.log(games)
 
     React.useEffect(() => {
         React.startTransition(action)
