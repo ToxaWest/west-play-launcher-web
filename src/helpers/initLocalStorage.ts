@@ -26,6 +26,8 @@ export default function initLocalStorage() {
         hiddenFree: [],
         history: [],
         lastPlayed: {},
+        list_crack_games: [],
+        list_free_games: [],
         movieFavorites: [],
         movieTime: {},
         movies: {

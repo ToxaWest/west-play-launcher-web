@@ -1,6 +1,7 @@
 import type {getSteamUserId} from '@type/electron.types';
 import type {achievementsType,Game, LastPlayed, PlayTime, ProgressType, StatsType} from "@type/game.types";
 import type {MovieStorageFavorites, MovieStorageHistory} from "@type/movieStorage.types";
+import type {crackedGameType, freeGameType} from "@type/widget.types";
 
 export type LocalStorageType = {
     config: {
@@ -29,6 +30,8 @@ export type LocalStorageType = {
         cookieString: string | null,
         proxy: string
     }
+    list_free_games: freeGameType[],
+    list_crack_games: crackedGameType[],
     movieTime: {[id: string]: number},
     movieFavorites: MovieStorageFavorites[],
     history: MovieStorageHistory[]

@@ -1,6 +1,6 @@
 import React from "react";
 import useFooterActions from "@hook/useFooterActions";
-import {getPageData, MoviesListItem} from "@type/electron.types";
+import type {getPageData, MoviesListItem} from "@type/electron.types";
 import type {MovieStorageHistory} from "@type/movieStorage.types";
 
 import i18n from "../../helpers/translate";

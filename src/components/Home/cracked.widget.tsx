@@ -2,6 +2,7 @@ import React from "react";
 import type {crackedGameType, widgetWrapperStyleInterface} from "@type/widget.types";
 
 import electronConnector from "../../helpers/electronConnector";
+import {getFromStorage, setToStorage} from "../../helpers/getFromStorage";
 import i18n from "../../helpers/translate";
 import Loader from "../Loader";
 
@@ -9,7 +10,7 @@ import styles from "./widgets.module.scss";
 
 const CrackedWidget = () => {
     const [active, setActive] = React.useState(null);
-    const cache: crackedGameType[] = localStorage.getItem('list_crack_games') ? JSON.parse(localStorage.getItem('list_crack_games')) : []
+    const cache: crackedGameType[] = getFromStorage('list_crack_games');
     const [{list_crack_games}, action, loading] = React.useActionState(() => electronConnector.beProxy<{
         list_crack_games: crackedGameType[]
     }>({
@@ -23,7 +24,7 @@ const CrackedWidget = () => {
     React.useEffect(() => {
         React.startTransition(action)
         return () => {
-            if (games) localStorage.setItem('list_crack_games', JSON.stringify(games))
+            if (games) setToStorage('list_crack_games', games)
         }
     }, [])
 

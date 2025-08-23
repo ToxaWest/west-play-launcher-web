@@ -36,7 +36,7 @@ const resolveData = (text: string): freeGameType[] => {
 
 const FreeWidget = () => {
     const [active, setActive] = React.useState(null);
-    const cache = localStorage.getItem('list_free_games') ? JSON.parse(localStorage.getItem('list_free_games')) : []
+    const cache = getFromStorage('list_free_games');
     const [games, action, loading] = React.useActionState(() => electronConnector.beProxy({
         type: 'text',
         url: 'https://gg.deals/deals/pc/?minDiscount=100&minRating=0'
@@ -45,7 +45,7 @@ const FreeWidget = () => {
     React.useEffect(() => {
         React.startTransition(action)
         return () => {
-            if (games) localStorage.setItem('list_free_games', JSON.stringify(games))
+            if (games) setToStorage('list_free_games', games)
         }
     }, [])
 
