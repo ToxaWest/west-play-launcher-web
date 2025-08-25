@@ -1,4 +1,5 @@
 @use "../../mixin";
+
 .wrapper {
 
 }
@@ -42,13 +43,19 @@
   grid-template-columns: repeat(var(--games-in-row), 1fr);
 
   @include mixin.glass;
+
   li {
     transition: all 0.2s ease-in-out;
     cursor: pointer;
+    width: 100%;
+    min-width: 0;
+    aspect-ratio: 6/9;
+
     &:focus, &:hover {
       outline: none;
       position: relative;
       z-index: 2;
+
       img {
         transform: scale(1.12);
         border-color: var(--theme-text-color-seconary);
@@ -60,11 +67,8 @@
     transition: all 0.2s ease-in-out;
     border-radius: var(--border-radius);
     border: 2px solid transparent;
-    overflow: hidden;
     display: block;
-    max-width: 100%;
-    min-width: 100%;
-    max-height: 100%;
+    width: 100%;
     object-fit: contain;
   }
 }
