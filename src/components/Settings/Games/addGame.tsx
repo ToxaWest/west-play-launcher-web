@@ -4,7 +4,6 @@ import type {Game} from "@type/game.types";
 
 import electronConnector from "../../../helpers/electronConnector";
 import {getFromStorage} from "../../../helpers/getFromStorage";
-import {notWorking} from "../../../helpers/GoldbergSteamEmulator";
 import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 import Loader from "../../Loader";
@@ -101,29 +100,6 @@ const AddGame = ({data, submit, remove}: {
         }}>{game.archive ? i18n.t('Remove from archive') : i18n.t('Add to archive')}</button>,
         download: () => <Input label={i18n.t('Download link')} value={game.downloadLink} onChange={onChange}
                                name='downloadLink'/>,
-        generateSteamSettings: () => {
-            if (!game.path) return null;
-            if (!game.unofficial) return null;
-            if (game.source !== 'steam') return null;
-            if (notWorking.includes(game.id as number)) return null;
-            return <button tabIndex={1} type="button" onClick={() => {
-                setLoading(true)
-                electronConnector.generateSteamSettings({
-                    gamePath: game.path
-                }).then(r => {
-                    setLoading(false)
-                    if (r.data) {
-                        onChange({name: 'achPath', value: r.data.achFile})
-                    }
-                    notification({
-                        description: r.message,
-                        img: '/assets/controller/save.svg',
-                        name: i18n.t('Generate steam settings'),
-                        status: r.error ? 'error' : 'success'
-                    }, 2000)
-                })
-            }}>{i18n.t('Generate steam settings')}</button>
-        },
         howLongToBeat: () => <SearchHLTB defaultValue={game.name} update={onChange}/>,
         imageName: () => <div style={{display: 'flex', gap: 'var(--gap)'}}>
             <Input label={i18n.t('Game Image')}
@@ -253,7 +229,6 @@ const AddGame = ({data, submit, remove}: {
                     {game.name && render.howLongToBeat()}
                     {game.name && render.steamGridDB()}
                     {render.archive()}
-                    {render.generateSteamSettings()}
                 </div>
                 {renderContent()}
                 <SearchSteamGame defaultValue={search} active={active} setActive={setActive}/>

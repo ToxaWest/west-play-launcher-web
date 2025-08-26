@@ -1,4 +1,5 @@
 import React, {useEffect} from "react";
+import useNotification from "@hook/useNotification";
 
 import electronConnector from "../../../helpers/electronConnector";
 import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
@@ -11,6 +12,7 @@ const GBEHome = () => {
     const [loading, setLoading] = React.useState(false);
     const [installed, setInstalled] = React.useState(false);
     const [gbeData, setGbeData] = React.useState<any[]>([])
+    const notification = useNotification();
     const games = getFromStorage('games');
 
     const gbeReadyGames = games.filter(({source, unofficial, archive}) => {
@@ -79,7 +81,7 @@ const GBEHome = () => {
                             }).then(() => {
                                 checkGBE(id, path)
                             })
-                        }}>Install
+                        }}>{i18n.t('Install')}
                         </button>
                     </li>
                 ))}
@@ -116,6 +118,27 @@ const GBEHome = () => {
                             <span role="button" tabIndex={1} onClick={() => {
                                 electronConnector.openLink(path)
                             }}>{name}</span>
+                            <button tabIndex={1} type="button" style={{marginLeft: 'auto'}} onClick={() => {
+                                setLoading(true)
+                                electronConnector.generateSteamSettings({
+                                    gamePath: path
+                                }).then(r => {
+                                    setLoading(false)
+                                    notification({
+                                        description: r.message,
+                                        img: '/assets/controller/save.svg',
+                                        name: i18n.t('Generate steam settings'),
+                                        status: r.error ? 'error' : 'success'
+                                    }, 2000)
+                                    if (r.data) {
+                                        games.find((game) => game.id === id).achPath = r.data.achFile;
+                                        setToStorage('games', games);
+                                        setTimeout(() => {
+                                            window.location.reload()
+                                        }, 1500)
+                                    }
+                                })
+                            }}>{i18n.t('Generate steam settings')}</button>
                             <button
                                 type={'button'}
                                 onClick={() => {
