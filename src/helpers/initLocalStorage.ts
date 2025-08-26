@@ -23,6 +23,7 @@ export default function initLocalStorage() {
             }
         },
         games: [],
+        gbe: {},
         hiddenFree: [],
         history: [],
         lastPlayed: {},

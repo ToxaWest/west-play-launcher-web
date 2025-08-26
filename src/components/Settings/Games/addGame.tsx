@@ -4,7 +4,7 @@ import type {Game} from "@type/game.types";
 
 import electronConnector from "../../../helpers/electronConnector";
 import {getFromStorage} from "../../../helpers/getFromStorage";
-import {notWorking, working, workingWithIssues} from "../../../helpers/GoldbergSteamEmulator";
+import {notWorking} from "../../../helpers/GoldbergSteamEmulator";
 import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 import Loader from "../../Loader";
@@ -109,9 +109,7 @@ const AddGame = ({data, submit, remove}: {
             return <button tabIndex={1} type="button" onClick={() => {
                 setLoading(true)
                 electronConnector.generateSteamSettings({
-                    copyDll: working.includes(game.id as number),
-                    gamePath: game.path,
-                    options: workingWithIssues[game.id] || {},
+                    gamePath: game.path
                 }).then(r => {
                     setLoading(false)
                     if (r.data) {
@@ -124,7 +122,7 @@ const AddGame = ({data, submit, remove}: {
                         status: r.error ? 'error' : 'success'
                     }, 2000)
                 })
-            }}>{i18n.t('Generate steam settings')} {working.includes(game.id as number) && '(include dll)'}</button>
+            }}>{i18n.t('Generate steam settings')}</button>
         },
         howLongToBeat: () => <SearchHLTB defaultValue={game.name} update={onChange}/>,
         imageName: () => <div style={{display: 'flex', gap: 'var(--gap)'}}>

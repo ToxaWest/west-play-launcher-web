@@ -32,6 +32,7 @@ const Settings = () => {
     const links = {
         '/settings': i18n.t('Home'),
         '/settings/games': i18n.t('Games'),
+        '/settings/gbe': 'GBE',
         '/settings/import': i18n.t('Import'),
         '/settings/media': i18n.t('Media'),
     }

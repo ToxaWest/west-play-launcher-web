@@ -19,6 +19,7 @@ import Menu from "./components/Menu";
 import Root from "./components/Root";
 import Settings from "./components/Settings";
 import SettingsGames from "./components/Settings/Games/settingsGames";
+import GBEHome from "./components/Settings/GBE/gbe.home";
 import SettingsHome from "./components/Settings/Home/settingsHome";
 import SettingsImport from "./components/Settings/import/settingsImport";
 import SettingMedia from "./components/Settings/meida/settingMedia";
@@ -58,6 +59,9 @@ const router = createBrowserRouter([
             }, {
                 element: <SettingMedia/>,
                 path: "/settings/media"
+            }, {
+                element: <GBEHome/>,
+                path: "/settings/gbe"
             }],
             element: <Settings/>,
             path: "/settings"

@@ -59,10 +59,9 @@ const electronConnector = {
         status: 'closed' | 'running' | 'error' | 'starting',
         playTime: number
     }) => void): void => apiCall(callBack, 'gameStatus'),
+    gbeActions: ({event, data}: {event: string, data?: any}): Promise<any> => apiCall({data, event}, 'gbeActions'),
     generateSteamSettings: (data: {
-        gamePath: string, copyDll: boolean, options?: {
-            disableDlc?: boolean,
-        }
+        gamePath: string
     }): Promise<{
         error: boolean,
         message: string,

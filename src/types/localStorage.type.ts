@@ -1,5 +1,5 @@
 import type {getSteamUserId} from '@type/electron.types';
-import type {achievementsType,Game, LastPlayed, PlayTime, ProgressType, StatsType} from "@type/game.types";
+import type {achievementsType, Game, LastPlayed, PlayTime, ProgressType, StatsType} from "@type/game.types";
 import type {MovieStorageFavorites, MovieStorageHistory} from "@type/movieStorage.types";
 import type {crackedGameType, freeGameType} from "@type/widget.types";
 
@@ -30,9 +30,16 @@ export type LocalStorageType = {
         cookieString: string | null,
         proxy: string
     }
+    gbe: {
+        [architecture: string]: {
+            path: string,
+            name: string,
+            hash: string
+        }
+    },
     list_free_games: freeGameType[],
     list_crack_games: crackedGameType[],
-    movieTime: {[id: string]: number},
+    movieTime: { [id: string]: number },
     movieFavorites: MovieStorageFavorites[],
     history: MovieStorageHistory[]
     hiddenFree: (string | number)[],
@@ -40,7 +47,7 @@ export type LocalStorageType = {
     lastPlayed: LastPlayed,
     achievements: achievementsType,
     stats: { [id: string | number]: StatsType },
-    progress: { [id: string | number]: ProgressType},
+    progress: { [id: string | number]: ProgressType },
     playTime: PlayTime
 }
 
