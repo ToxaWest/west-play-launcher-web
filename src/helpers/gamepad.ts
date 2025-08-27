@@ -75,7 +75,7 @@ class GamepadApi {
         })
 
         Object.entries(pressed).forEach(([key, value]) => {
-            if (!value && prevPressed[key] === true) this.sendEvent(keyMapping[key])
+            if (value && !prevPressed[key]) this.sendEvent(keyMapping[key])
         })
         if (Math.abs(verticalR) > 0.3) document.querySelector(this.activeWrapper).scrollTop += verticalR * scrollBooster;
         setTimeout(() => window.requestAnimationFrame(() => this.init(pressed)))
