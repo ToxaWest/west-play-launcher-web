@@ -23,6 +23,7 @@ import GBEHome from "./components/Settings/GBE/gbe.home";
 import SettingsHome from "./components/Settings/Home/settingsHome";
 import SettingsImport from "./components/Settings/import/settingsImport";
 import SettingMedia from "./components/Settings/meida/settingMedia";
+import Torrent from "./components/Torrent";
 import initLocalStorage from "./helpers/initLocalStorage";
 import Provider from "./helpers/provider";
 
@@ -41,6 +42,9 @@ const router = createBrowserRouter([
             element: <MoviePageRouter/>,
             path: '/movie'
         }, {
+            element: <Torrent/>,
+            path: '/torrent'
+        },{
             element: <Menu/>,
             path: '/menu'
         }, {

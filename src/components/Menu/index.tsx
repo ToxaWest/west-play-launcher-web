@@ -47,9 +47,14 @@ const Menu = () => {
                         {i18n.t('Library')}
                     </Link>
                 </li>
-                <li style={{marginBottom: 'auto'}}>
+                <li>
                     <Link to="/media" tabIndex={1}>
                         {i18n.t('Media')}
+                    </Link>
+                </li>
+                <li style={{marginBottom: 'auto'}}>
+                    <Link to="/torrent" tabIndex={1}>
+                        {i18n.t('Download Manager')}
                     </Link>
                 </li>
                 {connectedMonitors.map(renderMonitors)}

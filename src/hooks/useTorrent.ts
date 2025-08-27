@@ -193,7 +193,7 @@ const useTorrent = ({
                         port = 8080,
                         url = 'http://127.0.0.1'
                     }: {
-    username: string;
+    username?: string;
     password?: string;
     port?: number;
     url?: string;
@@ -205,8 +205,6 @@ const useTorrent = ({
         credentials: 'include',
         headers: {Authorization: 'Basic ' + btoa(username + ':' + password)}
     }
-
-    console.log(token)
 
     const getToken = async () => {
         const html = await electronConnector.beProxy({
@@ -268,7 +266,7 @@ const useTorrent = ({
                 ))
                 setTimeout(() => {
                     getTorrents(token)
-                }, 5000)
+                }, 1000)
             })
         }
 

@@ -1,0 +1,28 @@
+@use '../../mixin.scss';
+
+.wrapper {
+  padding: var(--padding);
+  border-radius: var(--border-radius);
+  width: 90vw;
+  margin: 60px auto;
+  @include mixin.glass;
+
+  table {
+    width: 100%;
+    td {
+      text-align: left;
+    }
+    td {
+      padding: var(--gap-half);
+    }
+  }
+
+  .status_{
+    &Status_Up{
+      background-color: rgba(127,187,0,0.2);
+    }
+    &Status_Down {
+      background-color: rgba(255,199,4,0.2);
+    }
+  }
+}
