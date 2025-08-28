@@ -15,6 +15,9 @@
   &Ready {
     color: var(--earned-color);
   }
+  &NotReady {
+    color: rgba(240,62,31,0.9);
+  }
 }
 
 .games {

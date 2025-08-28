@@ -48,7 +48,7 @@ const GBEHome = () => {
 
     const renderGbeData = (
         data: {
-            installed: { path: string, name: string }[]
+            installed: { current: { path: string, name: string }, backupExist: boolean }[]
             notInstalled: { current: { path: string, name: string }, gbe: { path: string, name: string } }[]
         },
         id: number | string, path: string
@@ -64,24 +64,38 @@ const GBEHome = () => {
 
         return (
             <ul>
-                {installed.map(a => (
+                {installed.map(({current: a, backupExist}) => (
                     <li key={a.path} style={getStyle(true)}>
                         <span>{a.name}</span>
                         <span>{a.path}</span>
+                        {backupExist && <button type={"button"}
+                                                tabIndex={1}
+                                                onClick={() => {
+                                                    electronConnector.gbeActions({
+                                                        data: {current: a.path},
+                                                        event: 'restoreGBE'
+                                                    }).then(() => {
+                                                        checkGBE(id, path)
+                                                    })
+                                                }}>
+                            {i18n.t('Restore backup')}
+                        </button>}
                     </li>
                 ))}
                 {notInstalled.map(({current: a, gbe}) => (
                     <li key={a.path} style={getStyle(false)}>
                         <span>{a.name}</span>
                         <span>{a.path}</span>
-                        <button type={"button"} onClick={() => {
-                            electronConnector.gbeActions({
-                                data: {current: a.path, source: gbe.path},
-                                event: 'copyGBE'
-                            }).then(() => {
-                                checkGBE(id, path)
-                            })
-                        }}>{i18n.t('Install')}
+                        <button type={"button"}
+                                tabIndex={1}
+                                onClick={() => {
+                                    electronConnector.gbeActions({
+                                        data: {current: a.path, source: gbe.path},
+                                        event: 'copyGBE'
+                                    }).then(() => {
+                                        checkGBE(id, path)
+                                    })
+                                }}>{i18n.t('Install')}
                         </button>
                     </li>
                 ))}
@@ -92,10 +106,12 @@ const GBEHome = () => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.gbeStatus}>
-                {installed ? <p className={installed ? styles.gbeStatusReady : ''}>{i18n.t('GBE is ready')}</p> :
-                    <p>{i18n.t('GBE is not ready')}</p>}
+                <p className={installed ? styles.gbeStatusReady : styles.gbeStatusNotReady}>
+                    {installed ? i18n.t('GBE is ready') : i18n.t('GBE is not ready')}
+                </p>
                 <button
                     type={'button'}
+                    tabIndex={1}
                     onClick={() => {
                         setLoading(true);
                         electronConnector.gbeActions({
@@ -141,9 +157,10 @@ const GBEHome = () => {
                             }}>{i18n.t('Generate steam settings')}</button>
                             <button
                                 type={'button'}
+                                tabIndex={1}
                                 onClick={() => {
                                     checkGBE(id, path)
-                                }}>Chek GBE
+                                }}>{i18n.t('Chek GBE')}
                             </button>
                         </div>
                         {renderGbeData(gbeData[id], id, path)}

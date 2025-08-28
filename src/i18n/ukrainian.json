@@ -151,5 +151,11 @@
     "Get steam Assets": "Отримати ресурси Steam",
     "Remove from archive": "Вилучити з архіву",
     "Add to archive": "Додати до архіву",
-    "Archive": "Архів"
+    "Archive": "Архів",
+  "Download Manager": "Менеджер завантажень",
+  "Restore backup": "Відновити резервну копію",
+  "GBE is ready": "GBE готовий",
+  "GBE is not ready": "GBE не готовий",
+  "Download GBE": "Завантажити GBE",
+  "Chek GBE": "Перевірити GBE"
 }

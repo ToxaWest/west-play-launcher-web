@@ -151,5 +151,11 @@
     "Get steam Assets": "Steam-Assets abrufen",
     "Remove from archive": "Aus Archiv entfernen",
     "Add to archive": "Zum Archiv hinzufügen",
-    "Archive": "Archiv"
+    "Archive": "Archiv",
+  "Download Manager": "Download-Manager",
+  "Restore backup": "Backup wiederherstellen",
+  "GBE is ready": "GBE ist bereit",
+  "GBE is not ready": "GBE ist nicht bereit",
+  "Download GBE": "GBE herunterladen",
+  "Chek GBE": "GBE überprüfen"
 }
