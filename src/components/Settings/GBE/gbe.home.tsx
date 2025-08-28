@@ -73,7 +73,7 @@ const GBEHome = () => {
                                                 onClick={() => {
                                                     electronConnector.gbeActions({
                                                         data: {current: a.path},
-                                                        event: 'restoreGBE'
+                                                        event: 'revertGBE'
                                                     }).then(() => {
                                                         checkGBE(id, path)
                                                     })
