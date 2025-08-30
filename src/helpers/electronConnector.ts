@@ -62,6 +62,7 @@ const electronConnector = {
     gbeActions: ({event, data}: {event: string, data?: any}): Promise<any> => apiCall({data, event}, 'gbeActions'),
     generateSteamSettings: (data: {
         gamePath: string
+        dllPath?: string
     }): Promise<{
         error: boolean,
         message: string,

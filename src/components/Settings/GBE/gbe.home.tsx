@@ -80,6 +80,7 @@ const GBEHome = () => {
                                                 }}>
                             {i18n.t('Restore backup')}
                         </button>}
+                        {renderSteamSettingsGeneration(a.path, path, id)}
                     </li>
                 ))}
                 {notInstalled.map(({current: a, gbe}) => (
@@ -100,6 +101,33 @@ const GBEHome = () => {
                     </li>
                 ))}
             </ul>
+        )
+    }
+
+    const renderSteamSettingsGeneration = (dllPath: string, gamePath: string, id: number | string) => {
+        return (
+            <button tabIndex={1} type="button" style={{marginLeft: 'auto'}} onClick={() => {
+                setLoading(true)
+                electronConnector.generateSteamSettings({
+                    dllPath,
+                    gamePath
+                }).then(r => {
+                    setLoading(false)
+                    notification({
+                        description: r.message,
+                        img: '/assets/controller/save.svg',
+                        name: i18n.t('Generate steam settings'),
+                        status: r.error ? 'error' : 'success'
+                    }, 2000)
+                    if (r.data) {
+                        games.find((game) => game.id === id).achPath = r.data.achFile;
+                        setToStorage('games', games);
+                        setTimeout(() => {
+                            window.location.reload()
+                        }, 1500)
+                    }
+                })
+            }}>{i18n.t('Generate steam settings')}</button>
         )
     }
 
@@ -134,27 +162,6 @@ const GBEHome = () => {
                             <span role="button" tabIndex={1} onClick={() => {
                                 electronConnector.openLink(path)
                             }}>{name}</span>
-                            <button tabIndex={1} type="button" style={{marginLeft: 'auto'}} onClick={() => {
-                                setLoading(true)
-                                electronConnector.generateSteamSettings({
-                                    gamePath: path
-                                }).then(r => {
-                                    setLoading(false)
-                                    notification({
-                                        description: r.message,
-                                        img: '/assets/controller/save.svg',
-                                        name: i18n.t('Generate steam settings'),
-                                        status: r.error ? 'error' : 'success'
-                                    }, 2000)
-                                    if (r.data) {
-                                        games.find((game) => game.id === id).achPath = r.data.achFile;
-                                        setToStorage('games', games);
-                                        setTimeout(() => {
-                                            window.location.reload()
-                                        }, 1500)
-                                    }
-                                })
-                            }}>{i18n.t('Generate steam settings')}</button>
                             <button
                                 type={'button'}
                                 tabIndex={1}
