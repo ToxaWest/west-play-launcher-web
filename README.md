@@ -15,15 +15,13 @@ ___
 - Cracked windows games
 - [Ryujinx](https://git.ryujinx.app/ryubing/ryujinx/-/releases) (Nintendo Switch Emulator)
 ___
-### For what sources achievements tracking working
+### For what sources achievements tracking working?
 - Steam: +
 - EGS: +
-- GOG: in future
-- Cracked games: + (only if crack team created achievements.ini/json file with tracking user achievements)
+- GOG: -
+- Cracked games: + (GBE included)
 - Ryujinx: -
 ___
-### List of games tested with GoldbergSteamEmulator
-- [src/helpers/GoldbergSteamEmulator.ts](https://github.com/ToxaWest/west-play-launcher-web/blob/master/src/helpers/GoldbergSteamEmulator.ts)
 
 ### Required thrid party utils
 #### PowerShell

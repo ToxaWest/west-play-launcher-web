@@ -19,7 +19,7 @@ const GBEHome = () => {
         return source === 'steam' && unofficial && !archive;
     })
 
-    const checkGBE = (id, path) => {
+    const checkGBE = (id: string | number, path: string) => {
         setLoading(true);
         electronConnector.gbeActions({
             data: {dir: path},
@@ -48,8 +48,8 @@ const GBEHome = () => {
 
     const renderGbeData = (
         data: {
-            installed: { current: { path: string, name: string }, backupExist: boolean }[]
-            notInstalled: { current: { path: string, name: string }, gbe: { path: string, name: string } }[]
+            installed: { current: { path: string, name: string, hash: string }, backupExist: boolean }[]
+            notInstalled: { current: { path: string, name: string, hash: string }, gbe: { path: string, name: string, hash: string } }[]
         },
         id: number | string, path: string
     ) => {
