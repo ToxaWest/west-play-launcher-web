@@ -169,7 +169,7 @@ const AddGame = ({data, submit, remove}: {
                         {render.version()}
                     </>
                 )
-            }
+            } else return render.imageName()
         }
 
         if (game.source === 'egs') {
