@@ -38,6 +38,7 @@ export type LocalStorageType = {
         }
     },
     list_free_games: freeGameType[],
+    list_free_games2: [],
     list_crack_games: crackedGameType[],
     movieTime: { [id: string]: number },
     movieFavorites: MovieStorageFavorites[],

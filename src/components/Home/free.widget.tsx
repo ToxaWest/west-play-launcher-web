@@ -9,49 +9,45 @@ import Loader from "../Loader";
 
 import styles from "./widgets.module.scss";
 
-const resolveData = (text: string): freeGameType[] => {
-    if (!text) return null;
-    const parser = new DOMParser();
-    const document = parser.parseFromString(text, 'text/html');
-    const list = Array.from(document.querySelectorAll('.deals-content .list-items .game-item'))
-    return list.map((item: HTMLDivElement) => {
-        const image = (item.querySelector('.game-image img') as HTMLImageElement).srcset.split(',').at(-1).split(' ')[0];
-        const link = new URL((item.querySelector('.shop-link') as HTMLLinkElement).href);
-        link.host = 'gg.deals'
-        link.port = ''
-        link.protocol = 'https:'
-        return {
-            ...item.dataset,
-            endTime: (item.querySelector('.game-info-wrapper .game-tags .time-tag .expiry time') as HTMLElement)?.dataset?.timestamp,
-            id: item.dataset.containerGameId,
-            link: link.href,
-            name: item.querySelector('.game-info-wrapper .game-info-title').textContent,
-            price: item.querySelector('.game-info-wrapper .price-old')?.innerHTML,
-            short_image: image.split('_')[0] + '_616xr353.jpg',
-            startTime: (item.querySelector('.game-info-wrapper .game-tags .time-icon-tag time') as HTMLElement)?.dataset?.timestamp,
-        } as freeGameType
+const getGamesList = async () => {
+    const sources = [
+        'https://freetokeep.gg/data/gog.json', 'https://freetokeep.gg/data/steam.json', 'https://freetokeep.gg/data/epic.json','https://freetokeep.gg/data/expected.json'
+    ]
+    const req = [];
+    sources.forEach(url => req.push(electronConnector.beProxy({
+        type: 'json',
+        url: url
+    })))
+    const res = await Promise.all(req)
+    const games = res.map((store, index) => store.map(a => {
+        if(index === 0) return {...a, store: 'GOG'}
+        if(index === 1) return {...a, store: 'Steam'}
+        if(index === 2) return {...a, store: 'Epic Games'}
+        return a
+    })).flat();
+    return games.filter(({expires}) => {
+        if(!expires) return true;
+        return new Date(expires) > new Date()
     })
 }
 
 
 const FreeWidget = () => {
     const [active, setActive] = React.useState(null);
-    const cache = getFromStorage('list_free_games');
-    const [games, action, loading] = React.useActionState(() => electronConnector.beProxy({
-        type: 'text',
-        url: 'https://gg.deals/deals/pc/?minDiscount=100&minRating=0'
-    }).then(resolveData), cache)
+    const cache = getFromStorage('list_free_games2');
+    const [games, action, loading] = React.useActionState(() => getGamesList(), cache)
 
     React.useEffect(() => {
+        getGamesList().then(console.log)
         React.startTransition(action)
         return () => {
-            if (games) setToStorage('list_free_games', games)
+            if (games) setToStorage('list_free_games2', games)
         }
     }, [])
 
     const renderTime = (time?: string) => {
         const {webapi} = locales.find(a => a.value === getFromStorage('config').settings.currentLang)
-        const dateFormatter = (t: string) => new Date(parseInt(t) * 1000).toLocaleDateString(webapi) + ' ' + new Date(parseInt(t) * 1000).toLocaleTimeString(webapi)
+        const dateFormatter = (t: string) => new Date(t).toLocaleDateString(webapi) + ' ' + new Date(t).toLocaleTimeString(webapi)
         if (!time) return null;
         return dateFormatter(time)
     }
@@ -59,21 +55,18 @@ const FreeWidget = () => {
     const getFields = (currentGame: freeGameType) => {
         return [{
             label: i18n.t('Name'),
-            value: currentGame.name,
+            value: currentGame.title,
         }, {
             label: i18n.t('Store Link'),
             value: <span style={{cursor: 'pointer'}} role="link" tabIndex={0} onClick={() => {
-                if (currentGame.link) electronConnector.openLink(currentGame.link)
-            }}>{currentGame.shopName}</span>
-        }, {
-            label: i18n.t('Price'),
-            value: currentGame.price
+                if (currentGame.url) electronConnector.openLink(currentGame.url)
+            }}>{currentGame.store || currentGame.url}</span>
         }, {
             label: i18n.t('Free from'),
-            value: renderTime(currentGame.startTime)
+            value: renderTime(currentGame.added)
         }, {
             label: i18n.t('Free to'),
-            value: renderTime(currentGame.endTime)
+            value: renderTime(currentGame.expires)
         }, {
             label: i18n.t('Hide this game'),
             value: <span style={{cursor: 'pointer'}} role="button" tabIndex={0} onClick={() => {
@@ -95,17 +88,17 @@ const FreeWidget = () => {
     }
 
     const renderGame = (game: freeGameType) => {
-        const enabled = active === game.id
+        const enabled = active === game.appid
         return (
-            <li key={game.id}
+            <li key={game.appid}
                 tabIndex={1}
                 role="button"
                 className={enabled ? styles.active : ""}
-                onClick={() => setActive(game.id)}
+                onClick={() => setActive(game.appid)}
                 onBlur={() => {
                     setActive(0);
                 }}>
-                <img src={game.short_image} alt={game.title} loading={"lazy"}/>
+                <img src={game.image} alt={game.title} loading={"lazy"}/>
                 {renderDescription(game)}
             </li>
         )
