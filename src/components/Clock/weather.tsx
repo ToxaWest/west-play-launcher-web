@@ -112,8 +112,6 @@ const Weather = () => {
 
     if (!w.id) return null
 
-    console.log(current)
-
     return (
         <div style={style}>
             <svg width="40px" height="40px" viewBox="24 24 100 100">

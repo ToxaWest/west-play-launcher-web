@@ -56,11 +56,6 @@ const PlayedWidget = () => {
                     setGame(index)
                 }}>
                 <img src={game.img_icon} alt={game.title} loading={"lazy"}
-                     onError={(e) => {
-                         if ((e.target as HTMLImageElement).src === game.img_grid) return;
-                         (e.target as HTMLImageElement).src = game.img_grid;
-                         (e.target as HTMLImageElement).style.objectFit = 'cover';
-                     }}
                      onMouseEnter={(e) => {
                          (e.target as HTMLElement).parentElement.focus()
                      }}/>

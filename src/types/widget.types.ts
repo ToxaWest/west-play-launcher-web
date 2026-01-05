@@ -1,15 +1,14 @@
 import type {CSSProperties} from "react";
 
 export type freeGameType = {
-    id: string
-    name: string
+    store: string
     title: string
-    short_image: string
-    link: string
-    endTime?: string
-    startTime: string
-    price: string
-    shopName: string
+    image: string
+    url: string
+    added?: string
+    expires: string
+    appid: number
+    expected: boolean
 };
 
 export type crackedGameType = {

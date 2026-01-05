@@ -10,19 +10,17 @@ import Loader from "../Loader";
 import styles from "./widgets.module.scss";
 
 const getGamesList = async () => {
-    const sources = [
-        'https://freetokeep.gg/data/gog.json', 'https://freetokeep.gg/data/steam.json', 'https://freetokeep.gg/data/epic.json','https://freetokeep.gg/data/expected.json'
-    ]
-    const req = [];
-    sources.forEach(url => req.push(electronConnector.beProxy({
+    const sources = ['gog', 'steam', 'epic','expected'].map(url => electronConnector.beProxy({
         type: 'json',
-        url: url
-    })))
-    const res = await Promise.all(req)
-    const games = res.map((store, index) => store.map(a => {
+        url: `https://freetokeep.gg/data/${url}.json`
+    })) as Promise<freeGameType[]>[]
+
+    const res = await Promise.all(sources)
+    const games = res.map((store, index) => store.map((a:freeGameType) => {
         if(index === 0) return {...a, store: 'GOG'}
         if(index === 1) return {...a, store: 'Steam'}
         if(index === 2) return {...a, store: 'Epic Games'}
+        if(index === 3) return {...a, expected: true}
         return a
     })).flat();
     return games.filter(({expires}) => {
@@ -38,7 +36,6 @@ const FreeWidget = () => {
     const [games, action, loading] = React.useActionState(() => getGamesList(), cache)
 
     React.useEffect(() => {
-        getGamesList().then(console.log)
         React.startTransition(action)
         return () => {
             if (games) setToStorage('list_free_games2', games)
@@ -60,7 +57,7 @@ const FreeWidget = () => {
             label: i18n.t('Store Link'),
             value: <span style={{cursor: 'pointer'}} role="link" tabIndex={0} onClick={() => {
                 if (currentGame.url) electronConnector.openLink(currentGame.url)
-            }}>{currentGame.store || currentGame.url}</span>
+            }}>{currentGame.store}</span>
         }, {
             label: i18n.t('Free from'),
             value: renderTime(currentGame.added)
@@ -70,7 +67,7 @@ const FreeWidget = () => {
         }, {
             label: i18n.t('Hide this game'),
             value: <span style={{cursor: 'pointer'}} role="button" tabIndex={0} onClick={() => {
-                setToStorage('hiddenFree', [...getFromStorage('hiddenFree'), currentGame.id]);
+                setToStorage('hiddenFree', [...getFromStorage('hiddenFree'), currentGame.appid]);
                 React.startTransition(action)
             }}>{i18n.t('Hide')}</span>
         }]
@@ -98,7 +95,9 @@ const FreeWidget = () => {
                 onBlur={() => {
                     setActive(0);
                 }}>
-                <img src={game.image} alt={game.title} loading={"lazy"}/>
+                <img src={game.image} alt={game.title} loading={"lazy"}
+                    style={game.expected ? {filter: 'grayscale(100%)'} : {}}
+                />
                 {renderDescription(game)}
             </li>
         )
@@ -106,7 +105,7 @@ const FreeWidget = () => {
 
     const style: widgetWrapperStyleInterface = {'--lines': '1'}
     if(!games) return null
-    const list = games.filter(({id}) => !getFromStorage('hiddenFree').includes(id))
+    const list = games.filter(({appid}) => !getFromStorage('hiddenFree').includes(appid))
     if (list.length === 0) return null;
 
     return (
