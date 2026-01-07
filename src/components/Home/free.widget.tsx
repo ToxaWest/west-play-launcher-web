@@ -15,18 +15,25 @@ const getGamesList = async () => {
         url: `https://freetokeep.gg/data/${url}.json`
     })) as Promise<freeGameType[]>[]
 
-    const res = await Promise.all(sources)
-    const games = res.map((store, index) => store.map((a:freeGameType) => {
-        if(index === 0) return {...a, store: 'GOG'}
-        if(index === 1) return {...a, store: 'Steam'}
-        if(index === 2) return {...a, store: 'Epic Games'}
-        if(index === 3) return {...a, expected: true}
-        return a
-    })).flat();
-    return games.filter(({expires}) => {
-        if(!expires) return true;
-        return new Date(expires) > new Date()
-    })
+    try {
+        const res = await Promise.all(sources)
+        const games = res.map((store, index) => store.map((a:freeGameType) => {
+            if(index === 0) return {...a, store: 'GOG'}
+            if(index === 1) return {...a, store: 'Steam'}
+            if(index === 2) return {...a, store: 'Epic Games'}
+            if(index === 3) return {...a, expected: true}
+            return a
+        })).flat();
+        return games.filter(({expires}) => {
+            if(!expires) return true;
+            return new Date(expires) > new Date()
+        })
+    } catch (e) {
+        console.log(e)
+        return []
+    }
+
+
 }
 
 
