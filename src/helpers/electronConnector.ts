@@ -82,6 +82,15 @@ const electronConnector = {
     getDataByGameId: (props: getDataByGameIdInput): Promise<Game> => apiCall(props, 'getDataByGameId'),
     getDisks: (): Promise<string[]> => apiCall(null, 'getDisks'),
     getFolders: (path: string): Promise<FileManagerFolderType[]> => apiCall(path, 'getFolders'),
+    getFreeGames: (): Promise<{
+        title: string,
+        link: string,
+        priceNew: string,
+        priceOld: string,
+        shop: string,
+        shopLink: string,
+        image: string
+    }[]> => apiCall(null, 'getFreeGames'),
     getGameByFolder: (path: string) => apiCall(path, 'getGameByFolder'),
     getImage: (data: { body: getImageInput }): Promise<{
         data: { assets: getImageAssets[] }

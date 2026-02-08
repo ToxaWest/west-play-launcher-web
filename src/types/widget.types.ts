@@ -5,10 +5,13 @@ export type freeGameType = {
     title: string
     image: string
     url: string
+    appid: string | number
+    priceNew?: string
+    priceOld?: string
+    shopLink?: string
     added?: string
-    expires: string
-    appid: number
-    expected: boolean
+    expires?: string
+    expected?: boolean
 };
 
 export type crackedGameType = {
