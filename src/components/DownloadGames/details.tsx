@@ -1,15 +1,14 @@
 import React from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { KinozalGameDetails } from "@type/game.types";
-import { useParams } from "react-router-dom";
-
 import electronConnector from "../../helpers/electronConnector";
 import i18n from "../../helpers/translate";
 import Loader from "../Loader";
-
 import styles from "./downloadGames.module.scss";
 
 const DownloadGameDetails = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [details, setDetails] = React.useState<KinozalGameDetails | null>(null);
     const [loading, setLoading] = React.useState(true);
 
@@ -22,6 +21,13 @@ const DownloadGameDetails = () => {
         }
     }, [id]);
 
+    const handleDownload = () => {
+        if (details?.downloadLink) {
+            electronConnector.kinozalDownloadTorrent(details.downloadLink);
+            navigate('/torrent');
+        }
+    };
+
     if (loading) return <div className={styles.wrapper}><Loader loading={true} /></div>;
     if (!details) return <div className={styles.wrapper}><h1>{i18n.t('Game details not found.')}</h1></div>;
 
@@ -31,7 +37,7 @@ const DownloadGameDetails = () => {
                 <div className={styles.detailsSidebar}>
                     {details.poster && <img src={details.poster} alt="poster" className={styles.detailsPoster} />}
                     {details.downloadLink && (
-                        <button onClick={() => electronConnector.kinozalDownloadTorrent(details.downloadLink!)}>
+                        <button onClick={handleDownload}>
                             {i18n.t('Download')}
                         </button>
                     )}
