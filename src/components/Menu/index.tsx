@@ -52,6 +52,11 @@ const Menu = () => {
                         {i18n.t('Media')}
                     </Link>
                 </li>
+                <li>
+                    <Link to="/download-games" tabIndex={1}>
+                        {i18n.t('Download Games')}
+                    </Link>
+                </li>
                 <li style={{marginBottom: 'auto'}}>
                     <Link to="/torrent" tabIndex={1}>
                         {i18n.t('Download Manager')}

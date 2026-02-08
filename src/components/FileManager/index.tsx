@@ -21,13 +21,15 @@ const FileManager = ({
     submit?: (path: string) => void,
 }) => {
     const [disks, setDisks] = React.useState<string[]>([]);
-    const currentFolder = React.useRef<string>(initial);
+    const [currentPath, setCurrentPath] = React.useState<string>(initial);
+    const currentFolderRef = React.useRef<string>(initial);
     const {removeFooterActions, setFooterActions} = useFooterActions()
     const [folders, getFolders, loading] = useActionState<Promise<FileManagerFolderType[]>, string>((_state, f) => electronConnector.getFolders(f), [])
 
     const getChild = (f: string) => {
-        currentFolder.current = f
-        startTransition(() => getFolders(f))
+        currentFolderRef.current = f;
+        setCurrentPath(f);
+        startTransition(() => getFolders(f));
     }
 
     React.useEffect(() => {
@@ -35,8 +37,8 @@ const FileManager = ({
             b: {
                 button: 'b',
                 onClick: () => {
-                    if (currentFolder.current) {
-                        const a = currentFolder.current.split('/');
+                    if (currentFolderRef.current) {
+                        const a = currentFolderRef.current.split('/');
                         if (a.length > 1) {
                             a.pop()
                             getChild(a.join('/') + (a.length === 1 ? '/' : ''))
@@ -66,7 +68,7 @@ const FileManager = ({
                 y: {
                     button: 'y',
                     onClick: () => {
-                        submit(currentFolder.current)
+                        submit(currentFolderRef.current)
                     },
                     title: i18n.t('Select')
                 }
@@ -81,8 +83,8 @@ const FileManager = ({
     }, []);
 
     const backIndex = (index: number) => {
-        if (currentFolder.current) {
-            const a = currentFolder.current.split('/');
+        if (currentFolderRef.current) {
+            const a = currentFolderRef.current.split('/');
             if (a.length > 1) {
                 a.length = index + 1;
                 getChild(a.join('/') + (a.length === 1 ? '/' : ''))
@@ -121,7 +123,7 @@ const FileManager = ({
         <div className={styles.modal}>
             <div className={styles.wrapper}>
                 <span className={styles.currentPath}>
-                    {currentFolder.current.split('/').map(renderPathItem)}
+                    {currentPath.split('/').map(renderPathItem)}
                 </span>
                 <ul className={styles.diskList}>
                     {disks.map(renderDiskItem)}

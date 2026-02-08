@@ -18,14 +18,14 @@ const styles: React.CSSProperties = {
 }
 
 const Clock = () => {
-    const ref = React.useRef<HTMLDivElement>(null);
+    const clockRef = React.useRef<HTMLDivElement>(null);
 
     function startTime() {
         const today = new Date();
         const h = today.getHours();
         const m = checkTime(today.getMinutes());
-        if (ref.current) {
-            ref.current.innerHTML = h + ":" + m;
+        if (clockRef.current) {
+            clockRef.current.innerHTML = h + ":" + m;
         }
         setTimeout(startTime, 1000);
     }
@@ -41,7 +41,7 @@ const Clock = () => {
         <div style={styles}>
             <Alarm/>
             <Weather/>
-            <div ref={ref}/>
+            <div ref={clockRef}/>
         </div>
     )
 }

@@ -9,7 +9,7 @@ import {
     movieSearch, steamGridDbSearchResponse,
     SteamSearchResponse
 } from "@type/electron.types";
-import type {EarnedAchievementsType, Game, ProgressType, StatsType} from "@type/game.types";
+import type {EarnedAchievementsType, Game, KinozalGame, KinozalGameDetails, ProgressType, StatsType} from "@type/game.types";
 import {MovieStorageHistory} from "@type/movieStorage.types";
 
 const electronNotWorking = {
@@ -96,6 +96,8 @@ const electronConnector = {
         data: { assets: getImageAssets[] }
     }> => apiCall(data, 'getImage'),
     getInstalledGames: (): Promise<Game[]> => apiCall(null, 'getInstalledGames'),
+    getKinozalGameDetails: (id: string): Promise<KinozalGameDetails> => apiCall(id, 'getKinozalGameDetails'),
+    getKinozalGames: (query?: string): Promise<KinozalGame[]> => apiCall(query, 'getKinozalGames'),
     getMoviesHistory: (): Promise<MovieStorageHistory[]> => apiCall(null, 'getMoviesHistory'),
     getPageData: (url: string): Promise<getPageData> => apiCall(url, 'getPageData'),
     getPlayTime: (): Promise<{
@@ -122,6 +124,8 @@ const electronConnector = {
     getWindowsBG: (): Promise<string> => apiCall(null, 'getWindowsBG'),
     howLongToBeat: (query: string): Promise<HLTBSearchResponse[]> => apiCall(query, 'howLongToBeat'),
     imageProxy: (url: string): Promise<BlobPart[]> => apiCall(url, 'imageProxy'),
+    kinozalDownloadTorrent: (url: string): Promise<void> => apiCall(url, 'kinozalDownloadTorrent'),
+    kinozalOpenLoginWindow: (): Promise<any[]> => apiCall(null, 'kinozalOpenLoginWindow'),
     movieLogin: (login: {
         login_name: string,
         login_not_save: number,
@@ -137,6 +141,7 @@ const electronConnector = {
         id: string | number,
     }): Promise<string> => apiCall(data, 'saveImage'),
     setAppModel: ({id, icon, name}): Promise<void> => apiCall({icon, id, name}, 'setAppModel'),
+    setKinozalCookies: (cookies: any[]): void => apiCall(cookies, 'setKinozalCookies'),
     setMainDisplay: (id: number): Promise<void> => apiCall(id, 'setMainDisplay'),
     setSave: (data: {
         post_id: number,
@@ -145,9 +150,11 @@ const electronConnector = {
         episode: number,
     }): Promise<void> => apiCall(data, 'setSave'),
     startGame: (id: string | number): void => apiCall(id, 'startGame'),
+    startUtorrent: (): Promise<boolean> => apiCall(null, 'startUtorrent'),
     steamgriddbSearch: (props: { params: string }): Promise<{
         data: steamGridDbSearchResponse[]
     }> => apiCall(props, 'steamgriddbSearch'),
+    stopUtorrent: (): Promise<boolean> => apiCall(null, 'stopUtorrent'),
     systemAction: (action: string): void => apiCall(action, 'systemAction'),
     weatherById: (id: number): Promise<any> => apiCall(id, 'weatherById'),
     weatherSearch: (query: string): Promise<{

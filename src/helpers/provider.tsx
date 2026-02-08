@@ -20,18 +20,40 @@ const Provider = ({children}) => {
     const [notifications, setNotifications] = React.useState<AppContextType["notifications"]>(null);
     const [footerActions, setFooterActions] = React.useState<AppContextType["footerActions"]>({});
     const [loading, setLoading] = React.useState<boolean>(true);
+    const gamepadsRef = React.useRef<Map<number, GamepadApi>>(new Map());
+
     React.useEffect(() => {
-        window.addEventListener("gamepadconnected", ({gamepad}) => {
-            const gp = new GamepadApi(gamepad)
+        const handleGamepadConnected = (e: GamepadEvent) => {
+            const { gamepad } = e;
+            const gp = new GamepadApi(gamepad);
             gp.connect();
-            window.addEventListener('gamepaddisconnected', (e) => {
-                if (e.gamepad.index === gamepad.index) gp.disconnect()
-            })
-        })
+            gamepadsRef.current.set(gamepad.index, gp);
+        };
+
+        const handleGamepadDisconnected = (e: GamepadEvent) => {
+            const { gamepad } = e;
+            const gp = gamepadsRef.current.get(gamepad.index);
+            if (gp) {
+                gp.disconnect();
+                gamepadsRef.current.delete(gamepad.index);
+            }
+        };
+
+        window.addEventListener("gamepadconnected", handleGamepadConnected);
+        window.addEventListener("gamepaddisconnected", handleGamepadDisconnected);
+
         i18n.init().then(() => {
             setLoading(false);
-        })
-    }, [])
+        });
+
+        return () => {
+            window.removeEventListener("gamepadconnected", handleGamepadConnected);
+            window.removeEventListener("gamepaddisconnected", handleGamepadDisconnected);
+            // Clean up any remaining gamepads
+            gamepadsRef.current.forEach(gp => gp.disconnect());
+            gamepadsRef.current.clear();
+        };
+    }, []);
 
     return (
          

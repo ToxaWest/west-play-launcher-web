@@ -7,6 +7,8 @@ import {
     RouterProvider,
 } from "react-router-dom";
 
+import DownloadGames from "./components/DownloadGames";
+import DownloadGameDetails from "./components/DownloadGames/details";
 import Game from "./components/Game";
 import Achievements from "./components/Game/achievements";
 import GameContent from "./components/Game/content";
@@ -44,7 +46,13 @@ const router = createBrowserRouter([
         }, {
             element: <Torrent/>,
             path: '/torrent'
-        },{
+        }, {
+            element: <DownloadGames/>,
+            path: '/download-games'
+        }, {
+            element: <DownloadGameDetails/>,
+            path: '/download-games/:id'
+        }, {
             element: <Menu/>,
             path: '/menu'
         }, {

@@ -49,7 +49,8 @@ export type LocalStorageType = {
     achievements: achievementsType,
     stats: { [id: string | number]: StatsType },
     progress: { [id: string | number]: ProgressType },
-    playTime: PlayTime
+    playTime: PlayTime,
+    kinozal_cookies: any[]
 }
 
 export type LocalStorageKeys = keyof LocalStorageType;

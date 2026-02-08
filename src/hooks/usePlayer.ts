@@ -31,7 +31,7 @@ const usePlayer = ({playerRef, timerKey, streams, quality, setQuality, thumbnail
         a.configure({overflowMenuButtons: ["captions", "chapter", "playback_rate"]})
         uiRef.current = a.getControls();
 
-        document.addEventListener('fullscreenchange', () => {
+        const handleFullscreenChange = () => {
             if (uiRef.current.isFullScreenEnabled()) {
                 setFooterActions({
                     a: {
@@ -50,7 +50,10 @@ const usePlayer = ({playerRef, timerKey, streams, quality, setQuality, thumbnail
             } else {
                 removeFooterActions(['a', 'b']);
             }
-        });
+        };
+
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        
         setFooterActions({
             lt: {
                 button: 'lt',
@@ -74,6 +77,7 @@ const usePlayer = ({playerRef, timerKey, streams, quality, setQuality, thumbnail
             }
         })
         return () => {
+            document.removeEventListener('fullscreenchange', handleFullscreenChange);
             removeFooterActions(['lt', 'rt', 'x', 'y', 'b', 'a']);
         }
     }, [])

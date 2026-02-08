@@ -20,32 +20,6 @@ const GameActions = ({game}: { game: Game }) => {
     const {setFooterActions, removeFooterActions} = useFooterActions();
     const {start, status} = useStartGame(game)
 
-    React.useEffect(() => {
-        setFooterActions({
-            leftScrollY: {
-                button: 'leftScrollY',
-                onClick: () => toggleViewMode('previous')
-            },
-            rightScrollY: {
-                button: 'rightScrollY',
-                onClick: () => toggleViewMode('next')
-            }
-        })
-        window.scrollTo(0, 0);
-        return () => {
-            removeFooterActions(['rightScrollY', 'leftScrollY'])
-        }
-    }, [])
-
-    const getActive = (e: string) => e === location.pathname;
-
-    const gameState = {
-        'closed': {button: i18n.t('play'), modifier: ''},
-        'error': {button: i18n.t('Can`t start'), modifier: styles.error},
-        'running': {button: i18n.t('Running'), modifier: styles.running},
-        'starting': {button: i18n.t('Starting...'), modifier: ''}
-    }
-
     const {
         movies = [],
         screenshots = []
@@ -85,6 +59,33 @@ const GameActions = ({game}: { game: Game }) => {
             else navigate(buttons.at(index + 1).url)
         }
     }
+
+    React.useEffect(() => {
+        setFooterActions({
+            leftScrollY: {
+                button: 'leftScrollY',
+                onClick: () => toggleViewMode('previous')
+            },
+            rightScrollY: {
+                button: 'rightScrollY',
+                onClick: () => toggleViewMode('next')
+            }
+        })
+        window.scrollTo(0, 0);
+        return () => {
+            removeFooterActions(['rightScrollY', 'leftScrollY'])
+        }
+    }, [])
+
+    const getActive = (e: string) => e === location.pathname;
+
+    const gameState = {
+        'closed': {button: i18n.t('play'), modifier: ''},
+        'error': {button: i18n.t('Can`t start'), modifier: styles.error},
+        'running': {button: i18n.t('Running'), modifier: styles.running},
+        'starting': {button: i18n.t('Starting...'), modifier: ''}
+    }
+
 
     const renderButton = ({url, img: SvgImage}) => {
         return (

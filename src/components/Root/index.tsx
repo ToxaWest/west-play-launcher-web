@@ -45,10 +45,12 @@ const Root = () => {
             init(active ? '#modal' : '#contentWrapper')
         })
 
-        document.addEventListener('mousemove', () => {
+        const handleMouseMove = () => {
             document.documentElement.style.cursor = '';
             document.documentElement.style.pointerEvents = '';
-        })
+        };
+
+        document.addEventListener('mousemove', handleMouseMove)
         electronConnector.getPlayTime().then(d => {
             const playTime = getFromStorage('playTime');
             const lastPlayed = getFromStorage('lastPlayed');
@@ -61,6 +63,10 @@ const Root = () => {
 
         })
         electronConnector.getWindowsBG().then(setBgImage)
+
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMove);
+        }
     }, [])
 
     const onLoad = (e: React.SyntheticEvent<HTMLVideoElement | HTMLImageElement>) => {

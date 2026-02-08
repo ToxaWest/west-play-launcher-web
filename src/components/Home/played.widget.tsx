@@ -11,7 +11,7 @@ import styles from "./widgets.module.scss"
 const PlayedWidget = () => {
     const navigate = useNavigate();
     const games = getFromStorage('games');
-    const [gameIndex, setGame] = React.useState<number>(0)
+    const [gameIndex, setGameIndex] = React.useState<number>(0)
     const lastPlayed = getFromStorage('lastPlayed');
     const configuredArray = React.useMemo(() => {
         const res = Object.entries(lastPlayed)
@@ -31,7 +31,7 @@ const PlayedWidget = () => {
             short_description: 'Installed games library',
             title: 'Library'
         }];
-    }, [])
+    }, [games, lastPlayed])
 
     const game: Game = configuredArray[gameIndex] || {}
 
@@ -53,7 +53,7 @@ const PlayedWidget = () => {
                     (e.target as HTMLElement).focus()
                 }}
                 onFocus={() => {
-                    setGame(index)
+                    setGameIndex(index)
                 }}>
                 <img src={game.img_icon} alt={game.title} loading={"lazy"}
                      onMouseEnter={(e) => {

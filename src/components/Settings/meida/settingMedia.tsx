@@ -5,6 +5,7 @@ import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
 import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 import Loader from "../../Loader";
+import KinozalSettings from "../Games/kinozal";
 
 import styles from "../settings.module.scss";
 
@@ -21,6 +22,8 @@ const SettingMedia = () => {
     return (
         <div className={styles.block}>
             <h1>{i18n.t('Media')}</h1>
+            <KinozalSettings />
+            <hr />
             <Input label={i18n.t('Proxy URL')}
                    type="select"
                    options={[{

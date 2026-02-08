@@ -24,25 +24,6 @@ const VideoComponent = ({selected, options, soundStatus}: {
         }, 4000)
     }
 
-    React.useEffect(() => {
-        setLoading(true)
-        setVideoData({src: []});
-        getData(selected)
-        hideFooter()
-    }, [selected]);
-
-    React.useEffect(() => {
-        return () => {
-            clearTimeout(timerRef.current);
-            setVideoData({src: []});
-            document.querySelector('footer').style.removeProperty('opacity');
-        }
-    }, [])
-
-    React.useEffect(() => {
-        videoRef.current?.load();
-    }, [videoData])
-
     const getData = (data: GameVideoType) => {
         const {type, thumbnail} = data;
         if (data.webm) {
@@ -105,6 +86,25 @@ const VideoComponent = ({selected, options, soundStatus}: {
             setLoading(false);
         }
     }
+
+    React.useEffect(() => {
+        setLoading(true)
+        setVideoData({src: []});
+        getData(selected)
+        hideFooter()
+    }, [selected]);
+
+    React.useEffect(() => {
+        return () => {
+            clearTimeout(timerRef.current);
+            setVideoData({src: []});
+            document.querySelector('footer').style.removeProperty('opacity');
+        }
+    }, [])
+
+    React.useEffect(() => {
+        videoRef.current?.load();
+    }, [videoData])
 
     if (selected.provider) {
         const providerWrapper: React.CSSProperties = {

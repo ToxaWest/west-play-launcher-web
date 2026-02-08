@@ -8,6 +8,30 @@ import styles from "./settings.module.scss";
 
 const Settings = () => {
     const {setFooterActions, removeFooterActions} = useFooterActions()
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const links = {
+        '/settings': i18n.t('Home'),
+        '/settings/games': i18n.t('Games'),
+        '/settings/gbe': 'GBE',
+        '/settings/import': i18n.t('Import'),
+        '/settings/media': i18n.t('Media'),
+    }
+
+    const toggleViewMode = (direction: 'previous' | 'next') => {
+        const _links = Object.keys(links);
+        const index = _links.findIndex((url) => url === window.location.pathname);
+        if (direction === 'previous') {
+            if (index === 0) navigate(_links.at(-1))
+            else navigate(_links.at(index - 1))
+        }
+
+        if (direction === 'next') {
+            if (index === _links.length - 1) navigate(_links.at(0))
+            else navigate(_links.at(index + 1))
+        }
+    }
 
     React.useEffect(() => {
         setFooterActions({
@@ -25,30 +49,6 @@ const Settings = () => {
             removeFooterActions(['rb', 'lb'])
         }
     }, [])
-
-    const navigate = useNavigate();
-    const location = useLocation();
-
-    const links = {
-        '/settings': i18n.t('Home'),
-        '/settings/games': i18n.t('Games'),
-        '/settings/gbe': 'GBE',
-        '/settings/import': i18n.t('Import'),
-        '/settings/media': i18n.t('Media'),
-    }
-    const toggleViewMode = (direction: 'previous' | 'next') => {
-        const _links = Object.keys(links);
-        const index = _links.findIndex((url) => url === window.location.pathname);
-        if (direction === 'previous') {
-            if (index === 0) navigate(_links.at(-1))
-            else navigate(_links.at(index - 1))
-        }
-
-        if (direction === 'next') {
-            if (index === _links.length - 1) navigate(_links.at(0))
-            else navigate(_links.at(index + 1))
-        }
-    }
 
     const renderNavigation = () => {
         return (

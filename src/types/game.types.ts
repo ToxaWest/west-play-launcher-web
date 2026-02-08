@@ -119,3 +119,22 @@ export type achievementsType = {
     [id: string | number]: EarnedAchievementsType
 }
 
+export interface KinozalGame {
+    id: string;
+    title: string;
+    url: string;
+    rank: string;
+    size: string;
+    seeds: number;
+    peers: number;
+    date: string;
+    source: string;
+}
+
+export interface KinozalGameDetails {
+    name: string;
+    description: string;
+    poster: string | null;
+    downloadLink: string | null;
+    screenshots?: string[];
+}

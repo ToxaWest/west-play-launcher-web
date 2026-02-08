@@ -9,19 +9,19 @@ const NAVIGATION_KEYS = {
 }
 
 const useAppControls = () => {
-    const ref = useRef<NodeListOf<HTMLElement>>([] as undefined as NodeListOf<HTMLElement>);
-    const refRowsMatrix = useRef<number[][]>([]);
-    const refCurrentIndex = useRef<number>(0);
-    const refCurrentTempIndex = useRef<number>(0);
-    const refCurrentTemp2Index = useRef<number>(0);
-    const prevLocation = useRef<string>(window.location.pathname);
-    const observer = useRef<MutationObserver>(null);
-    const activeWrapper = useRef<string>(null);
+    const elementsRef = useRef<NodeListOf<HTMLElement>>([] as undefined as NodeListOf<HTMLElement>);
+    const rowsMatrixRef = useRef<number[][]>([]);
+    const currentIndexRef = useRef<number>(0);
+    const currentTempIndexRef = useRef<number>(0);
+    const currentTemp2IndexRef = useRef<number>(0);
+    const prevLocationRef = useRef<string>(window.location.pathname);
+    const observerRef = useRef<MutationObserver>(null);
+    const activeWrapperRef = useRef<string>(null);
     const mapRef = useRef<appControlsMap>({});
 
     const setMatrix = (s: string) => {
-        ref.current = document.querySelectorAll(activeWrapper.current + ' ' + s)
-        const {matrix} = [...ref.current].reduce(({matrix, keys}, current, index) => {
+        elementsRef.current = document.querySelectorAll(activeWrapperRef.current + ' ' + s)
+        const {matrix} = [...elementsRef.current].reduce(({matrix, keys}, current, index) => {
             const {top} = current.getBoundingClientRect()
             let topRounded = Math.round(top)
             Object.keys(keys).forEach((key) => {
@@ -32,19 +32,19 @@ const useAppControls = () => {
             matrix[keys[topRounded]].push(index)
             return {keys, matrix}
         }, {keys: {}, matrix: []})
-        refRowsMatrix.current = matrix;
+        rowsMatrixRef.current = matrix;
     }
 
     const getBackWindow = () => {
-        refCurrentIndex.current = 0
+        currentIndexRef.current = 0
         if (window.__back) {
             const {id, url} = window.__back;
             if (url === window.location.pathname) {
-                refCurrentIndex.current = [...ref.current].findIndex(({id: _id}) => _id === id.toString());
+                currentIndexRef.current = [...elementsRef.current].findIndex(({id: _id}) => _id === id.toString());
                 window.__back = null;
             }
         }
-        return refCurrentIndex.current
+        return currentIndexRef.current
     }
 
     const checkNode = (nodeList: NodeList, tabIndexLevel: number) => {
@@ -66,47 +66,47 @@ const useAppControls = () => {
 
         if (added) {
             setMatrix('[tabindex="1"]')
-            if (prevLocation.current !== window.location.pathname) {
-                refCurrentTemp2Index.current = 0;
-                prevLocation.current = window.location.pathname
+            if (prevLocationRef.current !== window.location.pathname) {
+                currentTemp2IndexRef.current = 0;
+                prevLocationRef.current = window.location.pathname
                 setCurrentIndex(getBackWindow)
-            } else refCurrentTemp2Index.current = refCurrentIndex.current
+            } else currentTemp2IndexRef.current = currentIndexRef.current
         } else if (removed) {
             setMatrix('[tabindex="1"]')
-            if (prevLocation.current === window.location.pathname) setCurrentIndex(() => refCurrentTemp2Index.current)
+            if (prevLocationRef.current === window.location.pathname) setCurrentIndex(() => currentTemp2IndexRef.current)
             else setCurrentIndex(() => 0)
         } else if (subAdded) {
-            refCurrentTempIndex.current = refCurrentIndex.current;
+            currentTempIndexRef.current = currentIndexRef.current;
             setMatrix('[tabindex="2"]')
             setCurrentIndex(() => 0)
         } else if (subRemoved) {
             setMatrix('[tabindex="1"]')
-            setCurrentIndex(() => refCurrentTempIndex.current)
+            setCurrentIndex(() => currentTempIndexRef.current)
         }
     }
 
     const init = (selector: string) => {
-        activeWrapper.current = selector;
+        activeWrapperRef.current = selector;
         setMatrix('[tabindex="1"]')
         setCurrentIndex(() => 0)
-        observer.current = new MutationObserver(logChanges);
-        observer.current.observe(document.querySelector(selector), {childList: true, subtree: true});
+        observerRef.current = new MutationObserver(logChanges);
+        observerRef.current.observe(document.querySelector(selector), {childList: true, subtree: true});
     }
 
     const setCurrentIndex = (func: (a: number) => number) => {
-        const i = func(refCurrentIndex.current);
-        if (refCurrentIndex.current === i) {
-            if (ref.current[i]) {
-                ref.current[i]?.focus();
+        const i = func(currentIndexRef.current);
+        if (currentIndexRef.current === i) {
+            if (elementsRef.current[i]) {
+                elementsRef.current[i]?.focus();
                 return;
             } else {
-                // refCurrentIndex.current = 0;
+                // currentIndexRef.current = 0;
                 // setActiveIndex(0)
             }
 
             return;
         }
-        refCurrentIndex.current = i;
+        currentIndexRef.current = i;
         setActiveIndex(i)
     }
 
@@ -117,15 +117,15 @@ const useAppControls = () => {
             colPosition: (a: number) => number,
             button: string,
         }) => {
-        const currentRow = refRowsMatrix.current.findIndex((a) => a.includes(i));
-        const currentCol = refRowsMatrix.current[currentRow]?.findIndex((a) => a === i);
-        const _newCol = refRowsMatrix.current[rowPosition(currentRow)]?.[colPosition(currentCol)]
+        const currentRow = rowsMatrixRef.current.findIndex((a) => a.includes(i));
+        const currentCol = rowsMatrixRef.current[currentRow]?.findIndex((a) => a === i);
+        const _newCol = rowsMatrixRef.current[rowPosition(currentRow)]?.[colPosition(currentCol)]
         if (typeof _newCol === "number") return _newCol
         if (button === 'bottom') {
-            if (refRowsMatrix.current[currentRow + 1]) return refRowsMatrix.current[currentRow + 1].at(0)
+            if (rowsMatrixRef.current[currentRow + 1]) return rowsMatrixRef.current[currentRow + 1].at(0)
         }
         if (button === 'top') {
-            if (refRowsMatrix.current[currentRow - 1]) return refRowsMatrix.current[currentRow - 1].at(0)
+            if (rowsMatrixRef.current[currentRow - 1]) return rowsMatrixRef.current[currentRow - 1].at(0)
         }
         return i
     }
@@ -133,7 +133,7 @@ const useAppControls = () => {
     const listener = ({detail: {button}}) => {
         if (mapRef.current[button]) mapRef.current[button]()
 
-        if (!ref.current.length) return
+        if (!elementsRef.current.length) return
 
         if (NAVIGATION_KEYS[button]) {
             setCurrentIndex((i) => getPosition({i, ...NAVIGATION_KEYS[button], button}))
@@ -142,15 +142,15 @@ const useAppControls = () => {
 
     const setActiveIndex = (index: number) => {
         if (index < 0) {
-            setCurrentIndex(() => ref.current.length - 1);
+            setCurrentIndex(() => elementsRef.current.length - 1);
             return
         }
-        if (index >= ref.current.length) {
+        if (index >= elementsRef.current.length) {
             setCurrentIndex(() => 0)
             return;
         }
-        if (ref.current[index]) {
-            ref.current[index].focus();
+        if (elementsRef.current[index]) {
+            elementsRef.current[index].focus();
             document.activeElement.scrollIntoView({behavior: "smooth", block: "center", inline: "center"});
         }
     }
@@ -158,7 +158,7 @@ const useAppControls = () => {
     useEffect(() => {
         document.addEventListener('gamePadClick', listener)
         return () => {
-            if (observer.current) observer.current.disconnect()
+            if (observerRef.current) observerRef.current.disconnect()
             document.removeEventListener('gamePadClick', listener)
         }
     }, []);
