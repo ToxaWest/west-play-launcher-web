@@ -39,7 +39,7 @@ export interface TorrentItem {
     statusString: string;
 }
 
-const useTorrent = ({ username = 'guest', password = '', port = 8080, url = 'http://127.0.0.1' } = {}) => {
+const useTorrent = ({ username = 'admin', password = 'admin', port = 8080, url = 'http://127.0.0.1' } = {}) => {
     const [token, setToken] = useState<string | null>(null);
     const [torrents, setTorrents] = useState<TorrentItem[]>([]);
     const apiUrl = `${url}:${port}/gui/`;

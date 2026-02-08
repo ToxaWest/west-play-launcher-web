@@ -44,11 +44,11 @@ const DownloadGameDetails = () => {
                         <div className={styles.screenshots}>
                             <h2>{i18n.t('Screenshots')}</h2>
                             <div className={styles.screenshotsGrid}>
-                                {details.screenshots.map((ss, index) => (
+                                {details.screenshots.map((ss) => (
                                     <img 
-                                        key={ss}
+                                        key={ss} 
                                         src={ss} 
-                                        alt={`screenshot ${index + 1}`} 
+                                        alt={`screenshot`}
                                     />
                                 ))}
                             </div>

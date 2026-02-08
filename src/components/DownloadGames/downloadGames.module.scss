@@ -89,6 +89,12 @@
   align-items: start;
 }
 
+.detailsSidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
 .detailsPoster {
   width: 100%;
   height: auto;
@@ -125,5 +131,22 @@
     width: 100%;
     border-radius: 4px;
     object-fit: cover;
+  }
+}
+
+.downloadControls {
+  background: var(--block-bg);
+  padding: 15px;
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  h4, p {
+    margin: 0;
+  }
+
+  button {
+    margin-top: 5px;
   }
 }
