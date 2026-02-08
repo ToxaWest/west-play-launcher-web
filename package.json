@@ -4,19 +4,20 @@
   "private": false,
   "type": "module",
   "dependencies": {
-    "vite-plugin-pwa": "^1.2.0",
-    "vite-plugin-svgr": "^4.5.0",
-    "@vitejs/plugin-react-swc": "^4.2.2",
-    "vite-tsconfig-paths": "^6.0.3",
-    "shaka-player": "^4.16.12",
+    "shaka-player": "^4.16.13",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-router-dom": "^7.11.0",
     "sass": "^1.97.1"
   },
   "devDependencies": {
+    "vite-plugin-pwa": "^1.2.0",
+    "vite-plugin-svgr": "^4.5.0",
+    "@vitejs/plugin-react-swc": "^4.2.2",
+    "vite-tsconfig-paths": "^6.0.3",
     "vite": "^7.3.0",
     "eslint": "^9.39.2",
+    "typescript": "^5.9.3",
     "typescript-eslint": "^8.51.0",
     "@typescript-eslint/parser": "^8.51.0",
     "eslint-plugin-react-naming-convention": "^2.5.1",
@@ -35,7 +36,7 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
-    "lint": "eslint . --ext ts,tsx",
-    "lint:fix": "eslint . --ext ts,tsx --fix"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   }
 }

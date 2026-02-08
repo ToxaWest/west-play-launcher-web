@@ -189,6 +189,13 @@ const SettingsHome = () => {
                    onlyFile={true}
                    name='ryujinx'>
             </Input>
+            <Input label={i18n.t('RPCS3 exe path')}
+                   value={settings.rpcs3}
+                   onChange={onChange}
+                   type="path"
+                   onlyFile={true}
+                   name='rpcs3'>
+            </Input>
             <SettingsSteamProfile onChange={onChange} steamProfile={settings.steamProfile}/>
             <SettingsWeather/>
             <SettingsAlarm value={settings.uaAlarmId} onChange={onChange}/>

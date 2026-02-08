@@ -147,7 +147,7 @@ export type getSteamUserId = {
 }
 
 export type getDataByGameIdInput = {
-    source: 'steam' | 'egs' | 'gog' | 'ryujinx'
+    source: 'steam' | 'egs' | 'gog' | 'ryujinx' | 'rpcs3'
     id: string | number
     unofficial: boolean
     productId?: string

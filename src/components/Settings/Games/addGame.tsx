@@ -9,6 +9,7 @@ import Input from "../../Input";
 import Loader from "../../Loader";
 
 import Images from "./images";
+import Rpcs3Fields from "./rpcs3Fields";
 import RyujinxFields from "./ryujinxFields";
 import SearchGame from "./searchGame";
 import SearchHLTB from "./searchHLTB";
@@ -131,6 +132,7 @@ const AddGame = ({data, submit, remove}: {
                            onlyFile={false}
                            name='path'/>,
         remove: () => <button tabIndex={1} type="button" onClick={remove}>{i18n.t('Remove game')}</button>,
+        rpcs3Fields: () => <Rpcs3Fields game={game} onChange={onChange}/>,
         ryujinxFields: () => <RyujinxFields game={game} onChange={onChange}/>,
         steamFields: () => <SteamFields game={game} onChange={onChange}/>,
         steamGridDB: () => <SearchGame defaultValue={game.name} update={onChange}/>,
@@ -154,6 +156,15 @@ const AddGame = ({data, submit, remove}: {
             return (
                 <>
                     {render.ryujinxFields()}
+                    {render.version()}
+                </>
+            )
+        }
+
+        if (game.source === 'rpcs3') {
+            return (
+                <>
+                    {render.rpcs3Fields()}
                     {render.version()}
                 </>
             )

@@ -88,7 +88,7 @@ export type Game = {
     required_age?: number | string,
     developers?: string[]
     short_description?: string
-    source: 'steam' | 'egs' | 'ryujinx' | 'gog'
+    source: 'steam' | 'egs' | 'ryujinx' | 'gog' | 'rpcs3'
     id: string | number
     unofficial: boolean
     productId?: string

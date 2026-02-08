@@ -34,7 +34,7 @@ const Provider = ({children}) => {
     }, [])
 
     return (
-        // eslint-disable-next-line @eslint-react/no-unstable-context-value
+         
         <AppContext value={{footerActions, setFooterActions, setNotifications}}>
             <Notifications notifications={notifications}/>
             {loading ? <Loader loading={loading}/> : children}

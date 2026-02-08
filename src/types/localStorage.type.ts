@@ -6,6 +6,7 @@ import type {crackedGameType, freeGameType} from "@type/widget.types";
 export type LocalStorageType = {
     config: {
         settings: {
+            rpcs3: string
             theme: 'system' | 'light' | 'dark'
             ryujinx: string,
             videoBg?: string
