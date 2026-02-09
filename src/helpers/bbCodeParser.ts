@@ -3,6 +3,7 @@ const bbCodeParser = (bbString: string) => {
         .replaceAll(/\n/gm, '')
         .replaceAll(/\r/gm, '')
         .replaceAll(/\[p](.*?)\[\/p]/gm, `<p>$1</p>`)
+        .replaceAll(/\[p align="(.*?)"](.*?)\[\/p]/gm, `<p style="text-align: $1;">$2</p>`)
         .replaceAll(/\[url="(.*?)"](.*?)\[\/url]/gm, '<a href="$1" onclick="event.preventDefault();window.api.openLink(\'$1\'.split(\' \')[0])">$2</a>')
         .replaceAll(/\[url=(.*?)](.*?)\[\/url]/gm, '<a href="$1" onclick="event.preventDefault();window.api.openLink(\'$1\'.split(\' \')[0])">$2</a>')
         .replaceAll(/\[dynamiclink href="(.*?)"]\[\/dynamiclink]/gm, '<a href="$1" onclick="event.preventDefault();window.api.openLink(\'$1\'.split(\' \')[0])">$1</a>')

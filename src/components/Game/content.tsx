@@ -17,9 +17,9 @@ const GameContent = () => {
     const lastPlayed = getFromStorage('lastPlayed')[game.id];
 
     const sources = {
+        'ea': 'Electronic Arts',
         'egs': 'Epic Games Store',
         'gog': 'GOG',
-        'origin': 'Electronic Arts',
         'ryujinx': 'Nintendo Switch™',
         'steam': 'Steam'
     }
