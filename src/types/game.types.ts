@@ -88,7 +88,7 @@ export type Game = {
     required_age?: number | string,
     developers?: string[]
     short_description?: string
-    source: 'steam' | 'egs' | 'ryujinx' | 'gog' | 'rpcs3'
+    source: 'steam' | 'egs' | 'gog' | 'rpcs3' | 'ryujinx' | 'ea'
     id: string | number
     unofficial: boolean
     productId?: string
@@ -108,7 +108,7 @@ export type LastPlayed = { [key: string | number]: number }
 export type StatsType = { [key: string | number]: string | number }
 export type ProgressType = { [key: string | number]: number }
 export type EarnedAchievementsType = {
-    [name: string]: {
+    [name:string]: {
         earned_time?: number
         earned: boolean
         xp?: number

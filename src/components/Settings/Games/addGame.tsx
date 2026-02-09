@@ -45,7 +45,7 @@ const AddGame = ({data, submit, remove}: {
             name: i18n.t('Updating game data'),
             status: 'warning'
         }, 3000)
-        if (game.source === 'gog' || game.source === 'egs') {
+        if (game.source === 'gog' || game.source === 'egs' || game.source === 'ea') {
             electronConnector.getSteamId(({searchParams}) => {
                 setSearch(searchParams)
                 setActive(true)
@@ -82,7 +82,7 @@ const AddGame = ({data, submit, remove}: {
             return;
         }
 
-        if (data.source === 'gog' || data.source === 'egs') {
+        if (data.source === 'gog' || data.source === 'egs' || data.source === 'ea') {
             electronConnector.getSteamId(({searchParams}) => {
                 setSearch(searchParams)
                 setActive(true)
@@ -193,6 +193,14 @@ const AddGame = ({data, submit, remove}: {
                     </>
                 )
             }
+            return (
+                <>
+                    {render.imageName()}
+                </>
+            )
+        }
+
+        if (game.source === 'ea') {
             return (
                 <>
                     {render.imageName()}
