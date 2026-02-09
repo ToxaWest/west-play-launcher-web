@@ -38,7 +38,7 @@ const SettingsImportSteam = () => {
                         return;
                     }
                     setLoading(true);
-                    if (item.source === 'egs') {
+                    if (item.source === 'egs' || item.source === 'ea') {
                         electronConnector.getSteamId(({searchParams}) => {
                             setSearch(searchParams)
                             setActive(true)
