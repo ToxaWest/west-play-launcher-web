@@ -30,6 +30,9 @@ const GameContent = () => {
                 electronConnector.openLink(link)
             }}>{title}</div>)
         }
+        if(title){
+            return (<div>{title}</div>)
+        }
         return null
     }
 
