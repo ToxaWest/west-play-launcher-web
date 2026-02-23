@@ -5,8 +5,6 @@ import type {Game} from "@type/game.types";
 import {getFromStorage} from "../../helpers/getFromStorage";
 import i18n from "../../helpers/translate";
 
-import styles from './hltb.module.scss';
-
 const RenderHLTB = ({game}: { game: Game }) => {
     if (!game.hltb) return null
     const {allStylesTime, completionistTime, mainExtraTime, mainTime} = game.hltb
@@ -17,20 +15,18 @@ const RenderHLTB = ({game}: { game: Game }) => {
         const percent = (playTime / (value * 1000)) * 100;
         const progress = percent > 100 ? 100 : percent;
 
-        const style: React.CSSProperties & { '--progress': string, '--bgColor': string } = {
-            '--bgColor': `rgba(0, 255, 0, ${progress / 100})`,
-            '--progress': `${progress}%`
-        }
-
         return (
-            <span style={style}>
-                {secondsToHms(value * 1000)}<strong>{label}</strong>
+            <span 
+                style={{ '--bgColor': `rgba(0, 255, 0, ${progress / 100})`, '--progress': `${progress}%` } as React.CSSProperties}
+                className="p-theme text-[1vw] bg-theme-transparent rounded-theme flex flex-col justify-center items-center gap-gap-half relative after:content-[''] after:absolute after:inset-y-0 after:left-0 after:w-[var(--progress)] after:bg-[var(--bgColor)] after:z-[-1] after:rounded-[inherit]"
+            >
+                {secondsToHms(value * 1000)}<strong className="text-[0.7vw]">{label}</strong>
             </span>
         )
     }
 
     return (
-        <div className={styles.wrapper}>
+        <div className="flex justify-center w-full items-center gap-gap-half my-gap mx-auto">
             {renderItem(i18n.t('Main Story'), mainTime)}
             {renderItem(i18n.t('Main + Sides'), mainExtraTime)}
             {renderItem(i18n.t('Completionist'), completionistTime)}

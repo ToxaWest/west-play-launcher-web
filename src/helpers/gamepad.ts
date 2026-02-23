@@ -33,10 +33,18 @@ class GamepadApi {
         document.documentElement.style.cursor = "none";
         document.documentElement.style.pointerEvents = "none";
         if (!this.visible) return;
-        if (sound[button]) new Audio('/assets/sound/ui/' + sound[button] + '.mp3').play();
-        navigator.getGamepads()[this.gamepad].vibrationActuator.playEffect("dual-rumble", {
-            duration: 100, startDelay: 0, strongMagnitude: 0, weakMagnitude: 0.4
-        });
+        if (sound[button]) {
+            const audio = new Audio('/assets/sound/ui/' + sound[button] + '.mp3');
+            audio.play().catch(() => {/* Ignore autoplay restrictions */});
+        }
+        
+        try {
+            navigator.getGamepads()[this.gamepad]?.vibrationActuator?.playEffect("dual-rumble", {
+                duration: 100, startDelay: 0, strongMagnitude: 0, weakMagnitude: 0.4
+            }).catch(() => {/* Ignore vibration errors */});
+        } catch (e) {
+            // Vibration not supported
+        }
 
         document.dispatchEvent(new CustomEvent('gamePadClick', {
             detail: {button, gamePadId: this.gamepad, id: keyMapping.indexOf(button)}
@@ -47,17 +55,21 @@ class GamepadApi {
         (test(value) && Math.abs(value) > 0.4) ? new Date().getTime() : 0
 
     init = (prevPressed = {}) => {
-        if (typeof this.gamepad !== "number") return
-        const {axes: [horizontal, vertical, horizontalR, verticalR], buttons} = navigator.getGamepads()[this.gamepad];
+        if (typeof this.gamepad !== "number" || !navigator.getGamepads()[this.gamepad]) return
+        
+        const pad = navigator.getGamepads()[this.gamepad];
+        const {axes: [horizontal, vertical, horizontalR, verticalR], buttons} = pad;
+        
         const pressed = buttons.reduce((acc, button, index) => {
             acc[index] = button.pressed;
             return acc;
         }, {})
+
         const stickPress = {
-            17: this.getStickValue(vertical, value => value < 0),
-            18: this.getStickValue(vertical, value => value > 0),
-            19: this.getStickValue(horizontal, value => value < 0),
-            20: this.getStickValue(horizontal, value => value > 0),
+            17: this.getStickValue(vertical, value => value < 0), // top
+            18: this.getStickValue(vertical, value => value > 0), // bottom
+            19: this.getStickValue(horizontal, value => value < 0), // left
+            20: this.getStickValue(horizontal, value => value > 0), // right
             21: this.getStickValue(horizontalR, value => value < 0),
             22: this.getStickValue(horizontalR, value => value > 0)
         }
@@ -67,18 +79,31 @@ class GamepadApi {
                 if (!this.stickPress[key]) {
                     this.sendEvent(keyMapping[key])
                     this.stickPress[key] = value;
-                } else if (value - this.stickPress[key] >= 250) {
-                    this.sendEvent(keyMapping[key])
-                    this.stickPress[key] = value;
+                } else {
+                    const elapsed = (value as number) - (this.stickPress[key] as number);
+                    // Initial delay 400ms, then repeat every 150ms
+                    if (elapsed >= 400 || (elapsed >= 150 && this.stickPress[key + '_repeat'])) {
+                        this.sendEvent(keyMapping[key]);
+                        this.stickPress[key] = value;
+                        this.stickPress[key + '_repeat'] = true;
+                    }
                 }
-            } else this.stickPress[key] = value;
+            } else {
+                this.stickPress[key] = value;
+                this.stickPress[key + '_repeat'] = false;
+            }
         })
 
         Object.entries(pressed).forEach(([key, value]) => {
             if (value && !prevPressed[key]) this.sendEvent(keyMapping[key])
         })
-        if (Math.abs(verticalR) > 0.3) document.querySelector(this.activeWrapper).scrollTop += verticalR * scrollBooster;
-        setTimeout(() => window.requestAnimationFrame(() => this.init(pressed)))
+
+        if (Math.abs(verticalR) > 0.3) {
+            const wrapper = document.querySelector(this.activeWrapper);
+            if (wrapper) wrapper.scrollTop += verticalR * scrollBooster;
+        }
+
+        window.requestAnimationFrame(() => this.init(pressed))
     }
 
     connect = () => {

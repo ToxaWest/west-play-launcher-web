@@ -7,8 +7,6 @@ import i18n from "../../helpers/translate";
 import Input from "../Input";
 import Loader from "../Loader";
 
-import styles from "./downloadGames.module.scss";
-
 const DownloadGames = () => {
     const [games, setGames] = React.useState<KinozalGame[]>([]);
     const [loading, setLoading] = React.useState(false);
@@ -40,42 +38,40 @@ const DownloadGames = () => {
     }
 
     return (
-        <div className={styles.wrapper}>
-            <h1>{i18n.t('Download Games')}</h1>
-            <div style={{alignItems: 'flex-end', display: 'flex', gap: '10px'}}>
+        <div className="p-gap w-[90vw] mx-auto">
+            <h1 className="text-[24px] font-bold mb-gap">{i18n.t('Download Games')}</h1>
+            <div className="flex items-end gap-gap mb-gap">
                 <Input 
                     name="search" 
                     value={search} 
                     onChange={({value}) => setSearch(value as string)} 
                     label={i18n.t('Search')}
                 />
-                <button onClick={() => fetchGames(search)} tabIndex={1}>{i18n.t('Search')}</button>
+                <button onClick={() => fetchGames(search)} tabIndex={1} className="mb-0">{i18n.t('Search')}</button>
             </div>
             
             {loading ? <Loader loading={true} /> : (
-                <ul className={styles.list}>
+                <div className="flex flex-col gap-2 pb-10">
                     {games.map(game => (
-                        <li key={game.id} 
-                            className={styles.item}
+                        <div key={game.id} 
+                            className="glass p-theme rounded-theme flex justify-between items-center transition-all cursor-pointer focus-bloom"
                             tabIndex={1}
                             role="button"
                             onClick={() => navigate(`/download-games/${game.id}`)}
                         >
-                            <div className={styles.content}>
-                                <div className={styles.title}>
-                                    {game.rank !== 'normal' && <span className={`${styles.rank} ${styles[game.rank]}`} />}
-                                    <span style={{color: getRankColor(game.rank)}}>{game.title}</span>
-                                </div>
-                                <div className={styles.info}>
-                                    <span>{game.size}</span>
-                                    <span style={{color: '#4caf50'}}>S: {game.seeds}</span>
-                                    <span style={{color: '#f44336'}}>P: {game.peers}</span>
-                                    <span>{game.date}</span>
-                                </div>
+                            <div className="flex items-center gap-gap-half text-[18px] min-w-0">
+                                {game.rank !== 'normal' && <span className={`w-3 h-3 rounded-full shrink-0 ${game.rank === 'gold' ? 'bg-[#FFD700]' : 'bg-[#C0C0C0]'}`} />}
+                                <span style={{color: getRankColor(game.rank)}} className="font-semibold truncate">{game.title}</span>
                             </div>
-                        </li>
+                            <div className="flex gap-gap items-center text-[14px] opacity-80 shrink-0">
+                                <span>{game.size}</span>
+                                <span className="text-earned">S: {game.seeds}</span>
+                                <span className="text-[#f44336]">P: {game.peers}</span>
+                                <span className="hidden sm:inline">{game.date}</span>
+                            </div>
+                        </div>
                     ))}
-                </ul>
+                </div>
             )}
         </div>
     )

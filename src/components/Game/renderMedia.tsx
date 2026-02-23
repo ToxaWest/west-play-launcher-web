@@ -6,8 +6,6 @@ import electronConnector from "../../helpers/electronConnector";
 import i18n from "../../helpers/translate";
 import Video from "../Video";
 
-import styles from "./game.module.scss";
-
 const RenderMedia = ({game}: { game: Game }) => {
     const [current, setCurrent] = React.useState<number>(0);
     const {setFooterActions, removeFooterActions} = useFooterActions();
@@ -60,7 +58,9 @@ const RenderMedia = ({game}: { game: Game }) => {
     const renderMedia = (i: number) => {
         const selected = media[i];
         if (Object.hasOwn(selected, 'path_full')) {
-            return <img src={(selected as { path_full: string }).path_full} onError={e => {
+            return <img src={(selected as { path_full: string }).path_full} 
+                className="block w-full"
+                onError={e => {
                 const imgTarget = e.target as HTMLImageElement;
                 imgTarget.style.display = 'none';
                 if (imgTarget.src !== ((selected as { path_full: string }).path_full)) return;
@@ -80,11 +80,11 @@ const RenderMedia = ({game}: { game: Game }) => {
     }
 
     if (!media.length) {
-        return (<h2 style={{textAlign: "center"}}>{i18n.t('Media not found')}</h2>)
+        return (<h2 className="text-center">{i18n.t('Media not found')}</h2>)
     }
 
     return (
-        <div className={styles.media}>
+        <div className="w-screen relative z-[2] h-[calc(100vw*(9/16))] mb-[-50px] bg-theme [&_video]:block [&_video]:w-full [&_img]:block [&_img]:w-full">
             {renderMedia(current)}
         </div>
     )

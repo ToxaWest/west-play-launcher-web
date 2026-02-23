@@ -4,8 +4,6 @@ import i18n from "../../helpers/translate";
 import FileManager from "../FileManager";
 import Modal from "../Modal";
 
-import styles from './input.module.scss';
-
 type OptionType = {
     label: string | number,
     value: string | number,
@@ -57,6 +55,8 @@ const Input = ({
         setInitialValue(value)
     }, [value])
 
+    const inputClasses = "min-w-[450px] transition-colors focus:bg-text focus:text-theme focus:placeholder:text-secondary hover:bg-text hover:text-theme active:bg-text active:text-theme";
+
     const renderInput = {
         number: () => {
             return (
@@ -67,6 +67,7 @@ const Input = ({
                        ref={_ref}
                        tabIndex={1}
                        disabled={disabled}
+                       className={inputClasses}
                        value={value}
                        onChange={change}
                 />
@@ -74,9 +75,10 @@ const Input = ({
         },
         path: () => {
             return (
-                <div className={styles.path}>
+                <div className="flex items-center justify-between w-full">
                     <button tabIndex={1} type="button" onClick={() => setActive(true)}>{i18n.t('Get path')}</button>
                     <input type={"text"} ref={_ref} name={name} tabIndex={0}
+                           className={inputClasses}
                            value={initialValue}
                            onChange={({target: {value: pathValue}}) => {
                                setInitialValue(pathValue)
@@ -117,7 +119,7 @@ const Input = ({
 
             const renderOption = (option: OptionType) => (
                 <li key={option.value?.toString()} role="button"
-                    className={option.value === value ? styles.current : ''} tabIndex={2} onClick={() => {
+                    className={`text-[12px] cursor-pointer p-theme focus:bg-text focus:text-theme hover:bg-text hover:text-theme active:bg-text active:text-theme ${option.value === value ? 'bg-[green] text-white' : ''}`} tabIndex={2} onClick={() => {
                     onChange({name, value: option.value})
                 }}>
                     {option.html ? <span dangerouslySetInnerHTML={{__html: option.html}}/> : option.label}
@@ -125,9 +127,9 @@ const Input = ({
             )
 
             return (
-                <div className={styles.select} role="button" tabIndex={1} onClick={() => setActive((a) => !a)}>
-                    <span>{getValue()}</span>
-                    {active && <ul>{data.map(renderOption)}</ul>}
+                <div className="relative rounded-theme p-theme text-text border border-text-secondary bg-transparent min-w-[400px] hover:bg-text hover:text-theme focus:bg-text focus:text-theme active:bg-text active:text-theme" role="button" tabIndex={1} onClick={() => setActive((a) => !a)}>
+                    <span className="text-[14px]">{getValue()}</span>
+                    {active && <ul className="absolute top-[36px] left-0 min-w-full text-text bg-secondary p-gap-half z-[1] flex overflow-y-auto max-h-[400px] flex-col gap-gap-half list-none">{data.map(renderOption)}</ul>}
                 </div>
             )
         },
@@ -139,6 +141,7 @@ const Input = ({
                        name={name}
                        ref={_ref}
                        tabIndex={1}
+                       className={inputClasses}
                        {...(disabled ? {disabled, value} : {value: initialValue})}
                        onChange={change}
                 />
@@ -147,10 +150,10 @@ const Input = ({
     }
 
     return (
-        <label className={styles.wrapper}>
-            <span data-display={Boolean(label || name)}>{label || name}:</span>
+        <label className="flex flex-wrap">
+            <span className={!(label || name) ? 'hidden' : ''}>{label || name}:</span>
             {renderInput[type]()}
-            <div className={styles.child}>
+            <div className="w-full [&_ul:empty]:hidden">
                 {children}
             </div>
         </label>

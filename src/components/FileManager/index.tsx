@@ -6,8 +6,6 @@ import electronConnector from "../../helpers/electronConnector";
 import i18n from "../../helpers/translate";
 import Loader from "../Loader";
 
-import styles from "./FileManager.module.scss";
-
 import SvgFile from '../../SVG/file.svg?react'
 import SvgFolder from '../../SVG/folder-open.svg?react'
 
@@ -100,6 +98,7 @@ const FileManager = ({
 
     const renderFolderItem = ({name, isFolder, path}: FileManagerFolderType) => (
         <li key={name} tabIndex={1} role="button"
+            className="p-theme flex gap-gap-half items-center [&_svg]:fill-text [&_svg]:h-[22px] [&_svg]:w-[22px]"
             data-path={file ? path : (isFolder ? path : '')}
             onClick={() => {
                 if (isFolder) getChild(path)
@@ -112,7 +111,7 @@ const FileManager = ({
     )
 
     const renderDiskItem = (disk: string) => (
-        <li key={disk} tabIndex={1} role="button" onClick={() => {
+        <li key={disk} tabIndex={1} role="button" className="p-theme" onClick={() => {
             getChild(disk)
         }}>
             {disk}
@@ -120,15 +119,15 @@ const FileManager = ({
     )
 
     return (
-        <div className={styles.modal}>
-            <div className={styles.wrapper}>
-                <span className={styles.currentPath}>
+        <div className="h-full gap-gap w-full relative p-[50px_5vw] z-[3] before:content-[''] before:absolute before:inset-0 before:bg-theme before:opacity-90 before:z-[-1]">
+            <div className="flex flex-col p-theme gap-gap h-full">
+                <span className="rounded-theme border border-secondary p-theme">
                     {currentPath.split('/').map(renderPathItem)}
                 </span>
-                <ul className={styles.diskList}>
+                <ul className="list-none m-0 gap-gap flex p-0">
                     {disks.map(renderDiskItem)}
                 </ul>
-                <ul className={styles.folders} id={'scroll'}>
+                <ul className="list-none m-0 gap-gap-half flex p-0 flex-col overflow-y-scroll h-full relative" id={'scroll'}>
                     {folders.map(renderFolderItem)}
                     <Loader loading={loading}/>
                 </ul>

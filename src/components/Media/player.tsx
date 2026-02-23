@@ -5,8 +5,6 @@ import type {EpisodeItem, Episodes, Streams} from "@type/electron.types";
 import electronConnector from "../../helpers/electronConnector";
 import {getFromStorage} from "../../helpers/getFromStorage";
 
-import styles from "./media.module.scss";
-
 const Player = ({
                     thumbnails,
                     streams,
@@ -41,7 +39,7 @@ const Player = ({
     return (
         <div style={{position: 'relative', zIndex: 0}} ref={wrapperRef}>
             <video
-                className={styles.player}
+                className="bg-black relative aspect-video w-full"
                 ref={playerRef}
                 onPlay={() => {
                     playerRef.current.autoplay = false;

@@ -4,23 +4,10 @@ import {createPortal} from "react-dom";
 
 import i18n from "../../helpers/translate";
 
-const defaultStyle: React.CSSProperties = {
-    alignItems: 'center',
-    bottom: 0,
-    display: 'flex',
-    justifyContent: 'center',
-    left: 0,
-    maxHeight: 'calc(100% - 50px)',
-    position: 'fixed',
-    right: 0,
-    top: 0,
-    zIndex: 5
-}
-
-const Modal = ({children, onClose, style = {}}: {
+const Modal = ({children, onClose, className = ""}: {
     children: React.ReactNode,
     onClose: (close: boolean) => void,
-    style?: React.CSSProperties,
+    className?: string,
 }) => {
     const {setFooterActions, removeFooterActions} = useFooterActions()
 
@@ -40,14 +27,9 @@ const Modal = ({children, onClose, style = {}}: {
     }, []);
 
     return createPortal(
-        React.createElement('div', {
-                style: {
-                    ...defaultStyle,
-                    ...style
-                },
-            },
-            children
-        ),
+        <div className={`fixed inset-0 flex items-center justify-center max-h-[calc(100%-50px)] z-[5] ${className}`}>
+            {children}
+        </div>,
         document.querySelector('#modal')
     )
 }

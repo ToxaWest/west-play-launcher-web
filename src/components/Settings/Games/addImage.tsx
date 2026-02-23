@@ -5,9 +5,6 @@ import electronConnector from "../../../helpers/electronConnector";
 import i18n from "../../../helpers/translate";
 import Loader from "../../Loader";
 
-import styles from "../settings.module.scss";
-
-
 const AddImage = ({id, type, onChange, value, game_id}: {
     type: 'grid' | 'hero' | 'logo' | 'icon',
     onChange: (e: { name: string, value: any }) => void,
@@ -56,18 +53,18 @@ const AddImage = ({id, type, onChange, value, game_id}: {
     }
 
     return (
-        <div className={styles.addImage}>
-            <div className={styles.addImageField}>
+        <div className="bg-theme-transparent p-theme">
+            <div className="flex items-center justify-between [&_span]:cursor-pointer hover:[&_span]:underline">
                 <button type="button" tabIndex={1} onClick={getImages}>{i18n.t('Select {{type}} image', {type})}</button>
                 {value ? <span tabIndex={0} role="link" onClick={() => {
                     window.open(value, '_blank')
                 }}>{value}</span> : null}
                 {images.length ? <button type="button" tabIndex={1} onClick={() => setImages([])}>{i18n.t('Close')}</button> : null}
             </div>
-            <ul style={{position: 'relative'}}>
+            <ul className="grid max-w-full grid-cols-5 p-2 rounded-theme gap-gap-half my-gap mx-0 list-none [&:empty]:hidden [&_img]:block [&_img]:max-w-full relative" style={{position: 'relative'}}>
                 <Loader loading={loading}/>
                 {images.map((asset) => (
-                    <li key={asset.id} role="button" onClick={() => select(asset.url)} tabIndex={1}>
+                    <li key={asset.id} role="button" onClick={() => select(asset.url)} tabIndex={1} className="cursor-pointer">
                         <img src={asset.thumb} alt={asset.author.name}/>
                     </li>
                 ))}

@@ -64,17 +64,21 @@ const useAppControls = () => {
         const subAdded = e.some(({addedNodes}) => checkNode(addedNodes, 2))
         const subRemoved = e.some(({removedNodes}) => checkNode(removedNodes, 2))
 
-        if (added) {
+        if (added || removed) {
             setMatrix('[tabindex="1"]')
+            
             if (prevLocationRef.current !== window.location.pathname) {
                 currentTemp2IndexRef.current = 0;
                 prevLocationRef.current = window.location.pathname
                 setCurrentIndex(getBackWindow)
-            } else currentTemp2IndexRef.current = currentIndexRef.current
-        } else if (removed) {
-            setMatrix('[tabindex="1"]')
-            if (prevLocationRef.current === window.location.pathname) setCurrentIndex(() => currentTemp2IndexRef.current)
-            else setCurrentIndex(() => 0)
+            } else {
+                // If focus is lost (e.g. active element was removed), reset to 0 or nearest
+                if (!document.activeElement || document.activeElement === document.body || !elementsRef.current[currentIndexRef.current]) {
+                    setCurrentIndex(() => 0)
+                } else {
+                    currentTemp2IndexRef.current = currentIndexRef.current
+                }
+            }
         } else if (subAdded) {
             currentTempIndexRef.current = currentIndexRef.current;
             setMatrix('[tabindex="2"]')
@@ -119,19 +123,59 @@ const useAppControls = () => {
         }) => {
         const currentRow = rowsMatrixRef.current.findIndex((a) => a.includes(i));
         const currentCol = rowsMatrixRef.current[currentRow]?.findIndex((a) => a === i);
-        const _newCol = rowsMatrixRef.current[rowPosition(currentRow)]?.[colPosition(currentCol)]
-        if (typeof _newCol === "number") return _newCol
-        if (button === 'bottom') {
-            if (rowsMatrixRef.current[currentRow + 1]) return rowsMatrixRef.current[currentRow + 1].at(0)
+
+        if (button === 'left' || button === 'right') {
+            const nextCol = colPosition(currentCol);
+            const target = rowsMatrixRef.current[currentRow]?.[nextCol];
+            if (typeof target === "number") return target;
+            return i;
         }
-        if (button === 'top') {
-            if (rowsMatrixRef.current[currentRow - 1]) return rowsMatrixRef.current[currentRow - 1].at(0)
+
+        const nextRowIndex = (rowPosition(currentRow) + rowsMatrixRef.current.length) % rowsMatrixRef.current.length;
+        const nextRow = rowsMatrixRef.current[nextRowIndex];
+
+        if (nextRow) {
+            const currentEl = elementsRef.current[i];
+            if (!currentEl) return nextRow[0];
+            
+            const currentRect = currentEl.getBoundingClientRect();
+            const currentCenter = currentRect.left + currentRect.width / 2;
+
+            let closestIndex = nextRow[0];
+            let minDistance = Infinity;
+
+            nextRow.forEach(index => {
+                const targetEl = elementsRef.current[index];
+                if (!targetEl) return;
+                const targetRect = targetEl.getBoundingClientRect();
+                const targetCenter = targetRect.left + targetRect.width / 2;
+                const distance = Math.abs(currentCenter - targetCenter);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestIndex = index;
+                }
+            });
+            return closestIndex;
         }
+
         return i
     }
 
     const listener = ({detail: {button}}) => {
-        if (mapRef.current[button]) mapRef.current[button]()
+        // 1. Check for manual map override
+        if (mapRef.current[button]) {
+            mapRef.current[button]();
+            return;
+        }
+
+        // 2. Default 'A' button behavior: click focused element
+        if (button === 'a') {
+            const activeElement = document.activeElement as HTMLElement;
+            if (activeElement && activeElement !== document.body) {
+                activeElement.click();
+                return;
+            }
+        }
 
         if (!elementsRef.current.length) return
 

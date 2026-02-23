@@ -4,8 +4,6 @@ import {Link, Outlet, useLocation, useNavigate} from "react-router-dom";
 
 import i18n from "../../helpers/translate";
 
-import styles from "./settings.module.scss";
-
 const Settings = () => {
     const {setFooterActions, removeFooterActions} = useFooterActions()
     const navigate = useNavigate();
@@ -52,15 +50,16 @@ const Settings = () => {
 
     const renderNavigation = () => {
         return (
-            <div className={styles.navigation} id="navigation">
-                <img src={'/assets/controller/left-bumper.svg'} alt={'prev'} tabIndex={0} role="button" onClick={() => {
+            <div className="max-w-[90vw] mx-auto my-gap flex gap-gap-half items-center justify-center" id="navigation">
+                <img src={'/assets/controller/left-bumper.svg'} alt={'prev'} tabIndex={0} role="button" className="m-gap cursor-pointer" onClick={() => {
                     toggleViewMode('previous')
                 }}/>
                 {Object.entries(links).map(([key, value]) => (
                     <Link key={key} to={key}
-                          className={location.pathname === key ? styles.navActive : ''}>{value}</Link>
+                          className={`p-theme border-b border-transparent focus:outline-none ${location.pathname === key ? 'border-b-text' : ''}`}>{value}</Link>
                 ))}
                 <img src={'/assets/controller/right-bumper.svg'} alt={'next'}
+                     className="m-gap cursor-pointer"
                      tabIndex={0} role="button"
                      onClick={() => {
                          toggleViewMode('next')
@@ -72,11 +71,10 @@ const Settings = () => {
     return (
         <>
             {renderNavigation()}
-            <div className={styles.wrapper}>
+            <div className="max-w-[90vw] mx-auto my-gap flex flex-col gap-gap max-h-full [&_ul]:p-0 [&_ul]:list-none [&_ul]:gap-gap-half [&_ul]:my-gap-half [&_ul]:mx-0">
                 <Outlet/>
             </div>
         </>
-
     )
 }
 export default Settings;

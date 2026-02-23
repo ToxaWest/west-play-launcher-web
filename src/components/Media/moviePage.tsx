@@ -10,8 +10,6 @@ import Loader from "../Loader";
 import movieStorage from "./movieStorage";
 import Player from "./player";
 
-import styles from "./media.module.scss";
-
 const MoviePage = ({url}: {
     url: string
 }) => {
@@ -72,6 +70,7 @@ const MoviePage = ({url}: {
                 <iframe
                     loading="lazy"
                     title={'trailer'}
+                    className="w-full aspect-video"
                     src={`https://www.youtube.com/embed/${id}?iv_load_policy=3&autoplay=1&loop=1&rel=0&mute=1&showinfo=0`}
                 />
             )
@@ -82,11 +81,11 @@ const MoviePage = ({url}: {
     const renderTable = () => {
         if (!data.movie.table) return null
         return (
-            <tbody>
+            <tbody className="bg-theme-transparent">
             {data.movie.table.map(item =>
                 <tr key={item.title}>
-                    <td>{item.title}</td>
-                    <td dangerouslySetInnerHTML={{__html: item.value}}/>
+                    <td className="border border-theme p-gap-half">{item.title}</td>
+                    <td className="border border-theme p-gap-half" dangerouslySetInnerHTML={{__html: item.value}}/>
                 </tr>
             )}
             </tbody>
@@ -113,13 +112,13 @@ const MoviePage = ({url}: {
             {data.schedule.map(item => (
                 <li key={item.title}>
                     <h3>{item.title}</h3>
-                    <table style={{width: '100%'}}>
+                    <table className="w-full border-collapse bg-theme-transparent">
                         <tbody>
                         {item.data.map(a => <tr key={a.id}>
-                            <td>{a.episode}</td>
-                            <td dangerouslySetInnerHTML={{__html: a.title}}/>
-                            <td>{a.date}</td>
-                            <td dangerouslySetInnerHTML={{__html: a.exist}}/>
+                            <td className="border border-theme p-gap-half">{a.episode}</td>
+                            <td className="border border-theme p-gap-half" dangerouslySetInnerHTML={{__html: a.title}}/>
+                            <td className="border border-theme p-gap-half">{a.date}</td>
+                            <td className="border border-theme p-gap-half" dangerouslySetInnerHTML={{__html: a.exist}}/>
                         </tr>)}
                         </tbody>
                     </table>
@@ -132,12 +131,13 @@ const MoviePage = ({url}: {
         if (!data.partContent) return null
 
         return (
-            <table>
+            <table className="border-collapse bg-theme-transparent">
                 <tbody>
                 {data.partContent.map(item => (
                     <tr key={item.id}
                         tabIndex={item.url ? 1 : 0}
                         role="button"
+                        className={`transition-colors ${item.url ? 'cursor-pointer hover:bg-text hover:text-theme focus:bg-text focus:text-theme active:bg-text active:text-theme' : 'text-text-secondary'}`}
                         onClick={() => {
                             if (item.url) navigate({
                                 pathname: '/movie',
@@ -145,10 +145,10 @@ const MoviePage = ({url}: {
                             })
                         }}
                     >
-                        <td>{item.id}</td>
-                        <td>{item.title}</td>
-                        <td>{item.year}</td>
-                        <td>{item.rating}</td>
+                        <td className="border border-theme p-gap-half">{item.id}</td>
+                        <td className="border border-theme p-gap-half">{item.title}</td>
+                        <td className="border border-theme p-gap-half">{item.year}</td>
+                        <td className="border border-theme p-gap-half">{item.rating}</td>
                     </tr>))}
                 </tbody>
             </table>
@@ -156,19 +156,19 @@ const MoviePage = ({url}: {
     }
 
     return (
-        <div className={styles.wrapperMovie}>
-            <div className={styles.description}>
-                {data.movie.image ? <img src={data.movie.image} alt={data.movie.title}/> : null}
-                <div className={styles.descriptionContent}>
+        <div className="max-w-[90vw] my-[50px] mx-auto grid grid-cols-[3fr_2fr] gap-gap p-theme bg-theme-transparent">
+            <div className="grid grid-cols-[1fr_2.5fr] gap-gap-half">
+                {data.movie.image ? <img src={data.movie.image} alt={data.movie.title} className="w-full min-w-0"/> : null}
+                <div className="flex flex-col gap-gap p-gap bg-theme-transparent [&_h1]:m-0 [&_h3]:m-0 [&_table_span[data-url]]:text-text-secondary [&_table_span[data-url]]:cursor-pointer hover:[&_table_span[data-url]]:underline">
                     <h1>{data.movie.title}</h1>
                     <h3>{data.movie.originalTitle}</h3>
                     <p>{data.movie.description}</p>
-                    <table id={'movieTable'}>
+                    <table id={'movieTable'} className="border-collapse bg-theme-transparent">
                         {renderTable()}
                     </table>
                 </div>
             </div>
-            <div className={styles.optionsWrapper}>
+            <div className="flex flex-col gap-gap">
                 {inputFields.map(item => <Input key={item.label} {...item}/>)}
                 {data.streams ? <Player
                     thumbnails={data.thumbnails}
@@ -184,7 +184,7 @@ const MoviePage = ({url}: {
                     setQuality={setQuality}
                 /> : null}
             </div>
-            <div style={{display: 'flex', flexDirection: 'column', gap: 'var(--gap-half)'}}>
+            <div className="flex flex-col gap-gap-half">
                 {renderFavorites()}
                 {renderTrailer()}
                 {renderPartContent()}

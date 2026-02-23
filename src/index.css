@@ -1,0 +1,181 @@
+@import "tailwindcss";
+
+@theme {
+  --color-theme: var(--theme-color);
+  --color-theme-transparent: var(--theme-color-transparent);
+  --color-secondary: var(--theme-secondary);
+  --color-text: var(--theme-text-color);
+  --color-text-secondary: var(--theme-text-color-seconary);
+  --color-button-bg: var(--button-bg-color);
+  --color-button-bg-hover: var(--button-bg-color-hover);
+  --color-earned: var(--earned-color);
+
+  --radius-theme: var(--border-radius);
+  --spacing-gap: var(--gap);
+  --spacing-gap-half: var(--gap-half);
+  --spacing-theme: var(--padding);
+}
+
+:root {
+  --theme-color: rgb(255, 255, 255);
+  --theme-color-transparent: rgb(255, 255, 255, 0.5);
+  --theme-secondary: rgb(210, 207, 201);
+  --theme-text-color: rgb(26, 27, 30);
+  --theme-text-color-seconary: rgba(26, 27, 30, 0.65);
+  --button-bg-color: rgb(183, 177, 167);
+  --button-bg-color-hover: rgb(148, 138, 123);
+  --earned-color: rgb(0, 104, 0);
+
+  --border-radius: 4px;
+  --gap: .8vw;
+  --gap-half: 0.4vw;
+  --padding: var(--gap-half) var(--gap);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --theme-color: rgb(26, 27, 30);
+    --theme-color-transparent: rgb(26, 27, 30, 0.5);
+    --theme-secondary: rgb(45, 48, 54);
+    --theme-text-color: rgb(255, 255, 255);
+    --theme-text-color-seconary: rgba(255, 255, 255, 0.65);
+    --button-bg-color: rgb(72, 78, 88);
+    --button-bg-color-hover: rgb(107, 117, 132);
+    --earned-color: rgb(0, 177, 0);
+  }
+}
+
+@layer base {
+  * {
+    @apply box-border;
+  }
+
+  body {
+    @apply m-0 antialiased bg-theme text-text;
+    font-family: Bahnschrift, system-ui;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-0;
+  }
+
+  a {
+    @apply text-text no-underline;
+  }
+
+  label {
+    @apply flex bg-theme-transparent w-full justify-between items-center;
+    padding: var(--padding);
+    border-radius: var(--border-radius);
+  }
+
+  label input {
+    @apply bg-transparent;
+    border-radius: var(--border-radius);
+    padding: var(--padding);
+    color: var(--theme-text-color);
+    border: 1px solid var(--theme-text-color-seconary);
+  }
+
+  input::placeholder {
+    @apply text-text-secondary;
+  }
+
+  button {
+    @apply text-text outline-none bg-button-bg border-none transition-colors duration-200 cursor-pointer;
+    padding: var(--padding);
+    margin: var(--gap-half) 0;
+    border-radius: var(--border-radius);
+
+    &:disabled {
+      @apply opacity-10;
+    }
+
+    &:hover, &:focus {
+      @apply bg-button-bg-hover;
+    }
+  }
+}
+
+@layer utilities {
+  .spoiler {
+    @apply bg-theme text-theme transition-colors duration-400 ease-in;
+
+    &:hover, &:active, &:focus {
+      @apply text-text;
+    }
+  }
+
+  .glass {
+    @apply bg-transparent backdrop-blur-[2px] backdrop-saturate-150 border border-white/10 shadow-lg relative;
+    border-radius: var(--border-radius);
+
+    &::after {
+      content: '';
+      @apply absolute inset-0 opacity-40 z-[-1] pointer-events-none;
+      border-radius: inherit;
+      background: var(--accent-color);
+      box-shadow: inset -8px -6px 0px -9px var(--theme-text-color),
+                  inset 0px -7px 0px -6px var(--theme-text-color);
+      filter: blur(1px);
+    }
+  }
+
+  .glass-active {
+    &::after {
+      @apply opacity-60;
+      background: var(--theme-text-color);
+      box-shadow: inset -8px -2px 0px -9px var(--theme-color),
+                  inset 0px -7px 0px -6px var(--theme-color);
+    }
+  }
+
+  /* 10-foot UI Utilities */
+  .vignette-overlay {
+    background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%);
+  }
+
+  .focus-bloom {
+    @apply transition-all duration-300;
+  }
+
+  .focus-bloom:focus {
+    @apply scale-110 z-10 shadow-[0_0_25px_var(--accent-color)];
+    outline: none;
+  }
+
+  /* BBCode Content Styles */
+  .bbcode {
+    table {
+      @apply w-full border-collapse my-gap;
+    }
+
+    th, td {
+      @apply border border-secondary p-gap-half text-left;
+    }
+
+    th {
+      @apply font-bold bg-theme-transparent;
+    }
+
+    ul, ol {
+      @apply my-gap-half pl-gap;
+    }
+
+    ul {
+      @apply list-disc;
+    }
+
+    ol {
+      @apply list-decimal;
+    }
+
+    li {
+      @apply mb-1;
+    }
+
+    blockquote {
+      @apply border-l-4 border-secondary pl-gap my-gap italic;
+    }
+  }
+}

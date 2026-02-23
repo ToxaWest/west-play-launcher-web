@@ -6,8 +6,6 @@ import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 import Modal from "../../Modal";
 
-import styles from "../settings.module.scss";
-
 const SearchSteamGame = ({defaultValue, active, setActive}: {
     active: boolean;
     defaultValue: string;
@@ -39,13 +37,8 @@ const SearchSteamGame = ({defaultValue, active, setActive}: {
     if (!active) return null;
 
     return (
-        <Modal onClose={close} style={{zIndex: 30}}>
-            <div style={{
-                backgroundColor: 'var(--theme-color)',
-                borderRadius: 'var(--border-radius)',
-                padding: 'var(--gap-half)',
-                width: '600px'
-            }}>
+        <Modal onClose={close} className="z-[30]">
+            <div className="bg-theme rounded-theme p-gap-half w-[600px]">
                 <Input label={i18n.t('Search')}
                        name='search'
                        value={search}
@@ -53,15 +46,17 @@ const SearchSteamGame = ({defaultValue, active, setActive}: {
                            setSearch(value as string)
                        }}
                        children={(
-                           <ul className={styles.search}>
+                           <ul className="flex flex-wrap my-gap mx-0 list-none gap-gap">
                                {temp.map(({appid, name, logo}) => (
-                                   <li key={appid} role="button" onClick={() => {
+                                   <li key={appid} role="button" 
+                                       className="w-full flex p-gap-half rounded-theme cursor-pointer bg-theme-transparent items-center hover:bg-theme focus:bg-theme active:bg-theme"
+                                       onClick={() => {
                                        setSearch('')
                                        setActive(false)
                                        electronConnector.receiveSteamId(appid)
                                    }}>
-                                       <img src={logo} alt={name}/>
-                                       <span>{name}</span>
+                                       <img src={logo} alt={name} className="max-w-[130px]"/>
+                                       <span className="ml-gap-half">{name}</span>
                                    </li>)
                                )}
                            </ul>

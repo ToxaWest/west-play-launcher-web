@@ -115,7 +115,7 @@ const electronConnector = {
         productId: string;
         unofficial: boolean;
         steamId: number;
-        source: "steam" | "egs" | "ryujinx" | "gog"
+        source: "steam" | "egs" | "ryujinx" | "gog" | "ea" | "rpcs3"
     }): Promise<{
         achievements: EarnedAchievementsType | null
         stats: StatsType | null

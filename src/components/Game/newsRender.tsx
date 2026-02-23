@@ -7,8 +7,6 @@ import newsCarousel from "../../helpers/newsCarousel";
 import i18n from "../../helpers/translate";
 import Loader from "../Loader";
 
-import styles from "./news.module.scss";
-
 type NewsItemType = {
     date: number
     contents: string
@@ -42,11 +40,11 @@ const NewsRender = ({id}) => {
     const renderItem = (item: NewsItemType) => {
         const date = new Date(item.date * 1000).toLocaleDateString()
         return (
-            <li key={item.gid} className={styles.item}>
-                <h3>{item.title}</h3>
-                <div className={styles.date}>
+            <li key={item.gid} className="bbcode rounded-theme p-theme min-w-0 relative glass before:content-[''] before:absolute before:inset-0 before:bg-theme-transparent before:z-[-1] [&_img]:max-w-full [&_img]:block [&_img]:my-gap [&_img]:mx-auto [&_h3]:my-gap-half [&_iframe]:w-full [&_iframe]:aspect-video [&_iframe]:border-none [&_a]:underline [&_a]:text-text-secondary">
+                <h3 className="border-b border-theme-transparent">{item.title}</h3>
+                <div className="flex items-center gap-gap-half mb-gap">
                     <address>By {item.author}</address>
-                    on <time dateTime={date} title={date}>{date}</time>
+                    on <time dateTime={date} title={date} className="font-bold text-[1.4rem]">{date}</time>
                 </div>
                 <div dangerouslySetInnerHTML={{__html: bbCodeParser(item.contents)}}/>
             </li>
@@ -54,12 +52,12 @@ const NewsRender = ({id}) => {
     }
 
     return (
-        <div className={styles.wrapper}>
+        <div className="z-[5] relative flex flex-col">
             <Loader loading={loading}/>
-            <ul>
+            <ul className="m-theme p-0 grid grid-cols-2 list-none rounded-theme gap-gap overflow-hidden">
                 {data.map(renderItem)}
             </ul>
-            {showMore && <button tabIndex={1} type="submit" onClick={() => {
+            {showMore && <button tabIndex={1} type="submit" className="my-gap mx-auto" onClick={() => {
                 React.startTransition(() => fetchData(1))
             }}>{i18n.t('Load More')}
             </button>}

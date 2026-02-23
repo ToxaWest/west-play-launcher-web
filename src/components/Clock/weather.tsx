@@ -91,10 +91,6 @@ const icons = {
     </g>
 }
 
-const style: React.CSSProperties = {
-    alignItems: "center", display: "flex", gap: 'var(--gap-half)', height: '50px', justifyContent: "center",
-}
-
 const Weather = () => {
     const w = getFromStorage('weather');
     const [current, setCurrent] = React.useState({
@@ -115,7 +111,7 @@ const Weather = () => {
     if (!w.id) return null
 
     return (
-        <div style={style}>
+        <div className="flex items-center gap-gap-half h-[50px] justify-center">
             <svg width="40px" height="40px" viewBox="24 24 100 100">
                 {icons[current.weather[0].icon]}
             </svg>

@@ -8,36 +8,47 @@ import {modalIsActive} from "../../helpers/modalIsActive";
 import Clock from "../Clock";
 import Footer from "../Footer";
 
-import styles from './root.module.scss';
+const Background = ({
+    onLoad,
+    videoBg,
+    bgImage,
+    className
+}: {
+    onLoad: (e: React.SyntheticEvent<HTMLVideoElement | HTMLImageElement>) => void,
+    videoBg?: string,
+    bgImage?: string | null,
+    className?: string
+}) => {
+    if (!videoBg && !bgImage) return null;
 
-const Background = (
-    {onLoad, videoBg, bgImage, ...props}: React.HTMLProps<any> & { videoBg: string, bgImage: string }
-): React.ReactHTMLElement<any> => {
-    if(!videoBg && !bgImage) return null;
+    if (videoBg) {
+        return (
+            <video
+                className={className}
+                autoPlay
+                loop
+                muted
+                onLoadedData={onLoad}
+                src={videoBg}
+            />
+        );
+    }
 
-    return React.createElement(
-        (videoBg ? 'video' : 'img'),
-        {
-            ...props,
-            ...(videoBg ? {
-                autoPlay: true,
-                loop: true,
-                muted: true,
-                onLoadedData: onLoad,
-                src: videoBg,
-            } : {
-                alt: 'background',
-                onLoad,
-                src: bgImage
-            })
-        }
-    )
+    return (
+        <img
+            className={className}
+            alt="background"
+            onLoad={onLoad}
+            src={bgImage || ''}
+        />
+    );
 }
 
 const Root = () => {
     const {init} = useAppControls()
     const {videoBg} = getFromStorage('config').settings;
     const [bgImage, setBgImage] = React.useState<string | null>(null);
+    const [loaded, setLoaded] = React.useState(false);
 
     React.useEffect(() => {
         init('#contentWrapper')
@@ -71,15 +82,21 @@ const Root = () => {
 
     const onLoad = (e: React.SyntheticEvent<HTMLVideoElement | HTMLImageElement>) => {
         (e.target as HTMLElement).style.aspectRatio = `${window.innerWidth / window.innerHeight}`;
-        (e.target as HTMLElement).style.transform = 'scale(1)';
+        setLoaded(true);
     }
 
     return (
-        <div className={styles.videoBg}>
-            <Background className={styles.video} videoBg={videoBg} bgImage={bgImage} onLoad={onLoad}/>
-            <div className={styles.wrapper}>
+        <div className="relative bg-[var(--accent-color)] overflow-hidden">
+            <div className="absolute inset-0 z-[2] vignette-overlay pointer-events-none" />
+            <Background 
+                className={`object-cover w-full h-full fixed aspect-video top-0 left-0 z-[1] transition-transform duration-200 ease-out ${loaded ? 'scale-100' : 'scale-0'}`} 
+                videoBg={videoBg} 
+                bgImage={bgImage} 
+                onLoad={onLoad}
+            />
+            <div className="flex flex-col pb-[50px] min-h-screen z-[3] relative">
                 <Clock/>
-                <div className={styles.content} id="contentWrapper">
+                <div className="w-full relative" id="contentWrapper">
                     <Outlet/>
                 </div>
                 <Footer/>

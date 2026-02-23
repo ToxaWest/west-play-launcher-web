@@ -24,19 +24,19 @@ const Alarm = () => {
     const activeAlarm = alarm.filter(({isContinue}) => isContinue)
     if (!activeAlarm.length) return null
 
-    return React.createElement('div', {
-            style: {
-                alignItems: 'center',
-                display: 'flex',
-                gap: 'var(--gap-half)',
-            }
-        }, activeAlarm.map(({regionEngName, alertType}) => React.createElement('img', {
-            alt: alertType,
-            height: '30px',
-            key: alertType + regionEngName,
-            src: imgMapping[alertType],
-            title: regionEngName,
-        }))
+    return (
+        <div className="flex items-center gap-gap-half">
+            {activeAlarm.map(({regionEngName, alertType}) => (
+                <img
+                    alt={alertType}
+                    height="30px"
+                    key={alertType + regionEngName}
+                    src={imgMapping[alertType]}
+                    title={regionEngName}
+                    className="h-[30px]"
+                />
+            ))}
+        </div>
     )
 }
 

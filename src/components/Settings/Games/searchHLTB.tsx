@@ -7,8 +7,6 @@ import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 import Modal from "../../Modal";
 
-import styles from "../settings.module.scss";
-
 const SearchHLTB = ({update, defaultValue}: {
     update: (e: { name: 'hltb', value: HLTBType }) => void;
     defaultValue: string
@@ -41,20 +39,15 @@ const SearchHLTB = ({update, defaultValue}: {
         <React.Fragment>
             <button tabIndex={1} type="button" onClick={() => setActive(true)}>{i18n.t('Update HLTB')}</button>
             {active ?
-                <Modal onClose={close} style={{zIndex: 30}}>
-                    <div style={{
-                        backgroundColor: 'var(--theme-color)',
-                        borderRadius: 'var(--border-radius)',
-                        padding: 'var(--gap-half)',
-                        width: '600px'
-                    }}>
+                <Modal onClose={close} className="z-[30]">
+                    <div className="bg-theme rounded-theme p-gap-half w-[600px]">
                         <Input label={i18n.t('Search')}
                                value={search}
                                onChange={({value}) => {
                                    setSearch(value as string)
                                }}
                                children={(
-                                   <ul className={styles.search}>
+                                   <ul className="flex flex-wrap my-gap mx-0 list-none gap-gap">
                                        {temp.map(({
                                                       id,
                                                       name,
@@ -65,7 +58,9 @@ const SearchHLTB = ({update, defaultValue}: {
                                                       releaseYear,
                                                       type
                                                   }) => (
-                                           <li key={id.toString()} role="button" onClick={() => {
+                                           <li key={id.toString()} role="button" 
+                                               className="w-full flex p-gap-half rounded-theme cursor-pointer bg-theme items-center focus:bg-text focus:text-theme hover:bg-text hover:text-theme active:bg-text active:text-theme"
+                                               onClick={() => {
                                                setSearch('')
                                                update({
                                                    name: 'hltb',

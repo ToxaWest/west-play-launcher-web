@@ -8,8 +8,6 @@ import {getFromStorage} from "../../helpers/getFromStorage";
 import i18n from "../../helpers/translate";
 import Modal from "../Modal";
 
-import styles from './game.module.scss';
-
 type ExtendedAchievementType = EarnedAchievementsType[0] & {
     externalProgressValue: number,
     progress: number
@@ -40,28 +38,21 @@ const Achievements = () => {
 
     const renderStats = () => {
         if (!game.stats || !stats) return null
-        const renderStats = ([key, value]) => {
+        const renderStatItem = ([key, value]) => {
             if (!value) return null;
             const statInterface = game.stats.find(({name}) => name === key)
             if (!statInterface || !statInterface.displayName) return null;
             if (game.achievements.some(({displayName}) => displayName === statInterface.displayName)) return null;
-            return <li key={key}>
-                <div><strong>{statInterface.displayName}: {value}</strong></div>
+            return <li key={key} className="bg-theme-transparent flex m-0 rounded-r-theme relative border border-secondary">
+                <div className="p-gap-half flex flex-col gap-[2px] w-full relative"><strong>{statInterface.displayName}: {value}</strong></div>
             </li>
         }
 
         return (
-            <ul className={styles.achList}>
-                {Object.entries(stats).map(renderStats)}
+            <ul className="rounded-theme w-[90vw] mx-auto my-gap grid gap-gap grid-cols-3 p-gap glass list-none">
+                {Object.entries(stats).map(renderStatItem)}
             </ul>
         )
-    }
-
-    const getItemClassName = (name: string, type: string) => {
-        const stylesArray = [];
-        if (Object.hasOwn(achievements, name) && achievements[name].earned) stylesArray.push(styles.earned);
-        if (type) stylesArray.push(styles['ach_' + type]);
-        return stylesArray.join(' ')
     }
 
     const addEarnedInfo = ({
@@ -73,7 +64,6 @@ const Achievements = () => {
                                hidden,
                                displayName
                            }: achievementInterfaceType): ExtendedAchievementType => {
-        const className = getItemClassName(name, type);
         let externalProgressValue = 0;
         if (externalProgress[name] && externalProgress[name] !== 1) externalProgressValue = externalProgress[name];
 
@@ -88,6 +78,10 @@ const Achievements = () => {
         } catch (e) {
             console.error(e)
         }
+        
+        const isEarned = Object.hasOwn(achievements, name) && achievements[name].earned;
+        const className = `${isEarned ? 'bg-theme! [&_strong]:text-earned' : 'bg-theme-transparent'} ${type === 'B' ? '[&_img]:bg-[#CD7F32]' : type === 'P' ? '[&_img]:bg-[#E5E4E2]' : type === 'G' ? '[&_img]:bg-[#FFD700]' : type === 'S' ? '[&_img]:bg-[#C0C0C0]' : ''}`;
+
         if (!Object.hasOwn(achievements, name)) return {
             ...achievements[name],
             body: hidden ? i18n.t('Hidden achievement') : description,
@@ -135,12 +129,12 @@ const Achievements = () => {
         }: ExtendedAchievementType & achievementInterfaceType,
     ) => (
         <li key={name}
-            className={className}
+            className={`flex m-0 rounded-r-theme relative border border-secondary after:content-[''] after:absolute after:top-[-1px] after:left-0 after:w-[calc(100%-var(--progress))] after:h-[3px] after:opacity-80 after:bg-[#00b100] after:z-[3] ${className}`}
             style={getStyle(progress, rarity)}
         >
-            <img src={image} alt={name} loading={"lazy"}/>
-            <div>
-                {screenshot ? <span className={styles.screenshotIcon}
+            <img src={image} alt={name} loading={"lazy"} className="w-[125px] h-[125px] p-[3px] aspect-square"/>
+            <div className="p-gap-half flex flex-col gap-[2px] w-full relative">
+                {screenshot ? <span className="absolute bottom-0 right-0 p-[2px] z-[3] outline-none cursor-pointer rounded-theme hover:bg-text-secondary active:bg-text-secondary focus:bg-text-secondary h-7 overflow-hidden [&_svg]:w-6 [&_svg]:h-6 hover:[&_svg]:invert focus:[&_svg]:invert active:[&_svg]:invert"
                                     tabIndex={1}
                                     role="button"
                                     onClick={() => {
@@ -156,14 +150,15 @@ const Achievements = () => {
                         </g>
                     </svg>
                 </span> : null}
-                <strong>{displayName}</strong>
-                <span title={description}>{body}</span>
-                <div className={styles.additional}>
+                <strong className="block">{displayName}</strong>
+                <span title={description} className="block text-[15px] text-text-secondary">{body}</span>
+                <div className="flex flex-col w-full text-text gap-[2px] mt-auto">
                     {typeof xp === "number" && <small>{xp} XP</small>}
                     {externalProgressValue !== 0 && <small>{i18n.t('Progress')}: {externalProgressValue}</small>}
                     {Boolean(earned_time) &&
                         <small>{new Date(earned_time * 1000).toLocaleDateString()} - {new Date(earned_time * 1000).toLocaleTimeString()}</small>}
                 </div>
+                <div className="absolute inset-0 bg-text opacity-[0.07] z-[1] w-[var(--rarity)] pointer-events-none"></div>
             </div>
         </li>)
 
@@ -201,7 +196,7 @@ const Achievements = () => {
         }
 
         return (
-            <ul className={styles.achList}>
+            <ul className="rounded-theme w-[90vw] mx-auto my-gap grid gap-gap grid-cols-3 p-gap glass list-none">
                 {game.achievements.sort(sort).map(item => ({...item, ...addEarnedInfo(item)})).map(renderItem)}
             </ul>
         )
@@ -209,27 +204,13 @@ const Achievements = () => {
     }
 
     return (
-        <div className={styles.achWrapper}>
+        <div className="relative z-[2]">
             {renderStats()}
             {renderAchievementItems()}
             {activeScreenshot ? <Modal onClose={() => setActiveScreenshot(null)}>
-                <div style={{
-                    backgroundColor: 'var(--theme-color)',
-                    height: '100%',
-                    overflow: 'auto',
-                    padding: '1vh 10vw',
-                    width: '100%',
-                }}>
-                    <h2 style={{
-                        borderBottom: '2px solid var(--theme-text-color-seconary)',
-                        paddingBottom: 'var(--gap-half)',
-                        textAlign: 'center'
-                    }}>{activeScreenshot.displayName}</h2>
-                    <img src={activeScreenshot.path} alt={activeScreenshot.displayName} style={{
-                        border: '1px solid var(--theme-text-color-seconary)',
-                        borderRadius: 'var(--border-radius)',
-                        maxWidth: '100%'
-                    }}/>
+                <div className="bg-theme h-full overflow-auto p-[1vh_10vw] w-full">
+                    <h2 className="border-b-2 border-b-text-secondary pb-gap-half text-center">{activeScreenshot.displayName}</h2>
+                    <img src={activeScreenshot.path} alt={activeScreenshot.displayName} className="border border-text-secondary rounded-theme max-w-full"/>
                 </div>
             </Modal> : null}
         </div>

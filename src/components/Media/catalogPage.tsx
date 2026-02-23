@@ -10,8 +10,6 @@ import CategoryFinder from "./categoryFinder";
 import MovieSearch from "./movieSearch";
 import movieStorage from "./movieStorage";
 
-import styles from './media.module.scss';
-
 const CatalogPage = ({pageData, selectMovie, goTo, history}: {
     pageData: getPageData
     selectMovie: (url: string) => void
@@ -58,7 +56,7 @@ const CatalogPage = ({pageData, selectMovie, goTo, history}: {
     const renderPagination = () => {
         if (tab !== 0) return null
         return (
-            <div className={styles.pagination}>
+            <div className="flex gap-gap-half">
                 <button tabIndex={pageData.pagination.prev ? 1 : -1}
                         type="button"
                         onClick={() => goTo(pageData.pagination.prev)}
@@ -77,7 +75,7 @@ const CatalogPage = ({pageData, selectMovie, goTo, history}: {
                         tabIndex={!active ? 1 : -1}
                         key={title}
                         type="button"
-                        className={active ? styles.activeFilter : ''}
+                        className={active ? 'bg-text text-theme' : ''}
                         onClick={() => goTo(url)}
                     >
                         {title}
@@ -90,7 +88,7 @@ const CatalogPage = ({pageData, selectMovie, goTo, history}: {
     const renderCategories = () => {
         if (!pageData.categories) return <MovieSearch selectMovie={selectMovie}/>;
         return (
-            <div className={styles.categories}>
+            <div className="bg-theme-transparent flex flex-col m-0 [&_button]:m-gap">
                 <MovieSearch selectMovie={selectMovie}/>
                 <Input type="select"
                        options={pageData.categories.map(({title}, index) => ({
@@ -117,12 +115,13 @@ const CatalogPage = ({pageData, selectMovie, goTo, history}: {
     const renderMovieItem = (item: MoviesListItem | MovieStorageHistory) => (
         <li key={item.href} tabIndex={1}
             role="button"
+            className="rounded-theme bg-theme-transparent border border-theme-transparent flex flex-col min-w-0 overflow-hidden transition-all duration-300 ease-in-out cursor-pointer focus-bloom group"
             onClick={() => {
                 selectMovie(item.href)
             }}>
-            <img src={item.image} alt={item.title}/>
-            <span>{item.title}</span>
-            <small>{item.subtitle}</small>
+            <img src={item.image} alt={item.title} className="transition-all duration-300 ease-in-out min-w-0 w-full aspect-[83/125] brightness-[0.8] group-hover:brightness-100 group-focus:brightness-100 group-active:brightness-100"/>
+            <span className="p-gap-half truncate">{item.title}</span>
+            <small className="p-[0_var(--gap-half)] text-text-secondary truncate">{item.subtitle}</small>
         </li>
     )
 
@@ -139,7 +138,7 @@ const CatalogPage = ({pageData, selectMovie, goTo, history}: {
 
     const renderCollections = () => {
         return (
-            <ul className={styles.collectionsList}>{pageData.links.map(item => (
+            <ul className="m-0 p-0 list-none flex flex-wrap gap-gap-half [&_button]:m-0">{pageData.links.map(item => (
                 <li key={item.href}>
                     <button tabIndex={1} type="button" onClick={() => {
                         goTo(item.href)
@@ -152,8 +151,8 @@ const CatalogPage = ({pageData, selectMovie, goTo, history}: {
 
     const renderNavigation = () => {
         return (
-            <div className={styles.navigation} id="navigation">
-                <img src={'/assets/controller/left-bumper.svg'} alt={'prev'} tabIndex={0} role="button" onClick={() => {
+            <div className="max-w-[80vw] mx-auto my-gap flex gap-gap-half items-center justify-center" id="navigation">
+                <img src={'/assets/controller/left-bumper.svg'} alt={'prev'} tabIndex={0} role="button" className="m-gap cursor-pointer" onClick={() => {
                     toggleViewMode('previous')
                 }}/>
                 {tabs.map(({heading}, index) => (
@@ -163,10 +162,11 @@ const CatalogPage = ({pageData, selectMovie, goTo, history}: {
                           onClick={() => {
                               setTab(index)
                           }}
-                          className={tab === index ? styles.navActive : ''}>{heading}</span>
+                          className={`p-theme cursor-pointer border-b border-transparent focus:outline-none ${tab === index ? 'border-b-text' : ''}`}>{heading}</span>
                 ))}
                 <img src={'/assets/controller/right-bumper.svg'} alt={'next'}
                      tabIndex={0} role="button"
+                     className="m-gap cursor-pointer"
                      onClick={() => {
                          toggleViewMode('next')
                      }}/>
@@ -175,19 +175,19 @@ const CatalogPage = ({pageData, selectMovie, goTo, history}: {
     }
 
     return (
-        <div className={styles.wrapperCatalog}>
-            <div style={{alignItems: 'start', display: 'grid', gap: 'var(--gap)', gridTemplateColumns: '1fr 2fr'}}>
+        <div className="max-w-[95vw] my-[50px] mx-auto gap-gap p-theme bg-theme-transparent">
+            <div className="grid items-start gap-gap grid-cols-[1fr_2fr]">
                 {renderCategories()}
                 {renderNavigation()}
 
             </div>
             <h2>{tabs[tab].heading}</h2>
             {renderPagination()}
-            <ul className={styles.catalogList}>
+            <ul className="m-0 p-[var(--gap)_var(--gap-half)] list-none grid gap-gap-half grid-cols-9">
                 {tabs[tab].items.map(renderMovieItem)}
             </ul>
             {renderPagination()}
-            <div style={{alignItems: 'start', display: 'grid', gap: 'var(--gap)', gridTemplateColumns: '2fr 3fr'}}>
+            <div className="grid items-start gap-gap grid-cols-[2fr_3fr]">
                 {renderCollections()}
             </div>
         </div>

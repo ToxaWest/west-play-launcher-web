@@ -7,6 +7,7 @@ export default function initLocalStorage() {
             settings: {
                 currentLang: 'english',
                 gamesInRow: 6,
+                rpcs3: '',
                 ryujinx: '',
                 showCrackedWidget: 1,
                 showFreeWidget: 1,
@@ -26,9 +27,10 @@ export default function initLocalStorage() {
         gbe: {},
         hiddenFree: [],
         history: [],
+        kinozal_cookies: [],
         lastPlayed: {},
         list_crack_games: [],
-        list_free_games: [],
+        list_free_games2: [],
         movieFavorites: [],
         movieTime: {},
         movies: {

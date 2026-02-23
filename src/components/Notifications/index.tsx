@@ -1,12 +1,6 @@
 import React from "react";
 import type {notificationsType} from "@type/provider.types";
 
-import styles from "./notifications.module.scss";
-
-interface StyleInterface extends React.CSSProperties {
-    '--bg-color': string
-}
-
 const Notifications = ({notifications}: { notifications: notificationsType }) => {
     const colors = {
         'error': 'rgba(240,62,31,0.9)',
@@ -21,22 +15,18 @@ const Notifications = ({notifications}: { notifications: notificationsType }) =>
 
     const {img, description, name, status} = notifications;
 
-    const style: StyleInterface = {
-        '--bg-color': colors[status]
-    }
-
     return (
-        <div className={styles.wrapper}>
-            <div className={styles.content} style={style}>
-                <div className={styles.image}>
-                    <img src={'/assets/controller/Xbox_Logo.svg'} alt={name}/>
-                    <img src={img} alt={name}/>
+        <div className="fixed top-gap right-gap z-[100] transition-all duration-300">
+            <div className="flex gap-gap p-gap rounded-theme shadow-lg text-white" style={{ backgroundColor: colors[status] }}>
+                <div className="relative w-12 h-12 flex items-center justify-center">
+                    <img src={'/assets/controller/Xbox_Logo.svg'} alt={name} className="absolute inset-0 w-full h-full opacity-20"/>
+                    <img src={img} alt={name} className="relative z-[1] w-8 h-8 object-contain"/>
                 </div>
-                <div className={styles.contentWrapper}>
-                    <div className={styles.heading}>
+                <div className="flex flex-col justify-center">
+                    <div className="font-bold text-[18px]">
                         {name}
                     </div>
-                    {description && <div className={styles.description}>
+                    {description && <div className="text-[14px] opacity-90">
                         {description}
                     </div>}
                 </div>

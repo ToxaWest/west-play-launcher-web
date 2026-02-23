@@ -6,8 +6,6 @@ import {useLocation, useNavigate} from "react-router-dom";
 
 import i18n from "../../helpers/translate";
 
-import styles from "./game.module.scss";
-
 import SvgAchievements from '../../SVG/achievement.svg?react'
 import SvgContent from '../../SVG/content.svg?react'
 import SvgDLC from '../../SVG/dlc.svg?react'
@@ -81,8 +79,8 @@ const GameActions = ({game}: { game: Game }) => {
 
     const gameState = {
         'closed': {button: i18n.t('play'), modifier: ''},
-        'error': {button: i18n.t('Can`t start'), modifier: styles.error},
-        'running': {button: i18n.t('Running'), modifier: styles.running},
+        'error': {button: i18n.t('Can`t start'), modifier: 'bg-[rgba(187,0,33,0.5)] focus:bg-[rgba(187,0,33,0.5)]! hover:bg-[rgba(187,0,33,0.5)]!'},
+        'running': {button: i18n.t('Running'), modifier: 'bg-[rgba(0,103,187,0.5)] focus:bg-[rgba(0,103,187,0.5)]! hover:bg-[rgba(0,103,187,0.5)]!'},
         'starting': {button: i18n.t('Starting...'), modifier: ''}
     }
 
@@ -97,7 +95,7 @@ const GameActions = ({game}: { game: Game }) => {
                 }}
                 role="button"
                 tabIndex={0}
-                className={styles.icon + (getActive(url) ? ' ' + styles.activeIcon : '')}
+                className={`w-[45px] h-[45px] p-[5px] bg-theme-transparent rounded-theme cursor-pointer border border-transparent focus:bg-theme hover:bg-theme flex items-center justify-center [&_svg]:fill-text-secondary [&_svg]:max-w-full [&_svg]:max-h-full ${getActive(url) ? 'bg-secondary border-text-secondary [&_svg]:fill-text' : ''}`}
             >
                 <SvgImage/>
             </div>
@@ -105,17 +103,17 @@ const GameActions = ({game}: { game: Game }) => {
     }
 
     return (
-        <div className={styles.content}>
+        <div className="rounded-theme w-[90vw] mx-auto my-[1vw] flex items-start gap-[1vw] relative z-[2]">
             {!game.archive && <button
                 type="button"
                 tabIndex={1}
                 onClick={start}
-                className={styles.playButton + ' ' + (gameState[status].modifier)}
+                className={`font-bold text-[20px] min-w-[250px] shadow-[1px_1px_3px_var(--theme-text-color-seconary)] uppercase transition-colors duration-200 ease-in-out mr-auto focus:bg-[rgba(127,187,0,0.9)]! hover:bg-[rgba(127,187,0,0.9)]! disabled:opacity-90 ${gameState[status].modifier}`}
                 disabled={status !== 'closed'}
             >
                 {gameState[status].button}
             </button>}
-            <div className={styles.navigation}>
+            <div className="ml-auto flex gap-gap">
                 {buttons.map(renderButton)}
             </div>
         </div>

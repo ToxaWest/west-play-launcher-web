@@ -4,8 +4,6 @@ import type {Game} from "@type/game.types";
 import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 
-import styles from "../settings.module.scss";
-
 const SteamFields = ({game, onChange}: {
     game: Game
     onChange: (e: { name: string, value: any }) => void,
@@ -13,7 +11,7 @@ const SteamFields = ({game, onChange}: {
     const args = game.exeArgs || {};
 
     return (
-        <>
+        <div className="flex flex-col gap-gap-half">
             <Input label={i18n.t('Exe file path')}
                    value={game.exePath}
                    onChange={onChange}
@@ -21,9 +19,10 @@ const SteamFields = ({game, onChange}: {
                    initial={game.path}
                    onlyFile={true}
                    name='exePath'/>
-            <div className={styles.argsWrapper}>
+            <div className="my-gap-half mx-0 flex flex-col gap-gap-half">
                 <button
                     type="button"
+                    className="mr-auto"
                     onClick={() => {
                         onChange({
                             name: 'exeArgs',
@@ -44,6 +43,7 @@ const SteamFields = ({game, onChange}: {
                            name={id}>
                         <button
                             type="button"
+                            className="m-[2px_2px_2px_auto]"
                             onClick={() => {
                                 delete args[id];
                                 onChange({
@@ -61,7 +61,7 @@ const SteamFields = ({game, onChange}: {
                                               type="path"
                                               onlyFile={true}
                                               name='achPath'/> : null}
-        </>
+        </div>
     )
 }
 

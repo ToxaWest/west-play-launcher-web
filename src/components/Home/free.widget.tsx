@@ -1,12 +1,10 @@
 import React from "react";
-import type {freeGameType, widgetWrapperStyleInterface} from "@type/widget.types";
+import type {freeGameType} from "@type/widget.types";
 
 import electronConnector from "../../helpers/electronConnector";
 import {getFromStorage, setToStorage} from "../../helpers/getFromStorage";
 import i18n from "../../helpers/translate";
 import Loader from "../Loader";
-
-import styles from "./widgets.module.scss";
 
 const getGamesList = async (): Promise<freeGameType[]> => {
     try {
@@ -62,10 +60,10 @@ const FreeWidget = () => {
 
     const renderDescription = (game: freeGameType) => {
         const fields = getFields(game).filter(({value}) => value)
-        return (<ul>
+        return (<ul className="absolute inset-0 opacity-0 overflow-hidden transition-opacity duration-300 z-[-1] w-full h-full p-gap-half flex flex-col gap-gap-half bg-theme group-focus:opacity-90 group-focus:z-[1] group-hover:opacity-90 group-hover:z-[1]">
             {fields.map((field) => (
-                <li key={field.label}>
-                    <strong>{field.label}:</strong><i>{field.value}</i>
+                <li key={field.label} className="list-none m-0 flex border-b border-secondary">
+                    <strong className="mr-gap-half">{field.label}:</strong><i className="ml-auto text-right">{field.value}</i>
                 </li>
             ))}
         </ul>)
@@ -77,29 +75,30 @@ const FreeWidget = () => {
             <li key={game.appid}
                 tabIndex={1}
                 role="button"
-                className={enabled ? styles.active : ""}
+                className={`group whitespace-nowrap aspect-[92/43] w-[22vw] rounded-theme relative overflow-hidden transition-all duration-300 ease-in-out perspective-[1000px] hover:z-[2] hover:translate-x-[calc(1.8vw-var(--gap))] hover:scale-115 hover:shadow-[0_10px_20px_rgba(0,0,0,0.5)] focus:z-[2] focus:translate-x-[calc(1.8vw-var(--gap))] focus:scale-115 focus:shadow-[0_10px_20px_rgba(0,0,0,0.5)] active:z-[2] active:translate-x-[calc(1.8vw-var(--gap))] active:scale-115 active:shadow-[0_10px_20px_rgba(0,0,0,0.5)] ${enabled ? "bg-text-secondary z-[2]" : ""}`}
                 onClick={() => setActive(game.appid)}
                 onBlur={() => {
                     setActive(0);
                 }}>
-                <img src={game.image} alt={game.title} loading={"lazy"} />
+                <img src={game.image} alt={game.title} loading={"lazy"} className="object-cover h-full w-full" />
                 {renderDescription(game)}
             </li>
         )
     }
 
-    const style: widgetWrapperStyleInterface = {'--lines': '1'}
     if(!games) return null
     const list = games.filter(({appid}) => !getFromStorage('hiddenFree').includes(appid))
     if (list.length === 0) return null;
 
     return (
         <React.Fragment>
-            <h2>{i18n.t('Free Games')}</h2>
-            <ul className={styles.freeWrapper} style={style}>
-                {list.map(renderGame)}
-                <Loader loading={loading}/>
-            </ul>
+            <h2 className="p-theme relative z-[2]">{i18n.t('Free Games')}</h2>
+            <div className="w-screen glass">
+                <ul className="gap-gap grid grid-rows-[repeat(1,1fr)] justify-start grid-flow-col overflow-x-auto list-none relative py-[1.1vw] px-gap min-h-[80px]">
+                    {list.map(renderGame)}
+                    <Loader loading={loading}/>
+                </ul>
+            </div>
         </React.Fragment>
     )
 }

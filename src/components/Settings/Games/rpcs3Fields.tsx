@@ -4,8 +4,6 @@ import type {Game} from "@type/game.types";
 import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 
-import styles from "../settings.module.scss";
-
 const Rpcs3Fields = ({game, onChange}: {
     game: Game,
     onChange: (e: { name: string, value: any }) => void,
@@ -41,12 +39,12 @@ const Rpcs3Fields = ({game, onChange}: {
     }]
 
     return (
-        <>
+        <div className="flex flex-col gap-gap-half">
             <Input label={i18n.t('Game ID')}
                    value={game.id}
                    onChange={onChange}
                    name='id'/>
-            <div className={styles.argsWrapper}>
+            <div className="my-gap-half mx-0 [&_span]:text-[13px] [&_label]:p-theme [&_label_div]:flex [&_label_button]:m-[2px_2px_2px_auto]">
                 {fields.map(field => (
                     <Input label={field.label}
                            key={field.name}
@@ -57,7 +55,7 @@ const Rpcs3Fields = ({game, onChange}: {
                            name={field.name}/>
                 ))}
             </div>
-        </>
+        </div>
     )
 }
 

@@ -16,8 +16,6 @@ import SearchHLTB from "./searchHLTB";
 import SearchSteamGame from "./searchSteamGame";
 import SteamFields from "./steamFields";
 
-import styles from '../settings.module.scss';
-
 const AddGame = ({data, submit, remove}: {
     data: Game;
     submit: (game: Game) => void;
@@ -102,7 +100,7 @@ const AddGame = ({data, submit, remove}: {
         download: () => <Input label={i18n.t('Download link')} value={game.downloadLink} onChange={onChange}
                                name='downloadLink'/>,
         howLongToBeat: () => <SearchHLTB defaultValue={game.name} update={onChange}/>,
-        imageName: () => <div style={{display: 'flex', gap: 'var(--gap)'}}>
+        imageName: () => <div className="flex gap-gap">
             <Input label={i18n.t('Game Image')}
                    value={game.imageName}
                    onChange={({value, name}) => {
@@ -238,10 +236,10 @@ const AddGame = ({data, submit, remove}: {
     }
 
     return (
-        <div className={styles.addGameWrapper}>
+        <div className="flex flex-col gap-gap-half [&_>_div]:flex [&_>_div]:flex-col [&_>_div]:gap-gap-half">
             <h3>{game.name}</h3>
-            <div style={{position: 'relative'}}>
-                <div style={{display: 'flex', gap: 'var(--gap)', padding: 'var(--padding)'}}>
+            <div className="relative">
+                <div className="flex gap-gap p-theme">
                     {render.remove()}
                     {game.id ? render.update() : null}
                     {render.updateLocalData()}

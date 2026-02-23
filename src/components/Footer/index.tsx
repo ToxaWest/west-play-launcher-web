@@ -7,8 +7,6 @@ import {useNavigate} from "react-router-dom";
 
 import i18n from "../../helpers/translate";
 
-import styles from './footer.module.scss';
-
 const Footer = () => {
     const navigate = useNavigate();
     const {footerActions} = useFooterActions();
@@ -49,10 +47,12 @@ const Footer = () => {
         }
     }
 
-    const renderFooterActions = ({onClick, title, button}: footerActionType) => (
-        <div onClick={onClick} role="button" tabIndex={0} key={button}>
-            <img src={'/assets/controller/' + imgMapping[button]} alt={title} width={32} height={32}/>
-            {title}
+    const renderFooterActions = ({onClick, title, button}: footerActionType, index: number) => (
+        <div onClick={onClick} role="button" tabIndex={0} key={button} className={`flex items-center cursor-pointer gap-2 group ${index === 0 ? 'mr-auto' : ''}`}>
+            <div className="w-8 h-8 rounded-full bg-black/20 border border-white/10 flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
+                <img src={'/assets/controller/' + imgMapping[button]} alt={title} width={20} height={20} className="object-contain"/>
+            </div>
+            <span className="text-[1.8vh] font-medium tracking-wide opacity-80 group-hover:opacity-100 transition-opacity uppercase">{title}</span>
         </div>
     )
 
@@ -74,7 +74,7 @@ const Footer = () => {
     const sortButtons = (a: footerActionType, b: footerActionType) => orderMap.get(a.button) - orderMap.get(b.button)
 
     return (
-        <footer className={styles.wrapper}>
+        <footer className="fixed! inset-x-0 h-[50px] bottom-0 px-gap flex items-center gap-gap transition-opacity duration-300 ease-in z-[6] glass">
             {Object.values(actions).filter(a => a.title).sort(sortButtons).map(renderFooterActions)}
         </footer>
     )

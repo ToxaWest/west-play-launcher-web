@@ -1,12 +1,10 @@
 import React from "react";
-import type {crackedGameType, widgetWrapperStyleInterface} from "@type/widget.types";
+import type {crackedGameType} from "@type/widget.types";
 
 import electronConnector from "../../helpers/electronConnector";
 import {getFromStorage, setToStorage} from "../../helpers/getFromStorage";
 import i18n from "../../helpers/translate";
 import Loader from "../Loader";
-
-import styles from "./widgets.module.scss";
 
 // Helper functions moved outside the main component as they don't depend on its state
 const getFields = (currentGame: crackedGameType) => {
@@ -39,10 +37,10 @@ const getFields = (currentGame: crackedGameType) => {
 
 const renderDescription = (game: crackedGameType) => {
     const fields = getFields(game)
-    return (<ul>
+    return (<ul className="absolute inset-0 opacity-0 overflow-hidden transition-opacity duration-300 z-[-1] w-full h-full p-gap-half flex flex-col gap-gap-half group-focus:opacity-90 group-focus:z-[1] group-focus:bg-theme group-hover:opacity-90 group-hover:z-[1] group-hover:bg-theme">
         {fields.map((field) => (
-            <li key={field.label}>
-                <strong>{field.label}:</strong><i>{field.value}</i>
+            <li key={field.label} className="list-none m-0 flex border-b border-secondary">
+                <strong className="mr-gap-half">{field.label}:</strong><i className="ml-auto text-right">{field.value}</i>
             </li>
         ))}
     </ul>)
@@ -55,6 +53,7 @@ const renderTeaser = (game: crackedGameType) => {
         <iframe
             loading="lazy"
             title={game.title}
+            className="absolute left-0 top-0 hidden w-full h-full z-[5] aspect-video border-none group-hover:block group-focus:block"
             src={`https://www.youtube.com/embed/${id}?autoplay=1&loop=1&rel=0&mute=1&showinfo=0`}
         />
     )
@@ -88,7 +87,7 @@ const CrackedGameItem = ({ game, isActive, onFocus, onBlur }: { game: crackedGam
         <li
             tabIndex={1}
             role="button"
-            className={isActive ? styles.active : ""}
+            className={`group whitespace-nowrap aspect-[92/43] w-[22vw] rounded-theme relative overflow-hidden transition-all duration-300 ease-in-out perspective-[1000px] hover:z-[2] hover:translate-x-[calc(1.8vw-var(--gap))] hover:scale-115 hover:shadow-[0_10px_20px_rgba(0,0,0,0.5)] focus:z-[2] focus:translate-x-[calc(1.8vw-var(--gap))] focus:scale-115 focus:shadow-[0_10px_20px_rgba(0,0,0,0.5)] active:z-[2] active:translate-x-[calc(1.8vw-var(--gap))] active:scale-115 active:shadow-[0_10px_20px_rgba(0,0,0,0.5)] ${isActive ? "bg-text-secondary z-[2]" : ""}`}
             onBlur={onBlur}
             onClick={onFocus}
         >
@@ -96,6 +95,7 @@ const CrackedGameItem = ({ game, isActive, onFocus, onBlur }: { game: crackedGam
                 src={imageSources[0]} 
                 alt={game.title} 
                 loading={"lazy"}
+                className="object-cover h-full w-full"
                 onError={handleImageError}
             />
             {renderTeaser(game)}
@@ -123,27 +123,25 @@ const CrackedWidget = () => {
         }
     }, [])
 
-    const style: widgetWrapperStyleInterface = {
-        '--lines': '3'
-    }
-
     if (!games) return null;
 
     return (
         <React.Fragment>
-            <h2>{i18n.t('Cracked Games')}</h2>
-            <ul className={styles.freeWrapper} style={style}>
-                {games.map(game => (
-                    <CrackedGameItem
-                        key={game.id}
-                        game={game}
-                        isActive={active === game.id}
-                        onFocus={() => setActive(game.id)}
-                        onBlur={() => setActive(null)}
-                    />
-                ))}
-                <Loader loading={loading}/>
-            </ul>
+            <h2 className="p-theme relative z-[2]">{i18n.t('Cracked Games')}</h2>
+            <div className="w-screen glass">
+                <ul className="gap-gap grid grid-rows-[repeat(3,1fr)] justify-start grid-flow-col overflow-x-auto list-none relative py-[1.1vw] px-gap min-h-[80px]">
+                    {games.map(game => (
+                        <CrackedGameItem
+                            key={game.id}
+                            game={game}
+                            isActive={active === game.id}
+                            onFocus={() => setActive(game.id)}
+                            onBlur={() => setActive(null)}
+                        />
+                    ))}
+                    <Loader loading={loading}/>
+                </ul>
+            </div>
         </React.Fragment>
     )
 }

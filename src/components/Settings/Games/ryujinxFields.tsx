@@ -4,8 +4,6 @@ import type {Game} from "@type/game.types";
 import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 
-import styles from "../settings.module.scss";
-
 const RyujinxFields = ({game, onChange}: {
     game: Game,
     onChange: (e: { name: string, value: any }) => void,
@@ -35,19 +33,17 @@ const RyujinxFields = ({game, onChange}: {
     }]
 
     return (
-        <>
-            <div className={styles.argsWrapper}>
-                {fields.map(field => (
-                    <Input label={field.label}
-                           key={field.name}
-                           value={field.value}
-                           type={field.type as 'select'}
-                           options={field.options}
-                           onChange={update}
-                           name={field.name}/>
-                ))}
-            </div>
-        </>
+        <div className="my-gap-half mx-0 [&_span]:text-[13px] [&_label]:p-theme [&_label_div]:flex [&_label_button]:m-[2px_2px_2px_auto]">
+            {fields.map(field => (
+                <Input label={field.label}
+                       key={field.name}
+                       value={field.value}
+                       type={field.type as 'select'}
+                       options={field.options}
+                       onChange={update}
+                       name={field.name}/>
+            ))}
+        </div>
     )
 }
 

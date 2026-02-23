@@ -1,4 +1,4 @@
-import './index.scss';
+import './index.css';
 
 import React, {lazy} from 'react';
 import ReactDOM from 'react-dom/client';

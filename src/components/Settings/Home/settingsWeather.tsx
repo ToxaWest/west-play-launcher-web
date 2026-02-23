@@ -5,8 +5,6 @@ import {getFromStorage, setToStorage} from "../../../helpers/getFromStorage";
 import i18n from "../../../helpers/translate";
 import Input from "../../Input";
 
-import styles from "../settings.module.scss";
-
 const SettingsWeather = () => {
     const initialSettings = getFromStorage('weather');
     const [settings, setSettings] = React.useState(initialSettings);
@@ -28,11 +26,13 @@ const SettingsWeather = () => {
                        setSearch(value as string);
                    }}
                    children={(
-                       <>
+                       <div className="w-full">
                            <span>{settings.name} ({settings?.sys?.country})</span>
-                           <ul className={styles.search}>
+                           <ul className="flex flex-wrap m-0 p-0 list-none gap-gap">
                                {temp.map((w) => (
-                                   <li key={w.id} role="button" onClick={() => {
+                                   <li key={w.id} role="button" 
+                                       className="w-full flex p-gap-half rounded-theme cursor-pointer bg-theme-transparent items-center hover:bg-theme focus:bg-theme active:bg-theme"
+                                       onClick={() => {
                                        setSearch('')
                                        setTemp([]);
                                        setSettings(w)
@@ -43,7 +43,7 @@ const SettingsWeather = () => {
                                    </li>)
                                )}
                            </ul>
-                       </>
+                       </div>
 
                    )}
             />
