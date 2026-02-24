@@ -27,7 +27,7 @@ const useStartGame = (game: Game) => {
                     img: game.img_icon,
                     name: i18n.t('Can`t start'),
                     status: 'error',
-                })
+                }, 9000)
             }
             if (_status === 'starting') {
                 setToStorage('lastPlayed', {...lastPlayed, [game.id]: new Date().getTime()});
@@ -36,7 +36,7 @@ const useStartGame = (game: Game) => {
                     img: game.img_icon,
                     name: i18n.t('Starting...'),
                     status: 'success',
-                })
+                }, 9000)
             }
             setStatus(_status)
         })

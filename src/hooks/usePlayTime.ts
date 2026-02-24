@@ -14,7 +14,7 @@ const usePlayTime = ({id, img_icon: img, name}: Game) => {
             img,
             name,
             status: 'warning'
-        }, 8000)
+        }, 9000)
     }
 }
 
