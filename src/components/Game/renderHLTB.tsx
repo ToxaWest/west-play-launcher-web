@@ -18,7 +18,7 @@ const RenderHLTB = ({game}: { game: Game }) => {
         return (
             <span 
                 style={{ '--bgColor': `rgba(0, 255, 0, ${progress / 100})`, '--progress': `${progress}%` } as React.CSSProperties}
-                className="p-theme text-[1vw] bg-theme-transparent rounded-theme flex flex-col justify-center items-center gap-gap-half relative after:content-[''] after:absolute after:inset-y-0 after:left-0 after:w-[var(--progress)] after:bg-[var(--bgColor)] after:z-[-1] after:rounded-[inherit]"
+                className="p-theme text-[1vw] bg-theme-transparent rounded-theme flex flex-col justify-center items-center gap-gap-half relative after:content-[''] after:absolute after:inset-y-0 after:left-0 after:w-(--progress) after:bg-(--bgColor) after:z-[-1] after:rounded-[inherit]"
             >
                 {secondsToHms(value * 1000)}<strong className="text-[0.7vw]">{label}</strong>
             </span>

@@ -53,7 +53,7 @@ const renderTeaser = (game: crackedGameType) => {
         <iframe
             loading="lazy"
             title={game.title}
-            className="absolute left-0 top-0 hidden w-full h-full z-[5] aspect-video border-none group-hover:block group-focus:block"
+            className="absolute left-0 top-0 hidden w-full h-full z-5 aspect-video border-none group-hover:block group-focus:block"
             src={`https://www.youtube.com/embed/${id}?autoplay=1&loop=1&rel=0&mute=1&showinfo=0`}
         />
     )
@@ -87,7 +87,7 @@ const CrackedGameItem = ({ game, isActive, onFocus, onBlur }: { game: crackedGam
         <li
             tabIndex={1}
             role="button"
-            className={`group whitespace-nowrap aspect-[92/43] w-[22vw] rounded-theme relative overflow-hidden transition-all duration-300 ease-in-out perspective-[1000px] hover:z-[2] hover:translate-x-[calc(1.8vw-var(--gap))] hover:scale-115 hover:shadow-[0_10px_20px_rgba(0,0,0,0.5)] focus:z-[2] focus:translate-x-[calc(1.8vw-var(--gap))] focus:scale-115 focus:shadow-[0_10px_20px_rgba(0,0,0,0.5)] active:z-[2] active:translate-x-[calc(1.8vw-var(--gap))] active:scale-115 active:shadow-[0_10px_20px_rgba(0,0,0,0.5)] ${isActive ? "bg-text-secondary z-[2]" : ""}`}
+            className={`group whitespace-nowrap aspect-92/43 w-[22vw] rounded-theme relative overflow-hidden transition-all duration-300 ease-in-out perspective-[1000px] hover:z-2 hover:translate-x-[calc(1.8vw-var(--gap))] hover:scale-115 hover:shadow-[0_10px_20px_rgba(0,0,0,0.5)] focus:z-2 focus:translate-x-[calc(1.8vw-var(--gap))] focus:scale-115 focus:shadow-[0_10px_20px_rgba(0,0,0,0.5)] active:z-[2] active:translate-x-[calc(1.8vw-var(--gap))] active:scale-115 active:shadow-[0_10px_20px_rgba(0,0,0,0.5)] ${isActive ? "bg-text-secondary z-[2]" : ""}`}
             onBlur={onBlur}
             onClick={onFocus}
         >

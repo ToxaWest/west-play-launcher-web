@@ -1,4 +1,5 @@
 import React from "react";
+import useAppControls from "@hook/useAppControls";
 
 import i18n from "../../helpers/translate";
 import FileManager from "../FileManager";
@@ -41,6 +42,7 @@ const Input = ({
 }) => {
 
     const [active, setActive] = React.useState<boolean>(false);
+    const {setMap} = useAppControls();
     const [initialValue, setInitialValue] = React.useState<string | number>(value)
 
     const change = (e: { target: { name: string, value: string | number } }) => {
@@ -54,6 +56,26 @@ const Input = ({
     React.useEffect(() => {
         setInitialValue(value)
     }, [value])
+
+    React.useEffect(() => {
+        if (type === 'select' && active) {
+            setMap({
+                b: () => setActive(false)
+            })
+        } else if (type === 'select' && !active) {
+            setMap({
+                b: null
+            })
+        }
+
+        return () => {
+            if (type === 'select') {
+                setMap({
+                    b: null
+                })
+            }
+        }
+    }, [active, type])
 
     const inputClasses = "min-w-[450px] transition-colors focus:bg-text focus:text-theme focus:placeholder:text-secondary hover:bg-text hover:text-theme active:bg-text active:text-theme";
 
@@ -121,6 +143,7 @@ const Input = ({
                 <li key={option.value?.toString()} role="button"
                     className={`text-[12px] cursor-pointer p-theme focus:bg-text focus:text-theme hover:bg-text hover:text-theme active:bg-text active:text-theme ${option.value === value ? 'bg-[green] text-white' : ''}`} tabIndex={2} onClick={() => {
                     onChange({name, value: option.value})
+                    setActive(false)
                 }}>
                     {option.html ? <span dangerouslySetInnerHTML={{__html: option.html}}/> : option.label}
                 </li>

@@ -32,13 +32,11 @@ const SettingsGames = () => {
                 <AddGame
                     data={games[activeIndex]}
                     remove={() => {
-                        setGames(g => {
-                            const newGames = [...g];
-                            newGames.splice(activeIndex, 1)
-                            return newGames;
-                        })
+                        const newGames = [...games];
+                        newGames.splice(activeIndex, 1)
+                        setGames(newGames)
                         setActiveIndex(null)
-                        setToStorage('games', games)
+                        setToStorage('games', newGames)
                         window.location.reload()
                     }}
                     submit={(d: Game) => {
@@ -49,13 +47,11 @@ const SettingsGames = () => {
                                 name: d.name
                             })
                         }
-                        setGames(g => {
-                            const newGames = [...g];
-                            newGames[activeIndex] = d
-                            return newGames
-                        })
+                        const newGames = [...games];
+                        newGames[activeIndex] = d
+                        setGames(newGames)
                         setActiveIndex(null)
-                        setToStorage('games', games)
+                        setToStorage('games', newGames)
                         window.location.reload()
                     }}
                 />

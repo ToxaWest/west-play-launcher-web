@@ -34,7 +34,7 @@ const GameDLC = () => {
                 {renderImage(item, "rounded-theme block w-full")}
                 {(activeId === item.id) && (
                     <Modal onClose={() => setActiveId(null)}>
-                        <div className="grid grid-cols-[1fr_2fr] h-full gap-gap items-start w-full relative p-[50px_5vw] z-[3] before:content-[''] before:absolute before:inset-0 before:bg-theme before:opacity-90 before:z-[-1]">
+                        <div className="grid grid-cols-[1fr_2fr] h-full gap-gap items-start w-full relative p-[50px_5vw] z-3 before:content-[''] before:absolute before:inset-0 before:bg-theme before:opacity-90 before:z-[-1]">
                             <div className="[&_img]:block [&_img]:rounded-theme [&_img]:w-full">{renderImage(item)}</div>
                             <div className="flex max-w-full flex-col h-full p-gap-half bg-theme-transparent overflow-y-auto gap-gap [&_img]:max-w-full" id={'scroll'}>
                                 <h4 className="m-0 p-0 text-[24px]">{item.name}</h4>
@@ -48,7 +48,7 @@ const GameDLC = () => {
     }
 
     return (
-        <div className="w-[90vw] mx-auto my-[1vw] flex items-start relative z-[2] p-gap glass">
+        <div className="w-[90vw] mx-auto my-[1vw] flex items-start relative z-2 p-gap glass">
             <ul className="m-0 p-theme list-none grid grid-cols-4 gap-gap-half w-full">
                 {dlcList.map(renderItem)}
             </ul>

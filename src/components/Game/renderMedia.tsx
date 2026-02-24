@@ -84,7 +84,7 @@ const RenderMedia = ({game}: { game: Game }) => {
     }
 
     return (
-        <div className="w-screen relative z-[2] h-[calc(100vw*(9/16))] mb-[-50px] bg-theme [&_video]:block [&_video]:w-full [&_img]:block [&_img]:w-full">
+        <div className="w-screen relative z-2 h-[calc(100vw*(9/16))] -mb-12.5 bg-theme [&_video]:block [&_video]:w-full [&_img]:block [&_img]:w-full">
             {renderMedia(current)}
         </div>
     )

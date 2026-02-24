@@ -52,7 +52,7 @@ const NewsRender = ({id}) => {
     }
 
     return (
-        <div className="z-[5] relative flex flex-col">
+        <div className="z-5 relative flex flex-col">
             <Loader loading={loading}/>
             <ul className="m-theme p-0 grid grid-cols-2 list-none rounded-theme gap-gap overflow-hidden">
                 {data.map(renderItem)}

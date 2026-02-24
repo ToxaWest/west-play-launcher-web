@@ -31,7 +31,6 @@ class GamepadApi {
 
     sendEvent = (button: gamePadButtonName) => {
         document.documentElement.style.cursor = "none";
-        document.documentElement.style.pointerEvents = "none";
         if (!this.visible) return;
         if (sound[button]) {
             const audio = new Audio('/assets/sound/ui/' + sound[button] + '.mp3');
@@ -42,7 +41,7 @@ class GamepadApi {
             navigator.getGamepads()[this.gamepad]?.vibrationActuator?.playEffect("dual-rumble", {
                 duration: 100, startDelay: 0, strongMagnitude: 0, weakMagnitude: 0.4
             }).catch(() => {/* Ignore vibration errors */});
-        } catch (e) {
+        } catch {
             // Vibration not supported
         }
 

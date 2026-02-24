@@ -86,6 +86,7 @@ const GameActions = ({game}: { game: Game }) => {
 
 
     const renderButton = ({url, img: SvgImage}) => {
+        const active = getActive(url);
         return (
             <div
                 key={url}
@@ -94,10 +95,15 @@ const GameActions = ({game}: { game: Game }) => {
                     window.scrollTo(0, 0);
                 }}
                 role="button"
-                tabIndex={0}
-                className={`w-[45px] h-[45px] p-[5px] bg-theme-transparent rounded-theme cursor-pointer border border-transparent focus:bg-theme hover:bg-theme flex items-center justify-center [&_svg]:fill-text-secondary [&_svg]:max-w-full [&_svg]:max-h-full ${getActive(url) ? 'bg-secondary border-text-secondary [&_svg]:fill-text' : ''}`}
+                tabIndex={-1}
+                className={`w-[52px] h-[52px] bg-theme-transparent rounded-theme cursor-pointer border-b-2 transition-all duration-200 flex items-center justify-center relative group focus-bloom ${
+                    active 
+                        ? 'bg-text/10 border-text [&_svg]:fill-text scale-110 z-[1]' 
+                        : 'border-transparent [&_svg]:fill-text-secondary hover:bg-theme/30'
+                }`}
             >
-                <SvgImage/>
+                <SvgImage className="w-[32px] h-[32px] transition-transform group-hover:scale-110"/>
+                {active && <div className="absolute -bottom-[2px] left-0 w-full h-[2px] bg-text shadow-[0_0_8px_rgba(var(--theme-text-color),0.5)]"/>}
             </div>
         )
     }

@@ -61,43 +61,55 @@ const Library = () => {
     const renderNavigation = () => {
         if (!games.some(a => a.archive)) return null
         return (
-            <div className="max-w-[90vw] mx-auto my-gap flex gap-gap-half items-center justify-center">
+            <div className="max-w-[90vw] mx-auto my-gap flex gap-gap-half items-center justify-center border-b border-white/5 pb-gap-half">
                 <button
                     type="button"
                     onClick={changeTab}
                     tabIndex={-1}
-                    className="cursor-pointer m-gap bg-transparent p-0 border-none"
+                    className="cursor-pointer mx-gap opacity-50 hover:opacity-100 transition-opacity bg-transparent p-0 border-none"
                 >
                     <img
                         src='/assets/controller/left-bumper.svg'
                         alt="LB"
+                        className="w-8 h-auto"
                     />
                 </button>
+                <div className="flex gap-gap">
+                    <button
+                        type="button"
+                        className={`px-4 py-2 border-b-2 transition-all duration-200 cursor-pointer focus:outline-none bg-transparent text-sm font-bold tracking-wide uppercase ${
+                            state === 'library-list' 
+                                ? 'border-text text-text opacity-100 scale-105' 
+                                : 'border-transparent text-text-secondary opacity-50 hover:opacity-80'
+                        }`}
+                        onClick={() => state !== 'library-list' && changeTab()}
+                        tabIndex={-1}
+                    >
+                        {i18n.t('Games')}
+                    </button>
+                    <button
+                        type="button"
+                        className={`px-4 py-2 border-b-2 transition-all duration-200 cursor-pointer focus:outline-none bg-transparent text-sm font-bold tracking-wide uppercase ${
+                            state !== 'library-list' 
+                                ? 'border-text text-text opacity-100 scale-105' 
+                                : 'border-transparent text-text-secondary opacity-50 hover:opacity-80'
+                        }`}
+                        onClick={() => state === 'library-list' && changeTab()}
+                        tabIndex={-1}
+                    >
+                        {i18n.t('Archive')}
+                    </button>
+                </div>
                 <button
                     type="button"
-                    className={`p-theme border-b border-transparent cursor-pointer focus:outline-none bg-transparent ${state === 'library-list' ? 'border-b-text' : ''}`}
                     onClick={changeTab}
                     tabIndex={-1}
-                >
-                    {i18n.t('Games')}
-                </button>
-                <button
-                    type="button"
-                    className={`p-theme border-b border-transparent cursor-pointer focus:outline-none bg-transparent ${state !== 'library-list' ? 'border-b-text' : ''}`}
-                    onClick={changeTab}
-                    tabIndex={-1}
-                >
-                    {i18n.t('Archive')}
-                </button>
-                <button
-                    type="button"
-                    onClick={changeTab}
-                    tabIndex={-1}
-                    className="cursor-pointer m-gap bg-transparent p-0 border-none"
+                    className="cursor-pointer mx-gap opacity-50 hover:opacity-100 transition-opacity bg-transparent p-0 border-none"
                 >
                     <img
                         src='/assets/controller/right-bumper.svg'
                         alt="RB"
+                        className="w-8 h-auto"
                     />
                 </button>
             </div>

@@ -111,7 +111,7 @@ const Weather = () => {
     if (!w.id) return null
 
     return (
-        <div className="flex items-center gap-gap-half h-[50px] justify-center">
+        <div className="flex items-center gap-gap-half h-12.5 justify-center">
             <svg width="40px" height="40px" viewBox="24 24 100 100">
                 {icons[current.weather[0].icon]}
             </svg>

@@ -33,7 +33,7 @@ const Alarm = () => {
                     key={alertType + regionEngName}
                     src={imgMapping[alertType]}
                     title={regionEngName}
-                    className="h-[30px]"
+                    className="h-7.5"
                 />
             ))}
         </div>

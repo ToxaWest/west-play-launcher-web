@@ -26,5 +26,7 @@ export type AppContextType = {
     notifications?: notificationsType | null,
     footerActions: footerActionsType,
     setNotifications: Dispatch<SetStateAction<notificationsType | null>>,
-    setFooterActions: Dispatch<SetStateAction<footerActionsType>>
+    setFooterActions: Dispatch<SetStateAction<footerActionsType>>,
+    setMap: (actions: appControlsMap) => void,
+    init: (selector: string) => void
 }

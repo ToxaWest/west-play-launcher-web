@@ -44,12 +44,12 @@ const Achievements = () => {
             if (!statInterface || !statInterface.displayName) return null;
             if (game.achievements.some(({displayName}) => displayName === statInterface.displayName)) return null;
             return <li key={key} className="bg-theme-transparent flex m-0 rounded-r-theme relative border border-secondary">
-                <div className="p-gap-half flex flex-col gap-[2px] w-full relative"><strong>{statInterface.displayName}: {value}</strong></div>
+                <div className="p-gap-half flex flex-col gap-0.5 w-full relative"><strong>{statInterface.displayName}: {value}</strong></div>
             </li>
         }
 
         return (
-            <ul className="rounded-theme w-[90vw] mx-auto my-gap grid gap-gap grid-cols-3 p-gap glass list-none">
+            <ul className="rounded-theme w-[90vw] mx-auto my-gap grid gap-gap grid-cols-3 p-gap glass list-none empty:hidden">
                 {Object.entries(stats).map(renderStatItem)}
             </ul>
         )
@@ -152,13 +152,13 @@ const Achievements = () => {
                 </span> : null}
                 <strong className="block">{displayName}</strong>
                 <span title={description} className="block text-[15px] text-text-secondary">{body}</span>
-                <div className="flex flex-col w-full text-text gap-[2px] mt-auto">
+                <div className="flex flex-col w-full text-text gap-0.5 mt-auto">
                     {typeof xp === "number" && <small>{xp} XP</small>}
                     {externalProgressValue !== 0 && <small>{i18n.t('Progress')}: {externalProgressValue}</small>}
                     {Boolean(earned_time) &&
                         <small>{new Date(earned_time * 1000).toLocaleDateString()} - {new Date(earned_time * 1000).toLocaleTimeString()}</small>}
                 </div>
-                <div className="absolute inset-0 bg-text opacity-[0.07] z-[1] w-[var(--rarity)] pointer-events-none"></div>
+                <div className="absolute inset-0 bg-text opacity-[0.07] z-1 w-(--rarity) pointer-events-none"></div>
             </div>
         </li>)
 
