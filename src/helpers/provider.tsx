@@ -22,7 +22,7 @@ const Provider = ({children}: {children: React.ReactNode}) => {
     const [loading, setLoading] = React.useState<boolean>(true);
     
     // Externalized gamepad and navigation logic
-    const {init, setMap} = useGamepadManager();
+    const {init, setMap} = useGamepadManager({setNotifications});
 
     React.useEffect(() => {
         i18n.init().then(() => {

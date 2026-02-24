@@ -1,5 +1,5 @@
 import React from "react";
-import type {appControlsMap} from "@type/provider.types";
+import type {AppContextType, appControlsMap, notificationsType} from "@type/provider.types";
 
 import GamepadApi from "../helpers/gamepad";
 
@@ -10,7 +10,9 @@ const NAVIGATION_KEYS = {
     top: {rowPosition: (a: number): number => a - 1}
 }
 
-export const useGamepadManager = () => {
+export const useGamepadManager = ({setNotifications}:{
+    setNotifications:  React.Dispatch<React.SetStateAction<notificationsType>>
+}) => {
     const gamepadsRef = React.useRef<Map<number, GamepadApi>>(new Map());
     const elementsRef = React.useRef<NodeListOf<HTMLElement>>([] as undefined as NodeListOf<HTMLElement>);
     const rowsMatrixRef = React.useRef<number[][]>([]);
@@ -246,6 +248,14 @@ export const useGamepadManager = () => {
             const gp = new GamepadApi(gamepad);
             gp.connect();
             gamepadsRef.current.set(gamepad.index, gp);
+            setNotifications({
+                description: gamepad.id, img: '/assets/controller/xbox-control-for-one.svg', name: "GamePad connected",
+                status: 'success'
+            })
+            // eslint-disable-next-line @eslint-react/web-api/no-leaked-timeout
+            setTimeout(() => {
+                setNotifications(null)
+            },9000)
         };
 
         const handleGamepadDisconnected = (e: GamepadEvent) => {
@@ -254,6 +264,14 @@ export const useGamepadManager = () => {
             if (gp) {
                 gp.disconnect();
                 gamepadsRef.current.delete(gamepad.index);
+                setNotifications({
+                    description: gamepad.id, img: '/assets/controller/xbox-control-for-one.svg', name: "GamePad disconnected",
+                    status: 'error'
+                })
+                // eslint-disable-next-line @eslint-react/web-api/no-leaked-timeout
+                setTimeout(() => {
+                    setNotifications(null)
+                },9000)
             }
         };
 
